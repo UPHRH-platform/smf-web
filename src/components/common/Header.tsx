@@ -1,14 +1,22 @@
 import React, { Component, Fragment } from "react";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 /**
  * Header component
  */
 
-class Header extends Component {
-  // constructor(props: any) {
-  //   super(props);
-  // }
+interface LoginProps {
+  history: any
+}
+
+interface LoginState {
+}
+
+class Header extends Component<LoginProps, LoginState> {
+  constructor(props: any) {
+    super(props);
+    // console.log(this, props.history)
+  }
 
   render() {
     return (
@@ -18,7 +26,7 @@ class Header extends Component {
             className="row"
           >
             <div className="col-6 pt-3">
-              <img src="./../img/Logo-Header.png" className="img-fluid" alt="Responsive image" />
+              <img src="./../../img/Logo-Header.png" className="img-fluid" alt="Responsive image" />
             </div>
             <div className="col-6 pt-3">
               <div className="float-right user-name-avatar"><span>SM</span></div>
@@ -33,9 +41,17 @@ class Header extends Component {
             className="row"
           >
             <ul className="smf-menu mt-3">
-              <li className="mr-5 active">HOME</li>
-              <li className="mr-5">MY APPLICATIONS</li>
-              <li className="mr-5">APPLICATIONS</li>
+              <li className="mr-5"><Link to={"/dashboard"} className={`${
+                this.props.history.location.pathname.match("/dashboard")
+                  ? "active"
+                  : ""
+              }`}>HOME</Link></li>
+              <li className="mr-5"><Link to={"/dashboard"} className="">MY APPLICATIONS</Link></li>
+              <li className="mr-5"><Link to={"/forms"} className={`${
+                this.props.history.location.pathname.match("/forms")
+                  ? "active"
+                  : ""
+              }`}>APPLICATIONS</Link></li>
             </ul>
           </div>
         </div>

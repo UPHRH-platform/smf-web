@@ -1,19 +1,13 @@
 import { Component, Fragment } from "react";
-import Header from "./../common/Header";
+import Header from "../common/Header";
 
 /**
  * Dashboard component
  */
 
-interface MyProps {
-}
+class Dashboard extends Component {
 
-interface MyState {
-}
-
-class Dashboard extends Component<MyProps, MyState> {
-
-  constructor(props: any) {
+  constructor(props) {
     super(props);
 
     this.state = {
@@ -29,7 +23,7 @@ class Dashboard extends Component<MyProps, MyState> {
   render() {
     return (
       <Fragment>
-        <Header />
+        <Header history={this.props.history}/>
         <div className="container-fluid main-container">
           <div className="container dashboard-inner-container">
             <div

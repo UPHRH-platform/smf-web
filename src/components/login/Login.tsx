@@ -9,11 +9,18 @@ import { Link } from "react-router-dom";
  * Login component
  */
 
-class Login extends Component {
-  constructor(props:any) {
+interface LoginProps {
+  history: any
+}
+
+interface LoginState {
+}
+
+class Login extends Component<LoginProps, LoginState> {
+  constructor(props: any) {
     super(props);
     if (Auth.isLoggedIn()) {
-      // this.props.history.push("home");
+      this.props.history.push("dashboard");
     }
     this.handleSubmit = this.handleSubmit.bind(this);
     // Notify.success('This is a test message.');
@@ -28,7 +35,7 @@ class Login extends Component {
       response => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           localStorage.setItem("user", JSON.stringify(response.responseData));
-          // this.props.history.push("/dashboards");
+          this.props.history.push("/dashboard");
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
