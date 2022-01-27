@@ -1,4 +1,4 @@
-FROM node:14.5
+FROM node:14.15.0
 ARG NODE_ENV=staging
 
 #RUN apt update && apt install -y zip
