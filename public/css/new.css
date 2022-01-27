@@ -1,0 +1,120 @@
+html {
+    --background: RGB(240, 243, 244);
+    --white-95: RGBA(255, 255, 255, 0.95);
+    --back-87: RGBA(0, 0, 0, 0.87);
+    --back-60: RGBA(0, 0, 0, 0.60);
+    --smf-orange: RGB(255, 53, 33);
+}
+
+.top-header {
+    /* background: #fff; */
+    height: 60px;
+}
+
+.main-container {
+    background-color: var(--background);
+    min-height: 40vh;
+}
+
+.divider {
+    height: 5px;
+    background-color: var(--background);
+}
+
+.bottom-container {
+    background-color: #fff;
+    height: 20vh;
+}
+
+.user-name-avatar {
+    background-color: rgb(237 136 50);
+    padding: 2px 4px;
+    font-weight: 700;
+    border-radius: 6px;
+}
+
+.user-name-avatar>span {
+    color: var(--white-95);
+    font-weight: 700;
+    font-size: 14px;
+}
+
+h2 {
+    color: var(--black-87) !important;
+    font-size: 20px !important;
+    letter-spacing: 0.12px !important;
+    font-weight: 600 !important;
+    font-family: 'Montserrat';
+}
+
+.h2-subheading {
+    color: var(--black-87);
+    font-size: 12px;
+    letter-spacing: 0.25px;
+    font-weight: 400;
+    font-family: 'Lato';
+}
+
+h3 {
+    color: var(--black-87) !important;
+    font-size: 16px !important;
+    letter-spacing: 0.12 !important;
+    font-weight: 600 !important;
+    font-family: 'Montserrat';
+}
+
+.h3-subheading {
+    color: var(--black-60);
+    font-size: 14px;
+    letter-spacing: 0.25px;
+    font-weight: 400;
+    font-family: 'Lato';
+}
+
+.dashboard-inner-container {
+    min-height: 100px;
+}
+
+.dashboard-inner-container {
+    min-height: 100px;
+}
+
+.smf-btn-default {
+    color: var(--smf-orange) !important;
+    border: solid 1px RGBA(0, 0, 0, 0.16) !important;
+    font-size: 14px !important;
+    letter-spacing: 0.5px !important;
+    font-weight: 700 !important;
+}
+
+.application-item {
+    border: solid 1px RGBA(0, 0, 0, 0.08);
+    box-shadow: 3px 3px RGBA(0, 0, 0, 0.04);
+    border-radius: 4px;
+    padding: 20px !important;
+}
+
+.smf-btn-default.highlighted {
+    border: solid 2px var(--smf-orange) !important;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.smf-menu {
+    display: inline-flex;
+    list-style-type: none;
+}
+
+.smf-menu>li {
+    color: var(--black-60) !important;
+    font-size: 14px;
+    letter-spacing: 0.25px;
+    font-weight: 600;
+    font-family: 'Lato';
+    cursor: pointer;
+}
+
+.smf-menu>li.active {
+    color: var(--smf-orange) !important;
+    background-color: #fff;
+}

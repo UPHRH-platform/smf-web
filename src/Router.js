@@ -15,7 +15,8 @@ const Router = (props) => (
     <Switch>
     <Route exact path="/" component={Login} />
       <Route path="/login" component={Login} />
-      <PrivateRoute exact path="/home" component={Dashboard} />
+      <Route path="/dashboard" component={Dashboard} />
+      {/* <PrivateRoute exact path="/home" component={Dashboard} /> */}
     </Switch>
   </BrowserRouter>
 );
