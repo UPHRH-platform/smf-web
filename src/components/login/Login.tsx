@@ -105,7 +105,7 @@ class Login extends Component<LoginProps, LoginState> {
       response => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           localStorage.setItem("user", JSON.stringify(response.responseData));
-          // this.props.history.push("/dashboards");
+          this.props.history.push("/dashboard");
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }

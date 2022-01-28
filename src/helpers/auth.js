@@ -1,6 +1,7 @@
 const Auth = {
   get(item) {
     const user = JSON.parse(localStorage.getItem("user"));
+    console.log('user :: ', user)
     return (user && user[item]) || '';
   },
 

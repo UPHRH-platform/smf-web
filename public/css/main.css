@@ -553,7 +553,8 @@ hr.topLineHelp {
 
   .profileDropdown {
     min-width: 5em;
-    right: 0;
+    /* left: -14px !important; */
+    top: 8px !important;
   }
 
   .customDropdown {
@@ -1063,7 +1064,7 @@ hr.topLineHelp {
 }
 
 .dateFilterTextColor {
-  color: var(--widget-text);
+  color: var(--main-black7);
 }
 
 .dropdown-menu {
@@ -1120,9 +1121,8 @@ hr.topLineHelp {
 }
 
 .profileDropdown {
-  min-width: 10em;
-  /* right:0; */
-  padding: 1em 0em 0em 0em;
+  /* left: -14px !important; */
+  top: 8px !important;
 }
 
 .profileDropdown p {
@@ -1175,7 +1175,7 @@ input:focus {
   line-height: 3em;
   text-align: center;
   border-radius: 50%;
-  background: plum;
+  background: #fff;
   border: 1px solid;
   /* color: var(--text-black);
   border-color: var(--text-black); */

@@ -4,8 +4,10 @@ import Header from "../../components/common/Header";
 interface formViewerState {
     showSidebar: boolean
 }
-
-class FormViewer extends Component<{}, formViewerState> {
+interface LoginProps {
+    history: any
+}
+class FormViewer extends Component<LoginProps, formViewerState> {
 
     constructor(props: any) {
         super(props);
@@ -25,7 +27,7 @@ class FormViewer extends Component<{}, formViewerState> {
     render() {
         return (
             <Fragment>
-                <Header />
+                <Header history={this.props.history}/>
                 <div className="container-fluid main-container">
                     <div className="row">
                         <div className="col-12">
