@@ -8,14 +8,27 @@ import { Link } from "react-router-dom";
 /**
  * Login component
  */
-
-class Login extends Component {
-  constructor(props:any) {
+interface loginState {
+  email: string
+  enterOTPEnabled: boolean
+}
+class Login extends Component<{}, loginState> {
+  formLayout: any
+  constructor(props: any) {
     super(props);
+    this.state = {
+      email: '',
+      enterOTPEnabled: false,
+    };
     if (Auth.isLoggedIn()) {
       // this.props.history.push("home");
     }
+    // for email/password login
     this.handleSubmit = this.handleSubmit.bind(this);
+
+    // for email/OTP login
+    this.getOTP = this.getOTP.bind(this);
+    this.loginWithOTP = this.loginWithOTP.bind(this)
     // Notify.success('This is a test message.');
   }
 
@@ -42,85 +55,165 @@ class Login extends Component {
     return;
   }
 
+  getOTP(event: any) {
+    event.preventDefault();
+    const email = event.target.email.value
+    UserService.getOTP(
+      event.target.email.value,
+    ).then(
+      response => {
+        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          localStorage.setItem("user", JSON.stringify(response.responseData));
+          // this.props.history.push("/dashboards");
+        } else {
+          Notify.error(response.statusInfo.errorMessage);
+        }
+        this.setState({
+          enterOTPEnabled: true,
+          email
+        })
+        console.log('this.enterOTPEnabled', this.state.enterOTPEnabled)
+      },
+      error => {
+        error.statusInfo
+          ? Notify.error(error.statusInfo.errorMessage)
+          : Notify.error(error.message);
+        this.setState({
+          enterOTPEnabled: true,
+          email
+        })
+        console.log('this.enterOTPEnabled', this.state.enterOTPEnabled)
+      },
+    );
+    return;
+
+  }
+
+  loginWithOTP(event: any) {
+    event.preventDefault();
+    UserService.login(
+      this.state.email,
+      event.target.otp.value
+    ).then(
+      response => {
+        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          localStorage.setItem("user", JSON.stringify(response.responseData));
+          // this.props.history.push("/dashboards");
+        } else {
+          Notify.error(response.statusInfo.errorMessage);
+        }
+      },
+      error => {
+        error.statusInfo
+          ? Notify.error(error.statusInfo.errorMessage)
+          : Notify.error(error.message);
+      },
+    );
+    return;
+  }
+
   render() {
     return (
-      <div className="d-md-flex d-lg-flex d-xl-flex fullHeight">
-        <div
-          className="col-md-7 d-none d-md-block d-lg-block d-xl-block"
-          style={{ background: "white" }}
-        >
-          <div className="col-12 mt-4 ml-3 pl-2 ml-md-3 ml-lg-4 ml-xl-4 pl-md-2 pl-lg-3 pl-xl-3">
-            <img src="img/tarento_text.svg" alt="brand cover" />
-          </div>
-          <div className="col-12 verticalCenter ml-4 pr-3 ml-md-4 ml-lg-5 ml-xl-5">
-            <img src="img/rain_logo_text.svg" alt="accelerator cover" />
-            <h1 className="pt-3">Realtime analytics and insights</h1>
-            <p>
-              Supercharge your business with the power of Data. <br />
-              Find out more by exploring our demo
-            </p>
-            <Link to="/featurePage">
-              <button className="btn explore-btn">Explore feature</button>
-            </Link>
-          </div>
-          {/*<img
-            className="centerAlign"
-            src="img/logoTarento.png"
-            alt="brand cover"
-            height="158"
-            width="400"
-          />*/}
-        </div>
-        <div className="col-md-5 d-md-flex d-lg-flex d-xl-flex loginRightBg fullHeight">
-          <div className="d-none d-sm-block d-md-none d-lg-none">
-            <div className="col-12 mt-4">
-              <img src="img/logowhite.png" alt="brand cover" />
+      <>
+        <div className="d-md-flex d-lg-flex d-xl-flex fullHeight login-root text-center">
+          {/* <div className="col-md-3 d-none d-md-block d-lg-block d-xl-block">
+          </div> */}
+          <div className="col-xs-12 col-md-7 col-lg-6 col-xl-5  centerAlign verticalCenter " style={{ maxWidth: '100vw' }}>
+            <img src="img/Logo - Login.svg" className="mb-5 login-logo" alt="SMF-logo" />
+            <div className="row mt-5 d-none d-md-block d-lg-block d-xl-block">
+
+            </div>
+            <div className="row">
+              <div className="col-12  login-container">
+                <h4 className="mb-4">Login</h4>
+                {!this.state.enterOTPEnabled &&
+                  <form className="form-signin" onSubmit={this.getOTP}>
+                    <label className="form-label" htmlFor="inputEmail" >
+                      Email address
+                    </label>
+                    <input
+                      type="email"
+                      id="inputEmail"
+                      name="email"
+                      className="form-control"
+                      placeholder="Email address"
+                      autoFocus={true}
+                      required
+                    />
+                    <button
+                      className="btn btn-lg btn-primary btn-block text-uppercase"
+                      id="loginBtn"
+                      type="submit"
+                    >
+                      Get otp
+                    </button>
+                  </form>
+                }
+                {this.state.enterOTPEnabled &&
+                  <form className="form-signin" onSubmit={this.loginWithOTP}>
+                    <label className="form-label" htmlFor="inputEmail" >
+                      Enter OTP
+                    </label>
+                    <input
+                      type="text"
+                      id="inputOTP"
+                      name="otp"
+                      className="form-control"
+                      placeholder="Enter OTP"
+                      autoFocus={true}
+                      required
+                    />
+                    <small id="otpHelp" className="form-text text-muted">
+                      Enter the 6 digit OTP sent to your email address.
+                    </small>
+                    <button
+                      className="btn btn-lg btn-primary btn-block text-uppercase"
+                      id="loginBtn"
+                      type="submit"
+                    >
+                      SIGN IN
+                    </button>
+                  </form>
+                }
+                {/* <form className="form-signin" onSubmit={this.handleSubmit}>
+                  <label className="form-label" htmlFor="inputEmail" >
+                    Email address
+                  </label>
+                  <input
+                    type="email"
+                    id="inputEmail"
+                    name="email"
+                    className="form-control"
+                    placeholder="Email address"
+                    autoFocus={true}
+                    required
+                  />
+                  <label className="form-label" htmlFor="inputPassword" >
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    id="inputPassword"
+                    name="password"
+                    className="form-control"
+                    placeholder="Password"
+                    required
+                  />
+                  <button
+                    className="btn btn-lg btn-primary btn-block"
+                    id="loginBtn"
+                    type="submit"
+                  >
+                    Login
+                  </button>
+                </form> */}
+              </div>
             </div>
           </div>
-          <div className="centerAlign verticalCenter" style={{ width: "85%" }}>
-            <div className="loginForm text-center">
-              <form className="form-signin" onSubmit={this.handleSubmit}>
-                <h1 className="h4 mb-3 font-weight-normal">Please sign in</h1>
-                <label htmlFor="inputEmail" className="sr-only">
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  id="inputEmail"
-                  name="email"
-                  className="form-control"
-                  placeholder="Email address"
-                  autoFocus={true}
-                  required
-                />
-                <label htmlFor="inputPassword" className="sr-only">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="inputPassword"
-                  name="password"
-                  className="form-control"
-                  placeholder="Password"
-                  required
-                />
-                <button
-                  className="btn btn-lg btn-primary btn-block"
-                  id="loginBtn"
-                  type="submit"
-                >
-                  Login
-                </button>
-                {/*<p className="text-center">
-                  <Link to="login" className="forgot">
-                    Forgot password?
-                  </Link>
-                </p>*/}
-              </form>
-            </div>
-          </div>
+          {/* <div className="col-md-3 d-none d-md-block d-lg-block d-xl-block">
+          </div> */}
         </div>
-      </div>
+      </>
     );
   }
 }
