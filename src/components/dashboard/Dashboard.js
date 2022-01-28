@@ -74,7 +74,7 @@ class Dashboard extends Component {
             </div>
             <div className="row mt-3">
               {this.state.forms.splice(0, 6).map((form, key) => (
-                <div className="col-md-4 col-sm-12 col-12" key={key}>
+                <div className="col-md-4 mb-4 col-sm-12 col-12" key={key}>
                     <div className="application-item"  style={{minHeight: "150px"}}>
                       <h3 className="">{form.title}</h3>
                       <p className="h3-subheading">

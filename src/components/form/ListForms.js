@@ -6,7 +6,6 @@ import { APP } from "../../constants";
 import Notify from "../../helpers/notify";
 import Header from "./../common/Header";
 
-
 class ListForms extends Component {
   constructor(props) {
     super(props);
@@ -73,7 +72,6 @@ class ListForms extends Component {
   };
 
   render() {
-   
     return (
       <Fragment>
         <Header history={this.props.history} />
@@ -109,27 +107,24 @@ class ListForms extends Component {
                 </div>
                 <div className="row col-md-12 mt-4" id="forms-container">
                   {this.state.forms.map((form, key) => (
-                    <div className="col-md-4 form-item" key={key}>
-                      <Link to={"/forms/" + form.id + "/edit"}>
-                        <div className="dashboard-item bordered">
-                          <div className="row col-12">
-                            <div className="col-2">
-                              <span className="ml-3 profileCircle textColor text-uppercase">
-                                {this.getFormShortCode(form.title)}
-                              </span>
-                            </div>
-                            <div className="col-10">
-                              <p className="p-3 one-line">
-                                <span className="form-title">{form.title}</span>
-                                <br />
-                                <span className="recordCount">
-                                  {form.description != null ? form.description: 'Application'}
-                                </span>
-                              </p>
-                            </div>
-                          </div>
-                        </div>
-                      </Link>
+                    <div className="col-md-4 form-item mb-4" key={key}>
+                      <div
+                        className="application-item"
+                        style={{ minHeight: "150px", backgroundColor: "#fff" }}
+                      >
+                        <h3 className="form-title">{form.title}</h3>
+                        <p className="h3-subheading">
+                          {form.description != null
+                            ? form.description
+                            : "Application form"}
+                        </p>
+                        <Link
+                          to={"/forms/" + form.id + "/edit"}
+                          className="btn btn-default smf-btn-default highlighted mt-3"
+                        >
+                          Edit
+                        </Link>
+                      </div>
                     </div>
                   ))}
                 </div>
