@@ -18,6 +18,10 @@ html {
     height: 60px;
 }
 
+smf-bg {
+    background-color: var(--background) !important;
+}
+
 .main-container {
     background-color: var(--background);
     min-height: 40vh;
@@ -130,7 +134,7 @@ h3 {
     list-style-type: none;
 }
 
-.smf-menu>li {
+.smf-menu a {
     color: var(--black-60) !important;
     font-size: 14px;
     letter-spacing: 0.25px;
@@ -239,6 +243,15 @@ ul ul a {
 }
 .d-block-imp {
     display: block !important;
+}
+
+.smf-menu a.active {
+    color: var(--smf-orange) !important;
+    background-color: #fff;
+}
+
+a:-webkit-any-link {
+    text-decoration: none !important;
 }
 
 @media (min-width: 768px) {

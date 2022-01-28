@@ -30,4 +30,7 @@ export const LANG = {
   SEPARATOR: "separator",
   HEADING: "heading",
   NUMBER: "number",
+  CANCEL: "Cancel",
+  REMOVE: "Remove",
+  CONFIRM_TO_REMOVE: "Confirm to remove",
 };

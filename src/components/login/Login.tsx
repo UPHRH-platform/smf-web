@@ -8,11 +8,18 @@ import { Link } from "react-router-dom";
 /**
  * Login component
  */
-interface loginState {
+interface LoginState {
   email: string
   enterOTPEnabled: boolean
 }
-class Login extends Component<{}, loginState> {
+
+interface LoginProps {
+  history: any
+}
+
+interface LoginState {
+}
+class Login extends Component<LoginProps, LoginState> {
   formLayout: any
   constructor(props: any) {
     super(props);
@@ -21,7 +28,7 @@ class Login extends Component<{}, loginState> {
       enterOTPEnabled: false,
     };
     if (Auth.isLoggedIn()) {
-      // this.props.history.push("home");
+      this.props.history.push("dashboard");
     }
     // for email/password login
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -41,7 +48,7 @@ class Login extends Component<{}, loginState> {
       response => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           localStorage.setItem("user", JSON.stringify(response.responseData));
-          // this.props.history.push("/dashboards");
+          this.props.history.push("/dashboard");
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }

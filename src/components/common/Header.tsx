@@ -1,13 +1,18 @@
 import React, { Component, Fragment } from "react";
 import Auth from "../../helpers/auth";
+import { Link } from "react-router-dom";
 
 /**
  * Header component
  */
- interface headerState {
+ interface LoginProps {
+  history: any
+}
+
+interface LoginState {
   user: any
 }
-class Header extends Component<{}, headerState> {
+class Header extends Component<LoginProps, LoginState> {
   constructor(props: any) {
     super(props);
     this.state = {
@@ -51,9 +56,23 @@ class Header extends Component<{}, headerState> {
               className="row"
             >
               <ul className="smf-menu mt-3">
-                <li className="mr-5 active">HOME</li>
-                <li className="mr-5">MY APPLICATIONS</li>
-                <li className="mr-5">APPLICATIONS</li>
+                <li className="mr-5 active">
+                  <Link to={"/dashboard"} className={`${
+                  this.props.history.location.pathname.match("/dashboard")
+                    ? "active"
+                    : ""
+                }`}>HOME</Link>
+                </li>
+                <li className="mr-5">
+                  <Link to={"/dashboard"} className="">MY APPLICATIONS</Link>
+                </li>
+                <li className="mr-5">
+                  <Link to={"/forms"} className={`${
+                  this.props.history.location.pathname.match("/forms")
+                    ? "active"
+                    : ""
+                }`}>APPLICATIONS</Link>
+                </li>
               </ul>
             </div>
           </div>
