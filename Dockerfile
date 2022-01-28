@@ -8,8 +8,8 @@ COPY . .
 
 RUN yarn install
 RUN yarn global add serve
-RUN yarn build:staging
+RUN yarn build
 
-EXPOSE 5000
+EXPOSE 3000
 
 CMD [ "serve", "-s", "build" ]
