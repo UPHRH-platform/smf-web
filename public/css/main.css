@@ -1920,7 +1920,7 @@ textarea,
 }
 
 input[type="file"] {
-  padding: 8px 10px 32px 10px;
+  padding: 8px 10px 8px 10px;
 }
 
 .table-filter {

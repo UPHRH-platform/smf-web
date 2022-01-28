@@ -33,6 +33,7 @@ class AddForm extends Component {
         id: "",
         version: "",
         title: "",
+        description: "",
         fields: [],
       },
     };
@@ -148,6 +149,7 @@ class AddForm extends Component {
     formData.id = this.state.formDetails.id;
     formData.version = this.state.formDetails.version;
     formData.title = this.state.formDetails.title;
+    formData.description = this.state.formDetails.description;
     formData.fields = [];
     let cards = document.getElementsByClassName("card");
     for (let i = 0; i < cards.length; i++) {
@@ -229,7 +231,7 @@ class AddForm extends Component {
                 <div className="row col-md-12 mt-5">
                   <div className="col-9">
                     <Link to="/admin/forms" className="formAnchor white-70">
-                      APPLICATIONS
+                      MANAGE
                     </Link>{" "}
                     {!this.props.match.params.id && (
                       <>
@@ -289,9 +291,9 @@ class AddForm extends Component {
                       />
                     </div>
                     <div className="row">
-                      <div className="col-md-4">
+                      <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="field-name">Application Title</label>
+                          <label htmlFor="field-name">Application heading</label>
                           <input
                             type="text"
                             id="title"
@@ -303,6 +305,22 @@ class AddForm extends Component {
                             value={this.state.formDetails.title || ""}
                             autoComplete="off"
                           />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="row">
+                      <div className="col-md-6">
+                        <div className="form-group">
+                          <label htmlFor="field-name">Application description</label>
+                          <textarea
+                            id="description"
+                            name="description"
+                            className="form-control input-bg-2"
+                            placeholder="Type here"
+                            onChange={this.handleChange}
+                            onBlur={this.handleChange}
+                            value={this.state.formDetails.description || ""}
+                          ></textarea>
                         </div>
                       </div>
                     </div>
@@ -360,40 +378,37 @@ class AddForm extends Component {
                       </div>
                     </div>
                   </form>
-                  <div className="row col-md-12 mt-3 mb-4 field-options ml-2">
+                  <div className="row col-12 mt-3 mb-4">
                     {/* <div className="field-options"> */}
-                      <div
-                        onClick={() => this.addElement(LANG.FIELD)}
-                        className="pointer col-4"
-                      >
-                        <button className="btn action">
-                          <i className="material-icons absolute">add</i>
-                          <span className="button-text">New field</span>
-                        </button>
-                      </div>
 
-                      <div
-                        onClick={() => this.addElement(LANG.SEPARATOR)}
-                        className="pointer col-4"
-                      >
-                        <button className="btn action">
-                          <i className="material-icons absolute">drag_handle</i>
-                          <span className="button-text">Add separator</span>
-                        </button>
-                      </div>
-
-                      <div
-                        onClick={() => this.addElement(LANG.HEADING)}
-                        className="pointer col-4"
-                      >
-                        <button className="btn action">
-                          <i className="material-icons absolute">title</i>
-                          <span className="button-text">
-                            Add section handling
-                          </span>
-                        </button>
-                      </div>
+                    <div
+                      onClick={() => this.addElement(LANG.HEADING)}
+                      className="col-6"
+                    >
+                      <button className="btn btn-default smf-btn-default">
+                        {/* <i className="material-icons absolute">title</i> */}
+                        <span className="button-text">Add section</span>
+                      </button>
                     </div>
+                    <div
+                      onClick={() => this.addElement(LANG.FIELD)}
+                      className="col-6"
+                    >
+                      <button className="btn btn-default smf-btn-default pull-right">
+                        {/* <i className="material-icons absolute">add</i> */}
+                        <span className="button-text">Add question</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div
+                    onClick={() => this.addElement(LANG.SEPARATOR)}
+                    style={{ display: "none" }}
+                  >
+                    <button className="btn btn-default smf-btn-default">
+                      <i className="material-icons absolute">drag_handle</i>
+                      <span className="button-text">Add separator</span>
+                    </button>
+                  </div>
                   {/* </div> */}
                 </div>
               </div>

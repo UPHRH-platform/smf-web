@@ -30,6 +30,7 @@ class Field extends Component {
       let fieldType = LANG.FIELD_TYPES[this.props.data.fieldType];
       if (
         fieldType === LANG.FIELD_TYPES.dropdown ||
+        fieldType === LANG.FIELD_TYPES.multiselect ||
         fieldType === LANG.FIELD_TYPES.checkbox ||
         fieldType === LANG.FIELD_TYPES.radio
       ) {
@@ -47,6 +48,7 @@ class Field extends Component {
         event.currentTarget.options[event.currentTarget.selectedIndex].text;
       if (
         value === LANG.FIELD_TYPES.dropdown ||
+        value === LANG.FIELD_TYPES.multiselect ||
         value === LANG.FIELD_TYPES.checkbox ||
         value === LANG.FIELD_TYPES.radio
       ) {

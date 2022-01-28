@@ -246,7 +246,7 @@ ul ul a {
 }
 
 .smf-menu a.active {
-    color: var(--smf-orange) !important;
+    color: var(--primary-color) !important;
     background-color: #fff;
 }
 

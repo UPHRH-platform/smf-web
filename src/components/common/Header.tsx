@@ -39,7 +39,7 @@ class Header extends Component<LoginProps, LoginState> {
               className="row"
             >
               <div className="col-6 pt-3">
-                <img src="img/smf-header-logo.svg" className="img-fluid" alt="Responsive image" />
+                <img src="./../../img/smf-header-logo.svg" className="img-fluid" alt="Responsive image" />
               </div>
               <div className="col-6 pt-3">
                 <div className="float-right user-name-avatar">

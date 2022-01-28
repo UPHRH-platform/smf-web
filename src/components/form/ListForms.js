@@ -4,18 +4,14 @@ import { Link } from "react-router-dom";
 import { FormService } from "../../services/form.service";
 import { APP } from "../../constants";
 import Notify from "../../helpers/notify";
-import LocalizedStrings from "react-localization";
-import { translations } from "./../../translations.js";
 import Header from "./../common/Header";
 
-let strings = new LocalizedStrings(translations);
 
 class ListForms extends Component {
   constructor(props) {
     super(props);
     this.state = {
       forms: [],
-      language: "en",
     };
     this.getFormShortCode = this.getFormShortCode.bind(this);
   }
@@ -77,9 +73,7 @@ class ListForms extends Component {
   };
 
   render() {
-    strings.setLanguage(
-      localStorage.getItem("language") || this.state.language
-    );
+   
     return (
       <Fragment>
         <Header history={this.props.history} />
@@ -129,7 +123,7 @@ class ListForms extends Component {
                                 <span className="form-title">{form.title}</span>
                                 <br />
                                 <span className="recordCount">
-                                  {form.noOfRecords} {strings.records}
+                                  {form.description != null ? form.description: 'Application'}
                                 </span>
                               </p>
                             </div>

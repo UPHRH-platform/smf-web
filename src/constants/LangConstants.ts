@@ -10,6 +10,8 @@ export const LANG = {
     rating: "Rating",
     text: "Text",
     textarea: "Textarea",
+    file: "File",
+    multiselect: "Multiselect",
   },
   COL: {
     1: 1,
