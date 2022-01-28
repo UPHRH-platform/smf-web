@@ -23,7 +23,6 @@ class Header extends Component<LoginProps, LoginState> {
   }
 
   getUserInitials(userName: string) {
-    console.log('userName: ', userName)
     if (userName) {
       const userNameArr = userName.split('.').slice(0, 2)
       return userNameArr.map((u) => u[0]).join('').toUpperCase()
@@ -33,7 +32,6 @@ class Header extends Component<LoginProps, LoginState> {
   }
 
   logout() {
-    console.log('UserService.logout called');
     UserService.logout();
     this.props.history.push("/login");
   };

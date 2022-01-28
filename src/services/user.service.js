@@ -28,7 +28,6 @@ function getOTP(email) {
     headers: authHeader(),
     body: JSON.stringify({ username: email })
   };
-  console.log('getOTP::', requestOptions)
   return fetch(APIS.BASE_URL + APIS.LOGIN.REQUEST_OTP, requestOptions).then(
     handleResponse
   );

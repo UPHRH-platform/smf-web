@@ -29,7 +29,6 @@ class FormViewer extends Component {
   }
 
   toggleSideBar() {
-    console.log("toggleSideBar");
     this.setState({
       showSidebar: !this.state.showSidebar,
     });
