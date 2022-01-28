@@ -6,7 +6,7 @@ import { UserService } from "../../services/user.service";
 /**
  * Header component
  */
- interface LoginProps {
+interface LoginProps {
   history: any
 }
 
@@ -32,8 +32,8 @@ class Header extends Component<LoginProps, LoginState> {
     }
   }
 
-  logout = () => {
-    console.log('UserService.logout called')
+  logout() {
+    console.log('UserService.logout called');
     UserService.logout();
     this.props.history.push("/login");
   };
@@ -51,29 +51,29 @@ class Header extends Component<LoginProps, LoginState> {
                 <img src="img/smf-header-logo.svg" className="img-fluid" alt="Responsive image" />
               </div>
               <div className="col-6 pt-3">
-              <div className="dropdown">
-                <div className="float-right user-name-avatar"  
-                role="button"
-                id="dropdownMenuLinkThree"
-                data-toggle="dropdown"
-                aria-haspopup="true"
-                aria-expanded="false">
-                  <span>
-                    {this.getUserInitials(this.state.userName && this.state.userName || 'G')}
-                  </span>
-                <div
-                className="dropdown-menu profileDropdown mr-5 cursorStyleOne"
-                aria-labelledby="dropdownMenuLinkThree"
-              >
-                
-                <p
-                  className="dropdown-item dateFilterTextColor"
-                  onClick={this.logout}
-                >
-                  Logout
-                </p>
-              </div>
-                </div>
+                <div className="dropdown">
+                  <div className="float-right user-name-avatar"
+                    role="button"
+                    id="dropdownMenuLinkThree"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false">
+                    <span>
+                      {this.getUserInitials(this.state.userName && this.state.userName || 'G')}
+                    </span>
+                  </div>
+                  <div
+                    className="dropdown-menu profileDropdown mr-5 cursorStyleOne"
+                    aria-labelledby="dropdownMenuLinkThree"
+                  >
+
+                    <p
+                      className="dropdown-item dateFilterTextColor"
+                      onClick={this.logout}
+                    >
+                      Logout
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
@@ -87,21 +87,19 @@ class Header extends Component<LoginProps, LoginState> {
             >
               <ul className="smf-menu mt-3">
                 <li className="mr-5 active">
-                  <Link to={"/dashboard"} className={`${
-                  this.props.history.location.pathname.match("/dashboard")
-                    ? "active"
-                    : ""
-                }`}>HOME</Link>
+                  <Link to={"/dashboard"} className={`${this.props.history.location.pathname.match("/dashboard")
+                      ? "active"
+                      : ""
+                    }`}>HOME</Link>
                 </li>
                 <li className="mr-5">
                   <Link to={"/dashboard"} className="">MY APPLICATIONS</Link>
                 </li>
                 <li className="mr-5">
-                  <Link to={"/forms"} className={`${
-                  this.props.history.location.pathname.match("/forms")
-                    ? "active"
-                    : ""
-                }`}>APPLICATIONS</Link>
+                  <Link to={"/forms"} className={`${this.props.history.location.pathname.match("/forms")
+                      ? "active"
+                      : ""
+                    }`}>APPLICATIONS</Link>
                 </li>
               </ul>
             </div>
