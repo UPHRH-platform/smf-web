@@ -2,7 +2,7 @@ import React from "react";
 import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 import Auth from "./helpers/auth";
 import Login from "./components/login/Login";
-import Dashboard from "./components/dashboard/Dashboard";
+import Dashboard from "./pages/dashboard/Dashboard";
 import FormViewer from "./pages/FormViewer/FormViewer";
 import ListForms from "./components/form/ListForms";
 import AddForm from "./components/form/AddForm";

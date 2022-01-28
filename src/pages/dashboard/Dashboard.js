@@ -1,5 +1,5 @@
 import { Component, Fragment } from "react";
-import Header from "../common/Header";
+import Header from "../../components/common/Header";
 
 /**
  * Dashboard component
