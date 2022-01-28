@@ -1,4 +1,5 @@
 export const APIS = {
+  BASE_URL: process.env.SMF_BASE_URL || 'https://smfdev.idc.tarento.com/api/',
   LOGIN: {
     USERLOGIN: "signIn",
     REQUEST_OTP: "user/requestOTP",

@@ -17,7 +17,7 @@ function login(username, otp) {
   // return fetch(process.env.REACT_APP_LOGIN_API_URL, requestOptions).then(
   //   handleResponse
   // );
-  return fetch('https://rain.tarento.com/login', requestOptions).then(
+  return fetch(APIS.BASE_URL + APIS.LOGIN.USERLOGIN, requestOptions).then(
     handleResponse
   );
 }
@@ -29,7 +29,7 @@ function getOTP(email) {
     body: JSON.stringify({ username: email })
   };
   console.log('getOTP::', requestOptions)
-  return fetch(process.env.REACT_APP_LOGIN_API_URL+ APIS.LOGIN.REQUEST_OTP, requestOptions).then(
+  return fetch(APIS.BASE_URL + APIS.LOGIN.REQUEST_OTP, requestOptions).then(
     handleResponse
   );
 }
