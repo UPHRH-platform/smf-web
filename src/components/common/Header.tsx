@@ -93,13 +93,16 @@ class Header extends Component<LoginProps, LoginState> {
                     }`}>HOME</Link>
                 </li>
                 <li className="mr-5">
-                  <Link to={"/dashboard"} className="">MY APPLICATIONS</Link>
+                  <Link to={"/my-applications"} className={`${this.props.history.location.pathname.match("/my-applications")
+                      ? "active"
+                      : ""
+                    }`}>MY APPLICATIONS</Link>
                 </li>
                 <li className="mr-5">
                   <Link to={"/forms"} className={`${this.props.history.location.pathname.match("/forms")
                       ? "active"
                       : ""
-                    }`}>APPLICATIONS</Link>
+                    }`}>AVAILABLE FORMS</Link>
                 </li>
               </ul>
             </div>

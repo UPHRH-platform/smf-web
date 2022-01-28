@@ -70,7 +70,7 @@ class Login extends Component<LoginProps, LoginState> {
     ).then(
       response => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          localStorage.setItem("user", JSON.stringify(response.responseData));
+          // localStorage.setItem("user", JSON.stringify(response.responseData));
           // this.props.history.push("/dashboards");
         } else {
           Notify.error(response.statusInfo.errorMessage);
@@ -79,17 +79,15 @@ class Login extends Component<LoginProps, LoginState> {
           enterOTPEnabled: true,
           email
         })
-        console.log('this.enterOTPEnabled', this.state.enterOTPEnabled)
       },
       error => {
         error.statusInfo
           ? Notify.error(error.statusInfo.errorMessage)
           : Notify.error(error.message);
         this.setState({
-          enterOTPEnabled: true,
+          enterOTPEnabled: false,
           email
         })
-        console.log('this.enterOTPEnabled', this.state.enterOTPEnabled)
       },
     );
     return;
@@ -173,6 +171,7 @@ class Login extends Component<LoginProps, LoginState> {
                     <small id="otpHelp" className="form-text text-muted">
                       Enter the 6 digit OTP sent to your email address.
                     </small>
+                    
                     <button
                       className="btn btn-lg btn-primary btn-block text-uppercase"
                       id="loginBtn"
@@ -180,6 +179,13 @@ class Login extends Component<LoginProps, LoginState> {
                     >
                       SIGN IN
                     </button>
+                    <a
+                      className="btn btn-block anchor-btn"
+                      type="button"
+                      onClick={e=> this.setState({enterOTPEnabled: false})}
+                    >
+                      Go back, re-enter the email
+                    </a>
                   </form>
                 }
                 {/* <form className="form-signin" onSubmit={this.handleSubmit}>

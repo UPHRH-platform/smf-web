@@ -6,6 +6,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import FormViewer from "./components/form/FormViewer";
 import ListForms from "./components/form/ListForms";
 import AddForm from "./components/form/AddForm";
+import ListMyApplications from "./components/form/myApplications";
 
 /* Router function to enable routing between the various components
  * in the project with authentication as well as authorization
@@ -23,6 +24,7 @@ const Router = (props) => (
       <PrivateRoute exact path="/forms/add" component={AddForm} />
       <PrivateRoute exact path="/forms/:id/edit" component={AddForm} />
       <PrivateRoute exact path="/forms/:id" component={FormViewer} />
+      <PrivateRoute exact path="/my-applications" component={ListMyApplications} />
       {/* <PrivateRoute exact path="/home" component={Dashboard} /> */}
     </Switch>
   </BrowserRouter>

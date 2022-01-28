@@ -6,7 +6,8 @@ export const FormService = {
   find,
   add,
   update,
-  remove
+  remove,
+  getAllApplications
 };
 
 function get() {
@@ -63,6 +64,17 @@ function remove(form) {
   };
   return fetch(
     process.env.REACT_APP_API_URL + APIS.FORM.DELETE,
+    requestOptions
+  ).then(handleResponse);
+}
+
+function getAllApplications() {
+  const requestOptions = {
+    method: APP.REQUEST.GET,
+    headers: authHeader()
+  };
+  return fetch(
+    APIS.BASE_URL + APIS.FORM.GET_ALL_APPLICATIONS,
     requestOptions
   ).then(handleResponse);
 }

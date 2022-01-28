@@ -11,5 +11,6 @@ export const APIS = {
     ADD: "forms/createForm",
     UPDATE: "",
     DELETE: "",
+    GET_ALL_APPLICATIONS: "forms/getAllApplications"
   },
 };
