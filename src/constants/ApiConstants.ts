@@ -1,6 +1,8 @@
 export const APIS = {
   LOGIN: {
-    USERLOGIN: "login",
+    USERLOGIN: "signIn",
+    REQUEST_OTP: "user/requestOTP",
+    
   },
   FORM: {
     GET: "forms/getAllForms",

@@ -1,19 +1,35 @@
-import { APP, LANG } from "./../constants";
+import { APP, LANG, APIS } from "./../constants";
 import { authHeader } from "../helpers/authHeader";
 
 export const UserService = {
   login,
-  logout
+  logout,
+  getOTP,
 };
 
-function login(username, password) {
+function login(username, otp) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     headers: authHeader(),
-    body: JSON.stringify({ username, password })
+    body: JSON.stringify({ username, otp })
   };
 
-  return fetch(process.env.REACT_APP_LOGIN_API_URL, requestOptions).then(
+  // return fetch(process.env.REACT_APP_LOGIN_API_URL, requestOptions).then(
+  //   handleResponse
+  // );
+  return fetch('https://rain.tarento.com/login', requestOptions).then(
+    handleResponse
+  );
+}
+
+function getOTP(email) {
+  const requestOptions = {
+    method: APP.REQUEST.POST,
+    headers: authHeader(),
+    body: JSON.stringify({ username: email })
+  };
+  console.log('getOTP::', requestOptions)
+  return fetch(process.env.REACT_APP_LOGIN_API_URL+ APIS.LOGIN.REQUEST_OTP, requestOptions).then(
     handleResponse
   );
 }

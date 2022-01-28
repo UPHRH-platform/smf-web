@@ -8,7 +8,8 @@ export function authHeader() {
       "Content-Type": "application/json",
       "Accept": "application/json",
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "Origin, Content-Type, Accept"
+      "Access-Control-Allow-Headers": "Origin, Content-Type, Accept",
+      "mode": "no-cors"
     };
   } else {
     return {

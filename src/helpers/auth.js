@@ -1,7 +1,7 @@
 const Auth = {
   get(item) {
     const user = JSON.parse(localStorage.getItem("user"));
-    return user[item];
+    return (user && user[item]) || '';
   },
 
   isLoggedIn() {
