@@ -16,19 +16,48 @@ class Dashboard extends Component {
 
     this.state = {
       forms: [],
+      myApplications: [],
     };
   }
 
+  formatDate(dateParam) {
+    const date = new Date(`${dateParam}`);
+    return date
+      .toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "short",
+        year: "numeric",
+      })
+      .replace(/ /g, " ");
+  }
+
   componentDidMount() {
-    // console.log(Helper.getUserRole());
-    if (Helper.getUserRole() === APP.ROLE.INSTITUTE) {
+    if (Helper.getUserRole() === APP.ROLE.INSTITUTION) {
       FormService.get().then(
         (response) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
             this.setState({
-              forms: response.responseData,
+              forms: response.responseData.length > 6 ? response.responseData.splice(0, 6) : response.responseData,
             });
-            // console.log(response.responseData);
+            console.log(response.responseData);
+          } else {
+            Notify.error(response.statusInfo.errorMessage);
+          }
+        },
+        (error) => {
+          error.statusInfo
+            ? Notify.error(error.statusInfo.errorMessage)
+            : Notify.error(error.message);
+        }
+      );
+      // my applications section
+      FormService.getAllApplications().then(
+        (response) => {
+          if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+            this.setState({
+              myApplications: response.responseData.length > 6 ? response.responseData.splice(0, 6) : response.responseData,
+            });
+            console.log(response.responseData);
           } else {
             Notify.error(response.statusInfo.errorMessage);
           }
@@ -46,19 +75,64 @@ class Dashboard extends Component {
     return (
       <Fragment>
         <Header history={this.props.history} />
-        {Helper.getUserRole() === APP.ROLE.INSTITUTE && (
+        {Helper.getUserRole() === APP.ROLE.INSTITUTION && (
           <Fragment>
             <div className="container-fluid main-container">
-              <div className="container dashboard-inner-container">
+              <div className="container dashboard-inner-container pt-3 pb-3">
                 <div className="row">
-                  <div className="col-md-8 col-sm-12 col-12 pt-5">
+                  <div className="col-md-10 col-sm-12 col-12 ">
                     <h2>My applications</h2>
-                    <p className="h2-subheading">
-                      There is no active applications. Select one from the below
-                      list to apply.
-                    </p>
+                    {true ? (
+                      <p className="h2-subheading">
+                        These are the active application (s) submitted by you.
+                      </p>
+                    ) : (
+                      <p className="h2-subheading">
+                        There is no active applications. Select one from the
+                        below list to apply.
+                      </p>
+                    )}
                   </div>
-                  <div className="col-md-4 col-sm-12 col-12"></div>
+                  <div className="col-md-2 col-sm-12 col-12 ">
+                    <button
+                      onClick={(e) =>
+                        this.props.history.push("/my-applications")
+                      }
+                      className="btn btn-default smf-btn-default float-right mr-0"
+                    >
+                      SEE ALL
+                    </button>
+                  </div>
+                </div>
+                <div className="row mt-3">
+                  {this.state.myApplications.length > 0 && this.state.myApplications.map((form, key) => (
+                    <div className="col-md-4 col-sm-12 col-12" key={key}>
+                      <div
+                        className="application-item white-bg"
+                        style={{ minHeight: "150px" }}
+                      >
+                        <h3 className="">{form.dataObject.title}</h3>
+                        <span className="h3-subheading d-block black-60 mb-2">
+                          Submitted on:{" "}
+                          {this.formatDate(
+                            `${form.createdDate}` || "2022-01-01"
+                          )}
+                        </span>
+                        <div className="mb-3">
+                          <span className="form-status">
+                            Status: Under review
+                          </span>
+                        </div>
+                        <button
+                          // to={"/forms/" + form.dataObject.id}
+                          className="btn btn-default smf-btn-default highlighted mt-3"
+                          disabled
+                        >
+                          View application
+                        </button>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -73,13 +147,16 @@ class Dashboard extends Component {
                     </p>
                   </div>
                   <div className="col-md-2 col-sm-12 col-12 pt-5">
-                    <button className="btn btn-default smf-btn-default float-right">
+                    <button
+                      className="btn btn-default smf-btn-default float-right mr-0"
+                      onClick={(e) => this.props.history.push("/my-forms")}
+                    >
                       SEE ALL
                     </button>
                   </div>
                 </div>
                 <div className="row mt-3">
-                  {this.state.forms.splice(0, 6).map((form, key) => (
+                  {this.state.forms.length > 0 && this.state.forms.map((form, key) => (
                     <div className="col-md-4 mb-4 col-sm-12 col-12" key={key}>
                       <div
                         className="application-item"
@@ -163,7 +240,7 @@ class Dashboard extends Component {
                     </p>
                   </div>
                   <div className="col-md-2 col-sm-2 col-2">
-                    <button className="btn btn-default smf-btn-default float-right">
+                    <button className="btn btn-default smf-btn-default float-right mr-0">
                       SEE ALL
                     </button>
                   </div>

@@ -1,5 +1,8 @@
 html {
     --background: RGB(240, 243, 244);
+    --black-04: rgba(0,0,0,.04);
+    --black-08: rgba(0,0,0,.08);
+    --status-green: RGB(29, 137, 35);
     --white-95: RGBA(255, 255, 255, 0.95);
     --black-87: RGBA(0, 0, 0, 0.87);
     --black-60: RGBA(0, 0, 0, 0.60);
@@ -8,7 +11,9 @@ html {
     --smf-orange: RGB(255, 53, 33);
     --menu-active-color: rgb(231 234 235);
 }
-
+.black-60 {
+    color: var(--black-60);
+}
 .white-bg {
     background-color: #fff;
 }
@@ -25,6 +30,7 @@ smf-bg {
 .main-container {
     background-color: var(--background);
     min-height: 40vh;
+    padding: 40px 0;
 }
 
 .divider {
@@ -200,6 +206,34 @@ h3 {
 
 .form-content {
     box-shadow: 0px 1px 8px -3px RGBA(0, 0, 0, 0.4);
+}
+
+.form-status{
+    display: inline-flex;
+    border-radius: 100px 4px 4px 100px;
+    padding: 5px 8px 5px 14px;
+    width: auto;
+    /* margin: 0 8px 8px 0; */
+    background-color: var(--black-084);
+    border: 1px solid var(--black-08);
+    box-sizing: border-box;
+    font-size: 12px;
+    font-family: 'Lato';
+    color: var(--status-green);
+    height: 24px;
+    align-items: center;
+    justify-content: left;
+}
+
+.anchor-btn {
+    color: var(--primary-color) !important;
+    font-family: 'Lato-Bold';
+    text-decoration: none;
+    font-size: 14px !important;
+}
+
+.anchor-btn:hover {
+    opacity: 0.9;
 }
 
 

@@ -6,16 +6,17 @@ import Dashboard from "./components/dashboard/Dashboard";
 import FormViewer from "./components/form/FormViewer";
 import ListForms from "./components/form/ListForms";
 import AddForm from "./components/form/AddForm";
+import MyApplications from "./components/form/MyApplications";
+import MyForms from "./components/form/MyForms";
 
 /* Router function to enable routing between the various components
  * in the project with authentication as well as authorization
  */
 
-
 const Router = (props) => (
   <BrowserRouter>
     <Switch>
-    <Route exact path="/" component={Login} />
+      <Route exact path="/" component={Login} />
       <Route path="/login" component={Login} />
       <Route path="/form-viewer" component={FormViewer} />
       <PrivateRoute path="/dashboard" component={Dashboard} />
@@ -23,6 +24,8 @@ const Router = (props) => (
       <PrivateRoute exact path="/forms/add" component={AddForm} />
       <PrivateRoute exact path="/forms/:id/edit" component={AddForm} />
       <PrivateRoute exact path="/forms/:id" component={FormViewer} />
+      <PrivateRoute exact path="/my-applications" component={MyApplications} />
+      <PrivateRoute exact path="/my-forms" component={MyForms} />
       {/* <PrivateRoute exact path="/home" component={Dashboard} /> */}
     </Switch>
   </BrowserRouter>
@@ -31,7 +34,7 @@ const Router = (props) => (
 const PrivateRoute = ({ component: Component, ...rest }) => (
   <Route
     {...rest}
-    render={props =>
+    render={(props) =>
       Auth.isLoggedIn() ? (
         <Component {...props} />
       ) : (

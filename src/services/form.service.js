@@ -7,13 +7,14 @@ export const FormService = {
   add,
   update,
   remove,
-  submit
+  submit,
+  getAllApplications,
 };
 
 function get() {
   const requestOptions = {
     method: APP.REQUEST.GET,
-    headers: authHeader()
+    headers: authHeader(),
   };
   return fetch(
     process.env.REACT_APP_API_URL + APIS.FORM.GET,
@@ -24,7 +25,7 @@ function get() {
 function find(formId) {
   const requestOptions = {
     method: APP.REQUEST.GET,
-    headers: authHeader()
+    headers: authHeader(),
   };
   return fetch(
     process.env.REACT_APP_API_URL + APIS.FORM.FIND + formId,
@@ -36,7 +37,7 @@ function add(form) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify(form),
-    headers: authHeader()
+    headers: authHeader(),
   };
   return fetch(
     process.env.REACT_APP_API_URL + APIS.FORM.ADD,
@@ -48,7 +49,7 @@ function update(form) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify(form),
-    headers: authHeader()
+    headers: authHeader(),
   };
   return fetch(
     process.env.REACT_APP_API_URL + APIS.FORM.UPDATE,
@@ -60,7 +61,7 @@ function remove(form) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify(form),
-    headers: authHeader()
+    headers: authHeader(),
   };
   return fetch(
     process.env.REACT_APP_API_URL + APIS.FORM.DELETE,
@@ -72,20 +73,31 @@ function submit(form) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify(form),
-    headers: authHeader()
+    headers: authHeader(),
   };
   return fetch(
-    // process.env.REACT_APP_API_URL + APIS.FORM.ADD,
-    "http://20.204.178.190/api/forms/v1/saveFormSubmit",
+    process.env.REACT_APP_API_URL + APIS.FORM.SUBMIT,
+    requestOptions
+  ).then(handleResponse);
+}
+
+function getAllApplications() {
+  const requestOptions = {
+    method: APP.REQUEST.GET,
+    headers: authHeader(),
+  };
+  return fetch(
+    APIS.BASE_URL + APIS.FORM.GET_ALL_APPLICATIONS,
     requestOptions
   ).then(handleResponse);
 }
 
 function handleResponse(response) {
-  return response.text().then(text => {
+  return response.text().then((text) => {
     const data = text && JSON.parse(text);
     if (!response.ok) {
-      const error = LANG.APIERROR || (data && data.message) || response.statusText;
+      const error =
+        LANG.APIERROR || (data && data.message) || response.statusText;
       return Promise.reject(new Error(error));
     }
     return data;

@@ -35,7 +35,6 @@ class Header extends Component<LoginProps, LoginState> {
   }
 
   logout() {
-    console.log('UserService.logout called');
     UserService.logout();
     this.props.history.push("/login");
   };
@@ -90,17 +89,25 @@ class Header extends Component<LoginProps, LoginState> {
               <ul className="smf-menu mt-3">
                 <li className="mr-5 active">
                   <Link to={"/dashboard"} className={`${this.props.history.location.pathname.match("/dashboard")
-                      ? "active"
-                      : ""
+                    ? "active"
+                    : ""
                     }`}>HOME</Link>
                 </li>
-                {Helper.getUserRole() !== APP.ROLE.INSTITUTE && (
-                <li className="mr-5">
-                  <Link to={"/forms"} className={`${this.props.history.location.pathname.match("/forms")
+                {Helper.getUserRole() === APP.ROLE.INSTITUTION && (
+                  <li className="mr-5">
+                    <Link to={"/my-applications"} className={`${this.props.history.location.pathname.match("/my-applications")
                       ? "active"
                       : ""
-                    }`}>MANAGE</Link>
-                </li>
+                      }`}>MY APPLICATIONS</Link>
+                  </li>
+                )}
+                {Helper.getUserRole() === APP.ROLE.REGULATOR && (
+                  <li className="mr-5">
+                    <Link to={"/forms"} className={`${this.props.history.location.pathname.match("/forms")
+                      ? "active"
+                      : ""
+                      }`}>MANAGE</Link>
+                  </li>
                 )}
               </ul>
             </div>

@@ -9,7 +9,7 @@ export const APP = {
     SUCCESS: 200
   },
   ROLE: {
-    INSTITUTE: "Institute",
+    INSTITUTION: "Institution",
     REGULATOR: "Regulator",
   }
 };

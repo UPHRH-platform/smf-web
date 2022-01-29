@@ -214,7 +214,7 @@ class AddForm extends Component {
           : Notify.error(error.message);
       }
     );
-    console.log(formData);
+    // console.log(formData);
   };
 
   render() {
@@ -414,7 +414,7 @@ class AddForm extends Component {
                       onClick={() => this.addElement(LANG.FIELD)}
                       className="col-6"
                     >
-                      <button className="btn btn-default smf-btn-default pull-right">
+                      <button className="btn btn-default smf-btn-default pull-right  mr-0">
                         {/* <i className="material-icons absolute">add</i> */}
                         Add question
                       </button>

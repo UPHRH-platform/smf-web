@@ -30,7 +30,6 @@ class FormViewer extends Component {
   }
 
   toggleSideBar() {
-    console.log("toggleSideBar");
     this.setState({
       showSidebar: !this.state.showSidebar,
     });
@@ -103,7 +102,7 @@ class FormViewer extends Component {
     let formFields = {};
     let fields = this.state.formDetails.fields,
       i = 0;
-    console.log(data);
+    // console.log(data);
     for (i = 0; i < fields.length; i++) {
       if (
         fields[i]["fieldType"] !== LANG.HEADING &&
