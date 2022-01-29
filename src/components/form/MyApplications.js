@@ -89,7 +89,7 @@ class ListMyApplications extends Component {
                   )}
                 </div>
               </div>
-              <div className="row mt-4 mb-4">
+              {/* <div className="row mt-4 mb-4">
                 <div className="col-md-12">
                   <div className="row">
                     <div className="col-md-3">
@@ -109,15 +109,15 @@ class ListMyApplications extends Component {
                     </div>
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className="row" id="forms-container">
                 {this.state.forms.map((form, key) => (
-                  <div className="col-md-4 col-sm-12 col-12" key={key}>
+                  <div className="col-md-4 col-sm-12 col-12 mb-3" key={key}>
                     <div
                       className="application-item white-bg"
                       style={{ minHeight: "150px" }}
                     >
-                      <h3 className="">{form.dataObject.title}</h3>
+                      <h3 className="">{form.title}</h3>
                       <span className="h3-subheading d-block black-60 mb-2">
                         Submitted on:{" "}
                         {this.formatDate(`${form.createdDate}` || "2022-01-01")}

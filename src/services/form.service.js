@@ -1,5 +1,8 @@
 import { APIS, APP, LANG } from "../constants";
 import { authHeader } from "../helpers/authHeader";
+import Auth from "./../helpers/auth";
+import Notify from "./../helpers/notify";
+import axios from "axios";
 
 export const FormService = {
   get,
@@ -69,17 +72,41 @@ function remove(form) {
   ).then(handleResponse);
 }
 
-function submit(form) {
+// function submit(form) {
+//   const formData = new FormData();
+//   formData.append("requestMap", JSON.stringify(form));
+//   const requestOptions = {
+//     method: APP.REQUEST.POST,
+//     // body: formData,
+//     headers: authHeader(),
+//     data: formData,
+//   };
+//   fetch(process.env.REACT_APP_API_URL + APIS.FORM.SUBMIT,, 
+//     requestOptions,
+//   ).then(handleResponse);
+// }
+
+function submit(data) {
+    const formData = new FormData();
+  formData.append("requestMap", JSON.stringify(data));
   const requestOptions = {
+    url: process.env.REACT_APP_API_URL + APIS.FORM.SUBMIT,
     method: APP.REQUEST.POST,
-    body: JSON.stringify(form),
     headers: authHeader(),
+    data: formData,
   };
-  return fetch(
-    process.env.REACT_APP_API_URL + APIS.FORM.SUBMIT,
-    requestOptions
-  ).then(handleResponse);
+
+  return axios(requestOptions)
+    .then(handleResponseNew)
+    .catch((err) => {
+      if (err.message.includes(401)) {
+        Notify.error('Unauthorized');
+      } else {
+        Notify.error(err.message);
+      }
+    });
 }
+
 
 function getAllApplications() {
   const requestOptions = {
@@ -103,3 +130,14 @@ function handleResponse(response) {
     return data;
   });
 }
+
+function handleResponseNew(response) {
+  // console.log(response);
+  if (response.status === 401) {
+    const error =
+      LANG.APIERROR || (response && response.message) || response.statusText; //Ignoring server side error and using end user readable message
+    return Promise.reject(new Error(error));
+  }
+  return response;
+}
+

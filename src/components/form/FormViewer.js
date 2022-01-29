@@ -124,12 +124,13 @@ class FormViewer extends Component {
     console.log(formDetails);
     FormService.submit(formDetails).then(
       (response) => {
-        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          Notify.success(response.statusInfo.statusMessage);
+        console.log(response);
+        if (response.data.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          Notify.success(response.data.statusInfo.statusMessage);
           //   this.props.updateParent(response.responseData.id);
           this.props.history.push("/dashboard");
         } else {
-          Notify.error(response.statusInfo.errorMessage);
+          Notify.error(response.data.statusInfo.errorMessage);
         }
       },
       (error) => {

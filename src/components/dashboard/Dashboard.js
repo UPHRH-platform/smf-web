@@ -106,12 +106,12 @@ class Dashboard extends Component {
                 </div>
                 <div className="row mt-3">
                   {this.state.myApplications.length > 0 && this.state.myApplications.map((form, key) => (
-                    <div className="col-md-4 col-sm-12 col-12" key={key}>
+                    <div className="col-md-4 col-sm-12 col-12 mb-3" key={key}>
                       <div
                         className="application-item white-bg"
                         style={{ minHeight: "150px" }}
                       >
-                        <h3 className="">{form.dataObject.title}</h3>
+                        <h3 className="">{form.title}</h3>
                         <span className="h3-subheading d-block black-60 mb-2">
                           Submitted on:{" "}
                           {this.formatDate(
