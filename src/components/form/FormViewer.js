@@ -26,6 +26,7 @@ class FormViewer extends Component {
     };
     this.toggleSideBar = this.toggleSideBar.bind(this);
     this.loadFormDetails = this.loadFormDetails.bind(this);
+    this.submitForm = this.submitForm.bind(this);
   }
 
   toggleSideBar() {
@@ -87,6 +88,59 @@ class FormViewer extends Component {
     );
   };
 
+  submitForm = () => {
+    var form = document.getElementById("application-form");
+    const formData = new FormData(form);
+    const data = Array.from(formData.entries()).reduce(
+      (memo, pair) => ({
+        ...memo,
+        [pair[0]]: pair[1],
+      }),
+      {}
+    );
+    // data = JSON.stringify(data);
+    // console.log(data['']);
+    let formFields = {};
+    let fields = this.state.formDetails.fields,
+      i = 0;
+    console.log(data);
+    for (i = 0; i < fields.length; i++) {
+      if (
+        fields[i]["fieldType"] !== LANG.HEADING &&
+        fields[i]["fieldType"] !== LANG.SEPARATOR
+      ) {
+        formFields["field-" + fields[i]["order"]] =
+          data["field-" + fields[i]["order"]] != undefined
+            ? data["field-" + fields[i]["order"]]
+            : "";
+        // console.log("field-" + fields[i]["order"]);
+      }
+    }
+    let formDetails = {
+      formId: this.state.formDetails.id,
+      version: this.state.formDetails.version,
+      dataObject: formFields,
+    };
+    // formDetails = JSON.stringify(formDetails);
+    console.log(formDetails);
+    FormService.submit(formDetails).then(
+      (response) => {
+        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          Notify.success(response.statusInfo.statusMessage);
+          //   this.props.updateParent(response.responseData.id);
+          this.props.history.push("/dashboard");
+        } else {
+          Notify.error(response.statusInfo.errorMessage);
+        }
+      },
+      (error) => {
+        error.statusInfo
+          ? Notify.error(error.statusInfo.errorMessage)
+          : Notify.error(error.message);
+      }
+    );
+  };
+
   render() {
     return (
       <Fragment>
@@ -121,7 +175,10 @@ class FormViewer extends Component {
                       </div>
                       <div className="col-md-6">
                         <div className="pull-right">
-                          <button className="btn btn-outline smf-btn-default">
+                          <button
+                            className="btn btn-outline smf-btn-default"
+                            onClick={(e) => this.submitForm()}
+                          >
                             Save
                           </button>
                           {this.state.headingIndex <
@@ -183,7 +240,7 @@ class FormViewer extends Component {
                       <i className="fa fa-bars"></i>
                       {/* <span>Toggle Sidebar</span> */}
                     </button>
-                    <form>
+                    <form id="application-form">
                       {this.state.formFieldGroups.length > 0 &&
                         this.state.formFieldGroups[this.state.headingIndex].map(
                           (field, index) => {

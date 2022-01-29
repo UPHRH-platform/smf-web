@@ -230,9 +230,15 @@ class AddForm extends Component {
               <div className="row col-md-12 ">
                 <div className="row col-md-12 mt-5">
                   <div className="col-9">
-                    <Link to="/admin/forms" className="formAnchor white-70">
+                    <Link to="/forms" className="formAnchor white-70">
                       MANAGE
                     </Link>{" "}
+                    <>
+                      <i className="material-icons white-70 absolute">
+                        arrow_forward_ios
+                      </i>
+                      <span className="ml-4">FORMS</span>
+                    </>
                     {!this.props.match.params.id && (
                       <>
                         <i className="material-icons white-70 absolute">
@@ -246,25 +252,35 @@ class AddForm extends Component {
                         <i className="material-icons white-70 absolute">
                           arrow_forward_ios
                         </i>
-                        <span className="white-70 button-text">
+                        <span className="ml-4">
                           {this.state.formDetails.title.toUpperCase()}
                         </span>
                         <i className="material-icons white-70 absolute">
                           arrow_forward_ios
                         </i>
-                        <span className="white-90 button-text">EDIT</span>
+                        <span className="ml-4">EDIT</span>
                       </>
                     )}
                   </div>
                   <div className="col-3">
-                    <button
-                      onClick={this.submit}
-                      type="button"
-                      id="submit"
-                      className="btn btn-default smf-btn-default pull-right"
-                    >
-                      Save Changes
-                    </button>
+                    <div className=" pull-right">
+                      <button
+                        onClick={(e) => this.props.history.push("/forms")}
+                        type="button"
+                        id="submit"
+                        className="btn btn-default smf-btn-default"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={this.submit}
+                        type="button"
+                        id="submit"
+                        className="btn btn-default smf-btn-default-inverse"
+                      >
+                        Save Changes
+                      </button>
+                    </div>
                   </div>
                 </div>
                 <div className="row col-md-12">
@@ -293,7 +309,9 @@ class AddForm extends Component {
                     <div className="row">
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="field-name">Application heading</label>
+                          <label htmlFor="field-name">
+                            Application heading
+                          </label>
                           <input
                             type="text"
                             id="title"
@@ -311,7 +329,9 @@ class AddForm extends Component {
                     <div className="row">
                       <div className="col-md-6">
                         <div className="form-group">
-                          <label htmlFor="field-name">Application description</label>
+                          <label htmlFor="field-name">
+                            Application description
+                          </label>
                           <textarea
                             id="description"
                             name="description"
@@ -387,7 +407,7 @@ class AddForm extends Component {
                     >
                       <button className="btn btn-default smf-btn-default">
                         {/* <i className="material-icons absolute">title</i> */}
-                        <span className="button-text">Add section</span>
+                        Add section
                       </button>
                     </div>
                     <div
@@ -396,7 +416,7 @@ class AddForm extends Component {
                     >
                       <button className="btn btn-default smf-btn-default pull-right">
                         {/* <i className="material-icons absolute">add</i> */}
-                        <span className="button-text">Add question</span>
+                        Add question
                       </button>
                     </div>
                   </div>

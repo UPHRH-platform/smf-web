@@ -8,4 +8,8 @@ export const APP = {
   CODE: {
     SUCCESS: 200
   },
+  ROLE: {
+    INSTITUTE: "Institute",
+    REGULATOR: "Regulator",
+  }
 };

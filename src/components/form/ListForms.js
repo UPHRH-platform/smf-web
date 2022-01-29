@@ -19,6 +19,7 @@ class ListForms extends Component {
     FormService.get().then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          // console.log(response.responseData);
           this.setState({
             forms: response.responseData,
           });
@@ -81,15 +82,11 @@ class ListForms extends Component {
               <div className="row col-md-12">
                 <div className="row col-md-12 mt-5">
                   <div className="col-md-12">
-                    <Link to="/forms/add">
-                      <button className="btn btn-default smf-btn-default">
-                        Add Application
-                      </button>
-                    </Link>
+                    <h2 className="mb-4">Manage</h2>
                   </div>
                 </div>
                 <div className="row col-md-12 mt-4">
-                  <div className="col-md-3">
+                  <div className="col-md-4">
                     <div className="form-group has-search">
                       <i className="material-icons form-control-feedback">
                         search
@@ -104,9 +101,16 @@ class ListForms extends Component {
                       />
                     </div>
                   </div>
+                  <div className="col-md-8">
+                    <Link to="/forms/add" className="pull-right">
+                      <button className="btn btn-default smf-btn-default-inverse">
+                        Create new
+                      </button>
+                    </Link>
+                  </div>
                 </div>
                 <div className="row col-md-12 mt-4" id="forms-container">
-                  {this.state.forms.map((form, key) => (
+                  {/* {this.state.forms.map((form, key) => (
                     <div className="col-md-4 form-item mb-4" key={key}>
                       <div
                         className="application-item"
@@ -126,7 +130,35 @@ class ListForms extends Component {
                         </Link>
                       </div>
                     </div>
-                  ))}
+                  ))} */}
+                  <table className="table table-smf">
+                    <thead className="thead-light">
+                      <tr>
+                        <th scope="col">Form name</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Published/created on</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {this.state.forms.map((form, key) => (
+                        <tr key={key} className="form-item">
+                          <th scope="row" className="form-title">
+                            {form.title}
+                          </th>
+                          <td>Published</td>
+                          <td></td>
+                          <td className="td-preview">
+                            <Link to={`/forms/${form.id}`}>Preview</Link>
+                          </td>
+                          <td className="td-preview">
+                            <Link to={`/forms/${form.id}/edit`}>Edit</Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>

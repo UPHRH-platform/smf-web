@@ -75,7 +75,7 @@ class Field extends Component {
       <div className="card">
         <div className="card-body">
           <div className="row col-md-12 pb-2">
-            <div className="col-md-3">
+            <div className="col-md-4">
               <div className="form-group">
                 <label htmlFor="fieldName">Field Name</label>
                 <input
@@ -92,7 +92,7 @@ class Field extends Component {
                 />
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-5">
               <div className="form-group">
                 <label htmlFor="fieldType">Type of Field</label>
                 <select
@@ -111,7 +111,7 @@ class Field extends Component {
                 </select>
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-3" style={{display: "none"}}>
               <div className="form-group">
                 <label htmlFor="fieldType">Width</label>
                 <select

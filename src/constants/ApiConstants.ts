@@ -11,5 +11,6 @@ export const APIS = {
     ADD: "forms/createForm",
     UPDATE: "",
     DELETE: "",
+    SUBMIT: "forms/v1/saveFormSubmit'",
   },
 };

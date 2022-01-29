@@ -6,7 +6,8 @@ export const FormService = {
   find,
   add,
   update,
-  remove
+  remove,
+  submit
 };
 
 function get() {
@@ -63,6 +64,19 @@ function remove(form) {
   };
   return fetch(
     process.env.REACT_APP_API_URL + APIS.FORM.DELETE,
+    requestOptions
+  ).then(handleResponse);
+}
+
+function submit(form) {
+  const requestOptions = {
+    method: APP.REQUEST.POST,
+    body: JSON.stringify(form),
+    headers: authHeader()
+  };
+  return fetch(
+    // process.env.REACT_APP_API_URL + APIS.FORM.ADD,
+    "http://20.204.178.190/api/forms/v1/saveFormSubmit",
     requestOptions
   ).then(handleResponse);
 }

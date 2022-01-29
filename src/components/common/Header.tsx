@@ -2,6 +2,8 @@ import React, { Component, Fragment } from "react";
 import Auth from "../../helpers/auth";
 import { Link } from "react-router-dom";
 import { UserService } from "../../services/user.service";
+import { APP } from "../../constants";
+import Helper from "../../helpers/auth";
 
 /**
  * Header component
@@ -23,7 +25,7 @@ class Header extends Component<LoginProps, LoginState> {
   }
 
   getUserInitials(userName: string) {
-    console.log('userName: ', userName)
+    // console.log('userName: ', userName)
     if (userName) {
       const userNameArr = userName.split('.').slice(0, 2)
       return userNameArr.map((u) => u[0]).join('').toUpperCase()
@@ -92,15 +94,14 @@ class Header extends Component<LoginProps, LoginState> {
                       : ""
                     }`}>HOME</Link>
                 </li>
-                <li className="mr-5">
-                  <Link to={"/dashboard"} className="">MY APPLICATIONS</Link>
-                </li>
+                {Helper.getUserRole() !== APP.ROLE.INSTITUTE && (
                 <li className="mr-5">
                   <Link to={"/forms"} className={`${this.props.history.location.pathname.match("/forms")
                       ? "active"
                       : ""
-                    }`}>APPLICATIONS</Link>
+                    }`}>MANAGE</Link>
                 </li>
+                )}
               </ul>
             </div>
           </div>

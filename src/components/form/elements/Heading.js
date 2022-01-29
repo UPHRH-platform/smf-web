@@ -30,9 +30,9 @@ class Heading extends Component {
   render() {
     return (
       <div className="card">
-        <div className="card-body">
+        <div className="card-body card-body-heading">
           <div className="row col-md-12">
-            <div className="col-md-3">
+            <div className="col-md-4">
               <div className="form-group">
                 <input
                   type="hidden"
@@ -70,7 +70,7 @@ class Heading extends Component {
                 />
               </div>
             </div>
-            <div className="col-md-3">
+            <div className="col-md-2">
               <i
                 onClick={() => this.props.removeElement(this.props.index)}
                 className="material-icons fa-2x pull-right pointer"
