@@ -57,7 +57,7 @@ class Dashboard extends Component {
             this.setState({
               myApplications: response.responseData.length > 6 ? response.responseData.splice(0, 6) : response.responseData,
             });
-            console.log(response.responseData);
+            // console.log(response.responseData);
           } else {
             Notify.error(response.statusInfo.errorMessage);
           }
