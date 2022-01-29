@@ -23,9 +23,13 @@ class FormViewer extends Component {
       formFieldGroups: [],
       formHeadings: [],
       headingIndex: 0,
+      formFields: {},
     };
     this.toggleSideBar = this.toggleSideBar.bind(this);
     this.loadFormDetails = this.loadFormDetails.bind(this);
+    this.saveFields = this.saveFields.bind(this);
+    this.populateForm = this.populateForm.bind(this);
+    this.populateData = this.populateData.bind(this);
     this.submitForm = this.submitForm.bind(this);
   }
 
@@ -37,11 +41,22 @@ class FormViewer extends Component {
 
   componentDidMount() {
     this.loadFormDetails(this.props.match.params.id);
+    console.log(this.props.match.params.applicationId);
+    if (
+      this.props.match.params.applicationId !== null &&
+      this.props.match.params.applicationId !== undefined
+    ) {
+      this.populateForm(this.props.match.params.applicationId);
+    }
   }
 
   componentDidUpdate(nextProps) {
     if (nextProps.location.pathname !== this.props.location.pathname) {
       this.loadFormDetails(this.props.match.params.id);
+      // console.log(this.props.match.params.applicationId);
+      if (this.props.match.params.applicationId !== null) {
+        this.populateForm(this.props.match.params.applicationId);
+      }
     }
   }
 
@@ -87,7 +102,46 @@ class FormViewer extends Component {
     );
   };
 
-  submitForm = () => {
+  populateForm = (applicationId) => {
+    FormService.findApplication(applicationId).then(
+      (response) => {
+        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          console.log(response.responseData[0].dataObject);
+          this.setState({
+            formFields: response.responseData[0].dataObject,
+          });
+          setTimeout(() => {
+            this.populateData();
+          }, 500);
+        } else {
+          Notify.error(response.statusInfo.errorMessage);
+        }
+      },
+      (error) => {
+        error.statusInfo
+          ? Notify.error(error.statusInfo.errorMessage)
+          : Notify.error(error.message);
+      }
+    );
+  };
+
+  populateData = () => {
+    var fields = this.state.formFields;
+    for (var key of Object.keys(fields)) {
+      var element = document.getElementsByName(key);
+      if (element.length > 0) {
+        if (element[0].type === "checkbox" || element[0].type === "radio") {
+          element[0].checked = true;
+        } else {
+          element[0].value = fields[key];
+        }
+      }
+    }
+  };
+
+  saveFields = (index) => {
+    let obj = this.state.formFields,
+      order = "";
     var form = document.getElementById("application-form");
     const formData = new FormData(form);
     const data = Array.from(formData.entries()).reduce(
@@ -97,31 +151,26 @@ class FormViewer extends Component {
       }),
       {}
     );
-    // data = JSON.stringify(data);
-    // console.log(data['']);
-    let formFields = {};
-    let fields = this.state.formDetails.fields,
-      i = 0;
-    // console.log(data);
-    for (i = 0; i < fields.length; i++) {
-      if (
-        fields[i]["fieldType"] !== LANG.HEADING &&
-        fields[i]["fieldType"] !== LANG.SEPARATOR
-      ) {
-        formFields["field-" + fields[i]["order"]] =
-          data["field-" + fields[i]["order"]] != undefined
-            ? data["field-" + fields[i]["order"]]
-            : "";
-        // console.log("field-" + fields[i]["order"]);
-      }
+    for (let i = 0; i < this.state.formFieldGroups[index].length; i++) {
+      order = this.state.formFieldGroups[index][i]["order"];
+      console.log(data["field-" + order]);
+      obj["field-" + order] =
+        data["field-" + order] !== undefined ? data["field-" + order] : "";
     }
+    this.setState({
+      formFields: obj,
+    });
+    // console.log(data);
+    // console.log(obj);
+  };
+
+  submitForm = () => {
     let formDetails = {
       formId: this.state.formDetails.id,
       version: this.state.formDetails.version,
-      dataObject: formFields,
+      dataObject: this.state.formFields,
     };
     // formDetails = JSON.stringify(formDetails);
-    console.log(formDetails);
     FormService.submit(formDetails).then(
       (response) => {
         console.log(response);
@@ -160,11 +209,15 @@ class FormViewer extends Component {
                       <div className="col-md-6">
                         {this.state.headingIndex > 0 && (
                           <button
-                            onClick={(e) =>
+                            onClick={(e) => {
+                              this.saveFields(this.state.headingIndex);
                               this.setState({
                                 headingIndex: this.state.headingIndex - 1,
-                              })
-                            }
+                              });
+                              setTimeout(() => {
+                                this.populateData();
+                              }, 500);
+                            }}
                             className="btn btn-primary smf-btn-primary float-left"
                             style={{ marginLeft: "-30px" }}
                           >
@@ -175,20 +228,33 @@ class FormViewer extends Component {
                       </div>
                       <div className="col-md-6">
                         <div className="pull-right">
-                          <button
-                            className="btn btn-outline smf-btn-default"
-                            onClick={(e) => this.submitForm()}
-                          >
-                            Save
-                          </button>
+                          {!(
+                            this.props.match.params.applicationId !== null &&
+                            this.props.match.params.applicationId !== undefined
+                          ) && this.state.headingIndex ===
+                          this.state.formHeadings.length - 1 && (
+                            <button
+                              className="btn btn-outline smf-btn-default"
+                              onClick={(e) => {
+                                this.saveFields(this.state.headingIndex);
+                                this.submitForm();
+                              }}
+                            >
+                              Save
+                            </button>
+                          )}
                           {this.state.headingIndex <
                             this.state.formHeadings.length - 1 && (
                             <button
-                              onClick={(e) =>
+                              onClick={(e) => {
+                                this.saveFields(this.state.headingIndex);
                                 this.setState({
                                   headingIndex: this.state.headingIndex + 1,
-                                })
-                              }
+                                });
+                                setTimeout(() => {
+                                  this.populateData();
+                                }, 500);
+                              }}
                               className="btn btn-primary smf-btn-primary mr-0 ml-2"
                             >
                               Next
@@ -211,7 +277,11 @@ class FormViewer extends Component {
                           <li
                             key={i}
                             onClick={(e) => {
+                              this.saveFields(this.state.headingIndex);
                               this.setState({ headingIndex: i });
+                              setTimeout(() => {
+                                this.populateData();
+                              }, 500);
                             }}
                             className={
                               this.state.headingIndex === i ? "active" : ""

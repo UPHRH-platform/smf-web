@@ -11,6 +11,7 @@ export const FormService = {
   remove,
   submit,
   getAllApplications,
+  findApplication,
 };
 
 function get() {
@@ -18,10 +19,9 @@ function get() {
     method: APP.REQUEST.GET,
     headers: authHeader(),
   };
-  return fetch(
-    APIS.BASE_URL  + APIS.FORM.GET,
-    requestOptions
-  ).then(handleResponse);
+  return fetch(APIS.BASE_URL + APIS.FORM.GET, requestOptions).then(
+    handleResponse
+  );
 }
 
 function find(formId) {
@@ -29,10 +29,9 @@ function find(formId) {
     method: APP.REQUEST.GET,
     headers: authHeader(),
   };
-  return fetch(
-    APIS.BASE_URL  + APIS.FORM.FIND + formId,
-    requestOptions
-  ).then(handleResponse);
+  return fetch(APIS.BASE_URL + APIS.FORM.FIND + formId, requestOptions).then(
+    handleResponse
+  );
 }
 
 function add(form) {
@@ -41,10 +40,9 @@ function add(form) {
     body: JSON.stringify(form),
     headers: authHeader(),
   };
-  return fetch(
-    APIS.BASE_URL  + APIS.FORM.ADD,
-    requestOptions
-  ).then(handleResponse);
+  return fetch(APIS.BASE_URL + APIS.FORM.ADD, requestOptions).then(
+    handleResponse
+  );
 }
 
 function update(form) {
@@ -53,10 +51,9 @@ function update(form) {
     body: JSON.stringify(form),
     headers: authHeader(),
   };
-  return fetch(
-    APIS.BASE_URL  + APIS.FORM.UPDATE,
-    requestOptions
-  ).then(handleResponse);
+  return fetch(APIS.BASE_URL + APIS.FORM.UPDATE, requestOptions).then(
+    handleResponse
+  );
 }
 
 function remove(form) {
@@ -65,10 +62,9 @@ function remove(form) {
     body: JSON.stringify(form),
     headers: authHeader(),
   };
-  return fetch(
-    APIS.BASE_URL  + APIS.FORM.DELETE,
-    requestOptions
-  ).then(handleResponse);
+  return fetch(APIS.BASE_URL + APIS.FORM.DELETE, requestOptions).then(
+    handleResponse
+  );
 }
 
 // function submit(form) {
@@ -80,16 +76,16 @@ function remove(form) {
 //     headers: authHeader(),
 //     data: formData,
 //   };
-//   fetch(APIS.BASE_URL  + APIS.FORM.SUBMIT,, 
+//   fetch(APIS.BASE_URL  + APIS.FORM.SUBMIT,,
 //     requestOptions,
 //   ).then(handleResponse);
 // }
 
 function submit(data) {
-    const formData = new FormData();
+  const formData = new FormData();
   formData.append("requestMap", JSON.stringify(data));
   const requestOptions = {
-    url: APIS.BASE_URL  + APIS.FORM.SUBMIT,
+    url: APIS.BASE_URL + APIS.FORM.SUBMIT,
     method: APP.REQUEST.POST,
     headers: authHeader(),
     data: formData,
@@ -99,13 +95,12 @@ function submit(data) {
     .then(handleResponseNew)
     .catch((err) => {
       if (err.message.includes(401)) {
-        Notify.error('Unauthorized');
+        Notify.error("Unauthorized");
       } else {
         Notify.error(err.message);
       }
     });
 }
-
 
 function getAllApplications() {
   const requestOptions = {
@@ -114,6 +109,17 @@ function getAllApplications() {
   };
   return fetch(
     APIS.BASE_URL + APIS.FORM.GET_ALL_APPLICATIONS,
+    requestOptions
+  ).then(handleResponse);
+}
+
+function findApplication(applicationId) {
+  const requestOptions = {
+    method: APP.REQUEST.GET,
+    headers: authHeader(),
+  };
+  return fetch(
+    APIS.BASE_URL + APIS.FORM.GET_APPLICATION_DETAILS + applicationId,
     requestOptions
   ).then(handleResponse);
 }
@@ -139,4 +145,3 @@ function handleResponseNew(response) {
   }
   return response;
 }
-

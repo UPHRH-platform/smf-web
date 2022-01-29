@@ -18,13 +18,13 @@ const Router = (props) => (
     <Switch>
       <Route exact path="/" component={Login} />
       <Route path="/login" component={Login} />
-      <Route path="/form-viewer" component={FormViewer} />
       <PrivateRoute path="/dashboard" component={Dashboard} />
       <PrivateRoute exact path="/forms" component={ListForms} />
       <PrivateRoute exact path="/forms/add" component={AddForm} />
       <PrivateRoute exact path="/forms/:id/edit" component={AddForm} />
       <PrivateRoute exact path="/forms/:id" component={FormViewer} />
-      <PrivateRoute exact path="/my-applications" component={MyApplications} />
+      <PrivateRoute exact path="/applications/:id/:applicationId" component={FormViewer} />
+      <PrivateRoute exact path="/applications" component={MyApplications} />
       <PrivateRoute exact path="/my-forms" component={MyForms} />
       {/* <PrivateRoute exact path="/home" component={Dashboard} /> */}
     </Switch>

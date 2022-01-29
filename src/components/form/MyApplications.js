@@ -127,13 +127,13 @@ class ListMyApplications extends Component {
                           Status: Under review
                         </span>
                       </div>
-                      <button
-                        // to={"/forms/" + form.dataObject.id}
+                      <Link
+                        to={"/applications/" + form.formId + "/" + form.applicationId}
                         className="btn btn-default smf-btn-default highlighted mt-3"
                         disabled
                       >
                         View application
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 ))}
