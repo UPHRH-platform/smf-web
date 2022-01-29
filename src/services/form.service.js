@@ -1,6 +1,5 @@
 import { APIS, APP, LANG } from "../constants";
 import { authHeader } from "../helpers/authHeader";
-import Auth from "./../helpers/auth";
 import Notify from "./../helpers/notify";
 import axios from "axios";
 
@@ -20,7 +19,7 @@ function get() {
     headers: authHeader(),
   };
   return fetch(
-    process.env.REACT_APP_API_URL + APIS.FORM.GET,
+    APIS.BASE_URL  + APIS.FORM.GET,
     requestOptions
   ).then(handleResponse);
 }
@@ -31,7 +30,7 @@ function find(formId) {
     headers: authHeader(),
   };
   return fetch(
-    process.env.REACT_APP_API_URL + APIS.FORM.FIND + formId,
+    APIS.BASE_URL  + APIS.FORM.FIND + formId,
     requestOptions
   ).then(handleResponse);
 }
@@ -43,7 +42,7 @@ function add(form) {
     headers: authHeader(),
   };
   return fetch(
-    process.env.REACT_APP_API_URL + APIS.FORM.ADD,
+    APIS.BASE_URL  + APIS.FORM.ADD,
     requestOptions
   ).then(handleResponse);
 }
@@ -55,7 +54,7 @@ function update(form) {
     headers: authHeader(),
   };
   return fetch(
-    process.env.REACT_APP_API_URL + APIS.FORM.UPDATE,
+    APIS.BASE_URL  + APIS.FORM.UPDATE,
     requestOptions
   ).then(handleResponse);
 }
@@ -67,7 +66,7 @@ function remove(form) {
     headers: authHeader(),
   };
   return fetch(
-    process.env.REACT_APP_API_URL + APIS.FORM.DELETE,
+    APIS.BASE_URL  + APIS.FORM.DELETE,
     requestOptions
   ).then(handleResponse);
 }
@@ -81,7 +80,7 @@ function remove(form) {
 //     headers: authHeader(),
 //     data: formData,
 //   };
-//   fetch(process.env.REACT_APP_API_URL + APIS.FORM.SUBMIT,, 
+//   fetch(APIS.BASE_URL  + APIS.FORM.SUBMIT,, 
 //     requestOptions,
 //   ).then(handleResponse);
 // }
@@ -90,7 +89,7 @@ function submit(data) {
     const formData = new FormData();
   formData.append("requestMap", JSON.stringify(data));
   const requestOptions = {
-    url: process.env.REACT_APP_API_URL + APIS.FORM.SUBMIT,
+    url: APIS.BASE_URL  + APIS.FORM.SUBMIT,
     method: APP.REQUEST.POST,
     headers: authHeader(),
     data: formData,
