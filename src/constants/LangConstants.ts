@@ -7,7 +7,7 @@ export const LANG = {
     email: "Email",
     numeric: "Numeric",
     radio: "Radio",
-    rating: "Rating",
+    // rating: "Rating",
     text: "Text",
     textarea: "Textarea",
     file: "File",
