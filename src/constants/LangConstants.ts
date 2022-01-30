@@ -27,7 +27,7 @@ export const LANG = {
     11: 11,
     12: 12,
   },
-  DEFAULT_COL: 4,
+  DEFAULT_COL: 12,
   FIELD: "field",
   SEPARATOR: "separator",
   HEADING: "heading",
