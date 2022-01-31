@@ -133,7 +133,8 @@ class FormViewer extends Component {
       var element = document.getElementsByName(key);
       if (element.length > 0) {
         if (element[0].type === "checkbox") {
-          element[0].checked = true;
+          // alert(fields[key]);
+          $("input[name="+key+"][value=" + fields[key] + "]").attr('checked', 'checked');
         } else if (element[0].type === "radio") {
           $("input[name="+key+"][value=" + fields[key] + "]").attr('checked', 'checked');
         } else {
@@ -156,8 +157,12 @@ class FormViewer extends Component {
       {}
     );
     for (let i = 0; i < this.state.formFieldGroups[index].length; i++) {
+      var element = document.getElementsByName(this.state.formTitle + "-field" + order);
       order = this.state.formFieldGroups[index][i]["order"];
-      console.log(data["field-" + order]);
+      if (element[0].type === "checkbox") {
+        console.log(data[this.state.formTitle + "-field" + order]);
+      }
+      console.log(data[this.state.formTitle + "-field" + order]);
       obj[this.state.formTitle + "-field" + order] =
         data[this.state.formTitle + "-field" + order] !== undefined ? data[this.state.formTitle + "-field" + order] : "";
     }
