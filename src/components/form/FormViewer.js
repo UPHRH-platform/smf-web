@@ -159,10 +159,10 @@ class FormViewer extends Component {
     for (let i = 0; i < this.state.formFieldGroups[index].length; i++) {
       var element = document.getElementsByName(this.state.formTitle + "-field" + order);
       order = this.state.formFieldGroups[index][i]["order"];
-      if (element[0].type === "checkbox") {
-        console.log(data[this.state.formTitle + "-field" + order]);
-      }
-      console.log(data[this.state.formTitle + "-field" + order]);
+      // if (element[0].type === "checkbox") {
+      //   console.log(data[this.state.formTitle + "-field" + order]);
+      // }
+      // console.log(data[this.state.formTitle + "-field" + order]);
       obj[this.state.formTitle + "-field" + order] =
         data[this.state.formTitle + "-field" + order] !== undefined ? data[this.state.formTitle + "-field" + order] : "";
     }
