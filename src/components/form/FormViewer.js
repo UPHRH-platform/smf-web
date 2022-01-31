@@ -88,7 +88,7 @@ class FormViewer extends Component {
           this.state.formFieldGroups.push(temp);
           this.setState({
             formDetails: response.responseData,
-            formTitle: response.responseData.title.replace (" ", "_")
+            formTitle: response.responseData.title.replaceAll (" ", "_")
           });
           // console.log(this.state.formHeadings);
           // console.log(this.state.formFieldGroups);
