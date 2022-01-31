@@ -41,7 +41,7 @@ class Radio extends Component {
                 <label htmlFor={"field-" + this.props.field.order}>
                   <input
                     type="radio"
-                    name={"field-" + this.props.field.order}
+                    name={this.props.title + "-field" + this.props.field.order}
                     value={option.key}
                   />
                   &nbsp;&nbsp;&nbsp;{" " + option.value}

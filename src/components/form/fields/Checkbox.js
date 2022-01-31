@@ -34,7 +34,7 @@ class Checkbox extends Component {
                 &nbsp;&nbsp;&nbsp;
                 <input
                   type="checkbox"
-                  name={"field-" + this.props.field.order}
+                  name={this.props.title + "-field" + this.props.field.order}
                   className="form-check-input"
                   value={option.key}
                 />
