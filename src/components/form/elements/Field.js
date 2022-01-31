@@ -119,9 +119,9 @@ class Field extends Component {
                   name={"width[" + this.props.index + "]"}
                   onChange={this.handleChange}
                 >
-                  <option value="" defaultValue>
+                  {/* <option value="" defaultValue>
                     Select from the dropdown
-                  </option>
+                  </option> */}
                   {Object.entries(LANG.COL).map((t, k) => (
                     <option key={k} value={t[0]}>
                       {t[1] + " Column"}
