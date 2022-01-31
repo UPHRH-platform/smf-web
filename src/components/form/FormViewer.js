@@ -322,6 +322,7 @@ class FormViewer extends Component {
                       {this.state.formFieldGroups.length > 0 &&
                         this.state.formFieldGroups[this.state.headingIndex].map(
                           (field, index) => {
+                            // console.log(LANG.FIELD_TYPES[field.fieldType]);
                             switch (LANG.FIELD_TYPES[field.fieldType]) {
                               case LANG.FIELD_TYPES.text:
                                 return <Input key={index} field={field} title={this.state.formTitle}/>;

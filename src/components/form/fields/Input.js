@@ -35,6 +35,7 @@ class Input extends Component {
   }
 
   render() {
+    // console.log(this.props.field.fieldType);
     // strings.setLanguage(
     //   localStorage.getItem("language") || this.state.language
     // );
@@ -49,7 +50,11 @@ class Input extends Component {
             {this.props.field.name}
           </label>
           <input
-            type={this.state.fieldType}
+            type={
+              this.props.field.fieldType === LANG.FIELD_TYPES.numeric.toLowerCase()
+                ? "number"
+                : this.state.fieldType
+            }
             id={"field-" + this.props.field.order}
             name={this.props.title + "-field" + this.props.field.order}
             className="form-control"
