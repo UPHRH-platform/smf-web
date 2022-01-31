@@ -227,209 +227,218 @@ class AddForm extends Component {
         <div className="container-fluid main-container h-100 heightMin">
           <div className="container dashboard-inner-container">
             <div className="row tabText">
-              <div className="row col-md-12 ">
-                <div className="row col-md-12 mt-5">
-                  <div className="col-9">
-                    <Link to="/forms" className="formAnchor white-70">
-                      MANAGE
-                    </Link>{" "}
-                    <>
-                      <i className="material-icons white-70 absolute">
-                        arrow_forward_ios
-                      </i>
-                      <span className="ml-4">FORMS</span>
-                    </>
-                    {!this.props.match.params.id && (
-                      <>
-                        <i className="material-icons white-70 absolute">
-                          arrow_forward_ios
-                        </i>
-                        <span className="ml-4">ADD</span>
-                      </>
-                    )}
-                    {this.props.match.params.id && (
-                      <>
-                        <i className="material-icons white-70 absolute">
-                          arrow_forward_ios
-                        </i>
-                        <span className="ml-4">
-                          {this.state.formDetails.title.toUpperCase()}
-                        </span>
-                        <i className="material-icons white-70 absolute">
-                          arrow_forward_ios
-                        </i>
-                        <span className="ml-4">EDIT</span>
-                      </>
-                    )}
-                  </div>
-                  <div className="col-3">
-                    <div className=" pull-right">
-                      <button
-                        onClick={(e) => this.props.history.push("/forms")}
-                        type="button"
-                        id="submit"
-                        className="btn btn-default smf-btn-default"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        onClick={this.submit}
-                        type="button"
-                        id="submit"
-                        className="btn btn-default smf-btn-default-inverse"
-                      >
-                        Save Changes
-                      </button>
+              <div className="col-md-12 ">
+                <div className="row">
+                  <div className="col-md-12 mt-5">
+                    <div className="row">
+                      <div className="col-sm-12 col-md-12 col-lg-8">
+                        <Link to="/forms" className="formAnchor white-70">
+                          MANAGE
+                        </Link>{" "}
+                        <>
+                          <i className="material-icons white-70 absolute">
+                            arrow_forward_ios
+                          </i>
+                          <span className="ml-4">FORMS</span>
+                        </>
+                        {!this.props.match.params.id && (
+                          <>
+                            <i className="material-icons white-70 absolute">
+                              arrow_forward_ios
+                            </i>
+                            <span className="ml-4">ADD</span>
+                          </>
+                        )}
+                        {this.props.match.params.id && (
+                          <>
+                            <i className="material-icons white-70 absolute">
+                              arrow_forward_ios
+                            </i>
+                            <span className="ml-4">
+                              {this.state.formDetails.title.toUpperCase()}
+                            </span>
+                            <i className="material-icons white-70 absolute">
+                              arrow_forward_ios
+                            </i>
+                            <span className="ml-4">EDIT</span>
+                          </>
+                        )}
+                      </div>
+                      <div className="col-sm-12 col-md-12 col-lg-3 mt-4 mt-md-0">
+                        <div className=" pull-right">
+                          <button
+                            onClick={(e) => this.props.history.push("/forms")}
+                            type="button"
+                            id="submit"
+                            className="btn btn-default smf-btn-default"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            onClick={this.submit}
+                            type="button"
+                            id="submit"
+                            className="btn btn-default smf-btn-default-inverse mr-0"
+                          >
+                            Save Changes
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
-                <div className="row col-md-12">
-                  <form autoComplete="new-password" id="add-form">
-                    {/* <div className="row col-md-12 pt-4">
-                      <div className="col-md-3 text-center mt-2 pointer">
-                        <i className="fa fa-trash fa-2x"></i> Delete form
+                <div className="row">
+                  <div className="col-md-12">
+                    <form autoComplete="new-password" id="add-form">
+                      {/* <div className="row col-md-12 pt-4">
+                        <div className="col-md-3 text-center mt-2 pointer">
+                          <i className="fa fa-trash fa-2x"></i> Delete form
+                        </div>
+                      </div> */}
+                      <div style={{ visibility: "hidden" }}>
+                        <input
+                          type="text"
+                          name="id"
+                          id="id"
+                          value={this.state.formDetails.id || ""}
+                          onChange={this.handleChange}
+                        />
+                        <input
+                          type="text"
+                          name="version"
+                          id="version"
+                          value={this.state.formDetails.version || ""}
+                          onChange={this.handleChange}
+                        />
                       </div>
-                    </div> */}
-                    <div style={{ visibility: "hidden" }}>
-                      <input
-                        type="text"
-                        name="id"
-                        id="id"
-                        value={this.state.formDetails.id || ""}
-                        onChange={this.handleChange}
-                      />
-                      <input
-                        type="text"
-                        name="version"
-                        id="version"
-                        value={this.state.formDetails.version || ""}
-                        onChange={this.handleChange}
-                      />
-                    </div>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="field-name">
-                            Application heading
-                          </label>
-                          <input
-                            type="text"
-                            id="title"
-                            name="title"
-                            className="form-control input-bg-2"
-                            placeholder="Type here"
-                            onChange={this.handleChange}
-                            onBlur={this.handleChange}
-                            value={this.state.formDetails.title || ""}
-                            autoComplete="off"
-                          />
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="field-name">
+                              Application heading
+                            </label>
+                            <input
+                              type="text"
+                              id="title"
+                              name="title"
+                              className="form-control input-bg-2"
+                              placeholder="Type here"
+                              onChange={this.handleChange}
+                              onBlur={this.handleChange}
+                              value={this.state.formDetails.title || ""}
+                              autoComplete="off"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="row">
-                      <div className="col-md-6">
-                        <div className="form-group">
-                          <label htmlFor="field-name">
-                            Application description
-                          </label>
-                          <textarea
-                            id="description"
-                            name="description"
-                            className="form-control input-bg-2"
-                            placeholder="Type here"
-                            onChange={this.handleChange}
-                            onBlur={this.handleChange}
-                            value={this.state.formDetails.description || ""}
-                          ></textarea>
+                      <div className="row">
+                        <div className="col-md-6">
+                          <div className="form-group">
+                            <label htmlFor="field-name">
+                              Application description
+                            </label>
+                            <textarea
+                              id="description"
+                              name="description"
+                              className="form-control input-bg-2"
+                              placeholder="Type here"
+                              onChange={this.handleChange}
+                              onBlur={this.handleChange}
+                              value={this.state.formDetails.description || ""}
+                            ></textarea>
+                          </div>
                         </div>
                       </div>
-                    </div>
 
-                    <div className="card-columns row col-md-12 mt-4">
-                      <div className="col-md-12">
-                        <div className="sortable" id="items">
-                          {this.state.formElements &&
-                            this.state.formElements.map((element, index) => {
-                              switch (element) {
-                                case LANG.FIELD:
-                                  return (
-                                    <Field
-                                      key={index}
-                                      index={index}
-                                      data={
-                                        this.state.formDetails.fields
-                                          ? this.state.formDetails.fields[index]
-                                          : null
-                                      }
-                                      removeElement={this.removeElement}
-                                    />
-                                  );
-                                case LANG.SEPARATOR:
-                                  return (
-                                    <Separator
-                                      key={index}
-                                      index={index}
-                                      data={
-                                        this.state.formDetails.fields
-                                          ? this.state.formDetails.fields[index]
-                                          : null
-                                      }
-                                      removeElement={this.removeElement}
-                                    />
-                                  );
-                                case LANG.HEADING:
-                                  return (
-                                    <Heading
-                                      key={index}
-                                      index={index}
-                                      data={
-                                        this.state.formDetails.fields
-                                          ? this.state.formDetails.fields[index]
-                                          : null
-                                      }
-                                      removeElement={this.removeElement}
-                                    />
-                                  );
-                                default:
-                                  return <></>;
-                              }
-                            })}
+                      <div className="card-columns row mt-4">
+                        <div className="col-md-12">
+                          <div className="sortable" id="items">
+                            {this.state.formElements &&
+                              this.state.formElements.map((element, index) => {
+                                switch (element) {
+                                  case LANG.FIELD:
+                                    return (
+                                      <Field
+                                        key={index}
+                                        index={index}
+                                        data={
+                                          this.state.formDetails.fields
+                                            ? this.state.formDetails.fields[index]
+                                            : null
+                                        }
+                                        removeElement={this.removeElement}
+                                      />
+                                    );
+                                  case LANG.SEPARATOR:
+                                    return (
+                                      <Separator
+                                        key={index}
+                                        index={index}
+                                        data={
+                                          this.state.formDetails.fields
+                                            ? this.state.formDetails.fields[index]
+                                            : null
+                                        }
+                                        removeElement={this.removeElement}
+                                      />
+                                    );
+                                  case LANG.HEADING:
+                                    return (
+                                      <Heading
+                                        key={index}
+                                        index={index}
+                                        data={
+                                          this.state.formDetails.fields
+                                            ? this.state.formDetails.fields[index]
+                                            : null
+                                        }
+                                        removeElement={this.removeElement}
+                                      />
+                                    );
+                                  default:
+                                    return <></>;
+                                }
+                              })}
+                          </div>
+                        </div>
+                      </div>
+                    </form>
+                    <div className="row">
+                      <div className="col-12 mt-3 mb-4">
+                        {/* <div className="field-options"> */}
+                        <div className="row">
+                          <div
+                            onClick={() => this.addElement(LANG.HEADING)}
+                            className="col-6"
+                          >
+                            <button className="btn btn-default smf-btn-default">
+                              {/* <i className="material-icons absolute">title</i> */}
+                              Add section
+                            </button>
+                          </div>
+                          <div
+                            onClick={() => this.addElement(LANG.FIELD)}
+                            className="col-6"
+                          >
+                            <button className="btn btn-default smf-btn-default pull-right  mr-0">
+                              {/* <i className="material-icons absolute">add</i> */}
+                              Add question
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </form>
-                  <div className="row col-12 mt-3 mb-4">
-                    {/* <div className="field-options"> */}
-
                     <div
-                      onClick={() => this.addElement(LANG.HEADING)}
-                      className="col-6"
+                      onClick={() => this.addElement(LANG.SEPARATOR)}
+                      style={{ display: "none" }}
                     >
                       <button className="btn btn-default smf-btn-default">
-                        {/* <i className="material-icons absolute">title</i> */}
-                        Add section
+                        <i className="material-icons absolute">drag_handle</i>
+                        <span className="button-text">Add separator</span>
                       </button>
                     </div>
-                    <div
-                      onClick={() => this.addElement(LANG.FIELD)}
-                      className="col-6"
-                    >
-                      <button className="btn btn-default smf-btn-default pull-right  mr-0">
-                        {/* <i className="material-icons absolute">add</i> */}
-                        Add question
-                      </button>
-                    </div>
+                    {/* </div> */}
                   </div>
-                  <div
-                    onClick={() => this.addElement(LANG.SEPARATOR)}
-                    style={{ display: "none" }}
-                  >
-                    <button className="btn btn-default smf-btn-default">
-                      <i className="material-icons absolute">drag_handle</i>
-                      <span className="button-text">Add separator</span>
-                    </button>
-                  </div>
-                  {/* </div> */}
                 </div>
               </div>
             </div>
