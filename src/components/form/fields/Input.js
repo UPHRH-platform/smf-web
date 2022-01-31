@@ -51,7 +51,7 @@ class Input extends Component {
           <input
             type={this.state.fieldType}
             id={"field-" + this.props.field.order}
-            name={"field-" + this.props.field.order}
+            name={this.props.title + "-field" + this.props.field.order}
             className="form-control"
             placeholder="Type here"
             autoComplete="off"

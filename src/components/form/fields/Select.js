@@ -39,7 +39,7 @@ class Select extends Component {
           <select
             className="custom-select"
             id={"field-" + this.props.field.order}
-            name={"field-" + this.props.field.order}
+            name={this.props.title + "-field" + this.props.field.order}
           >
             <option defaultValue>Select from dropdown</option>
             {this.props.field.values.map((option, key) => (

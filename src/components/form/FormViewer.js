@@ -12,7 +12,7 @@ import Textarea from "./fields/Textarea";
 import Rating from "./fields/Rating";
 import FileUpload from "./fields/FileUpload";
 import MultiSelect from "./fields/MultiSelect";
-// const $ = window.$;
+const $ = window.$;
 
 class FormViewer extends Component {
   constructor(props) {
@@ -24,6 +24,7 @@ class FormViewer extends Component {
       formHeadings: [],
       headingIndex: 0,
       formFields: {},
+      formTitle: '',
     };
     this.toggleSideBar = this.toggleSideBar.bind(this);
     this.loadFormDetails = this.loadFormDetails.bind(this);
@@ -87,6 +88,7 @@ class FormViewer extends Component {
           this.state.formFieldGroups.push(temp);
           this.setState({
             formDetails: response.responseData,
+            formTitle: response.responseData.title.replace (" ", "_")
           });
           // console.log(this.state.formHeadings);
           // console.log(this.state.formFieldGroups);
@@ -130,8 +132,10 @@ class FormViewer extends Component {
     for (var key of Object.keys(fields)) {
       var element = document.getElementsByName(key);
       if (element.length > 0) {
-        if (element[0].type === "checkbox" || element[0].type === "radio") {
+        if (element[0].type === "checkbox") {
           element[0].checked = true;
+        } else if (element[0].type === "radio") {
+          $("input[name="+key+"][value=" + fields[key] + "]").attr('checked', 'checked');
         } else {
           element[0].value = fields[key];
         }
@@ -154,8 +158,8 @@ class FormViewer extends Component {
     for (let i = 0; i < this.state.formFieldGroups[index].length; i++) {
       order = this.state.formFieldGroups[index][i]["order"];
       console.log(data["field-" + order]);
-      obj["field-" + order] =
-        data["field-" + order] !== undefined ? data["field-" + order] : "";
+      obj[this.state.formTitle + "-field" + order] =
+        data[this.state.formTitle + "-field" + order] !== undefined ? data[this.state.formTitle + "-field" + order] : "";
     }
     this.setState({
       formFields: obj,
@@ -169,6 +173,7 @@ class FormViewer extends Component {
       formId: this.state.formDetails.id,
       version: this.state.formDetails.version,
       dataObject: this.state.formFields,
+      title: this.state.formDetails.title
     };
     // formDetails = JSON.stringify(formDetails);
     FormService.submit(formDetails).then(
@@ -316,30 +321,30 @@ class FormViewer extends Component {
                           (field, index) => {
                             switch (LANG.FIELD_TYPES[field.fieldType]) {
                               case LANG.FIELD_TYPES.text:
-                                return <Input key={index} field={field} />;
+                                return <Input key={index} field={field} title={this.state.formTitle}/>;
                               case LANG.FIELD_TYPES.numeric:
-                                return <Input key={index} field={field} />;
+                                return <Input key={index} field={field} title={this.state.formTitle}/>;
                               case LANG.FIELD_TYPES.date:
-                                return <Input key={index} field={field} />;
+                                return <Input key={index} field={field} title={this.state.formTitle}/>;
                               case LANG.FIELD_TYPES.email:
-                                return <Input key={index} field={field} />;
+                                return <Input key={index} field={field} title={this.state.formTitle}/>;
                               case LANG.FIELD_TYPES.dropdown:
-                                return <Select key={index} field={field} />;
+                                return <Select key={index} field={field} title={this.state.formTitle}/>;
                               case LANG.FIELD_TYPES.radio:
-                                return <Radio key={index} field={field} />;
+                                return <Radio key={index} field={field} title={this.state.formTitle}/>;
                               case LANG.FIELD_TYPES.checkbox:
-                                return <Checkbox key={index} field={field} />;
+                                return <Checkbox key={index} field={field} title={this.state.formTitle}/>;
                               case LANG.FIELD_TYPES.boolean:
-                                return <Toggle key={index} field={field} />;
+                                return <Toggle key={index} field={field} title={this.state.formTitle}/>;
                               case LANG.FIELD_TYPES.textarea:
-                                return <Textarea key={index} field={field} />;
+                                return <Textarea key={index} field={field} title={this.state.formTitle}/>;
                               // case LANG.FIELD_TYPES.rating:
                               //   return <Rating key={index} field={field} />;
                               // case LANG.FIELD_TYPES.file:
                               //   return <FileUpload key={index} field={field} />;
                               case LANG.FIELD_TYPES.multiselect:
                                 return (
-                                  <MultiSelect key={index} field={field} />
+                                  <MultiSelect key={index} field={field} title={this.state.formTitle} />
                                 );
                               default:
                                 return <div key={index}></div>;
