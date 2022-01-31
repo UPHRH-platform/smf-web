@@ -199,14 +199,14 @@ class FormViewer extends Component {
             <div className="col-12">
               <div className="container pt-5 pl-2 pr-2">
                 <div className="d-flex row mb-4">
-                  <div className="col-md-3">
+                  <div className="col-12">
                     <h2 className="title mb-0">
                       {this.state.formDetails.title}
                     </h2>
                   </div>
-                  <div className="col-md-9">
-                    <div className="row">
-                      <div className="col-md-6">
+                  <div className="col-12">
+                    <div className="row mt-3">
+                      <div className="col-6 ">
                         {this.state.headingIndex > 0 && (
                           <button
                             onClick={(e) => {
@@ -218,15 +218,13 @@ class FormViewer extends Component {
                                 this.populateData();
                               }, 100);
                             }}
-                            className="btn btn-primary smf-btn-primary float-left"
-                            style={{ marginLeft: "-30px" }}
-                          >
+                            className="btn btn-primary smf-btn-primary float-left">
                             <i className="fa fa-arrow-left mr-2"></i>
                             Previous
                           </button>
                         )}
                       </div>
-                      <div className="col-md-6">
+                      <div className="col-6">
                         <div className="pull-right">
                           {!(
                             this.props.match.params.applicationId !== null &&
