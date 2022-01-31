@@ -112,7 +112,7 @@ class FormViewer extends Component {
           });
           setTimeout(() => {
             this.populateData();
-          }, 500);
+          }, 100);
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
@@ -216,7 +216,7 @@ class FormViewer extends Component {
                               });
                               setTimeout(() => {
                                 this.populateData();
-                              }, 500);
+                              }, 100);
                             }}
                             className="btn btn-primary smf-btn-primary float-left"
                             style={{ marginLeft: "-30px" }}
@@ -253,7 +253,7 @@ class FormViewer extends Component {
                                 });
                                 setTimeout(() => {
                                   this.populateData();
-                                }, 500);
+                                }, 100);
                               }}
                               className="btn btn-primary smf-btn-primary mr-0 ml-2"
                             >
@@ -281,7 +281,7 @@ class FormViewer extends Component {
                               this.setState({ headingIndex: i });
                               setTimeout(() => {
                                 this.populateData();
-                              }, 500);
+                              }, 100);
                             }}
                             className={
                               this.state.headingIndex === i ? "active" : ""
@@ -333,10 +333,10 @@ class FormViewer extends Component {
                                 return <Toggle key={index} field={field} />;
                               case LANG.FIELD_TYPES.textarea:
                                 return <Textarea key={index} field={field} />;
-                              case LANG.FIELD_TYPES.rating:
-                                return <Rating key={index} field={field} />;
-                              case LANG.FIELD_TYPES.file:
-                                return <FileUpload key={index} field={field} />;
+                              // case LANG.FIELD_TYPES.rating:
+                              //   return <Rating key={index} field={field} />;
+                              // case LANG.FIELD_TYPES.file:
+                              //   return <FileUpload key={index} field={field} />;
                               case LANG.FIELD_TYPES.multiselect:
                                 return (
                                   <MultiSelect key={index} field={field} />
