@@ -125,7 +125,7 @@ class Dashboard extends Component {
                           </span>
                           <div className="mb-3">
                             <span className="form-status">
-                              Status: Under review
+                              Status: {form.status}
                             </span>
                           </div>
                           <Link
