@@ -73,9 +73,9 @@ function submit(form) {
     body: JSON.stringify(form),
     headers: authHeader(),
   };
-  fetch(APIS.BASE_URL  + APIS.FORM.SUBMIT,
-    requestOptions,
-  ).then(handleResponse);
+  return fetch(APIS.BASE_URL + APIS.FORM.SUBMIT, requestOptions).then(
+    handleResponse
+  );
 }
 
 function getAllApplications() {

@@ -42,12 +42,15 @@ class FormViewer extends Component {
 
   componentDidMount() {
     this.loadFormDetails(this.props.match.params.id);
-    console.log(this.props.match.params.applicationId);
+    // console.log(this.props.match.params.applicationId);
     if (
       this.props.match.params.applicationId !== null &&
       this.props.match.params.applicationId !== undefined
     ) {
-      this.populateForm(this.props.match.params.applicationId);
+      setTimeout(() => {
+        this.populateForm(this.props.match.params.applicationId);
+      }, 50);
+      
     }
   }
 
@@ -56,7 +59,9 @@ class FormViewer extends Component {
       this.loadFormDetails(this.props.match.params.id);
       // console.log(this.props.match.params.applicationId);
       if (this.props.match.params.applicationId !== null) {
-        this.populateForm(this.props.match.params.applicationId);
+        setTimeout(() => {
+          this.populateForm(this.props.match.params.applicationId);
+        }, 50);
       }
     }
   }
@@ -112,13 +117,15 @@ class FormViewer extends Component {
           var savedFields = response.responseData[0].dataObject;
           var fields = this.state.formDetails.fields;
           var newFields = {};
-          for (const key in savedFields) {
+          // console.log(fields);
+          for (var pkey of Object.keys(savedFields)) {
+            for (var key of Object.keys(savedFields[pkey])) {
             for (let j = 0; j < fields.length; j++) {
-              // console.log(temp[1], fields[j].order);
+              // console.log(key, fields[j].name);
               if (key === fields[j].name) {
-                newFields["field_" + fields[j].order] = savedFields[key];
+                newFields["field_" + fields[j].order] = savedFields[pkey][key];
               }
-            }
+            }}
           }
           this.setState({
             formFields: newFields,
@@ -140,6 +147,7 @@ class FormViewer extends Component {
 
   populateData = () => {
     var fields = this.state.formFields;
+    // console.log(this.state.formFields);
     for (var key of Object.keys(fields)) {
       var element = document.getElementsByName(key);
       if (element.length > 0) {
@@ -204,7 +212,8 @@ class FormViewer extends Component {
       if (multiselects.length) {
         var selected = [];
         for (var option of multiselects[0].options) {
-          if (option.selected) {
+          // console.log(option.value);
+          if (option.selected && option.value !== "Select from dropdown") {
             selected.push(option.value);
           }
         }
@@ -232,39 +241,41 @@ class FormViewer extends Component {
         }
       }
     }
-    // let fieldGroups = {}, heading = '';
-    // for (let i=0; i< this.state.formHeadings; i++) {
-    //   heading = this.state.formHeadings[i];
-    //   for (let j=0; j < this.state.formFieldGroups[i].length; j++) {
-    //     console.log(heading, this.state.formFieldGroups[i].name);
-    //     fieldGroups[heading][this.state.formFieldGroups[i].name] = this.state.formFieldGroups[fields[j].name];
-    //   }
-    // }
+    var fieldGroups = {};
+    for (let i = 0; i < this.state.formHeadings.length; i++) {
+      fieldGroups[this.state.formHeadings[i]] = {};
+      for (let j = 0; j < this.state.formFieldGroups[i].length; j++) {
+        // console.log(this.state.formFieldGroups[i][j].name);
+        fieldGroups[this.state.formHeadings[i]][
+          this.state.formFieldGroups[i][j].name
+        ] = fieldsData[this.state.formFieldGroups[i][j].name];
+      }
+    }
     // console.log(fieldGroups);
     let formDetails = {
       formId: this.state.formDetails.id,
       version: this.state.formDetails.version,
-      dataObject: fieldsData,
+      dataObject: fieldGroups,
       title: this.state.formDetails.title,
     };
-    formDetails = JSON.stringify(formDetails);
-    // FormService.submit(formDetails).then(
-    //   (response) => {
-    //     console.log(response);
-    //     if (response.data.statusInfo.statusCode === APP.CODE.SUCCESS) {
-    //       Notify.success(response.data.statusInfo.statusMessage);
-    //       //   this.props.updateParent(response.responseData.id);
-    //       this.props.history.push("/dashboard");
-    //     } else {
-    //       Notify.error(response.data.statusInfo.errorMessage);
-    //     }
-    //   },
-    //   (error) => {
-    //     error.statusInfo
-    //       ? Notify.error(error.statusInfo.errorMessage)
-    //       : Notify.error(error.message);
-    //   }
-    // );
+    // formDetails = JSON.stringify(formDetails);
+    FormService.submit(formDetails).then(
+      (response) => {
+        console.log(response);
+        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          Notify.success(response.statusInfo.statusMessage);
+          this.props.history.push("/dashboard");
+        } else {
+          Notify.error(response.statusInfo.errorMessage);
+        }
+       
+      },
+      (error) => {
+        error.statusInfo
+          ? Notify.error(error.statusInfo.errorMessage)
+          : Notify.error(error.message);
+      }
+    );
   };
 
   render() {
