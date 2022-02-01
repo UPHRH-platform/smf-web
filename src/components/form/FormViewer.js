@@ -88,7 +88,7 @@ class FormViewer extends Component {
           this.state.formFieldGroups.push(temp);
           this.setState({
             formDetails: response.responseData,
-            formTitle: response.responseData.title.replace (" ", "_")
+            formTitle: response.responseData.title.replaceAll (" ", "_")
           });
           // console.log(this.state.formHeadings);
           // console.log(this.state.formFieldGroups);
@@ -159,10 +159,10 @@ class FormViewer extends Component {
     for (let i = 0; i < this.state.formFieldGroups[index].length; i++) {
       var element = document.getElementsByName(this.state.formTitle + "-field" + order);
       order = this.state.formFieldGroups[index][i]["order"];
-      if (element[0].type === "checkbox") {
-        console.log(data[this.state.formTitle + "-field" + order]);
-      }
-      console.log(data[this.state.formTitle + "-field" + order]);
+      // if (element[0].type === "checkbox") {
+      //   console.log(data[this.state.formTitle + "-field" + order]);
+      // }
+      // console.log(data[this.state.formTitle + "-field" + order]);
       obj[this.state.formTitle + "-field" + order] =
         data[this.state.formTitle + "-field" + order] !== undefined ? data[this.state.formTitle + "-field" + order] : "";
     }
@@ -322,6 +322,7 @@ class FormViewer extends Component {
                       {this.state.formFieldGroups.length > 0 &&
                         this.state.formFieldGroups[this.state.headingIndex].map(
                           (field, index) => {
+                            // console.log(LANG.FIELD_TYPES[field.fieldType]);
                             switch (LANG.FIELD_TYPES[field.fieldType]) {
                               case LANG.FIELD_TYPES.text:
                                 return <Input key={index} field={field} title={this.state.formTitle}/>;
