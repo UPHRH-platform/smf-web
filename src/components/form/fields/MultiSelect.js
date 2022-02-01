@@ -38,9 +38,9 @@ class MultiSelect extends Component {
           </label>
           <select
             multiple
-            className="custom-select"
+            className={"custom-select multiselect field_" + this.props.field.order + "_multiselect"}
             id={"field-" + this.props.field.order}
-            name={this.props.title + "-field" + this.props.field.order}
+            name={"field_" + this.props.field.order}
           >
             <option defaultValue>Select from dropdown</option>
             {this.props.field.values.map((option, key) => (
