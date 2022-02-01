@@ -67,39 +67,15 @@ function remove(form) {
   );
 }
 
-// function submit(form) {
-//   const formData = new FormData();
-//   formData.append("requestMap", JSON.stringify(form));
-//   const requestOptions = {
-//     method: APP.REQUEST.POST,
-//     // body: formData,
-//     headers: authHeader(),
-//     data: formData,
-//   };
-//   fetch(APIS.BASE_URL  + APIS.FORM.SUBMIT,,
-//     requestOptions,
-//   ).then(handleResponse);
-// }
-
-function submit(data) {
-  const formData = new FormData();
-  formData.append("requestMap", JSON.stringify(data));
+function submit(form) {
   const requestOptions = {
-    url: APIS.BASE_URL + APIS.FORM.SUBMIT,
     method: APP.REQUEST.POST,
+    body: JSON.stringify(form),
     headers: authHeader(),
-    data: formData,
   };
-
-  return axios(requestOptions)
-    .then(handleResponseNew)
-    .catch((err) => {
-      if (err.message.includes(401)) {
-        Notify.error("Unauthorized");
-      } else {
-        Notify.error(err.message);
-      }
-    });
+  fetch(APIS.BASE_URL  + APIS.FORM.SUBMIT,
+    requestOptions,
+  ).then(handleResponse);
 }
 
 function getAllApplications() {
@@ -136,12 +112,3 @@ function handleResponse(response) {
   });
 }
 
-function handleResponseNew(response) {
-  // console.log(response);
-  if (response.status === 401) {
-    const error =
-      LANG.APIERROR || (response && response.message) || response.statusText; //Ignoring server side error and using end user readable message
-    return Promise.reject(new Error(error));
-  }
-  return response;
-}
