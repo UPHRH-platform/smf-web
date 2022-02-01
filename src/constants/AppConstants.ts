@@ -11,5 +11,6 @@ export const APP = {
   ROLE: {
     INSTITUTION: "Institution",
     REGULATOR: "Regulator",
+    INSPECTOR: "Inspector"
   }
 };

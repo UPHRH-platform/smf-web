@@ -1,0 +1,22 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+
+.card_one {
+  background-color: var(--white-100);
+  border: 1px solid var(--black-08);
+  border-radius: 4px;
+  padding: 1rem;
+  min-height: 5.563rem;
+}
+
+.card_one h1 {
+  font-family: "Montserrat-SemiBold";
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+.card_one label {
+  font-family: "Lato-Regular";
+  font-size: 0.875rem;
+  line-height: 1.5;
+}

@@ -5,10 +5,39 @@ import { FormService } from "../../services/form.service";
 import { APP } from "../../constants";
 import Notify from "../../helpers/notify";
 import Helper from "../../helpers/auth";
+import { CardOne } from "../cards/CardOne";
 
 /**
  * Dashboard component
  */
+
+const InspectorMetrics = [
+  {
+    id: 0,
+    count: 2,
+    title: "Total pending",
+  },
+  {
+    id: 1,
+    count: 1,
+    title: "Received today",
+  },
+  {
+    id: 2,
+    count: 1,
+    title: "In progress",
+  },
+  {
+    id: 3,
+    count: 0,
+    title: "Reviewed today",
+  },
+  {
+    id: 4,
+    count: 32,
+    title: "Reviewed in total",
+  },
+];
 
 class Dashboard extends Component {
   constructor(props) {
@@ -281,6 +310,27 @@ class Dashboard extends Component {
                         </div>
                       </div>
                     );
+                  })}
+                </div>
+              </div>
+            </div>
+          </Fragment>
+        )}
+        {Helper.getUserRole() === APP.ROLE.INSPECTOR && (
+          <Fragment>
+            <div className="container-fluid">
+              <div className="container dashboard-inner-container mt-4">
+                <div className="row">
+                  {InspectorMetrics.map((i, j) => {
+                    return(
+                      <div
+                      className="col-sm-12 col-md-4 col-lg-2 col-xl-2 col-xxl-2"
+                      key={i.id}
+                    >
+                      <CardOne count={i.count} title={i.title} />
+                    </div>
+                    )
+                   ;
                   })}
                 </div>
               </div>

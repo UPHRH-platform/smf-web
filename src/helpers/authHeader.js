@@ -7,16 +7,11 @@ export function authHeader() {
       "Authorization": Auth.get('authToken'),
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "Origin, Content-Type, Accept",
-      "mode": "no-cors"
     };
   } else {
     return {
       "Content-Type": "application/json",
       "Accept": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "Origin, Content-Type, Accept"
     };
   }
 }
