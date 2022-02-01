@@ -13,6 +13,7 @@ class FileUpload extends Component {
       fieldType: "",
       language: "en",
     };
+    this.handleUploadfile = this.handleUploadfile.bind(this)
   }
 
   componentDidMount() {
@@ -34,6 +35,24 @@ class FileUpload extends Component {
     }
   }
 
+  handleUploadfile = (event) => {
+    event.preventDefault();
+    const data = new FormData();
+    data.append('photo',event.target.files[0] );
+    data.append('name', 'Test Name');
+    data.append('desc', 'Test description');
+    console.log('handleUploadfile:: data -- ', data)
+    // fetch("http://localhost:3001/todo/upload", {
+    //      method: 'POST',
+    //      headers: {
+    //          'Accept': 'application/json',
+    //      },
+    //      body: data
+    // }).then((response) =>  {
+    //    return response.text();
+    // })
+  }
+
   render() {
     // strings.setLanguage(
     //   localStorage.getItem("language") || this.state.language
@@ -53,6 +72,7 @@ class FileUpload extends Component {
             id={"field-" + this.props.field.order}
             name={this.props.title + "-field" + this.props.field.order}
             className="form-control-file"
+            onChange={this.handleUploadfile}
             // placeholder="Type here"
             // autoComplete="off"
           />
