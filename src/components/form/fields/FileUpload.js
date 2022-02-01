@@ -1,7 +1,9 @@
 import React, { Component } from "react";
 // import LocalizedStrings from "react-localization";
 // import { translations } from "./../../../../translations.js";
-import { LANG } from "./../../../constants/index";
+import { LANG, APP } from "./../../../constants/index";
+import { FormService } from "../../../services/form.service";
+import Notify from "./../../../helpers/notify";
 // const $ = window.$;
 
 // let strings = new LocalizedStrings(translations);
@@ -38,19 +40,38 @@ class FileUpload extends Component {
   handleUploadfile = (event) => {
     event.preventDefault();
     const data = new FormData();
-    data.append('photo',event.target.files[0] );
-    data.append('name', 'Test Name');
-    data.append('desc', 'Test description');
-    console.log('handleUploadfile:: data -- ', data)
-    // fetch("http://localhost:3001/todo/upload", {
-    //      method: 'POST',
-    //      headers: {
-    //          'Accept': 'application/json',
-    //      },
-    //      body: data
-    // }).then((response) =>  {
-    //    return response.text();
-    // })
+    console.log('event.target.files', event.target.files[0])
+    if(event.target.files[0]) {
+      data.append('files',event.target.files[0] );
+      // data.append('name', event.target.files[0].name);
+      console.log('handleUploadfile:: data -- ', data)
+      // fetch("https://smfdev.idc.tarento.com/api/forms/fileUpload", {
+      //      method: 'POST',
+      //      headers: {
+      //          'Accept': 'application/json',
+      //      },
+      //      body: data
+      // }).then((response) =>  {
+      //    return response.text();
+      // })
+      FormService.uploadfile(
+        data
+      ).then(
+        response => {
+          if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+            // this.props.history.push("/dashboard");
+          } else {
+            Notify.error(response.statusInfo.errorMessage);
+          }
+        },
+        error => {
+          error.statusInfo
+            ? Notify.error(error.statusInfo.errorMessage)
+            : Notify.error(error.message);
+        },
+      );
+    }
+    return;
   }
 
   render() {
@@ -72,7 +93,7 @@ class FileUpload extends Component {
             id={"field-" + this.props.field.order}
             name={"field_" + this.props.field.order}
             className="form-control-file"
-            onChange={this.handleUploadfile}
+            onChange={(e) => {this.handleUploadfile(e)}}
             // placeholder="Type here"
             // autoComplete="off"
           />

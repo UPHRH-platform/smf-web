@@ -1,4 +1,7 @@
 export const LANG = {
+  SUCCESS: "Success!",
+  ERROR: "Error!",
+  APIERROR: "Oops! Something went wrong there, Please try again.",
   FIELD_TYPES: {
     text: "Text",
     date: "Date",

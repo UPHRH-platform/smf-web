@@ -12,6 +12,7 @@ export const APIS = {
     UPDATE: "",
     DELETE: "",
     SUBMIT: "forms/v1/saveFormSubmit",
+    FILE_UPLOAD: "forms/fileUpload",
     GET_ALL_APPLICATIONS: "forms/getAllApplications",
     GET_APPLICATION_DETAILS: "forms/getApplicationsById?applicationId="
   },

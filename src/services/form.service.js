@@ -1,5 +1,5 @@
 import { APIS, APP, LANG } from "../constants";
-import { authHeader } from "../helpers/authHeader";
+import { authHeader, authHeaderForUpload } from "../helpers/authHeader";
 import Notify from "./../helpers/notify";
 import axios from "axios";
 
@@ -12,6 +12,7 @@ export const FormService = {
   submit,
   getAllApplications,
   findApplication,
+  uploadfile
 };
 
 function get() {
@@ -100,12 +101,27 @@ function findApplication(applicationId) {
   ).then(handleResponse);
 }
 
+function uploadfile(form) {
+  const requestOptions = {
+    method: APP.REQUEST.POST,
+    body: form,
+    headers: {
+        ...authHeaderForUpload(),
+        // 'Accept': 'application/json',
+        // 'Content-Type': 'multipart/form-data'
+    },
+  };
+  return fetch(APIS.BASE_URL  + APIS.FORM.FILE_UPLOAD,
+    requestOptions,
+  ).then(handleResponse);
+}
+
 function handleResponse(response) {
   return response.text().then((text) => {
     const data = text && JSON.parse(text);
     if (!response.ok) {
       const error =
-        LANG.APIERROR || (data && data.message) || response.statusText;
+        LANG.APIERROR || (data && data.statusInfo && data.statusInfo.errorMessage) || response.statusText;
       return Promise.reject(new Error(error));
     }
     return data;
