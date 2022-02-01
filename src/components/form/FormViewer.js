@@ -343,8 +343,8 @@ class FormViewer extends Component {
                                 return <Textarea key={index} field={field} title={this.state.formTitle}/>;
                               // case LANG.FIELD_TYPES.rating:
                               //   return <Rating key={index} field={field} />;
-                              // case LANG.FIELD_TYPES.file:
-                              //   return <FileUpload key={index} field={field} />;
+                              case LANG.FIELD_TYPES.file:
+                                return <FileUpload key={index} field={field} />;
                               case LANG.FIELD_TYPES.multiselect:
                                 return (
                                   <MultiSelect key={index} field={field} title={this.state.formTitle} />

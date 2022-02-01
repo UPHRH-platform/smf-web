@@ -11,7 +11,7 @@ export const LANG = {
     radio: "Radio",
     boolean: "Boolean",
     // rating: "Rating",
-    // file: "File",
+    file: "File",
   },
   COL: {
     1: 1,
