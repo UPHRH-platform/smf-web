@@ -1,1 +1,2 @@
-export { Inspector } from "./Inspector"
+export { InspectorHome } from "./Inspector/InspectorHome";
+export { InspectorApplications } from "./Inspector/InspectorApplications";

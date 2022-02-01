@@ -1,6 +1,11 @@
 import { Fragment } from "react";
-import { HeadingOne, HeadingTwo } from "../components/headings";
-import { CardOne, CardTwo } from "../components/cards";
+import { HeadingOne, HeadingTwo } from "../../components/headings";
+import { CardOne, CardTwo } from "../../components/cards";
+
+/**
+ * Inspector component renders
+ * inspector page layout and its UI components
+ */
 
 const InspectorMetrics = [
     {
@@ -59,10 +64,8 @@ interface InspectorProps {
     data?: any
 }
 
-export const Inspector = ({ data }: InspectorProps) => {
+export const InspectorHome = ({ data }: InspectorProps) => {
     return (
-
-
         <Fragment>
             <div className="container-fluid">
                 <div className="container dashboard-inner-container mt-4">

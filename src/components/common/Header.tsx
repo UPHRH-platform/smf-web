@@ -109,6 +109,14 @@ class Header extends Component<LoginProps, LoginState> {
                       }`}>MANAGE</Link>
                   </li>
                 )}
+                {Helper.getUserRole() === APP.ROLE.INSPECTOR && (
+                  <li className="mr-5">
+                    <Link to={"/all-applications"} className={`${this.props.history.location.pathname.match("/all-applications")
+                      ? "active"
+                      : ""
+                      }`}>ALL APPLICATIONS</Link>
+                  </li>
+                )}
               </ul>
             </div>
           </div>
