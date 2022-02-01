@@ -1,0 +1,9 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+
+.heading_one {
+  color: var(--black-87);
+  font-family: "Montserrat-SemiBold";
+  font-size: 1.25rem;
+  line-height: 1.4;
+}

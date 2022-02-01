@@ -1,5 +1,10 @@
 import styles from "./CardOne.module.css";
 
+/**
+ * CardOne component renders
+ * smaller variant of cards
+ */
+
 interface CardOneProps {
     count?: number,
     title?: string

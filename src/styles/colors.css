@@ -1,4 +1,5 @@
 html {
+    --black-04: RGBA(0, 0, 0, 0.04);
     --black-08: RGBA(0, 0, 0, 0.08);
     --black-60: RGBA(0, 0, 0, 0.6);
     --black-87: RGBA(0, 0, 0, 0.87);
@@ -11,6 +12,7 @@ html {
 }
 
 html[data-theme="dark"] {
+    --black-04: RGBA(0, 0, 0, 0.04);
     --black-08: RGBA(0, 0, 0, 0.08);
     --black-60: RGBA(0, 0, 0, 0.6);
     --black-87: RGBA(0, 0, 0, 0.87);
