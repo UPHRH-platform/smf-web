@@ -55,6 +55,7 @@ class Input extends Component {
                 ? "number"
                 : this.state.fieldType
             }
+
             id={"field-" + this.props.field.order}
             name={"field_" + this.props.field.order}
             className="form-control"
