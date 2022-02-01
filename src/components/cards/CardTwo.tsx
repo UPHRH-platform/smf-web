@@ -17,9 +17,11 @@ interface CardTwoProps {
     showBtn: boolean,
     type: string,
     btnText: string
+    isLink: boolean,
+    link: string
 }
 
-export const CardTwo = ({ title, name, time, showStatus, status, showBtn, btnText, type, statusLabel }: CardTwoProps) => {
+export const CardTwo = ({ title, name, time, showStatus, status, showBtn, btnText, type, statusLabel, isLink, link }: CardTwoProps) => {
     return (
         <div className={`${styles.card_two}`}>
             <h1>{title}</h1>
@@ -29,7 +31,7 @@ export const CardTwo = ({ title, name, time, showStatus, status, showBtn, btnTex
                 <StatusBar status={status} label={statusLabel} />
             )}
             {showBtn && (
-                <BtnOne btnType={type} label={btnText} />
+                <BtnOne btnType={type} label={btnText} isLink={isLink} link={link} />
             )}
         </div>
     )

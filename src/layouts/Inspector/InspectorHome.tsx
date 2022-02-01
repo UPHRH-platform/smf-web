@@ -46,6 +46,8 @@ const InspectorPendingApplications = [
         showBtn: true,
         type: "button",
         btnText: "View application",
+        isLink: false,
+        link: ""
     },
     {
         id: "PA002",
@@ -57,6 +59,8 @@ const InspectorPendingApplications = [
         showBtn: true,
         type: "button",
         btnText: "View application",
+        isLink: false,
+        link: ""
     },
 ];
 
@@ -107,6 +111,8 @@ export const InspectorHome = ({ data }: InspectorProps) => {
                                             showBtn={i.showBtn}
                                             type={i.type}
                                             btnText={i.btnText}
+                                            isLink={i.isLink}
+                                            link={i.link}
                                         />
                                     </div>
                                 );

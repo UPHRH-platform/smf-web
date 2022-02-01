@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styles from "./BtnOne.module.css";
 
 /**
@@ -8,17 +9,40 @@ import styles from "./BtnOne.module.css";
 interface BtnOneProps {
     label: string,
     btnType: string,
-    clickHandler?: (event: any) => void;
+    clickHandler?: (event: any) => void
+    isLink: boolean
+    link: string
 }
 
-export const BtnOne = ({ label, btnType, clickHandler }: BtnOneProps) => {
+export const BtnOne = ({ label, btnType, clickHandler, isLink, link }: BtnOneProps) => {
     if (btnType === "button") {
         return (
-            <button type="button" onClick={clickHandler} className={`${styles.btn_one} mb-4`}>{label}</button>
+            <>
+                {isLink ? (
+                    <Link to={link}>
+                        <button type="button" onClick={clickHandler} className={`${styles.btn_one} mb-4`}>{label}</button>
+                    </Link>
+                ) : (
+                    <button type="button" onClick={clickHandler} className={`${styles.btn_one} mb-4`}>{label}</button>
+                )}
+
+            </>
+
         )
     } else {
         return (
-            <button type="submit" onClick={clickHandler} className={`${styles.btn_one} mb-4`}>{label}</button>
+            <>
+                {isLink ? (
+                    <Link to={link}>
+                        <button type="submit" onClick={clickHandler} className={`${styles.btn_one} mb-4`}>{label}</button>
+                    </Link>
+                ) : (
+
+                    <button type="submit" onClick={clickHandler} className={`${styles.btn_one} mb-4`}>{label}</button>
+
+                )}
+            </>
+
         )
     }
 }

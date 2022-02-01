@@ -20,6 +20,8 @@ const InspectorPendingApplications = [
         showBtn: true,
         type: "button",
         btnText: "View application",
+        isLink: true,
+        link: "/all-applications/PA001"
     },
     {
         id: "PA002",
@@ -31,6 +33,8 @@ const InspectorPendingApplications = [
         showBtn: true,
         type: "button",
         btnText: "View application",
+        isLink: true,
+        link: "/all-applications/PA002"
     },
 ];
 
@@ -67,6 +71,8 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
                                             showBtn={i.showBtn}
                                             type={i.type}
                                             btnText={i.btnText}
+                                            isLink={i.isLink}
+                                            link={i.link}
                                         />
                                     </div>
                                 );

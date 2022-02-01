@@ -1,0 +1,20 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+
+.side_navigation_unselected {
+  color: var(--black-87);
+  font-family: "Lato-Regular";
+  font-size: 0.875rem;
+  letter-spacing: 0.25;
+  line-height: 1.429;
+}
+
+.side_navigation_selected {
+    background-color: var(--black-04);
+    border-left: 4px solid var(--blue-primary);
+    color: var(--black-87);
+    font-family: "Lato-Bold";
+    font-size: 0.875rem;
+    letter-spacing: 0.25;
+    line-height: 1.429;
+  }
