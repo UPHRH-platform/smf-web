@@ -99,10 +99,13 @@ class FileUpload extends Component {
     // );
     return (
       <>
+      <div
+            className={`col-md-${this.props.field.width ? this.props.field.width : LANG.DEFAULT_COL
+              }`}
+        >
         <div className="form-group">
           <div
-            className={`custom-file col-md-${this.props.field.width ? this.props.field.width : LANG.DEFAULT_COL
-              }`}
+            className={`custom-file`}
           >
             <input
               type={this.state.fieldType}
@@ -128,6 +131,7 @@ class FileUpload extends Component {
             ))}
           </div>
         }
+        </div>
       </>
     );
   }
