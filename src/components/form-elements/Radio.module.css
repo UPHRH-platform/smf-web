@@ -1,0 +1,48 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+
+.custom_radio_card {
+  background-color: var(--white-100);
+  border: 1px solid var(--black-08);
+  border-radius: 4px;
+  box-shadow: 0px 3px 6px 0px var(--black-08);
+  min-height: 8.25rem;
+}
+
+.custom_radio_card h5 {
+  color: var(--black-60);
+  font-family: "Lato-Bold";
+  font-size: 0.875rem;
+  letter-spacing: 0.25;
+  line-height: 1.429;
+}
+
+.custom_radio_btn_selected {
+  background-color: var(--white-100);
+  border: 1px solid var(--blue-primary);
+  border-radius: 4px;
+  font-family: "Lato-Regular";
+  font-size: 0.875rem;
+  letter-spacing: 0.25;
+  line-height: 1.5;
+}
+
+.custom_radio_icon_selected {
+    color: var(--blue-primary);
+    vertical-align: -0.40rem;
+}
+
+.custom_radio_icon_unselected {
+    color: var(--black-40);
+    vertical-align: -0.40rem;
+}
+
+.custom_radio_btn_unselected {
+  background-color: var(--white-100);
+  border: 1px solid var(--black-16);
+  border-radius: 4px;
+  font-family: "Lato-Regular";
+  font-size: 0.875rem;
+  letter-spacing: 0.25;
+  line-height: 1.5;
+}
