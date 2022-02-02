@@ -98,27 +98,29 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
             <Header history={history} />
             <div className="container-fluid">
                 <div className="container dashboard-inner-container mt-4">
-
+                    {/* Section one */}
                     <div className="row">
-                        <div className="col-6">
+                        <div className="col-sm-12 col-md-7 col-lg-7 col-xl-7 col-xxl-7">
                             <div className="float-start">
                                 <HeadingOne heading={ApplicationDetails[0].name} />
                             </div>
                         </div>
-                        <div className="col-6">
-                            <div className="row float-end" style={{ border: "1px solid red"}}>
-                                {/* <div className="col-3">
-                                    <BtnOne label="View status log" btnType="button" isLink={false} link="" isModal={true} />
+                        <div className="col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5">
+                            <div className="d-flex flex-row float-end mt-4 mt-sm-4 mt-md-0 mt-lg-0 mt-xl-0 mt-xxl-0">
+                                <div className="me-4">
+                                    <BtnOne label="View status log" btnType="button" isLink={false} link="" isModal={true} floatBottom={false} />
                                 </div>
-                                <div className="col-3">
-                                    <BtnTwo label="Change status" btnType="button" isLink={false} link="" isModal={true} />
-                                </div> */}
+                                <div className="">
+                                    <BtnTwo label="Change status" btnType="button" isLink={false} link="" isModal={true} floatBottom={false} />
+                                </div>
                             </div>
                         </div>
                     </div>
 
+                    {/* Section two */}
                     <div className="row">
                         <div className="col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 pt-4">
+                            {/* Side navigation */}
                             {ApplicationDetails[0].menuList.map((i, j) => {
                                 return (
                                     <SideNavigation text={i.label} key={i.id} isSelected={selectedMenu && selectedMenu === i.label ? true : false} clickHandler={(e) => {
@@ -126,6 +128,8 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
                                     }} />
                                 );
                             })}
+
+                            {/* Form view */}
                         </div>
                         <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9">
 

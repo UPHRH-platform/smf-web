@@ -13,18 +13,19 @@ interface BtnOneProps {
     isLink: boolean
     link: string
     isModal?: boolean
+    floatBottom?: boolean
 }
 
-export const BtnOne = ({ label, btnType, clickHandler, isLink, link, isModal }: BtnOneProps) => {
+export const BtnOne = ({ label, btnType, clickHandler, isLink, link, isModal, floatBottom }: BtnOneProps) => {
     if (btnType === "button") {
         return (
             <>
                 {isLink ? (
                     <Link to={link}>
-                        <button type="button" onClick={clickHandler} className={`${styles.btn_one} mb-4`}>{label}</button>
+                        <button type="button" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`}>{label}</button>
                     </Link>
                 ) : (
-                    <button type="button" onClick={clickHandler} className={`${styles.btn_one} mb-4`}>{label}</button>
+                    <button type="button" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`}>{label}</button>
                 )}
 
             </>
@@ -34,11 +35,11 @@ export const BtnOne = ({ label, btnType, clickHandler, isLink, link, isModal }: 
             <>
                 {isLink ? (
                     <Link to={link}>
-                        <button type="submit" onClick={clickHandler} className={`${styles.btn_one} mb-4`}>{label}</button>
+                        <button type="submit" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`}>{label}</button>
                     </Link>
                 ) : (
 
-                    <button type="submit" onClick={clickHandler} className={`${styles.btn_one} mb-4`}>{label}</button>
+                    <button type="submit" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`}>{label}</button>
 
                 )}
             </>

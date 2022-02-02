@@ -13,8 +13,7 @@
   padding: 0.45rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
-  position: absolute;
-  bottom: 0;
+  width: fit-content;
 }
 
 .btn_two:hover {

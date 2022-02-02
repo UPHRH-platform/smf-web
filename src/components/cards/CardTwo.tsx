@@ -31,7 +31,7 @@ export const CardTwo = ({ title, name, time, showStatus, status, showBtn, btnTex
                 <StatusBar status={status} label={statusLabel} />
             )}
             {showBtn && (
-                <BtnOne btnType={type} label={btnText} isLink={isLink} link={link} />
+                <BtnOne btnType={type} label={btnText} isLink={isLink} link={link} floatBottom={true} />
             )}
         </div>
     )

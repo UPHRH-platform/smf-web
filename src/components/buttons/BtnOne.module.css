@@ -13,6 +13,10 @@
   padding: 0.45rem;
   padding-left: 0.75rem;
   padding-right: 0.75rem;
+  width: fit-content;
+}
+
+.btn_float_bottom {
   position: absolute;
   bottom: 0;
 }
