@@ -6,6 +6,7 @@ import { SideNavigation } from "../../components/navigation";
 import { useRecoilState } from "recoil";
 import { menuSelected as menuSelectedAtom } from "../../states/atoms";
 import { BtnOne, BtnTwo } from "../../components/buttons";
+import { ModalOne } from "../../components/modal";
 
 /**
  * ViewApplications component renders
@@ -66,6 +67,26 @@ const ApplicationDetails = [{
     ]
 }]
 
+const modalList = [{
+    id: 0,
+    title: "Returned",
+    description: "You application is on-hold because of so and so so issue was found in the so and so document. Please reupload them documents before dd/mon/yyyy.",
+    timeline: "30 Jan 2022"
+},
+{
+    id: 1,
+    title: "Under review",
+    description: "",
+    timeline: "29 Jan 2022"
+},
+{
+    id: 2,
+    title: "Received on",
+    description: "",
+    timeline: "25 Jan 2022"
+}
+]
+
 
 interface ViewApplicationsProps {
     data?: any
@@ -87,6 +108,7 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
         if (ApplicationDetails[0].menuList) {
             setSelectedMenu(ApplicationDetails[0].menuList[0].label)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // useEffect(() => {
@@ -108,11 +130,12 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
                         <div className="col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5">
                             <div className="d-flex flex-row float-end mt-4 mt-sm-4 mt-md-0 mt-lg-0 mt-xl-0 mt-xxl-0">
                                 <div className="me-4">
-                                    <BtnOne label="View status log" btnType="button" isLink={false} link="" isModal={true} floatBottom={false} />
+                                    <BtnOne label="View status log" btnType="button" isLink={false} link="" isModal={true} floatBottom={false} modalId="staticBackdrop" />
                                 </div>
                                 <div className="">
-                                    <BtnTwo label="Change status" btnType="button" isLink={false} link="" isModal={true} floatBottom={false} />
+                                    <BtnTwo label="Change status" btnType="button" isLink={false} link="" isModal={false} floatBottom={false} />
                                 </div>
+                                <ModalOne id="staticBackdrop" ariaLabel="staticBackdropLabel" heading="Status log" list={modalList}/>
                             </div>
                         </div>
                     </div>
@@ -131,7 +154,7 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
 
                             {/* Form view */}
                         </div>
-                        <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9">
+                        <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9" style={{ border: "1px solid red" }}>
 
                         </div>
                     </div>

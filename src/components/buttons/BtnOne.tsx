@@ -14,18 +14,21 @@ interface BtnOneProps {
     link: string
     isModal?: boolean
     floatBottom?: boolean
+    modalId?: string
 }
 
-export const BtnOne = ({ label, btnType, clickHandler, isLink, link, isModal, floatBottom }: BtnOneProps) => {
+export const BtnOne = ({ label, btnType, clickHandler, isLink, link, isModal, floatBottom, modalId }: BtnOneProps) => {
     if (btnType === "button") {
         return (
             <>
                 {isLink ? (
                     <Link to={link}>
-                        <button type="button" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`}>{label}</button>
+                        {isModal ? <button type="button" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`} data-toggle="modal" data-target={`#${modalId}`}>{label}</button> : <button type="button" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`}>{label}</button>}
                     </Link>
                 ) : (
-                    <button type="button" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`}>{label}</button>
+                    <>
+                        {isModal ? <button type="button" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`} data-toggle="modal" data-target={`#${modalId}`}>{label}</button> : <button type="button" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`}>{label}</button>}
+                    </>
                 )}
 
             </>
@@ -35,12 +38,12 @@ export const BtnOne = ({ label, btnType, clickHandler, isLink, link, isModal, fl
             <>
                 {isLink ? (
                     <Link to={link}>
-                        <button type="submit" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`}>{label}</button>
+                        {isModal ? <button type="submit" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`} data-toggle="modal" data-target={`#${modalId}`}>{label}</button> : <button type="submit" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`}>{label}</button>}
                     </Link>
                 ) : (
-
-                    <button type="submit" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`}>{label}</button>
-
+                    <>
+                        {isModal ? <button type="submit" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`} data-toggle="modal" data-target={`#${modalId}`}>{label}</button> : <button type="submit" onClick={clickHandler} className={`${styles.btn_one} ${floatBottom ? styles.btn_float_bottom : ''} mb-4`}>{label}</button>}
+                    </>
                 )}
             </>
         )

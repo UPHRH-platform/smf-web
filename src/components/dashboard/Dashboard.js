@@ -5,7 +5,7 @@ import { FormService } from "../../services/form.service";
 import { APP } from "../../constants";
 import Notify from "../../helpers/notify";
 import Helper from "../../helpers/auth";
-import { InspectorHome } from "../../layouts";
+import { InspectorHome } from "../../pages";
 
 /**
  * Dashboard component

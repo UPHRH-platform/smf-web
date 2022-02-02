@@ -15,18 +15,19 @@ interface BtnTwoProps {
     link: string
     isModal: boolean
     floatBottom?: boolean
+    modalId?: string
 }
 
-export const BtnTwo = ({ label, btnType, clickHandler, isLink, link, isModal, floatBottom }: BtnTwoProps) => {
+export const BtnTwo = ({ label, btnType, clickHandler, isLink, link, isModal, floatBottom, modalId }: BtnTwoProps) => {
     if (btnType === "button") {
         return (
             <>
                 {isLink ? (
                     <Link to={link}>
-                        <button type="button" onClick={clickHandler} className={`${styles.btn_two} ${floatBottom ? stylesOne.btn_float_bottom : ''} mb-4`}>{label}</button>
+                        <button type="button" onClick={clickHandler} className={`${styles.btn_two} ${floatBottom ? stylesOne.btn_float_bottom : ''} mb-4`} data-toggle="modal" data-target={`#${modalId}`}>{label}</button>
                     </Link>
                 ) : (
-                    <button type="button" onClick={clickHandler} className={`${styles.btn_two} ${floatBottom ? stylesOne.btn_float_bottom : ''} mb-4`}>{label}</button>
+                    <button type="button" onClick={clickHandler} className={`${styles.btn_two} ${floatBottom ? stylesOne.btn_float_bottom : ''} mb-4`} data-toggle="modal" data-target={`#${modalId}`}>{label}</button>
                 )}
 
             </>
@@ -36,11 +37,11 @@ export const BtnTwo = ({ label, btnType, clickHandler, isLink, link, isModal, fl
             <>
                 {isLink ? (
                     <Link to={link}>
-                        <button type="submit" onClick={clickHandler} className={`${styles.btn_two} ${floatBottom ? stylesOne.btn_float_bottom : ''} mb-4`}>{label}</button>
+                        <button type="submit" onClick={clickHandler} className={`${styles.btn_two} ${floatBottom ? stylesOne.btn_float_bottom : ''} mb-4`} data-toggle="modal" data-target={`#${modalId}`}>{label}</button>
                     </Link>
                 ) : (
 
-                    <button type="submit" onClick={clickHandler} className={`${styles.btn_two} ${floatBottom ? stylesOne.btn_float_bottom : ''} mb-4`}>{label}</button>
+                    <button type="submit" onClick={clickHandler} className={`${styles.btn_two} ${floatBottom ? stylesOne.btn_float_bottom : ''} mb-4`} data-toggle="modal" data-target={`#${modalId}`}>{label}</button>
 
                 )}
             </>

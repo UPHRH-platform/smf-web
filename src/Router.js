@@ -8,7 +8,7 @@ import ListForms from "./components/form/ListForms";
 import AddForm from "./components/form/AddForm";
 import MyApplications from "./components/form/MyApplications";
 import MyForms from "./components/form/MyForms";
-import { InspectorApplications, ViewApplications } from "./layouts";
+import { InspectorApplications, ViewApplications } from "./pages";
 
 /* Router function to enable routing between the various components
  * in the project with authentication as well as authorization

@@ -1,0 +1,64 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+
+.custom_model_content {
+  border: 1px solid var(--black-08);
+  border-radius: 4px;
+  box-shadow: 0px 3px 6px 0px var(--black-08);
+  padding: 0.5rem;
+  outline: none;
+}
+
+.custom_modal_title {
+  color: var(--black-87);
+  font-family: "Montserrat-SemiBold";
+  font-size: 1rem;
+  letter-spacing: 0.12;
+  line-height: 1.5;
+}
+
+.custom_modal_body {
+  border: none;
+  outline: none;
+  margin-top: -1rem;
+}
+
+.custom_modal_header {
+  border: none;
+  outline: none;
+}
+
+.custom_modal_footer {
+  border: none;
+  outline: none;
+}
+
+.modal_one_list {
+  background-color: var(--black-04);
+  border: 1px solid var(--black-08);
+  border-radius: 4px;
+}
+
+.modal_one_list label {
+  color: var(--black-87);
+  font-family: "Lato-Regular";
+  font-size: 0.75rem;
+  letter-spacing: 0.25;
+  line-height: 1.333rem;
+}
+
+.modal_one_list h6 {
+  color: var(--black-87);
+  font-family: "Lato-Bold";
+  font-size: 0.875rem;
+  letter-spacing: 0.25;
+  line-height: 1.5rem;
+}
+
+.modal_one_list p {
+  color: var(--black-87);
+  font-family: "Lato-Regular";
+  font-size: 0.75rem;
+  letter-spacing: 0.25;
+  line-height: 1.333rem;
+}
