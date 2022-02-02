@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 interface LoginState {
   email: string
   enterOTPEnabled: boolean
+  OTPValue: string
 }
 
 interface LoginProps {
@@ -26,6 +27,7 @@ class Login extends Component<LoginProps, LoginState> {
     this.state = {
       email: '',
       enterOTPEnabled: false,
+      OTPValue: '',
     };
     if (Auth.isLoggedIn()) {
       this.props.history.push("dashboard");
@@ -36,6 +38,7 @@ class Login extends Component<LoginProps, LoginState> {
     // for email/OTP login
     this.getOTP = this.getOTP.bind(this);
     this.loginWithOTP = this.loginWithOTP.bind(this)
+    this.handleOTPFieldChange = this.handleOTPFieldChange.bind(this)
     // Notify.success('This is a test message.');
   }
 
@@ -118,6 +121,14 @@ class Login extends Component<LoginProps, LoginState> {
     return;
   }
 
+  handleOTPFieldChange(event: any) {
+    console.log(event)
+    const re = /^[0-9\b]+$/;
+    if (event.target.value === '' || re.test(event.target.value)) {
+       this.setState({OTPValue: event.target.value})
+    }
+  } 
+
   render() {
     return (
       <>
@@ -167,6 +178,8 @@ class Login extends Component<LoginProps, LoginState> {
                       className="form-control"
                       placeholder="Enter OTP"
                       autoFocus={true}
+                      onChange={(e) => this.handleOTPFieldChange(e)}
+                      value={this.state.OTPValue}
                       required
                     />
                     <small id="otpHelp" className="form-text text-muted">
