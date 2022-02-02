@@ -91,6 +91,9 @@ class FileUpload extends Component {
       filesUploaded: [...updatedFilesUploaded],
       fileURL: [...updatedFileURL]
     })
+    document.getElementById(
+      "field-" + this.props.field.order
+    ).value = '';
   }
 
   render() {
