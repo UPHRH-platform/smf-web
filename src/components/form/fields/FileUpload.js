@@ -115,7 +115,7 @@ class FileUpload extends Component {
               id={"field-" + this.props.field.order}
               name={"field_" + this.props.field.order}
               path={this.state.fileURL}
-              accept="image/jpg, image/jpeg, image/png, application/pdf"
+              accept={APP.FILE_UPLOAD_ALLOWED_FORMATS}
               className="form-control-file custom-file-input"
               onChange={(e) => { this.handleUploadfile(e) }}
             // placeholder="Type here"
