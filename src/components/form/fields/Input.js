@@ -55,8 +55,9 @@ class Input extends Component {
                 ? "number"
                 : this.state.fieldType
             }
+
             id={"field-" + this.props.field.order}
-            name={this.props.title + "-field" + this.props.field.order}
+            name={"field_" + this.props.field.order}
             className="form-control"
             placeholder="Type here"
             autoComplete="off"

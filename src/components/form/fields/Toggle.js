@@ -33,7 +33,7 @@ class Toggle extends Component {
             <input
               type="checkbox"
               id={"field-" + this.props.field.order}
-              name={this.props.title + "-field" + this.props.field.order}
+              name={"field_" + this.props.field.order}
             />
             <span className="slider round"></span>
           </label>

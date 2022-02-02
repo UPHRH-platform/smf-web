@@ -15,12 +15,12 @@ class Radio extends Component {
   }
 
   componentDidMount() {
-    if (this.props.field.isRequired) {
-      let radioOptions = document.querySelectorAll(
-        "input[name=field-" + this.props.field.order + "]"
-      );
-      radioOptions[0].checked = true;
-    }
+    // if (this.props.field.isRequired) {
+    //   let radioOptions = document.querySelectorAll(
+    //     "input[name=field_" + this.props.field.order + "]"
+    //   );
+    //   radioOptions[0].checked = true;
+    // }
   }
 
   render() {
@@ -41,7 +41,8 @@ class Radio extends Component {
                 <label htmlFor={"field-" + this.props.field.order}>
                   <input
                     type="radio"
-                    name={this.props.title + "-field" + this.props.field.order}
+                    className={"field_" + this.props.field.order + "_radio"}
+                    name={"field_" + this.props.field.order}
                     value={option.key}
                   />
                   &nbsp;&nbsp;&nbsp;{" " + option.value}
