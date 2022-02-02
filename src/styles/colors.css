@@ -7,6 +7,7 @@ html {
 
     --status-green: RGB(29, 137, 35);
     --status-amber: RGB(233, 158, 56);
+    --status-red: RGB(209, 57, 36);
 
     --white-100: RGB(255, 255, 255);
 }
@@ -19,6 +20,7 @@ html[data-theme="dark"] {
 
     --status-green: RGB(29, 137, 35);
     --status-amber: RGB(233, 158, 56);
+    --status-red: RGB(209, 57, 36);
 
     --white-100: RGB(255, 255, 255);
 }

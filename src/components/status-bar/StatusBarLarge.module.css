@@ -1,32 +1,44 @@
 @import url("../../styles/colors.css");
 @import url("../../assets/fonts/fonts.css");
 
-.status_bar {
+.status_bar_large {
   background-color: var(--black-04);
   border: 1px solid var(--black-08);
-  border-top-left-radius: 100px;
-  border-bottom-left-radius: 100px;
-  border-bottom-right-radius: 4px;
-  border-top-right-radius: 4px;
+  border-radius: 4px;
+  box-shadow: 0px 3px 6px 0px var(--black-08);
+  min-height: 5.25rem;
+}
+
+.status_bar_large p {
+  color: var(--black-60);
+  font-family: "Lato-Regular";
+  font-size: 0.875rem;
+  letter-spacing: 0.25;
+  line-height: 1.429;
+  padding: 0.5rem;
+}
+
+.status_bar_large_indicator {
+  background-color: var(--black-04);
+  border: 1px solid var(--black-08);
+  border-radius: 4px;
+  font-family: "Lato-Regular";
+  font-size: 0.75rem;
+  letter-spacing: 0.21;
+  line-height: 1.333;
+  padding-top: 0.15rem;
   height: 1.5rem;
-  min-height: 1.5rem;
-  width: fit-content;
+  max-height: fit-content;
 }
 
-.status_one_label {
+.status_bar_large_green {
   color: var(--status-green);
-  font-size: 0.75rem;
-  font-family: "Lato-Regular";
-  letter-spacing: 0.21;
-  line-height: 1.333;
-  vertical-align: text-top;
 }
 
-.status_two_label {
+.status_bar_large_amber {
   color: var(--status-amber);
-  font-size: 0.75rem;
-  font-family: "Lato-Regular";
-  letter-spacing: 0.21;
-  line-height: 1.333;
-  vertical-align: text-top;
+}
+
+.status_bar_large_red {
+  color: var(--status-red);
 }

@@ -7,6 +7,7 @@ import { useRecoilState } from "recoil";
 import { menuSelected as menuSelectedAtom } from "../../states/atoms";
 import { BtnOne, BtnTwo } from "../../components/buttons";
 import { ModalOne } from "../../components/modal";
+import { FormView } from "../../layouts";
 
 /**
  * ViewApplications component renders
@@ -154,8 +155,8 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
 
                             {/* Form view */}
                         </div>
-                        <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9" style={{ border: "1px solid red" }}>
-
+                        <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mt-4">
+                            <FormView />
                         </div>
                     </div>
                 </div>
