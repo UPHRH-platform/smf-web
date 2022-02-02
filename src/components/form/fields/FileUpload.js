@@ -15,6 +15,7 @@ class FileUpload extends Component {
       fieldType: "",
       language: "en",
       fileURL: "",
+      filesUploaded: this.props.files || [],
     };
     this.handleUploadfile = this.handleUploadfile.bind(this)
   }
@@ -41,9 +42,9 @@ class FileUpload extends Component {
   handleUploadfile = (event) => {
     event.preventDefault();
     const data = new FormData();
-    // console.log('event.target.files', event.target.files[0])
-    if(event.target.files[0]) {
-      data.append('files',event.target.files[0] );
+    console.log('event.target.files', event.target.files[0])
+    if (event.target.files[0]) {
+      data.append('files', event.target.files[0]);
       FormService.uploadfile(
         data
       ).then(
@@ -53,8 +54,16 @@ class FileUpload extends Component {
             // console.log('SUCESS response :', response)
             // console.log(response.responseData[0])
             this.setState({
-              fileURL: response.responseData[0],
+              fileURL: [...this.state.fileURL, response.responseData[0]],
+              filesUploaded: [
+                ...this.state.filesUploaded,
+                {
+                  'name': event.target.files[0].name,
+                  'url': response.responseData[0]
+                }
+              ]
             });
+            console.log(this.state.filesUploaded)
           } else {
             Notify.error(response.statusInfo.errorMessage);
           }
@@ -69,39 +78,56 @@ class FileUpload extends Component {
     return;
   }
 
+  removeFileSelected = (file, index) => {
+    const updatedFileURL = this.state.fileURL.filter((url) => {
+      console.log(file.url)
+      console.log(url)
+      return url !== file.url
+    })
+    const updatedFilesUploaded = this.state.filesUploaded.filter(function (obj) {
+      return obj.name !== file.name;
+    });
+    this.setState({
+      filesUploaded: [...updatedFilesUploaded],
+      fileURL: [...updatedFileURL]
+    })
+  }
+
   render() {
     // strings.setLanguage(
     //   localStorage.getItem("language") || this.state.language
     // );
     return (
       <>
-      <div className="form-group">
-        <div
-          className={`col-md-${
-            this.props.field.width ? this.props.field.width : LANG.DEFAULT_COL
-          }`}
-        >
-          <label htmlFor={"field-" + this.props.field.order}>
-            {this.props.field.name}
-          </label>
-          <input
-            type={this.state.fieldType}
-            id={"field-" + this.props.field.order}
-            name={"field_" + this.props.field.order}
-            path={this.state.fileURL}
-            className="form-control-file"
-            onChange={(e) => {this.handleUploadfile(e)}}
+        <div className="form-group">
+          <div
+            className={`custom-file col-md-${this.props.field.width ? this.props.field.width : LANG.DEFAULT_COL
+              }`}
+          >
+            <input
+              type={this.state.fieldType}
+              id={"field-" + this.props.field.order}
+              name={"field_" + this.props.field.order}
+              path={this.state.fileURL}
+              accept="image/jpg, image/jpeg, image/png, application/pdf"
+              className="form-control-file custom-file-input"
+              onChange={(e) => { this.handleUploadfile(e) }}
             // placeholder="Type here"
             // autoComplete="off"
-          />
+            />
+            <label className="custom-file-label" htmlFor={"field-" + this.props.field.order}>{this.props.field.name}</label>
+          </div>
         </div>
-      </div>
-      {/* <div className="input-group mb-3">
-      <div className="custom-file">
-        <input type="file" className="custom-file-input" id="inputGroupFile03"/>
-        <label className="custom-file-label" htmlFor="inputGroupFile03">Choose file</label>
-      </div>
-    </div> */}
+        {this.state.filesUploaded && this.state.filesUploaded.length > 0 &&
+          <div className="custom-file-display">
+            {this.state.filesUploaded.map((file, index) => (
+              <div className="file-item" key={index}>
+                <span>{file.name}</span>
+                <span className="close" onClick={(e) => this.removeFileSelected(file, index)}><i className="fa fa-close"></i></span>
+              </div>
+            ))}
+          </div>
+        }
       </>
     );
   }
