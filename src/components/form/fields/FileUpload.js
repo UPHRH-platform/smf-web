@@ -14,6 +14,7 @@ class FileUpload extends Component {
     this.state = {
       fieldType: "",
       language: "en",
+      fileURL: "",
     };
     this.handleUploadfile = this.handleUploadfile.bind(this)
   }
@@ -40,26 +41,20 @@ class FileUpload extends Component {
   handleUploadfile = (event) => {
     event.preventDefault();
     const data = new FormData();
-    console.log('event.target.files', event.target.files[0])
+    // console.log('event.target.files', event.target.files[0])
     if(event.target.files[0]) {
       data.append('files',event.target.files[0] );
-      // data.append('name', event.target.files[0].name);
-      console.log('handleUploadfile:: data -- ', data)
-      // fetch("https://smfdev.idc.tarento.com/api/forms/fileUpload", {
-      //      method: 'POST',
-      //      headers: {
-      //          'Accept': 'application/json',
-      //      },
-      //      body: data
-      // }).then((response) =>  {
-      //    return response.text();
-      // })
       FormService.uploadfile(
         data
       ).then(
         response => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
             // this.props.history.push("/dashboard");
+            // console.log('SUCESS response :', response)
+            // console.log(response.responseData[0])
+            this.setState({
+              fileURL: response.responseData[0],
+            });
           } else {
             Notify.error(response.statusInfo.errorMessage);
           }
@@ -79,6 +74,7 @@ class FileUpload extends Component {
     //   localStorage.getItem("language") || this.state.language
     // );
     return (
+      <>
       <div className="form-group">
         <div
           className={`col-md-${
@@ -92,6 +88,7 @@ class FileUpload extends Component {
             type={this.state.fieldType}
             id={"field-" + this.props.field.order}
             name={"field_" + this.props.field.order}
+            path={this.state.fileURL}
             className="form-control-file"
             onChange={(e) => {this.handleUploadfile(e)}}
             // placeholder="Type here"
@@ -99,6 +96,13 @@ class FileUpload extends Component {
           />
         </div>
       </div>
+      {/* <div className="input-group mb-3">
+      <div className="custom-file">
+        <input type="file" className="custom-file-input" id="inputGroupFile03"/>
+        <label className="custom-file-label" htmlFor="inputGroupFile03">Choose file</label>
+      </div>
+    </div> */}
+      </>
     );
   }
 }
