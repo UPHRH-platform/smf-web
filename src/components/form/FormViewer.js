@@ -148,7 +148,19 @@ class FormViewer extends Component {
     );
   };
 
-  populateData = () => {
+  populateData = () => {   
+    // Code for files starts
+    var fileElements = document.getElementsByClassName("custom-file-display");
+    for (let ele1 = 0; ele1 < fileElements.length; ele1++) {
+      fileElements[ele1].innerHTML = ""
+      fileElements[ele1].style.display = "none";
+    }
+    var fileElements = document.getElementsByClassName("form-control-file");
+    for (let ele2 = 0; ele2 < fileElements.length; ele2++) {
+      fileElements[ele2].setAttribute("path", "");
+    }
+    // Code for files ends
+
     var fields = this.state.formFields;
     // console.log(this.state.formFields);
     for (var key of Object.keys(fields)) {
@@ -171,8 +183,32 @@ class FormViewer extends Component {
             for (var k in sel)
               if (options[i].innerHTML === sel[k])
                 options[i].selected = "selected";
-        } else {
+        } else if (element[0].type !== "file") {
           element[0].value = fields[key];
+        } else if (element[0].type === "file") {
+          element[0].setAttribute("path", fields[key]);
+          element.innerHTML = "";
+          // alert();
+         
+          if (fields[key] !== "") {
+            let temp = fields[key].split(",");
+            var keyIndex = key.split("_");
+            for (let l=0; l< temp.length; l++) {
+              var element = document.getElementById("files-list-" + keyIndex[1]);
+              element.style.display = "block";
+              element.innerHTML +=
+                '<div class="col-12 file-item">\
+            <span>' +
+            temp[l] +
+                '</span>\
+            <span \
+            class="cross" \
+          > \
+            X \
+          </span>\
+          </div>';
+            }
+          }
         }
       }
     }
@@ -250,6 +286,8 @@ class FormViewer extends Component {
       formFields: obj,
     });
     console.log(obj);
+    // files={this.state.formFields["field_3"].split(",")}
+    // console.log(this.state.formFields["field_3"]);
   };
 
   submitForm = () => {
@@ -330,6 +368,9 @@ class FormViewer extends Component {
                               setTimeout(() => {
                                 this.populateData();
                               }, 100);
+                              setTimeout(() => {
+                                this.populateData();
+                              }, 150);
                               // }
                             }}
                             className="btn btn-primary smf-btn-primary float-left"
@@ -405,7 +446,7 @@ class FormViewer extends Component {
                                     this.populateData();
                                   }, 100);
                                 }
-                              } else {
+                              } else if ((i !== this.state.headingIndex)) {
                                 this.setState({ headingIndex: i });
                                 setTimeout(() => {
                                   this.populateData();
@@ -520,7 +561,21 @@ class FormViewer extends Component {
                               // case LANG.FIELD_TYPES.rating:
                               //   return <Rating key={index} field={field} />;
                               case LANG.FIELD_TYPES.file:
-                                return <FileUpload key={index} field={field} />;
+                                // var fileOrder = this.state.formFieldGroups[this.state.headingIndex][index].order;
+                                return (
+                                  <FileUpload
+                                    key={index}
+                                    field={field}
+                                    // files={
+                                    //   this.state.formFields["field_" + fileOrder] !== undefined &&
+                                    //   this.state.formFields["field_" + fileOrder] !== ""
+                                    //     ? this.state.formFields[
+                                    //         "field_" + fileOrder
+                                    //       ].split(",")
+                                    //     : []
+                                    // }
+                                  />
+                                );
                               case LANG.FIELD_TYPES.multiselect:
                                 return (
                                   <MultiSelect

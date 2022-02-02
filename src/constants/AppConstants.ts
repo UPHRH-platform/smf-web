@@ -11,5 +11,11 @@ export const APP = {
   ROLE: {
     INSTITUTION: "Institution",
     REGULATOR: "Regulator",
-  }
+  },
+  FILE_UPLOAD_ALLOWED_FORMATS : [
+    'image/jpg', 
+    'image/jpeg', 
+    'image/png', 
+    'application/pdf'
+  ]
 };
