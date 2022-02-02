@@ -35,10 +35,19 @@ class MultiSelect extends Component {
         >
           <label htmlFor={"field-" + this.props.field.order}>
             {this.props.field.name}
+            {this.props.field.isRequired && (
+              <span title="Required" className="required">
+                &nbsp; *
+              </span>
+            )}
           </label>
           <select
             multiple
-            className={"custom-select multiselect field_" + this.props.field.order + "_multiselect"}
+            className={
+              "custom-select multiselect field_" +
+              this.props.field.order +
+              "_multiselect"
+            }
             id={"field-" + this.props.field.order}
             name={"field_" + this.props.field.order}
           >

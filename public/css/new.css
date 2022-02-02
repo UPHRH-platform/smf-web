@@ -386,3 +386,10 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     top: 0;
     width: auto;
 }
+
+.required {
+    font-weight: 700;
+    margin-top: 1px;
+    position: absolute;
+    color: #e64c1d;
+}

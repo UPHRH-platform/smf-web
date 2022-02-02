@@ -27,15 +27,26 @@ class Checkbox extends Component {
             this.props.field.width ? this.props.field.width : LANG.DEFAULT_COL
           }`}
         >
-          <label>{this.props.field.name}</label>
+          <label>
+            {this.props.field.name}
+            {this.props.field.isRequired && (
+              <span title="Required" className="required">
+                &nbsp; *
+              </span>
+            )}
+          </label>
           {this.props.field.values.map((option, key) => (
             <div className="form-check" key={key}>
-              <label htmlFor={"field-" + this.props.field.order} >
+              <label htmlFor={"field-" + this.props.field.order}>
                 &nbsp;&nbsp;&nbsp;
                 <input
                   type="checkbox"
                   name={"field_" + this.props.field.order}
-                  className={"form-check-input field_" + this.props.field.order + "_checkbox"}
+                  className={
+                    "form-check-input field_" +
+                    this.props.field.order +
+                    "_checkbox"
+                  }
                   value={option.key}
                 />
                 {" " + option.value}

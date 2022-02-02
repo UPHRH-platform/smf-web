@@ -48,14 +48,19 @@ class Input extends Component {
         >
           <label htmlFor={"field-" + this.props.field.order}>
             {this.props.field.name}
+            {this.props.field.isRequired && (
+              <span title="Required" className="required">
+                &nbsp; *
+              </span>
+            )}
           </label>
           <input
             type={
-              this.props.field.fieldType === LANG.FIELD_TYPES.numeric.toLowerCase()
+              this.props.field.fieldType ===
+              LANG.FIELD_TYPES.numeric.toLowerCase()
                 ? "number"
                 : this.state.fieldType
             }
-
             id={"field-" + this.props.field.order}
             name={"field_" + this.props.field.order}
             className="form-control"

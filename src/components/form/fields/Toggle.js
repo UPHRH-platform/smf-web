@@ -27,7 +27,14 @@ class Toggle extends Component {
             this.props.field.width ? this.props.field.width : LANG.DEFAULT_COL
           }`}
         >
-          <label>{this.props.field.name}</label>
+          <label>
+            {this.props.field.name}
+            {this.props.field.isRequired && (
+              <span title="Required" className="required">
+                &nbsp; *
+              </span>
+            )}
+          </label>
           <br />
           <label className="switch">
             <input

@@ -16,7 +16,7 @@ class FileUpload extends Component {
       language: "en",
       fileURL: "",
     };
-    this.handleUploadfile = this.handleUploadfile.bind(this)
+    this.handleUploadfile = this.handleUploadfile.bind(this);
   }
 
   componentDidMount() {
@@ -42,12 +42,10 @@ class FileUpload extends Component {
     event.preventDefault();
     const data = new FormData();
     // console.log('event.target.files', event.target.files[0])
-    if(event.target.files[0]) {
-      data.append('files',event.target.files[0] );
-      FormService.uploadfile(
-        data
-      ).then(
-        response => {
+    if (event.target.files[0]) {
+      data.append("files", event.target.files[0]);
+      FormService.uploadfile(data).then(
+        (response) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
             // this.props.history.push("/dashboard");
             // console.log('SUCESS response :', response)
@@ -59,15 +57,15 @@ class FileUpload extends Component {
             Notify.error(response.statusInfo.errorMessage);
           }
         },
-        error => {
+        (error) => {
           error.statusInfo
             ? Notify.error(error.statusInfo.errorMessage)
             : Notify.error(error.message);
-        },
+        }
       );
     }
     return;
-  }
+  };
 
   render() {
     // strings.setLanguage(
@@ -75,28 +73,37 @@ class FileUpload extends Component {
     // );
     return (
       <>
-      <div className="form-group">
-        <div
-          className={`col-md-${
-            this.props.field.width ? this.props.field.width : LANG.DEFAULT_COL
-          }`}
-        >
-          <label htmlFor={"field-" + this.props.field.order}>
-            {this.props.field.name}
-          </label>
-          <input
-            type={this.state.fieldType}
-            id={"field-" + this.props.field.order}
-            name={"field_" + this.props.field.order}
-            path={this.state.fileURL}
-            className="form-control-file"
-            onChange={(e) => {this.handleUploadfile(e)}}
-            // placeholder="Type here"
-            // autoComplete="off"
-          />
+        <div className="form-group">
+          <div
+            className={`col-md-${
+              this.props.field.width ? this.props.field.width : LANG.DEFAULT_COL
+            }`}
+          >
+            <label htmlFor={"field-" + this.props.field.order}>
+              {this.props.field.name}
+              {this.props.field.isRequired && (
+                <span title="Required" className="required">
+                  &nbsp; *
+                </span>
+              )}
+            </label>
+            <input
+              type={this.state.fieldType}
+              id={"field-" + this.props.field.order}
+              name={"field_" + this.props.field.order}
+              path={this.state.fileURL}
+              className={
+                "form-control-file field_" + this.props.field.order + "_file"
+              }
+              onChange={(e) => {
+                this.handleUploadfile(e);
+              }}
+              // placeholder="Type here"
+              // autoComplete="off"
+            />
+          </div>
         </div>
-      </div>
-      {/* <div className="input-group mb-3">
+        {/* <div className="input-group mb-3">
       <div className="custom-file">
         <input type="file" className="custom-file-input" id="inputGroupFile03"/>
         <label className="custom-file-label" htmlFor="inputGroupFile03">Choose file</label>

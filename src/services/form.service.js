@@ -1,7 +1,7 @@
 import { APIS, APP, LANG } from "../constants";
 import { authHeader, authHeaderForUpload } from "../helpers/authHeader";
-import Notify from "./../helpers/notify";
-import axios from "axios";
+// import Notify from "./../helpers/notify";
+// import axios from "axios";
 
 export const FormService = {
   get,
