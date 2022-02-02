@@ -12,9 +12,10 @@ interface BtnOneProps {
     clickHandler?: (event: any) => void
     isLink: boolean
     link: string
+    isModal?: boolean
 }
 
-export const BtnOne = ({ label, btnType, clickHandler, isLink, link }: BtnOneProps) => {
+export const BtnOne = ({ label, btnType, clickHandler, isLink, link, isModal }: BtnOneProps) => {
     if (btnType === "button") {
         return (
             <>
@@ -27,7 +28,6 @@ export const BtnOne = ({ label, btnType, clickHandler, isLink, link }: BtnOnePro
                 )}
 
             </>
-
         )
     } else {
         return (
@@ -42,7 +42,6 @@ export const BtnOne = ({ label, btnType, clickHandler, isLink, link }: BtnOnePro
 
                 )}
             </>
-
         )
     }
 }

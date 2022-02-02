@@ -1,17 +1,24 @@
-import styles from "./HeadingOne.module.css";
+import styles from "./SideNavigation.module.css";
 
 /**
- * HeadingOne component renders
- * larger variant of headings
+ * SideNavigation component renders
+ * side menu for the applications
  */
 
 interface SideNavigationProps {
     text?: string
-    isSelected?: string
+    isSelected?: boolean
+    clickHandler?: (event: any) => void
 }
 
-export const SideNavigation = ({ text, isSelected }: SideNavigationProps) => {
-    return (
-        <label className={`${isSelected} ? ${styles.side_navigation_unselected} : ${styles.side_navigation_selected}`}>{text}</label>
-    )
+export const SideNavigation = ({ text, isSelected, clickHandler }: SideNavigationProps) => {
+    if (isSelected) {
+        return (
+            <p className={`${styles.side_navigation_selected} p-3 m-0`} onClick={clickHandler}>{text}</p>
+        )
+    } else {
+        return (
+            <p className={`${styles.side_navigation_unselected} p-3 m-0`} onClick={clickHandler}>{text}</p>
+        )
+    }
 }
