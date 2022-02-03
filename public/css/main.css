@@ -2989,9 +2989,9 @@ button.active {
   padding-left: 20px;
 }
 
-input {
+/* input {
   border-radius: unset !important;
-}
+} */
 
 .input-bg-2 {
   background-color: var(--input-background-2) !important;
