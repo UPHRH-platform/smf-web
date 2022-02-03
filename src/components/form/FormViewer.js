@@ -32,7 +32,8 @@ class FormViewer extends Component {
     this.saveFields = this.saveFields.bind(this);
     this.populateForm = this.populateForm.bind(this);
     this.populateData = this.populateData.bind(this);
-    this.validationPassed = this.validationPassed.bind(true);
+    this.populateData = this.populateData.bind(this);
+    this.disableFormElements = this.disableFormElements.bind(true);
     this.submitForm = this.submitForm.bind(this);
   }
 
@@ -148,11 +149,11 @@ class FormViewer extends Component {
     );
   };
 
-  populateData = () => {   
+  populateData = () => {
     // Code for files starts
     var fileElements = document.getElementsByClassName("custom-file-display");
     for (let ele1 = 0; ele1 < fileElements.length; ele1++) {
-      fileElements[ele1].innerHTML = ""
+      fileElements[ele1].innerHTML = "";
       fileElements[ele1].style.display = "none";
     }
     var fileElements = document.getElementsByClassName("form-control-file");
@@ -165,6 +166,7 @@ class FormViewer extends Component {
     // console.log(this.state.formFields);
     for (var key of Object.keys(fields)) {
       var element = document.getElementsByName(key);
+
       if (element.length > 0) {
         if (element[0].type === "checkbox" || element[0].type === "radio") {
           var len = element.length;
@@ -189,17 +191,19 @@ class FormViewer extends Component {
           element[0].setAttribute("path", fields[key]);
           element.innerHTML = "";
           // alert();
-         
+
           if (fields[key] !== "") {
             let temp = fields[key].split(",");
             var keyIndex = key.split("_");
-            for (let l=0; l< temp.length; l++) {
-              var element = document.getElementById("files-list-" + keyIndex[1]);
+            for (let l = 0; l < temp.length; l++) {
+              var element = document.getElementById(
+                "files-list-" + keyIndex[1]
+              );
               element.style.display = "block";
               element.innerHTML +=
                 '<div class="col-12 file-item">\
             <span>' +
-            temp[l] +
+                temp[l] +
                 '</span>\
             <span \
             class="cross" \
@@ -212,22 +216,44 @@ class FormViewer extends Component {
         }
       }
     }
+
+    if (
+      this.props.match.params.applicationId !== null &&
+      this.props.match.params.applicationId !== undefined
+    ) {
+      this.disableFormElements();
+    }
+  };
+
+  disableFormElements = () => {
+    let fields = this.state.formFields;
+    for (let key of Object.keys(fields)) {
+      console.log(key);
+      let element = document.getElementById(key.replace("_", "-"));
+      if (element) element.disabled = true;
+    }
+    document.querySelector('.file-item .cross').style.display = "none";
   };
 
   validationPassed = () => {
     let flag = true;
-    let fields = this.state.formFieldGroups[this.state.headingIndex];
-    for (let i = 0; i < fields.length; i++) {
-      // console.log("field_" + fields[i].order);
-      if (
-        this.state.formFields["field_" + fields[i].order] === "" &&
-        fields[i].isRequired
-      ) {
-        flag = false;
+    if (
+      this.props.match.params.applicationId === null ||
+      this.props.match.params.applicationId === undefined
+    ) {
+      let fields = this.state.formFieldGroups[this.state.headingIndex];
+      for (let i = 0; i < fields.length; i++) {
+        // console.log("field_" + fields[i].order);
+        if (
+          this.state.formFields["field_" + fields[i].order] === "" &&
+          fields[i].isRequired
+        ) {
+          flag = false;
+        }
       }
-    }
-    if (!flag) {
-      Notify.error("Please fill all required fields.");
+      if (!flag) {
+        Notify.error("Please fill all required fields.");
+      }
     }
     return flag;
   };
@@ -446,7 +472,7 @@ class FormViewer extends Component {
                                     this.populateData();
                                   }, 100);
                                 }
-                              } else if ((i !== this.state.headingIndex)) {
+                              } else if (i !== this.state.headingIndex) {
                                 this.setState({ headingIndex: i });
                                 setTimeout(() => {
                                   this.populateData();
