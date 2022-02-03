@@ -60,6 +60,7 @@ class FormViewer extends Component {
     if (nextProps.location.pathname !== this.props.location.pathname) {
       this.loadFormDetails(this.props.match.params.id);
       // console.log(this.props.match.params.applicationId);
+     
       if (this.props.match.params.applicationId !== null) {
         setTimeout(() => {
           this.populateForm(this.props.match.params.applicationId);
@@ -218,8 +219,8 @@ class FormViewer extends Component {
     }
 
     if (
-      this.props.match.params.applicationId !== null &&
-      this.props.match.params.applicationId !== undefined
+      (this.props.match.params.applicationId !== null &&
+        this.props.match.params.applicationId !== undefined)
     ) {
       this.disableFormElements();
     }
@@ -249,8 +250,9 @@ class FormViewer extends Component {
   validationPassed = () => {
     let flag = true;
     if (
-      this.props.match.params.applicationId === null ||
-      this.props.match.params.applicationId === undefined
+      (this.props.match.params.applicationId === null ||
+        this.props.match.params.applicationId === undefined) &&
+      Helper.getUserRole() === APP.ROLE.INSTITUTION
     ) {
       for (let index = 0; index <= this.state.headingIndex; index++) {
         if (!flag) break;
@@ -265,9 +267,12 @@ class FormViewer extends Component {
             this.setState({
               headingIndex: index,
             });
-            let element = document.getElementsByName("field_" + fields[i].order);
-            for (let j = 0; j < fields.length; j++) 
-            if (element[j]) element[j].classList.add("is-invalid", "has-error");
+            let element = document.getElementsByName(
+              "field_" + fields[i].order
+            );
+            for (let j = 0; j < fields.length; j++)
+              if (element[j])
+                element[j].classList.add("is-invalid", "has-error");
             break;
           }
         }
@@ -431,12 +436,12 @@ class FormViewer extends Component {
                       </div>
                       <div className="col-6">
                         <div className="pull-right">
-                          {!(
-                            this.props.match.params.applicationId !== null &&
+                          {!
+                            (this.props.match.params.applicationId !== null &&
                             this.props.match.params.applicationId !==
-                              undefined &&
+                              undefined) &&
                             Helper.getUserRole() === APP.ROLE.INSTITUTION
-                          ) &&
+                           &&
                             this.state.headingIndex ===
                               this.state.formHeadings.length - 1 && (
                               <button
