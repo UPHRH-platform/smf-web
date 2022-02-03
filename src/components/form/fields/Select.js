@@ -35,13 +35,20 @@ class Select extends Component {
         >
           <label htmlFor={"field-" + this.props.field.order}>
             {this.props.field.name}
+            {this.props.field.isRequired && (
+              <span title="Required" className="required">
+                &nbsp; *
+              </span>
+            )}
           </label>
           <select
             className="custom-select"
             id={"field-" + this.props.field.order}
             name={"field_" + this.props.field.order}
           >
-            <option defaultValue>Select from dropdown</option>
+            <option value="" defaultValue>
+              Select from dropdown
+            </option>
             {this.props.field.values.map((option, key) => (
               <option key={key} value={option.key}>
                 {option.value}

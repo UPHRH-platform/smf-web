@@ -17,6 +17,9 @@ const Auth = {
 
   getUserRole() {
     let user = JSON.parse(localStorage.getItem("user"));
+    if(!user) {
+      return ''
+    }
     return user.roles[0].name;
   }
 };

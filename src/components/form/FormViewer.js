@@ -9,10 +9,11 @@ import Checkbox from "./fields/Checkbox";
 import Select from "./fields/Select";
 import Toggle from "./fields/Toggle";
 import Textarea from "./fields/Textarea";
-import Rating from "./fields/Rating";
+// import Rating from "./fields/Rating";
 import FileUpload from "./fields/FileUpload";
 import MultiSelect from "./fields/MultiSelect";
-const $ = window.$;
+import Helper from "../../helpers/auth";
+// const $ = window.$;
 
 class FormViewer extends Component {
   constructor(props) {
@@ -31,6 +32,7 @@ class FormViewer extends Component {
     this.saveFields = this.saveFields.bind(this);
     this.populateForm = this.populateForm.bind(this);
     this.populateData = this.populateData.bind(this);
+    this.validationPassed = this.validationPassed.bind(true);
     this.submitForm = this.submitForm.bind(this);
   }
 
@@ -50,7 +52,6 @@ class FormViewer extends Component {
       setTimeout(() => {
         this.populateForm(this.props.match.params.applicationId);
       }, 50);
-      
     }
   }
 
@@ -120,12 +121,14 @@ class FormViewer extends Component {
           // console.log(fields);
           for (var pkey of Object.keys(savedFields)) {
             for (var key of Object.keys(savedFields[pkey])) {
-            for (let j = 0; j < fields.length; j++) {
-              // console.log(key, fields[j].name);
-              if (key === fields[j].name) {
-                newFields["field_" + fields[j].order] = savedFields[pkey][key];
+              for (let j = 0; j < fields.length; j++) {
+                // console.log(key, fields[j].name);
+                if (key === fields[j].name) {
+                  newFields["field_" + fields[j].order] =
+                    savedFields[pkey][key];
+                }
               }
-            }}
+            }
           }
           this.setState({
             formFields: newFields,
@@ -145,7 +148,19 @@ class FormViewer extends Component {
     );
   };
 
-  populateData = () => {
+  populateData = () => {   
+    // Code for files starts
+    var fileElements = document.getElementsByClassName("custom-file-display");
+    for (let ele1 = 0; ele1 < fileElements.length; ele1++) {
+      fileElements[ele1].innerHTML = ""
+      fileElements[ele1].style.display = "none";
+    }
+    var fileElements = document.getElementsByClassName("form-control-file");
+    for (let ele2 = 0; ele2 < fileElements.length; ele2++) {
+      fileElements[ele2].setAttribute("path", "");
+    }
+    // Code for files ends
+
     var fields = this.state.formFields;
     // console.log(this.state.formFields);
     for (var key of Object.keys(fields)) {
@@ -165,14 +180,56 @@ class FormViewer extends Component {
             .getElementsByName(key)[0]
             .getElementsByTagName("option");
           for (var i in options)
-            for (var j in sel)
-              if (options[i].innerHTML == sel[j])
+            for (var k in sel)
+              if (options[i].innerHTML === sel[k])
                 options[i].selected = "selected";
-        } else {
+        } else if (element[0].type !== "file") {
           element[0].value = fields[key];
+        } else if (element[0].type === "file") {
+          element[0].setAttribute("path", fields[key]);
+          element.innerHTML = "";
+          // alert();
+         
+          if (fields[key] !== "") {
+            let temp = fields[key].split(",");
+            var keyIndex = key.split("_");
+            for (let l=0; l< temp.length; l++) {
+              var element = document.getElementById("files-list-" + keyIndex[1]);
+              element.style.display = "block";
+              element.innerHTML +=
+                '<div class="col-12 file-item">\
+            <span>' +
+            temp[l] +
+                '</span>\
+            <span \
+            class="cross" \
+          > \
+            X \
+          </span>\
+          </div>';
+            }
+          }
         }
       }
     }
+  };
+
+  validationPassed = () => {
+    let flag = true;
+    let fields = this.state.formFieldGroups[this.state.headingIndex];
+    for (let i = 0; i < fields.length; i++) {
+      // console.log("field_" + fields[i].order);
+      if (
+        this.state.formFields["field_" + fields[i].order] === "" &&
+        fields[i].isRequired
+      ) {
+        flag = false;
+      }
+    }
+    if (!flag) {
+      Notify.error("Please fill all required fields.");
+    }
+    return flag;
   };
 
   saveFields = (index) => {
@@ -219,12 +276,18 @@ class FormViewer extends Component {
         }
         obj["field_" + order] = selected.join();
       }
+
+      var files = document.getElementsByClassName("field_" + order + "_file");
+      if (files.length) {
+        obj["field_" + order] = files[0].getAttribute("path");
+      }
     }
     this.setState({
       formFields: obj,
     });
-    // console.log(data);
-    // console.log(obj);
+    console.log(obj);
+    // files={this.state.formFields["field_3"].split(",")}
+    // console.log(this.state.formFields["field_3"]);
   };
 
   submitForm = () => {
@@ -268,7 +331,6 @@ class FormViewer extends Component {
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
-       
       },
       (error) => {
         error.statusInfo
@@ -299,12 +361,17 @@ class FormViewer extends Component {
                           <button
                             onClick={(e) => {
                               this.saveFields(this.state.headingIndex);
+                              // if (this.validationPassed()) {
                               this.setState({
                                 headingIndex: this.state.headingIndex - 1,
                               });
                               setTimeout(() => {
                                 this.populateData();
                               }, 100);
+                              setTimeout(() => {
+                                this.populateData();
+                              }, 150);
+                              // }
                             }}
                             className="btn btn-primary smf-btn-primary float-left"
                           >
@@ -317,7 +384,9 @@ class FormViewer extends Component {
                         <div className="pull-right">
                           {!(
                             this.props.match.params.applicationId !== null &&
-                            this.props.match.params.applicationId !== undefined
+                            this.props.match.params.applicationId !==
+                              undefined &&
+                            Helper.getUserRole() === APP.ROLE.INSTITUTION
                           ) &&
                             this.state.headingIndex ===
                               this.state.formHeadings.length - 1 && (
@@ -325,7 +394,9 @@ class FormViewer extends Component {
                                 className="btn btn-outline smf-btn-default"
                                 onClick={(e) => {
                                   this.saveFields(this.state.headingIndex);
-                                  this.submitForm();
+                                  if (this.validationPassed()) {
+                                    this.submitForm();
+                                  }
                                 }}
                               >
                                 Save
@@ -336,12 +407,14 @@ class FormViewer extends Component {
                             <button
                               onClick={(e) => {
                                 this.saveFields(this.state.headingIndex);
-                                this.setState({
-                                  headingIndex: this.state.headingIndex + 1,
-                                });
-                                setTimeout(() => {
-                                  this.populateData();
-                                }, 100);
+                                if (this.validationPassed()) {
+                                  this.setState({
+                                    headingIndex: this.state.headingIndex + 1,
+                                  });
+                                  setTimeout(() => {
+                                    this.populateData();
+                                  }, 100);
+                                }
                               }}
                               className="btn btn-primary smf-btn-primary mr-0 ml-2"
                             >
@@ -366,10 +439,19 @@ class FormViewer extends Component {
                             key={i}
                             onClick={(e) => {
                               this.saveFields(this.state.headingIndex);
-                              this.setState({ headingIndex: i });
-                              setTimeout(() => {
-                                this.populateData();
-                              }, 100);
+                              if (i > this.state.headingIndex) {
+                                if (this.validationPassed()) {
+                                  this.setState({ headingIndex: i });
+                                  setTimeout(() => {
+                                    this.populateData();
+                                  }, 100);
+                                }
+                              } else if ((i !== this.state.headingIndex)) {
+                                this.setState({ headingIndex: i });
+                                setTimeout(() => {
+                                  this.populateData();
+                                }, 100);
+                              }
                             }}
                             className={
                               this.state.headingIndex === i ? "active" : ""
@@ -479,7 +561,21 @@ class FormViewer extends Component {
                               // case LANG.FIELD_TYPES.rating:
                               //   return <Rating key={index} field={field} />;
                               case LANG.FIELD_TYPES.file:
-                                return <FileUpload key={index} field={field} />;
+                                // var fileOrder = this.state.formFieldGroups[this.state.headingIndex][index].order;
+                                return (
+                                  <FileUpload
+                                    key={index}
+                                    field={field}
+                                    // files={
+                                    //   this.state.formFields["field_" + fileOrder] !== undefined &&
+                                    //   this.state.formFields["field_" + fileOrder] !== ""
+                                    //     ? this.state.formFields[
+                                    //         "field_" + fileOrder
+                                    //       ].split(",")
+                                    //     : []
+                                    // }
+                                  />
+                                );
                               case LANG.FIELD_TYPES.multiselect:
                                 return (
                                   <MultiSelect

@@ -35,6 +35,11 @@ class Textarea extends Component {
         >
           <label htmlFor={"field-" + this.props.field.order}>
             {this.props.field.name}
+            {this.props.field.isRequired && (
+              <span title="Required" className="required">
+                &nbsp; *
+              </span>
+            )}
           </label>
           <textarea
             id={"field-" + this.props.field.order}

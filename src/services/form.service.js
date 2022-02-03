@@ -1,7 +1,7 @@
 import { APIS, APP, LANG } from "../constants";
 import { authHeader, authHeaderForUpload } from "../helpers/authHeader";
 import Notify from "./../helpers/notify";
-import axios from "axios";
+import { UserService } from "./user.service";
 
 export const FormService = {
   get,
@@ -123,6 +123,16 @@ function handleResponse(response) {
       const error =
         LANG.APIERROR || (data && data.statusInfo && data.statusInfo.errorMessage) || response.statusText;
       return Promise.reject(new Error(error));
+    }
+    if(data && data.statusInfo && data.statusInfo.statusCode) {
+      if(data.statusInfo.statusCode === 306) {
+        const error =
+        (data && data.statusInfo && data.statusInfo.errorMessage) || response.statusText;
+        UserService.logout()
+        Notify.error(error.message)
+        window.location.reload()
+        return Promise.reject(new Error(error));
+      }
     }
     return data;
   });

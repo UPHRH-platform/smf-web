@@ -12,5 +12,11 @@ export const APP = {
     INSTITUTION: "Institution",
     REGULATOR: "Regulator",
     INSPECTOR: "Inspector"
-  }
+  },
+  FILE_UPLOAD_ALLOWED_FORMATS : [
+    'image/jpg', 
+    'image/jpeg', 
+    'image/png', 
+    'application/pdf'
+  ]
 };
