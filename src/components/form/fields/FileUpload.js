@@ -201,7 +201,7 @@ class FileUpload extends Component {
     return (
       <>
         <div
-          className={`col-md-${
+          className={`mb-3 col-md-${
             this.props.field.width ? this.props.field.width : LANG.DEFAULT_COL
           }`}
         >
@@ -240,7 +240,7 @@ class FileUpload extends Component {
           </div>
           <div
             style={{ display: "none" }}
-            className="custom-file-display mt-2"
+            className="custom-file-display"
             id={"files-list-" + this.props.field.order + ""}
           ></div>
           {/* {this.state.filesUploaded && this.state.filesUploaded.length > 0 && (
