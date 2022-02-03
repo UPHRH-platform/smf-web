@@ -76,13 +76,13 @@ class Login extends Component<LoginProps, LoginState> {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           // localStorage.setItem("user", JSON.stringify(response.responseData));
           // this.props.history.push("/dashboards");
+          this.setState({
+            enterOTPEnabled: true,
+            email
+          })
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
-        this.setState({
-          enterOTPEnabled: true,
-          email
-        })
       },
       error => {
         error.statusInfo
