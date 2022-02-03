@@ -29,6 +29,7 @@ class AddForm extends Component {
     this.state = {
       language: "en",
       formElements: [],
+      formTitle: "",
       formDetails: {
         id: "",
         version: "",
@@ -59,6 +60,7 @@ class AddForm extends Component {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
             this.setState({
               formDetails: response.responseData,
+              formTitle: response.responseData.title,
             });
             document.getElementById("id").value = response.responseData.id;
             document.getElementById("version").value =
@@ -203,7 +205,9 @@ class AddForm extends Component {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           Notify.success(response.statusInfo.statusMessage);
           //   this.props.updateParent(response.responseData.id);
-          this.props.history.push("/forms");
+          setTimeout(() => {
+            this.props.history.push("/forms");
+          }, 500);
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
@@ -255,7 +259,7 @@ class AddForm extends Component {
                               arrow_forward_ios
                             </i>
                             <span className="ml-4">
-                              {this.state.formDetails.title.toUpperCase()}
+                              {this.state.formTitle.toUpperCase()}
                             </span>
                             <i className="material-icons white-70 absolute">
                               arrow_forward_ios
@@ -363,7 +367,9 @@ class AddForm extends Component {
                                         index={index}
                                         data={
                                           this.state.formDetails.fields
-                                            ? this.state.formDetails.fields[index]
+                                            ? this.state.formDetails.fields[
+                                                index
+                                              ]
                                             : null
                                         }
                                         removeElement={this.removeElement}
@@ -376,7 +382,9 @@ class AddForm extends Component {
                                         index={index}
                                         data={
                                           this.state.formDetails.fields
-                                            ? this.state.formDetails.fields[index]
+                                            ? this.state.formDetails.fields[
+                                                index
+                                              ]
                                             : null
                                         }
                                         removeElement={this.removeElement}
@@ -389,7 +397,9 @@ class AddForm extends Component {
                                         index={index}
                                         data={
                                           this.state.formDetails.fields
-                                            ? this.state.formDetails.fields[index]
+                                            ? this.state.formDetails.fields[
+                                                index
+                                              ]
                                             : null
                                         }
                                         removeElement={this.removeElement}

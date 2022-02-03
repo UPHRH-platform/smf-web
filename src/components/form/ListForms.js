@@ -136,7 +136,7 @@ class ListForms extends Component {
                       <tr>
                         <th scope="col">Form name</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Published/created on</th>
+                        {/* <th scope="col">Published/created on</th> */}
                         <th scope="col"></th>
                         <th scope="col"></th>
                       </tr>
@@ -148,7 +148,7 @@ class ListForms extends Component {
                             {form.title}
                           </th>
                           <td>Published</td>
-                          <td></td>
+                          {/* <td></td> */}
                           <td className="td-preview">
                             <Link to={`/forms/${form.id}`}>Preview</Link>
                           </td>

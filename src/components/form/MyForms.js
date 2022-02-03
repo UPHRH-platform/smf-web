@@ -12,6 +12,7 @@ class MyForms extends Component {
     this.state = {
       forms: [],
     };
+    this.searchForms = this.searchForms.bind(this);
   }
 
   componentDidMount() {
@@ -43,9 +44,9 @@ class MyForms extends Component {
       a = formItems[i].getElementsByClassName("form-title")[0];
       txtValue = a.textContent || a.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        formItems[i].style.display = "";
+        formItems[i].parentNode.style.display = "";
       } else {
-        formItems[i].style.display = "none";
+        formItems[i].parentNode.style.display = "none";
       }
     }
   };
@@ -90,7 +91,7 @@ class MyForms extends Component {
                           type="text"
                           className="form-control"
                           id="search-roles"
-                          placeholder="Search for an application"
+                          placeholder="Search for a form"
                           autoComplete="off"
                           onKeyUp={(event) => this.searchForms(event)}
                         />
