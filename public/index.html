@@ -68,6 +68,26 @@
     $(document).on('change', 'select', (e) => {
       e.currentTarget.classList.remove("is-invalid", "has-error");
     });
+    $(document).on('change', 'input[type=radio]', (e) => {
+      let order = e.currentTarget.name.split("_");
+      let className = "radio-label-" + order[1];
+      let elements = document.getElementsByClassName(className);
+      // console.log(elements.length);
+      for (let i = 0; i < elements.length; i++) {
+        if (elements[i].classList.contains("selected"))
+          elements[i].classList.remove("selected");
+      }
+      if (e.currentTarget.checked === true) {
+        e.currentTarget.parentNode.classList.add("selected");
+      }
+    });
+    $(document).on('change', 'input[type=checkbox]', (e) => {
+      if (e.currentTarget.checked === true) {
+        e.currentTarget.parentNode.classList.add("selected");
+      } else {
+        e.currentTarget.parentNode.classList.remove("selected");
+      }
+    });
   </script>
 </body>
 

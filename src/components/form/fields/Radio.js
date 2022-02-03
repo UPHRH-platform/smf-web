@@ -46,13 +46,20 @@ class Radio extends Component {
             <div className="col-md-12">
               {this.props.field.values.map((option, key) => (
                 <div className="radio" key={key}>
-                  <label htmlFor={"field-" + this.props.field.order+ key} className={
-                      "mr-2 noselect custom-radio " }>
+                  <label
+                    htmlFor={"field-" + this.props.field.order + key}
+                    className={
+                      "mr-2 noselect custom-radio radio-label-" +
+                      this.props.field.order
+                    }
+                  >
                     <input
                       type="radio"
-                      className={"mr-2 field_" + this.props.field.order + "_radio"}
+                      className={
+                        "mr-2 field_" + this.props.field.order + "_radio"
+                      }
                       name={"field_" + this.props.field.order}
-                      id={"field-" + this.props.field.order+ key}
+                      id={"field-" + this.props.field.order + key}
                       value={option.key}
                     />
                     {" " + option.value}

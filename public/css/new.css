@@ -1,7 +1,7 @@
 html {
     --background: RGB(240, 243, 244);
-    --black-04: rgba(0,0,0,.04);
-    --black-08: rgba(0,0,0,.08);
+    --black-04: rgba(0, 0, 0, .04);
+    --black-08: rgba(0, 0, 0, .08);
     --black-16: RGBA(0, 0, 0, 0.16);
     --status-green: RGB(29, 137, 35);
     --white-95: RGBA(255, 255, 255, 0.95);
@@ -13,9 +13,11 @@ html {
     --menu-active-color: rgb(231 234 235);
     --red-color: #ea6361;
 }
+
 .black-60 {
     color: var(--black-60);
 }
+
 .white-bg {
     background-color: #fff;
 }
@@ -145,7 +147,8 @@ h3 {
     padding-left: 0 !important;
 }
 
-.custom-checkbox, .custom-radio {
+.custom-checkbox,
+.custom-radio {
     height: auto;
     min-width: 87px;
     border-radius: 4px;
@@ -160,14 +163,16 @@ h3 {
     cursor: pointer;
 }
 
-.custom-radio{
+.custom-radio {
     padding: 12px;
 }
-.custom-checkbox{
+
+.custom-checkbox {
     padding: 12px 12px 12px 2.3em;
 }
 
-.custom-checkbox.selected {
+.custom-checkbox.selected,
+.custom-radio.selected {
     border: 1.5px solid RGB(4, 93, 173);
     background: RGBA(4, 93, 173, 0.05);
 }
@@ -241,7 +246,7 @@ h3 {
     box-shadow: 0px 1px 8px -3px RGBA(0, 0, 0, 0.4);
 }
 
-.form-status{
+.form-status {
     display: inline-flex;
     border-radius: 100px 4px 4px 100px;
     padding: 5px 8px 5px 14px;
@@ -455,5 +460,5 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 }
 
 .has-error {
-    border: solid 1px #ea6361!important;
+    border: solid 1px #ea6361 !important;
 }

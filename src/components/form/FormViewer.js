@@ -174,6 +174,7 @@ class FormViewer extends Component {
           let values = fields[key].split(",");
           for (var j = 0; j < len; j++) {
             if (values.includes(element[j].value)) {
+              element[j].parentNode.classList.add("selected");
               element[j].checked = true;
             }
           }
