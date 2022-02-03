@@ -16,6 +16,13 @@ class Checkbox extends Component {
 
   handleChange = (event) => {};
 
+  getCheckedStatus = (option) => {
+    console.log('option :: ', option)
+    setTimeout(() => {
+      return document.getElementById(option).checked
+    }, 500)
+  }
+
   render() {
     // strings.setLanguage(
     //   localStorage.getItem("language") || this.state.language
@@ -36,14 +43,15 @@ class Checkbox extends Component {
             )}
           </label>
           {this.props.field.values.map((option, key) => (
-            <div className="form-check" key={key}>
-              <label htmlFor={"field-" + this.props.field.order}>
-                &nbsp;&nbsp;&nbsp;
+            <div className="custom-form-check form-check" key={key}>
+              <label htmlFor={"field-" + this.props.field.order+key} className={
+                    "mr-2 noselect custom-checkbox "}>
                 <input
                   type="checkbox"
                   name={"field_" + this.props.field.order}
+                  id={"field-" + this.props.field.order+key}
                   className={
-                    "form-check-input field_" +
+                    "mr-2 form-check-input field_" +
                     this.props.field.order +
                     "_checkbox"
                   }

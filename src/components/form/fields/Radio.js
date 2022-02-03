@@ -42,20 +42,24 @@ class Radio extends Component {
               </span>
             )}
           </label>
-          <div className="row col-md-12">
-            {this.props.field.values.map((option, key) => (
-              <div className="radio" key={key}>
-                <label htmlFor={"field-" + this.props.field.order}>
-                  <input
-                    type="radio"
-                    className={"field_" + this.props.field.order + "_radio"}
-                    name={"field_" + this.props.field.order}
-                    value={option.key}
-                  />
-                  &nbsp;&nbsp;&nbsp;{" " + option.value}
-                </label>
-              </div>
-            ))}
+          <div className="row">
+            <div className="col-md-12">
+              {this.props.field.values.map((option, key) => (
+                <div className="radio" key={key}>
+                  <label htmlFor={"field-" + this.props.field.order+ key} className={
+                      "mr-2 noselect custom-radio " }>
+                    <input
+                      type="radio"
+                      className={"mr-2 field_" + this.props.field.order + "_radio"}
+                      name={"field_" + this.props.field.order}
+                      id={"field-" + this.props.field.order+ key}
+                      value={option.key}
+                    />
+                    {" " + option.value}
+                  </label>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </div>

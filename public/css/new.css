@@ -2,6 +2,7 @@ html {
     --background: RGB(240, 243, 244);
     --black-04: rgba(0,0,0,.04);
     --black-08: rgba(0,0,0,.08);
+    --black-16: RGBA(0, 0, 0, 0.16);
     --status-green: RGB(29, 137, 35);
     --white-95: RGBA(255, 255, 255, 0.95);
     --black-87: RGBA(0, 0, 0, 0.87);
@@ -132,12 +133,43 @@ h3 {
 .btn.smf-btn-primary {
     background-color: var(--primary-color) !important;
     color: #fff;
-    border: solid 1px RGBA(0, 0, 0, 0.16) !important;
+    border: solid 1px var(--black-16) !important;
     font-size: 14px !important;
     letter-spacing: 0.5px !important;
     font-weight: 700 !important;
     height: auto;
     min-width: 87px;
+}
+
+.custom-form-check {
+    padding-left: 0 !important;
+}
+
+.custom-checkbox, .custom-radio {
+    height: auto;
+    min-width: 87px;
+    border-radius: 4px;
+    font-size: 14px;
+    line-height: 14px;
+    font-family: 'Lato';
+    display: inline-flex;
+    align-items: center;
+    justify-content: left;
+    border: 1px solid var(--black-16);
+    background: #fff;
+    cursor: pointer;
+}
+
+.custom-radio{
+    padding: 12px;
+}
+.custom-checkbox{
+    padding: 12px 12px 12px 2.3em;
+}
+
+.custom-checkbox.selected {
+    border: 1.5px solid RGB(4, 93, 173);
+    background: RGBA(4, 93, 173, 0.05);
 }
 
 .application-item {
@@ -256,6 +288,7 @@ h3 {
     color: var(--red-color);
     cursor: pointer;
 }
+
 
 
 /* sidebar */
