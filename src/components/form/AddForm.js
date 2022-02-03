@@ -29,6 +29,7 @@ class AddForm extends Component {
     this.state = {
       language: "en",
       formElements: [],
+      formTitle: "",
       formDetails: {
         id: "",
         version: "",
@@ -59,6 +60,7 @@ class AddForm extends Component {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
             this.setState({
               formDetails: response.responseData,
+              formTitle: response.responseData.title
             });
             document.getElementById("id").value = response.responseData.id;
             document.getElementById("version").value =
@@ -255,7 +257,7 @@ class AddForm extends Component {
                               arrow_forward_ios
                             </i>
                             <span className="ml-4">
-                              {this.state.formDetails.title.toUpperCase()}
+                              {this.state.formTitle.toUpperCase()}
                             </span>
                             <i className="material-icons white-70 absolute">
                               arrow_forward_ios

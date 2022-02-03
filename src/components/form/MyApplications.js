@@ -12,6 +12,7 @@ class ListMyApplications extends Component {
     this.state = {
       forms: [],
     };
+    this.searchApplications = this.searchApplications.bind(this);
   }
 
   formatDate(dateParam) {
@@ -44,19 +45,19 @@ class ListMyApplications extends Component {
     );
   }
 
-  searchForms = (event) => {
+  searchApplications = (event) => {
     var input, filter, formContainer, formItems, a, i, txtValue;
     input = event.target.value;
     filter = input.toUpperCase();
     formContainer = document.getElementById("forms-container");
-    formItems = formContainer.getElementsByClassName("form-item");
+    formItems = formContainer.getElementsByClassName("application-item");
     for (i = 0; i < formItems.length; i++) {
       a = formItems[i].getElementsByClassName("form-title")[0];
       txtValue = a.textContent || a.innerText;
       if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        formItems[i].style.display = "";
+        formItems[i].parentNode.style.display = "";
       } else {
-        formItems[i].style.display = "none";
+        formItems[i].parentNode.style.display = "none";
       }
     }
   };
@@ -89,7 +90,7 @@ class ListMyApplications extends Component {
                   )}
                 </div>
               </div>
-              {/* <div className="row mt-4 mb-4">
+              <div className="row mt-4 mb-4">
                 <div className="col-md-12">
                   <div className="row">
                     <div className="col-md-3">
@@ -103,13 +104,13 @@ class ListMyApplications extends Component {
                           id="search-roles"
                           placeholder="Search for an application"
                           autoComplete="off"
-                          onKeyUp={(event) => this.searchForms(event)}
+                          onKeyUp={(event) => this.searchApplications(event)}
                         />
                       </div>
                     </div>
                   </div>
                 </div>
-              </div> */}
+              </div>
               <div className="row" id="forms-container">
                 {this.state.forms.map((form, key) => (
                   <div className="col-md-4 col-sm-12 col-12 mb-3" key={key}>
@@ -117,7 +118,7 @@ class ListMyApplications extends Component {
                       className="application-item white-bg"
                       style={{ minHeight: "150px" }}
                     >
-                      <h3 className="">{form.title}</h3>
+                      <h3 className="form-title">{form.title}</h3>
                       <span className="h3-subheading d-block black-60 mb-2">
                         Submitted on:{" "}
                         {this.formatDate(`${form.createdDate}` || "2022-01-01")}
