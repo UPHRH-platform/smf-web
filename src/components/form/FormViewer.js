@@ -60,6 +60,7 @@ class FormViewer extends Component {
     if (nextProps.location.pathname !== this.props.location.pathname) {
       this.loadFormDetails(this.props.match.params.id);
       // console.log(this.props.match.params.applicationId);
+     
       if (this.props.match.params.applicationId !== null) {
         setTimeout(() => {
           this.populateForm(this.props.match.params.applicationId);
@@ -218,8 +219,8 @@ class FormViewer extends Component {
     }
 
     if (
-      this.props.match.params.applicationId !== null &&
-      this.props.match.params.applicationId !== undefined
+      (this.props.match.params.applicationId !== null &&
+        this.props.match.params.applicationId !== undefined)
     ) {
       this.disableFormElements();
     }
@@ -228,31 +229,56 @@ class FormViewer extends Component {
   disableFormElements = () => {
     let fields = this.state.formFields;
     for (let key of Object.keys(fields)) {
-      console.log(key);
-      let element = document.getElementById(key.replace("_", "-"));
-      if (element) element.disabled = true;
+      // console.log(key);
+      let element = document.getElementsByName(key);
+      if (element[0] !== undefined && element[0] !== null) {
+        element = element[0];
+        if (element.type === "checkbox" || element.type === "radio") {
+          let elements = document.getElementsByName(key);
+          for (let i = 0; i < elements.length; i++) elements[i].disabled = true;
+        } else {
+          if (element) element.disabled = true;
+        }
+      }
     }
-    document.querySelector('.file-item .cross').style.display = "none";
+    let fileRemoval = document.querySelectorAll(".file-item .cross");
+    for (let i = 0; i < fileRemoval.length; i++)
+      if (fileRemoval[i] !== undefined && fileRemoval[i] !== null)
+        fileRemoval[i].style.display = "none";
   };
 
   validationPassed = () => {
     let flag = true;
     if (
-      this.props.match.params.applicationId === null ||
-      this.props.match.params.applicationId === undefined
+      (this.props.match.params.applicationId === null ||
+        this.props.match.params.applicationId === undefined) &&
+      Helper.getUserRole() === APP.ROLE.INSTITUTION
     ) {
-      let fields = this.state.formFieldGroups[this.state.headingIndex];
-      for (let i = 0; i < fields.length; i++) {
-        // console.log("field_" + fields[i].order);
-        if (
-          this.state.formFields["field_" + fields[i].order] === "" &&
-          fields[i].isRequired
-        ) {
-          flag = false;
+      for (let index = 0; index <= this.state.headingIndex; index++) {
+        if (!flag) break;
+        let fields = this.state.formFieldGroups[index];
+        for (let i = 0; i < fields.length; i++) {
+          // console.log("field_" + fields[i].order);
+          if (
+            this.state.formFields["field_" + fields[i].order] === "" &&
+            fields[i].isRequired
+          ) {
+            flag = false;
+            this.setState({
+              headingIndex: index,
+            });
+            let element = document.getElementsByName(
+              "field_" + fields[i].order
+            );
+            for (let j = 0; j < fields.length; j++)
+              if (element[j])
+                element[j].classList.add("is-invalid", "has-error");
+            break;
+          }
         }
-      }
-      if (!flag) {
-        Notify.error("Please fill all required fields.");
+        if (!flag) {
+          Notify.error("Please fill all required fields.");
+        }
       }
     }
     return flag;
@@ -311,7 +337,7 @@ class FormViewer extends Component {
     this.setState({
       formFields: obj,
     });
-    console.log(obj);
+    // console.log(obj);
     // files={this.state.formFields["field_3"].split(",")}
     // console.log(this.state.formFields["field_3"]);
   };
@@ -353,7 +379,9 @@ class FormViewer extends Component {
         console.log(response);
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           Notify.success(response.statusInfo.statusMessage);
-          this.props.history.push("/dashboard");
+          setTimeout(() => {
+            this.props.history.push("/dashboard");
+          }, 500);
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
@@ -408,12 +436,12 @@ class FormViewer extends Component {
                       </div>
                       <div className="col-6">
                         <div className="pull-right">
-                          {!(
-                            this.props.match.params.applicationId !== null &&
+                          {!
+                            (this.props.match.params.applicationId !== null &&
                             this.props.match.params.applicationId !==
-                              undefined &&
+                              undefined) &&
                             Helper.getUserRole() === APP.ROLE.INSTITUTION
-                          ) &&
+                           &&
                             this.state.headingIndex ===
                               this.state.formHeadings.length - 1 && (
                               <button
