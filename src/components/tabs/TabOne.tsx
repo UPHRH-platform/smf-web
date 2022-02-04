@@ -1,0 +1,35 @@
+import styles from "./TabOne.module.css";
+
+/**
+ * TabOne component renders
+ * tab view and its children
+ */
+
+interface TabOneProps {
+    tabId: string
+    tabContentId: string
+    tabList: any
+}
+
+export const TabOne = ({ tabId, tabContentId, tabList }: TabOneProps) => {
+    return (
+        <div className="">
+            <ul className="nav nav-tabs" id={tabId} role="tablist">
+                {tabList && tabList.map((i: any, j: any) => {
+                    return (
+                        <li className="nav-item" role="presentation">
+                            <button className={`${j === 0 ? "nav-link active" : "nav-link"}`} id={i.ariaLabelled} data-toggle="tab" data-target={`#${i.id}`} type="button" role="tab" aria-controls={i.id} aria-selected="true">{i.label}</button>
+                        </li>
+                    );
+                })}
+            </ul>
+            <div className="tab-content" id={tabContentId}>
+                {tabList && tabList.map((m: any, n: any) => {
+                    return (
+                        <div className={`${n === 0 ? "tab-pane fade show active" : "tab-pane fade"}`} id={m.id} role="tabpanel" aria-labelledby={m.ariaLabelled}>{m.children && <>{m.children}</>}</div>
+                    );
+                })}
+            </div>
+        </div>
+    )
+}

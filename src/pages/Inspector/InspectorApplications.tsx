@@ -1,8 +1,10 @@
-import { Fragment } from "react";
+import { Children, Fragment } from "react";
 import { HeadingOne, HeadingTwo } from "../../components/headings";
 import { CardTwo } from "../../components/cards";
 import Header from "../../components/common/Header";
 import { useHistory } from 'react-router-dom';
+import { TabOne } from "../../components/tabs";
+import { ScheduledTodayTab } from "../../layouts";
 
 /**
  * InspectorApplications component renders
@@ -38,6 +40,24 @@ const InspectorPendingApplications = [
     },
 ];
 
+const tabData = [{
+    id: "today",
+    label: "Scheduled today",
+    ariaLabelled: "today-tab",
+    children: <ScheduledTodayTab/>
+},
+{
+    id: "upcoming",
+    label: "Upcoming",
+    ariaLabelled: "upcoming-tab",
+},
+{
+    id: "past",
+    label: "Past",
+    ariaLabelled: "past-tab",
+},
+]
+
 interface InspectorApplicationsProps {
     data?: any
 }
@@ -52,6 +72,13 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
                 <div className="container dashboard-inner-container mt-4">
                     {/* Section one */}
                     <section className="pt-3">
+                        <HeadingOne heading="All applications" />
+                        <div className="mt-4">
+                            <TabOne tabId="myTab" tabContentId="myTabContent" tabList={tabData} />
+                        </div>
+                    </section>
+
+                    {/* <section className="pt-3">
                         <HeadingOne heading="All applications" />
                         <HeadingTwo heading="These are the active application (s) submitted by you." />
                         <div className="row pt-2">
@@ -78,7 +105,7 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
                                 );
                             })}
                         </div>
-                    </section>
+                    </section> */}
                 </div>
             </div>
         </Fragment>
