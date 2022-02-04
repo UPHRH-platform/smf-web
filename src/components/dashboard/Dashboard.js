@@ -5,6 +5,7 @@ import { FormService } from "../../services/form.service";
 import { APP } from "../../constants";
 import Notify from "../../helpers/notify";
 import Helper from "../../helpers/auth";
+import { InspectorHome } from "../../pages";
 
 /**
  * Dashboard component
@@ -287,6 +288,9 @@ class Dashboard extends Component {
             </div>
           </Fragment>
         )}
+
+        {/* Inspector portal */}
+        {Helper.getUserRole() === APP.ROLE.INSPECTOR && <InspectorHome />}
       </Fragment>
     );
   }

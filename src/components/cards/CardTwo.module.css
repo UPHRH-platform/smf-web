@@ -1,0 +1,35 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+
+.card_two {
+  background-color: var(--white-100);
+  border: 1px solid var(--black-08);
+  box-shadow: 0px 3px 6px 0px var(--black-08);
+  border-radius: 4px;
+  padding: 1rem;
+  min-height: 14rem;
+}
+
+.card_two h1 {
+  color: var(--black-87);
+  font-family: "Montserrat-SemiBold";
+  font-size: 1rem;
+  letter-spacing: 0.12;
+  line-height: 1.5;
+}
+
+.label_one {
+  color: var(--black-60);
+  font-family: "Lato-Bold";
+  font-size: 0.875rem;
+  letter-spacing: 0.25;
+  line-height: 1.5;
+}
+
+.label_two {
+  color: var(--black-60);
+  font-family: "Lato-Regular";
+  font-size: 0.875rem;
+  letter-spacing: 0.25;
+  line-height: 1.429;
+}

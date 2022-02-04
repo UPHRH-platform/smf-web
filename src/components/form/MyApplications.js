@@ -5,6 +5,7 @@ import { FormService } from "../../services/form.service";
 import { APP } from "../../constants";
 import Notify from "../../helpers/notify";
 import Header from "../common/Header";
+import { HeadingOne, HeadingTwo } from "../headings";
 
 class ListMyApplications extends Component {
   constructor(props) {
@@ -76,17 +77,15 @@ class ListMyApplications extends Component {
           <div className="container dashboard-inner-container">
             <div className="tabText">
               <div className="row">
-                <div className="col-md-10 col-sm-12 col-12 ">
-                  <h2>My applications</h2>
+                <div className="col-md-10 col-sm-12 col-12">
+                  <HeadingOne heading="My applications" />
                   {this.state.forms && this.state.forms.length ? (
-                    <p className="h2-subheading">
-                      These are the active application (s) submitted by you.
-                    </p>
+                    <HeadingTwo heading="These are the active application (s) submitted by you." />
                   ) : (
-                    <p className="h2-subheading">
-                      There is no active applications. Select one from the below
-                      list to apply.
-                    </p>
+                    <HeadingTwo
+                      heading="There is no active applications. Select one from the below
+                    list to apply."
+                    />
                   )}
                 </div>
               </div>
@@ -129,7 +128,12 @@ class ListMyApplications extends Component {
                         </span>
                       </div>
                       <Link
-                        to={"/applications/" + form.formId + "/" + form.applicationId}
+                        to={
+                          "/applications/" +
+                          form.formId +
+                          "/" +
+                          form.applicationId
+                        }
                         className="btn btn-default smf-btn-default highlighted mt-3"
                         disabled
                       >

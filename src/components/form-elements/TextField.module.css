@@ -1,0 +1,43 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+
+.text_field_input input[type=text] {
+  color: var(--black-87) !important;
+  border: 1px solid var(--black-16) !important;
+  border-radius: 4px !important;
+  font-family: "Lato-Regular" !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.25 !important;
+  line-height: 1.429 !important;
+  padding: 0.5rem !important;
+  outline: none !important;
+  box-shadow: none !important;
+  width: 35%;
+}
+
+.text_field_input input[type=text]:hover {
+  color: var(--black-87) !important;
+  border: 1px solid var(--blue-primary) !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.text_field_input input[type=text]:focus {
+  border: 1px solid var(--blue-primary) !important;
+}
+
+.text_field_input input[type=text]::placeholder {
+  color: var(--black-40) !important;
+  font-family: "Lato-Regular" !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.25 !important;
+  line-height: 1.429 !important;
+}
+
+.text_field_checkbox_label {
+    color: var(--black-87);
+    font-family: "Lato-Regular";
+    font-size: 0.875rem;
+    letter-spacing: 0.25;
+    line-height: 1.5;
+}

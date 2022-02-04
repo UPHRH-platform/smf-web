@@ -1,0 +1,9 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+
+.heading_two {
+  color: var(--black-87);
+  font-family: "Lato-Regular";
+  font-size: 0.75rem;
+  line-height: 1.333;
+}
