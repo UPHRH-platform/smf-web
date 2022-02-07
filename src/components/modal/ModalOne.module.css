@@ -13,7 +13,7 @@
   color: var(--black-87);
   font-family: "Montserrat-SemiBold";
   font-size: 1rem;
-  letter-spacing: 0.12;
+  letter-spacing: 0.12px;
   line-height: 1.5;
 }
 
@@ -43,7 +43,7 @@
   color: var(--black-87);
   font-family: "Lato-Regular";
   font-size: 0.75rem;
-  letter-spacing: 0.25;
+  letter-spacing: 0.25px;
   line-height: 1.333rem;
 }
 
@@ -51,7 +51,7 @@
   color: var(--black-87);
   font-family: "Lato-Bold";
   font-size: 0.875rem;
-  letter-spacing: 0.25;
+  letter-spacing: 0.25px;
   line-height: 1.5rem;
 }
 
@@ -59,6 +59,6 @@
   color: var(--black-87);
   font-family: "Lato-Regular";
   font-size: 0.75rem;
-  letter-spacing: 0.25;
+  letter-spacing: 0.25px;
   line-height: 1.333rem;
 }

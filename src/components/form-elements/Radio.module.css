@@ -13,7 +13,7 @@
   color: var(--black-60);
   font-family: "Lato-Bold";
   font-size: 0.875rem;
-  letter-spacing: 0.25;
+  letter-spacing: 0.25px;
   line-height: 1.429;
 }
 
@@ -23,7 +23,7 @@
   border-radius: 4px;
   font-family: "Lato-Regular";
   font-size: 0.875rem;
-  letter-spacing: 0.25;
+  letter-spacing: 0.25px;
   line-height: 1.5;
 }
 
@@ -43,6 +43,6 @@
   border-radius: 4px;
   font-family: "Lato-Regular";
   font-size: 0.875rem;
-  letter-spacing: 0.25;
+  letter-spacing: 0.25px;
   line-height: 1.5;
 }

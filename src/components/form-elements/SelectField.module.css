@@ -7,7 +7,7 @@
   border-radius: 4px !important;
   font-family: "Lato-Regular" !important;
   font-size: 0.875rem !important;
-  letter-spacing: 0.25 !important;
+  letter-spacing: 0.25px !important;
   line-height: 1.429 !important;
   padding: 0.5rem !important;
   outline: none !important;
@@ -30,6 +30,6 @@
   color: var(--black-40) !important;
   font-family: "Lato-Regular" !important;
   font-size: 0.875rem !important;
-  letter-spacing: 0.25 !important;
+  letter-spacing: 0.25px !important;
   line-height: 1.429 !important;
 }
