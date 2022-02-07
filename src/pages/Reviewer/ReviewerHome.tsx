@@ -102,10 +102,10 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
     useEffect(() => {
         const myApplicationsReq = {
             "searchObjects" : [
-                {
-                    "key" : "status", 
-                    "values" : "Pending"
-                }
+                // {
+                //     "key" : "status", 
+                //     "values" : "Pending"
+                // }
             ]
           }
           FormService.getAllApplications(myApplicationsReq).then(
@@ -125,7 +125,7 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
                 : Notify.error(error.message);
             }
           );
-    });
+    }, []);
     return (
         <Fragment>
             <div className="container-fluid">
@@ -155,8 +155,8 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
                             {pendingApplications.map((i, j) => {
                                 return (
                                     <div
-                                        className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0 mt-xxl-0"
-                                        key={i.id}
+                                        className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mb-3"
+                                        key={i.applicationId}
                                     >
                                         <CardTwo
                                             title={i.title}

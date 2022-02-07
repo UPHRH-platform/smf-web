@@ -13,7 +13,7 @@ interface StatusBarProps {
 export const StatusBar = ({ label, status }: StatusBarProps) => {
     return (
         <div className={`${styles.status_bar}`}>
-            {status && status === "New" && (
+            {status && status === "New" || status === 'Submitted' && (
                 <label className={`${styles.status_one_label} px-3`}>{`Status: ${label}`}</label>
             )}
             {status && status === "Under inspection" && (
