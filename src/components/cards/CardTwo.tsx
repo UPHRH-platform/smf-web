@@ -23,7 +23,7 @@ interface CardTwoProps {
 
 export const CardTwo = ({ title, name, time, showStatus, status, showBtn, btnText, type, statusLabel, isLink, link }: CardTwoProps) => {
     return (
-        <div className={`${styles.card_two}`}>
+        <div className={`${styles.card_two} ${showStatus ? styles.card_two_custom_height : ''}`}>
             <h1>{title}</h1>
             <label className={`${styles.label_one}`}>{name}</label>
             <p className={`${styles.label_two}`}>{time}</p>
@@ -31,7 +31,7 @@ export const CardTwo = ({ title, name, time, showStatus, status, showBtn, btnTex
                 <StatusBar status={status} label={statusLabel} />
             )}
             {showBtn && (
-                <BtnOne btnType={type} label={btnText} isLink={isLink} link={link} floatBottom={true} isModal={false}/>
+                <BtnOne btnType={type} label={btnText} isLink={isLink} link={link} floatBottom={true} isModal={false} />
             )}
         </div>
     )
