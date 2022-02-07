@@ -171,7 +171,7 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
                                             isLink={true}
                                             link={
                                                 "/applications/" +
-                                                i.id 
+                                                i.formId 
                                                 + "/" +
                                                 i.applicationId
                                               }
