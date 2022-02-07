@@ -117,7 +117,7 @@ class FormViewer extends Component {
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           // console.log(response.responseData[0].dataObject);
-          var savedFields = response.responseData[0].dataObject;
+          var savedFields = response.responseData.dataObject;
           var fields = this.state.formDetails.fields;
           var newFields = {};
           // console.log(fields);
