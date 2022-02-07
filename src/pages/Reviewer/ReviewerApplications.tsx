@@ -19,12 +19,16 @@ interface ReviewerApplicationsState {
     applications: Array<{
         title: string,
         createdDate: Date,
-        status: string
+        status: string,
+        formId: number,
+        applicationId: string,
     }>,
     filteredApplications: Array<{
         title: string,
         createdDate: Date,
-        status: string
+        status: string,
+        formId: number,
+        applicationId: string,
     }>,
     currentStatus: string,
 }
@@ -45,7 +49,7 @@ class ReviewerApplications extends Component<ReviewerApplicationsProps, Reviewer
         this.state = {
             applications: [],
             filteredApplications: [],
-            currentStatus: "New",
+            currentStatus: "New"
         };
         this.filterApplications = this.filterApplications.bind(this);
     }
@@ -79,7 +83,14 @@ class ReviewerApplications extends Component<ReviewerApplicationsProps, Reviewer
 
     filterApplications = (status: string) => {
         // if (status === "New") status = "Submitted";
-        let applications = [];
+        let applications: Array<{
+            title: string,
+            createdDate: Date,
+            status: string,
+            formId: number,
+            applicationId: string,
+        }>;
+        applications = [];
         for (let i = 0; i < this.state.applications.length; i++) {
             if (this.state.applications[i].status === status || (status === "New" && this.state.applications[i].status === "Submitted")) {
                 applications.push(this.state.applications[i]);
@@ -160,9 +171,17 @@ class ReviewerApplications extends Component<ReviewerApplicationsProps, Reviewer
                                                         </button>
                                                     </div>
                                                     <div className="mt-3">
-                                                        <button className="btn btn-default smf-btn-default highlighted mt-2">
+                                                        <Link
+                                                            to={
+                                                                "/applications/" +
+                                                                application.formId +
+                                                                "/" +
+                                                                application.applicationId
+                                                            }
+                                                            className="btn btn-default smf-btn-default highlighted mt-3"
+                                                        >
                                                             View application
-                                                        </button>
+                                                        </Link>
                                                     </div>
                                                 </div>
                                             </div>
