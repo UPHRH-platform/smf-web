@@ -29,12 +29,16 @@
 
 .custom_radio_icon_selected {
   color: var(--blue-primary);
-  vertical-align: -0.4rem;
+  vertical-align: -0.38rem;
+  font-size: 1.5rem;
+  padding: 0.25rem;
 }
 
 .custom_radio_icon_unselected {
   color: var(--black-40);
-  vertical-align: -0.4rem;
+  font-size: 1.5rem;
+  vertical-align: -0.38rem;
+  padding: 0.25rem;
 }
 
 .custom_radio_btn_unselected {

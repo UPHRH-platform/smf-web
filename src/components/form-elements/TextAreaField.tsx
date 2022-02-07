@@ -11,12 +11,13 @@ interface TextAreaFieldProps {
     label?: string
     placeholder?: string
     showLabel: boolean
+    rows?: number
     changeHandler?: (event: any) => void
     showStatus?: boolean
     value?: string
 }
 
-export const TextAreaField = ({ label, changeHandler, placeholder, showLabel, showStatus, value }: TextAreaFieldProps) => {
+export const TextAreaField = ({ label, changeHandler, placeholder, showLabel, showStatus, value, rows }: TextAreaFieldProps) => {
     const [characterCount, setCharacterCount] = useState(0);
 
     const updateCharacterCount = (e: any) => {
@@ -26,7 +27,7 @@ export const TextAreaField = ({ label, changeHandler, placeholder, showLabel, sh
     }
 
     return (
-        <div className={`${styles.custom_width}`}>
+        <div className="">
             <div className={`${styles.text_field_input}`} >
                 {showLabel && (
                     <>
@@ -34,7 +35,7 @@ export const TextAreaField = ({ label, changeHandler, placeholder, showLabel, sh
                         <br />
                     </>
                 )}
-                <textarea placeholder={placeholder} rows={4} className={`${styles.text_area_input}`} onChange={changeHandler} onKeyUp={(e) => { updateCharacterCount(e) }} maxLength={200} />
+                <textarea placeholder={placeholder} rows={rows ? rows: 4} className={`${styles.text_area_input}`} onChange={changeHandler} onKeyUp={(e) => { updateCharacterCount(e) }} maxLength={200} value={value}/>
 
                 {showStatus && (
                     <p className={`${styles.text_area_status} float-end`}>{`${characterCount}/200 characters`}</p>

@@ -41,26 +41,26 @@ const InspectorPendingApplications = [
         title: "Paramedical degree",
         name: "Name of college",
         time: "Scheduled on: dd/mm/yyyy",
-        showStatus: true,
+        showStatus: false,
         status: "New",
         showBtn: true,
         type: "button",
         btnText: "View application",
-        isLink: false,
-        link: ""
+        isLink: true,
+        link: "/all-applications/PA001"
     },
     {
         id: "PA002",
         title: "ANM",
         name: "Name of college",
         time: "Scheduled on: dd/mm/yyyy",
-        showStatus: true,
+        showStatus: false,
         status: "Under inspection",
         showBtn: true,
         type: "button",
         btnText: "View application",
-        isLink: false,
-        link: ""
+        isLink: true,
+        link: "/all-applications/PA002"
     },
 ];
 
@@ -92,7 +92,7 @@ export const InspectorHome = ({ data }: InspectorProps) => {
 
                     {/* Section two */}
                     <section className="mt-5">
-                        <HeadingOne heading="Pending applications" />
+                        <HeadingOne heading="Scheduled today" />
                         <HeadingTwo heading="These are latest applications that is pending for your review/approval" />
                         <div className="row mt-3">
                             {InspectorPendingApplications.map((i, j) => {
