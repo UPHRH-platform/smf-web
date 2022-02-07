@@ -28,7 +28,12 @@ class ListMyApplications extends Component {
   }
 
   componentDidMount() {
-    FormService.getAllApplications().then(
+    const myApplicationsReq = {
+        "searchObjects" : [
+            
+        ]
+    }
+    FormService.getAllApplications(myApplicationsReq).then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           this.setState({

@@ -1,11 +1,39 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { HeadingOne, HeadingTwo } from "../../components/headings";
 import { CardOne, CardTwo } from "../../components/cards";
+import Notify from "../../helpers/notify";
+import { FormService } from "../../services/form.service";
+import { APP } from "../../constants";
 
 /**
  * Reviewer component renders
  * Reviewer page layout and its UI components
  */
+
+ interface IApplication {
+    applicationId: string
+    comments: string
+    createdBy: string
+    createdDate: string
+    dataObject: any
+    downvoteCount: number
+    downvotes: number
+    formData: any
+    formId: number
+    id: string
+    recordId: null
+    replies: null
+    reviewedBy: string
+    reviewedDate: string
+    status: string
+    timestamp: 1643895573549
+    title: string
+    updatedBy: null
+    updatedDate: string
+    upvoteCount: null
+    upvotes: null
+    version: number
+}
 
 const ReviewerMetrics = [
     {
@@ -34,6 +62,7 @@ const ReviewerMetrics = [
         title: "Reviewed in total",
     },
 ];
+
 
 const ReviewerPendingApplications = [
     {
@@ -69,6 +98,34 @@ interface ReviewerProps {
 }
 
 export const ReviewerHome = ({ data }: ReviewerProps) => {
+    const [pendingApplications, setPendingApplications] = useState<IApplication[]>([])
+    useEffect(() => {
+        const myApplicationsReq = {
+            "searchObjects" : [
+                {
+                    "key" : "status", 
+                    "values" : "Pending"
+                }
+            ]
+          }
+          FormService.getAllApplications(myApplicationsReq).then(
+            (response2) => {
+              if (response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
+                setPendingApplications(response2.responseData.length > 6
+                    ? response2.responseData.splice(0, 6)
+                    : response2.responseData);
+                // console.log(response2.responseData);
+              } else {
+                Notify.error(response2.statusInfo.errorMessage);
+              }
+            },
+            (error) => {
+              error.statusInfo
+                ? Notify.error(error.statusInfo.errorMessage)
+                : Notify.error(error.message);
+            }
+          );
+    });
     return (
         <Fragment>
             <div className="container-fluid">
@@ -95,7 +152,7 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
                         <HeadingOne heading="Pending applications" />
                         <HeadingTwo heading="These are latest applications that is pending for your review/approval" />
                         <div className="row mt-3">
-                            {ReviewerPendingApplications.map((i, j) => {
+                            {pendingApplications.map((i, j) => {
                                 return (
                                     <div
                                         className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0 mt-xxl-0"
@@ -103,16 +160,21 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
                                     >
                                         <CardTwo
                                             title={i.title}
-                                            name={i.name}
-                                            time={i.time}
-                                            showStatus={i.showStatus}
+                                            name={i.title}
+                                            time={`Created on: ${i.createdDate}`}
+                                            showStatus={true}
                                             status={i.status}
                                             statusLabel={i.status}
-                                            showBtn={i.showBtn}
-                                            type={i.type}
-                                            btnText={i.btnText}
-                                            isLink={i.isLink}
-                                            link={i.link}
+                                            showBtn={true}
+                                            type="button"
+                                            btnText="View application"
+                                            isLink={true}
+                                            link={
+                                                "/applications/" +
+                                                i.id 
+                                                + "/" +
+                                                i.applicationId
+                                              }
                                         />
                                     </div>
                                 );
