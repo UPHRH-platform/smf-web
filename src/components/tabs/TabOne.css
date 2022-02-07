@@ -1,41 +1,46 @@
 @import url("../../styles/colors.css");
 @import url("../../assets/fonts/fonts.css");
 
-
-.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
-    background-color: transparent !important;
-    border: none !important;
-    border-bottom: 2px solid var(--blue-primary) !important;
-    color: var(--black-87) !important;
-    font-family: "Lato-Bold" !important;
-    font-size: 0.875rem !important;
-    letter-spacing: 0.25 !important;
-    line-height: 1.5 !important;
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+  background-color: transparent !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 2px solid var(--blue-primary) !important;
+  color: var(--black-87) !important;
+  font-family: "Lato-Bold" !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.25 !important;
+  line-height: 1.5 !important;
 }
 
 .nav-link {
-    background-color: transparent !important;
-    border-bottom: 2px solid transparent !important;
-    border: none !important;
-    color: var(--black-87) !important;
-    font-family: "Lato-Regular"!important;
-    font-size: 0.875rem !important;
-    letter-spacing: 0.25 !important;
-    line-height: 1.5 !important;
+  background-color: transparent !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 2px solid var(--black-08) !important;
+  color: var(--black-87) !important;
+  font-family: "Lato-Regular" !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.25 !important;
+  line-height: 1.5 !important;
 }
 
 .nav-link:hover {
-    background-color: transparent !important;
-    border: none !important;
-    border-bottom: 2px solid var(--blue-primary) !important;
-    color: var(--black-87) !important;
-    font-family: "Lato-Bold" !important;
-    font-size: 0.875rem !important;
-    letter-spacing: 0.25 !important;
-    line-height: 1.5 !important;
+  background-color: transparent !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  border-bottom: 2px solid var(--blue-primary) !important;
+  color: var(--black-87) !important;
+  font-family: "Lato-Bold" !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.25 !important;
+  line-height: 1.5 !important;
 }
 
 .active {
-    background-color: transparent !important;
+  background-color: transparent !important;
 }
-
