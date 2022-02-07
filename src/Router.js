@@ -9,6 +9,7 @@ import AddForm from "./components/form/AddForm";
 import MyApplications from "./components/form/MyApplications";
 import MyForms from "./components/form/MyForms";
 import { InspectorApplications, ViewApplications } from "./pages";
+import ReviewerApplications from "./pages/Reviewer/ReviewerApplications";
 
 /* Router function to enable routing between the various components
  * in the project with authentication as well as authorization
@@ -40,6 +41,11 @@ const Router = (props) => (
         exact
         path="/all-applications/:id"
         component={ViewApplications}
+      />
+      <PrivateRoute
+        exact
+        path="/reviewer/all-applications"
+        component={ReviewerApplications}
       />
       {/* <PrivateRoute exact path="/home" component={Dashboard} /> */}
     </Switch>
