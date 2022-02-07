@@ -1,17 +1,19 @@
 html {
-    --background: RGB(240, 243, 244);
+    --background: rgb(240, 243, 244);
     --black-04: rgba(0, 0, 0, .04);
     --black-08: rgba(0, 0, 0, .08);
-    --black-16: RGBA(0, 0, 0, 0.16);
-    --status-green: RGB(29, 137, 35);
-    --white-95: RGBA(255, 255, 255, 0.95);
-    --black-87: RGBA(0, 0, 0, 0.87);
-    --black-60: RGBA(0, 0, 0, 0.60);
+    --black-16: rgba(0, 0, 0, 0.16);
+    --status-green: rgb(29, 137, 35);
+    --white-95: rgba(255, 255, 255, 0.95);
+    --black-87: rgba(0, 0, 0, 0.87);
+    --black-60: rgba(0, 0, 0, 0.60);
     --primary-color: rgb(4, 93, 173);
     --green-color: rgb(48, 105, 51);
-    --smf-orange: RGB(255, 53, 33);
+    --smf-orange: rgb(255, 53, 33);
     --menu-active-color: rgb(231 234 235);
     --red-color: #ea6361;
+    --tab-underline-color: rgb(4, 93, 173);
+    --default-tab-color: #d8d8d8;
 }
 
 .black-60 {
@@ -461,4 +463,31 @@ input[type="date"]::-webkit-calendar-picker-indicator {
 
 .has-error {
     border: solid 1px #ea6361 !important;
+}
+
+.tab {
+    color: var(--black-87);
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0.25px;
+    border-bottom:  2px solid var(--black-16);
+    margin-right: 8px;
+    /* margin-left: 2px; */
+}
+
+.tab:hover {
+    color: var(--black-87);
+    border-bottom: 3px solid var(--tab-underline-color);
+}
+
+.tab.active {
+    border-bottom: 3px solid var(--tab-underline-color);
+    background: transparent;
+    font-weight: 700;
+}
+
+
+.item-container > hr {
+    margin-top: 6px;
 }

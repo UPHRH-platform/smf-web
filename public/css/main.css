@@ -1798,7 +1798,7 @@ body {
 } */
 
 .formAnchor {
-  color: var(--tab-text);
+  color: var(--tab-text) !important;
 }
 
 .formAnchor:hover {

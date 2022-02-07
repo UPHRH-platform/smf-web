@@ -79,9 +79,10 @@ function submit(form) {
   );
 }
 
-function getAllApplications() {
+function getAllApplications(data) {
   const requestOptions = {
-    method: APP.REQUEST.GET,
+    method: APP.REQUEST.POST,
+    body: JSON.stringify(data),
     headers: authHeader(),
   };
   return fetch(
