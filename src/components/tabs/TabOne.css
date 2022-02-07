@@ -13,6 +13,7 @@
   font-size: 0.875rem !important;
   letter-spacing: 0.25 !important;
   line-height: 1.5 !important;
+  padding: 0.75rem;
 }
 
 .nav-link {
@@ -26,6 +27,7 @@
   font-size: 0.875rem !important;
   letter-spacing: 0.25 !important;
   line-height: 1.5 !important;
+  padding: 0.75rem;
 }
 
 .nav-link:hover {
@@ -39,6 +41,7 @@
   font-size: 0.875rem !important;
   letter-spacing: 0.25 !important;
   line-height: 1.5 !important;
+  padding: 0.75rem;
 }
 
 .active {
