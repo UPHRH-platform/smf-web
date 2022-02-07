@@ -147,7 +147,7 @@ class ReviewerApplications extends Component<ReviewerApplicationsProps, Reviewer
                                                 <div className="dashboard-form-item">
                                                     <h3 className="">{application.title}</h3>
                                                     <p className="h3-subheading">
-                                                        <b>Collage name</b>
+                                                        {/* <b>Collage name</b> */}
                                                         <br />
                                                         Recieved on: {" "}
                                                         {this.formatDate(
