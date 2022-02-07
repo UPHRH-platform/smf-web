@@ -6,6 +6,7 @@ import { APP } from "../../constants";
 import Notify from "../../helpers/notify";
 import Helper from "../../helpers/auth";
 import { InspectorHome } from "../../pages";
+import { ReviewerHome } from "../../pages/Reviewer/ReviewerHome";
 
 /**
  * Dashboard component
@@ -291,6 +292,8 @@ class Dashboard extends Component {
 
         {/* Inspector portal */}
         {Helper.getUserRole() === APP.ROLE.INSPECTOR && <InspectorHome />}
+        {/* Inspector portal */}
+        {Helper.getUserRole() === APP.ROLE.REVIEWER && <ReviewerHome />}
       </Fragment>
     );
   }

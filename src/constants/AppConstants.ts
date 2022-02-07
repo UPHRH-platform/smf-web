@@ -11,7 +11,8 @@ export const APP = {
   ROLE: {
     INSTITUTION: "Institution",
     REGULATOR: "Regulator",
-    INSPECTOR: "Inspector"
+    INSPECTOR: "Inspector",
+    REVIEWER: "Reviewer"
   },
   FILE_UPLOAD_ALLOWED_FORMATS : [
     'image/jpg', 
