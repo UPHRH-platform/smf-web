@@ -1,15 +1,15 @@
 import { CardTwo } from "../../components/cards";
 
 /**
- * ScheduledToday component renders
- * UI components for today-tab in
+ * UpcomingTab component renders
+ * UI components for upcoming-tab in
  * all applications page
  */
 
-const scheduledToday = [
+const upcomingTab = [
     {
-        id: "PA001",
-        title: "Paramedical degree",
+        id: "PA003",
+        title: "Form 1A",
         name: "Name of college",
         time: "Scheduled on: dd/mm/yyyy",
         showStatus: false,
@@ -18,11 +18,11 @@ const scheduledToday = [
         type: "button",
         btnText: "View application",
         isLink: true,
-        link: "/all-applications/PA001"
+        link: "/all-applications/PA003"
     },
     {
-        id: "PA002",
-        title: "ANM",
+        id: "PA004",
+        title: "Form 1B",
         name: "Name of college",
         time: "Scheduled on: dd/mm/yyyy",
         showStatus: false,
@@ -31,21 +31,21 @@ const scheduledToday = [
         type: "button",
         btnText: "View application",
         isLink: true,
-        link: "/all-applications/PA002"
+        link: "/all-applications/PA004"
     },
 ]
 
-interface ScheduledTodayTabProps {
+interface UpcomingTabProps {
     data?: any
 }
 
-export const ScheduledTodayTab = ({ data }: ScheduledTodayTabProps) => {
+export const UpcomingTab = ({ data }: UpcomingTabProps) => {
     return (
         <div className="row pt-2">
-            {scheduledToday.map((i, j) => {
+            {upcomingTab.map((i, j) => {
                 return (
                     <div
-                        className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mb-4"
+                        className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0 mt-xxl-0"
                         key={i.id}
                     >
                         <CardTwo
