@@ -129,7 +129,7 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
                             </div>
                         </div>
                         <div className="col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5">
-                            <div className="d-flex flex-row float-end mt-4 mt-sm-4 mt-md-0 mt-lg-0 mt-xl-0 mt-xxl-0">
+                            {/* <div className="d-flex flex-row float-end mt-4 mt-sm-4 mt-md-0 mt-lg-0 mt-xl-0 mt-xxl-0">
                                 <div className="me-4">
                                     <BtnOne label="View status log" btnType="button" isLink={false} link="" isModal={true} floatBottom={false} modalId="staticBackdrop" />
                                 </div>
@@ -137,7 +137,7 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
                                     <BtnTwo label="Change status" btnType="button" isLink={false} link="" isModal={false} floatBottom={false} />
                                 </div>
                                 <ModalOne id="staticBackdrop" ariaLabel="staticBackdropLabel" heading="Status log" list={modalList}/>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
 
@@ -155,7 +155,7 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
 
                             {/* Form view */}
                         </div>
-                        <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mt-4">
+                        <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mt-2">
                             <FormView />
                         </div>
                     </div>

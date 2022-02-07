@@ -17,7 +17,7 @@
   color: var(--status-green);
   font-size: 0.75rem;
   font-family: "Lato-Regular";
-  letter-spacing: 0.21;
+  letter-spacing: 0.21px;
   line-height: 1.333;
   vertical-align: text-top;
 }
@@ -26,7 +26,7 @@
   color: var(--status-amber);
   font-size: 0.75rem;
   font-family: "Lato-Regular";
-  letter-spacing: 0.21;
+  letter-spacing: 0.21px;
   line-height: 1.333;
   vertical-align: text-top;
 }

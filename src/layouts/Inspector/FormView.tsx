@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { CardThree } from "../../components/cards";
-import { Radio, SelectField, TextAreaField, TextField } from "../../components/form-elements";
+import { InspectCheckOne, Radio, SelectField, TextAreaField, TextField } from "../../components/form-elements";
 import { HeadingFour } from "../../components/headings";
+import { ModalTwo } from "../../components/modal";
 import { StatusBarLarge } from "../../components/status-bar";
 
 /**
@@ -87,23 +88,23 @@ export const FormView = ({ data }: FormViewProps) => {
     return (
         <div className="">
             {/* Section one */}
-            <div className="">
+            {/* <div className="">
                 <StatusBarLarge label="New" status="green" />
-            </div>
+            </div> */}
 
             {/* Section two */}
-            <div className="mt-3">
-                {radioData &&
+            {/* <div className="mt-3">
+                 {radioData &&
                     radioData.map((i: any, j: any) => {
-                        return (
-                            <div className="mb-3" key={i.id}>
-                                <CardThree
-                                    children={
-                                        <div className="p-4">
-                                            <div className="pb-2">
+                        return ( 
+                <div className="mb-3">
+                    <CardThree
+                        children={
+                            <div className="p-4">
+                                <div className="pb-2">
                                                 <HeadingFour heading={i.question} />
                                             </div>
-                                            <div className="d-flex flex-row">
+                                <div className="d-flex flex-row">
                                                 {i.options.map((m: any, n: any) => {
                                                     return (
                                                         <div className="me-3" key={m.id}>
@@ -118,21 +119,237 @@ export const FormView = ({ data }: FormViewProps) => {
                                                     );
                                                 })}
                                             </div>
-                                            <div className="mt-3">
-                                                <TextField label="Text field" placeholder="Type here" showLabel={true} type="text" enableCheck={true} checkBoxLabel="This is my official email" checkBoxValue="This is my official email" checkboxId="emailCheckBox" />
-                                            </div>
-                                            <div className="mt-3">
+                                <div className="mt-1">
+                                    <TextField label="Registration code" placeholder="Type here" showLabel={true} type="text" enableCheck={false} checkBoxLabel="This is my official email" checkBoxValue="This is my official email" checkboxId="emailCheckBox" />
+                                </div>
+                                <div className="mt-3">
                                                 <SelectField showLabel={true} label="Select" option={selectOptions} selectId="optionSelect" selectName="optionSelect" placeholder="Select from the list" />
                                             </div>
                                             <div className="mt-3">
                                                 <TextAreaField showLabel={true} label="Textarea" placeholder="Type here" showStatus={true}/>
                                             </div>
-                                        </div>
-                                    }
-                                />
                             </div>
-                        );
-                    })}
+                        }
+                    /> 
+                </div>*/}
+
+            <div className="mt-3">
+                <div className="mb-3">
+                    <CardThree children={
+                        <>
+                            <div className="p-4">
+                                <div className="mt-1">
+                                    <TextField label="Registration code" placeholder="Type here" showLabel={true} type="text" enableCheck={false} />
+                                </div>
+                            </div>
+                            <div className="">
+                                <InspectCheckOne label="Is the given information found correct?" children={
+                                    <div className="d-flex flex-row">
+                                        <div className="me-3">
+                                            <Radio
+                                                isSelected={true}
+                                                label="Correct"
+                                            />
+                                        </div>
+                                        <div className="me-3">
+                                            <Radio
+                                                isSelected={false}
+                                                label="Incorrect"
+                                                isModal={true}
+                                                modalId="reasonModal"
+                                            />
+                                        </div>
+                                    </div>
+                                } showComments={true} />
+                            </div>
+                        </>
+                    } />
+                </div>
+
+                <div className="mb-3">
+                    <CardThree children={
+                        <>
+                            <div className="p-4">
+                                <div className="mt-1">
+                                    <TextField label="Course type" placeholder="Type here" showLabel={true} type="text" enableCheck={false} />
+                                </div>
+                            </div>
+                            <div className="">
+                                <InspectCheckOne label="Is the given information found correct?" children={
+                                    <div className="d-flex flex-row">
+                                        <div className="me-3">
+                                            <Radio
+                                                isSelected={true}
+                                                label="Correct"
+                                            />
+                                        </div>
+                                        <div className="me-3">
+                                            <Radio
+                                                isSelected={false}
+                                                label="Incorrect"
+                                            />
+                                        </div>
+                                    </div>
+                                } />
+                            </div>
+                        </>
+                    } />
+                </div>
+
+                <div className="mb-3">
+                    <CardThree children={
+                        <>
+                            <div className="p-4">
+                                <div className="mt-1">
+                                    <TextField label="Course type" placeholder="Type here" showLabel={true} type="text" enableCheck={false} />
+                                </div>
+                            </div>
+                            <div className="">
+                                <InspectCheckOne label="Is the given information found correct?" children={
+                                    <div className="d-flex flex-row">
+                                        <div className="me-3">
+                                            <Radio
+                                                isSelected={true}
+                                                label="Correct"
+                                            />
+                                        </div>
+                                        <div className="me-3">
+                                            <Radio
+                                                isSelected={false}
+                                                label="Incorrect"
+                                            />
+                                        </div>
+                                    </div>
+                                } />
+                            </div>
+                        </>
+                    } />
+                </div>
+
+                <div className="mb-3">
+                    <CardThree children={
+                        <>
+                            <div className="p-4">
+                                <div className="mt-1">
+                                    <TextField label="Course type" placeholder="Type here" showLabel={true} type="text" enableCheck={false} />
+                                </div>
+                            </div>
+                            <div className="">
+                                <InspectCheckOne label="Is the given information found correct?" children={
+                                    <div className="d-flex flex-row">
+                                        <div className="me-3">
+                                            <Radio
+                                                isSelected={true}
+                                                label="Correct"
+                                            />
+                                        </div>
+                                        <div className="me-3">
+                                            <Radio
+                                                isSelected={false}
+                                                label="Incorrect"
+                                            />
+                                        </div>
+                                    </div>
+                                } />
+                            </div>
+                        </>
+                    } />
+                </div>
+
+                <div className="mb-3">
+                    <CardThree children={
+                        <>
+                            <div className="p-4">
+                                <div className="mt-1">
+                                    <TextField label="Course" placeholder="Type here" showLabel={true} type="text" enableCheck={false} />
+                                </div>
+                            </div>
+                            <div className="">
+                                <InspectCheckOne label="Is the given information found correct?" children={
+                                    <div className="d-flex flex-row">
+                                        <div className="me-3">
+                                            <Radio
+                                                isSelected={false}
+                                                label="Correct"
+                                            />
+                                        </div>
+                                        <div className="me-3">
+                                            <Radio
+                                                isSelected={false}
+                                                label="Incorrect"
+                                            />
+                                        </div>
+                                    </div>
+                                } />
+                            </div>
+                        </>
+                    } />
+                </div>
+
+                <div className="mb-3">
+                    <CardThree children={
+                        <>
+                            <div className="p-4">
+                                <div className="mt-1">
+                                    <TextField label="Name of Society/Trust/Company" placeholder="Type here" showLabel={true} type="text" enableCheck={false} />
+                                </div>
+                            </div>
+                            <div className="">
+                                <InspectCheckOne label="Is the given information found correct?" children={
+                                    <div className="d-flex flex-row">
+                                        <div className="me-3">
+                                            <Radio
+                                                isSelected={false}
+                                                label="Correct"
+                                            />
+                                        </div>
+                                        <div className="me-3">
+                                            <Radio
+                                                isSelected={false}
+                                                label="Incorrect"
+                                            />
+                                        </div>
+                                    </div>
+                                } />
+                            </div>
+                        </>
+                    } />
+                </div>
+
+                <div className="mb-3">
+                    <CardThree children={
+                        <>
+                            <div className="p-4">
+                                <div className="mt-1">
+                                    <TextField label="Proposed Institute Name" placeholder="Type here" showLabel={true} type="text" enableCheck={false} />
+                                </div>
+                            </div>
+                            <div className="">
+                                <InspectCheckOne label="Is the given information found correct?" children={
+                                    <div className="d-flex flex-row">
+                                        <div className="me-3">
+                                            <Radio
+                                                isSelected={false}
+                                                label="Correct"
+                                            />
+                                        </div>
+                                        <div className="me-3">
+                                            <Radio
+                                                isSelected={false}
+                                                label="Incorrect"
+                                            />
+                                        </div>
+                                    </div>
+                                } />
+                            </div>
+                        </>
+                    } />
+                </div>
+
+                <ModalTwo id="reasonModal" ariaLabel="reasonModalLabel" heading="Enter the reason for the incorrect selection" />
+
+                {/* );
+                    })} */}
             </div>
         </div>
     );

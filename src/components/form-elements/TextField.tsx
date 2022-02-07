@@ -9,6 +9,7 @@ import styles from "./TextField.module.css";
 interface TextFieldProps {
     label?: string
     placeholder?: string
+    value?: string
     showLabel: boolean
     type: string
     changeHandler?: (event: any) => void
@@ -18,7 +19,7 @@ interface TextFieldProps {
     checkBoxLabel?: string
 }
 
-export const TextField = ({ label, changeHandler, placeholder, showLabel, type, enableCheck, checkboxId, checkBoxValue, checkBoxLabel }: TextFieldProps) => {
+export const TextField = ({ label, changeHandler, placeholder, showLabel, type, enableCheck, checkboxId, checkBoxValue, checkBoxLabel, value }: TextFieldProps) => {
     return (
         <div className={`${styles.text_field_input}`}>
             {showLabel && (
@@ -27,7 +28,7 @@ export const TextField = ({ label, changeHandler, placeholder, showLabel, type, 
                     <br />
                 </>
             )}
-            <input type={type} placeholder={placeholder} />
+            <input type={type} placeholder={placeholder} value={value} />
 
             {enableCheck && (
                 <div className="form-check">

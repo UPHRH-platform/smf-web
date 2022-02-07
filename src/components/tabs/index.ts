@@ -1,0 +1,1 @@
+export { TabOne } from "./TabOne";

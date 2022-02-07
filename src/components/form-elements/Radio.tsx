@@ -10,16 +10,31 @@ interface RadioProps {
     label: string
     clickHandler?: (event: any) => void
     isSelected: boolean
+    isModal?: boolean
+    modalId?: string
 }
 
-export const Radio = ({ label, clickHandler, isSelected }: RadioProps) => {
+export const Radio = ({ label, clickHandler, isSelected, isModal, modalId }: RadioProps) => {
     if (isSelected) {
-        return (
-            <button className={`${styles.custom_radio_btn_selected} p-2 px-3`} onClick={clickHandler}><span className={`${styles.custom_radio_icon_selected} material-icons pe-2`}>radio_button_checked</span>{label}</button>
-        )
+        if (!isModal) {
+            return (
+                <button className={`${styles.custom_radio_btn_selected} p-2 px-3`} onClick={clickHandler}><span className={`${styles.custom_radio_icon_selected} material-icons pe-2`}>radio_button_checked</span>{label}</button>
+            )
+        } else {
+            return (
+                <button className={`${styles.custom_radio_btn_selected} p-2 px-3`} data-toggle="modal" data-target={`#${modalId}`} onClick={clickHandler}><span className={`${styles.custom_radio_icon_selected} material-icons pe-2`}>radio_button_checked</span>{label}</button>
+            )
+        }
     } else {
-        return (
-            <button className={`${styles.custom_radio_btn_unselected} p-2 px-3`} onClick={clickHandler}><span className={`${styles.custom_radio_icon_unselected} material-icons pe-2`}>radio_button_unchecked</span>{label}</button>
-        )
+        if (!isModal) {
+            return (
+                <button className={`${styles.custom_radio_btn_unselected} p-2 px-3`} onClick={clickHandler}><span className={`${styles.custom_radio_icon_unselected} material-icons pe-2`}>radio_button_unchecked</span>{label}</button>
+            )
+        } else {
+            return (
+                <button className={`${styles.custom_radio_btn_unselected} p-2 px-3`} data-toggle="modal" data-target={`#${modalId}`} onClick={clickHandler}><span className={`${styles.custom_radio_icon_unselected} material-icons pe-2`}>radio_button_unchecked</span>{label}</button>
+            )
+        }
+
     }
 }

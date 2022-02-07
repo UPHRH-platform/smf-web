@@ -8,7 +8,7 @@
   color: var(--white-100) !important;
   font-family: "Lato-Bold" !important;
   font-size: 0.875rem !important;
-  letter-spacing: 0.5;
+  letter-spacing: 0.5px;
   line-height: 1.429;
   padding: 0.45rem;
   padding-left: 0.75rem;
