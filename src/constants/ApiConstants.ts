@@ -14,6 +14,7 @@ export const APIS = {
     SUBMIT: "forms/v1/saveFormSubmit",
     FILE_UPLOAD: "forms/fileUpload",
     GET_ALL_APPLICATIONS: "forms/getAllApplications",
+    GET__APPLICATIONS_STATUS_COUNT: "forms/getApplicationsStatusCount",
     GET_APPLICATION_DETAILS: "forms/getApplicationsById?applicationId="
   },
 };

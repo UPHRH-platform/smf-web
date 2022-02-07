@@ -12,7 +12,8 @@ export const FormService = {
   submit,
   getAllApplications,
   findApplication,
-  uploadfile
+  uploadfile,
+  getApplicationsStatusCount
 };
 
 function get() {
@@ -87,6 +88,17 @@ function getAllApplications(req) {
   };
   return fetch(
     APIS.BASE_URL + APIS.FORM.GET_ALL_APPLICATIONS,
+    requestOptions
+  ).then(handleResponse);
+}
+
+function getApplicationsStatusCount() {
+  const requestOptions = {
+    method: APP.REQUEST.GET,
+    headers: authHeader(),
+  };
+  return fetch(
+    APIS.BASE_URL + APIS.FORM.GET__APPLICATIONS_STATUS_COUNT,
     requestOptions
   ).then(handleResponse);
 }

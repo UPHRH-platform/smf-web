@@ -35,6 +35,11 @@ import { APP } from "../../constants";
     version: number
 }
 
+interface IApplicationCount {
+    key: string 
+    value: number
+}
+
 const ReviewerMetrics = [
     {
         id: 0,
@@ -99,6 +104,7 @@ interface ReviewerProps {
 
 export const ReviewerHome = ({ data }: ReviewerProps) => {
     const [pendingApplications, setPendingApplications] = useState<IApplication[]>([])
+    const [applicationsMetrics, setApplicationsMetrics] = useState<IApplicationCount[]>([])
     useEffect(() => {
         const myApplicationsReq = {
             "searchObjects" : [
@@ -125,6 +131,21 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
                 : Notify.error(error.message);
             }
           );
+          FormService.getApplicationsStatusCount().then(
+            (response2: any) => {
+              if (response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
+                setApplicationsMetrics(response2.responseData.keyValues)
+                // console.log(response2.responseData);
+              } else {
+                Notify.error(response2.statusInfo.errorMessage);
+              }
+            },
+            (error: any) => {
+              error.statusInfo
+                ? Notify.error(error.statusInfo.errorMessage)
+                : Notify.error(error.message);
+            }
+          );
     }, []);
     return (
         <Fragment>
@@ -134,13 +155,13 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
                     <section className="pt-3">
                         <HeadingOne heading="Your activity" />
                         <div className="row pt-2">
-                            {ReviewerMetrics.map((i, j) => {
+                            {applicationsMetrics.map((i, j) => {
                                 return (
                                     <div
                                         className="col-sm-12 col-md-4 col-lg-2 col-xl-2 col-xxl-2 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0 mt-xxl-0"
-                                        key={i.id}
+                                        key={j}
                                     >
-                                        <CardOne count={i.count} title={i.title} />
+                                        <CardOne count={i.value} title={i.key} />
                                     </div>
                                 );
                             })}
