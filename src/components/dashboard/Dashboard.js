@@ -6,6 +6,7 @@ import { APP } from "../../constants";
 import Notify from "../../helpers/notify";
 import Helper from "../../helpers/auth";
 import { InspectorHome } from "../../pages";
+import { ReviewerHome } from "../../pages/Reviewer/ReviewerHome";
 
 /**
  * Dashboard component
@@ -55,7 +56,12 @@ class Dashboard extends Component {
         }
       );
       // my applications section
-      FormService.getAllApplications().then(
+      const myApplicationsReq = {
+        "searchObjects" : [
+          
+        ]
+      }
+      FormService.getAllApplications(myApplicationsReq).then(
         (response2) => {
           if (response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
             this.setState({
@@ -194,7 +200,7 @@ class Dashboard extends Component {
             </div>
           </Fragment>
         )}
-        {Helper.getUserRole() === APP.ROLE.REGULATOR && (
+        {/* {Helper.getUserRole() === APP.ROLE.REGULATOR && (
           <Fragment>
             <div className="container-fluid">
               <div className="container dashboard-inner-container">
@@ -287,10 +293,12 @@ class Dashboard extends Component {
               </div>
             </div>
           </Fragment>
-        )}
+        )} */}
 
         {/* Inspector portal */}
         {Helper.getUserRole() === APP.ROLE.INSPECTOR && <InspectorHome />}
+        {/* Inspector portal */}
+        {Helper.getUserRole() === APP.ROLE.REGULATOR && <ReviewerHome />}
       </Fragment>
     );
   }

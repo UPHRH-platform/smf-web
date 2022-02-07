@@ -10,12 +10,21 @@
   min-height: 14rem;
 }
 
+.card_two_custom_height {
+  min-height: 14rem;
+}
+
 .card_two h1 {
   color: var(--black-87);
   font-family: "Montserrat-SemiBold";
   font-size: 1rem;
   letter-spacing: 0.12px;
   line-height: 1.5;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
 
 .label_one {
@@ -23,7 +32,14 @@
   font-family: "Lato-Bold";
   font-size: 0.875rem;
   letter-spacing: 0.25px;
-  line-height: 1.5;
+  line-height: 1.429;
+  inline-size: 100%;
+  overflow-wrap: break-word;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
 }
 
 .label_two {
@@ -32,4 +48,22 @@
   font-size: 0.875rem;
   letter-spacing: 0.25px;
   line-height: 1.429;
+}
+
+@media only screen and (max-width: 600px) {
+  .card_two_custom_height {
+    min-height: 16rem;
+  }
+}
+
+@media only screen and (min-width: 600px) {
+  .card_two_custom_height {
+    min-height: 16rem;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .card_two_custom_height {
+    min-height: 16rem;
+  }
 }

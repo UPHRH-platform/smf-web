@@ -79,10 +79,11 @@ function submit(form) {
   );
 }
 
-function getAllApplications() {
+function getAllApplications(req) {
   const requestOptions = {
-    method: APP.REQUEST.GET,
+    method: APP.REQUEST.POST,
     headers: authHeader(),
+    body: JSON.stringify(req)
   };
   return fetch(
     APIS.BASE_URL + APIS.FORM.GET_ALL_APPLICATIONS,
