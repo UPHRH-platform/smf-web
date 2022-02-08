@@ -4,6 +4,7 @@ import { CardOne, CardTwo } from "../../components/cards";
 import Notify from "../../helpers/notify";
 import { FormService } from "../../services/form.service";
 import { APP } from "../../constants";
+import { BtnOne } from "../../components/buttons";
 
 /**
  * Reviewer component renders
@@ -118,7 +119,7 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
             (response2) => {
               if (response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
                 setPendingApplications(response2.responseData.length > 6
-                    ? response2.responseData.splice(0, 6)
+                    ? response2.responseData.splice(0, 8)
                     : response2.responseData);
                 // console.log(response2.responseData);
               } else {
@@ -170,8 +171,15 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
 
                     {/* Section two */}
                     <section className="mt-5">
-                        <HeadingOne heading="Pending applications" />
-                        <HeadingTwo heading="These are latest applications that is pending for your review/approval" />
+                        <div className="row">
+                            <div className="col-md-10 col-sm-12 col-12 ">
+                                <HeadingOne heading="Pending applications" />
+                                <HeadingTwo heading="These are latest applications that is pending for your review/approval" />
+                            </div>
+                            <div className="col-md-2 col-sm-12 col-12 text-right">
+                                <BtnOne btnType="button" label="SEE ALL" isLink={true} link={`reviewer/all-applications`} floatBottom={false} isModal={false} />
+                            </div>
+                        </div>
                         <div className="row mt-3">
                             {pendingApplications.map((i, j) => {
                                 return (
