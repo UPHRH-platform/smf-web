@@ -11,6 +11,9 @@
   height: 1.5rem;
   min-height: 1.5rem;
   width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .status_one_label {
