@@ -189,7 +189,7 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
                                     >
                                         <CardTwo
                                             title={i.title}
-                                            name={i.title}
+                                            name={i.createdBy}
                                             time={`Created on: ${i.createdDate}`}
                                             showStatus={true}
                                             status={i.status}

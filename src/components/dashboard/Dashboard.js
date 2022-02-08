@@ -7,6 +7,7 @@ import Notify from "../../helpers/notify";
 import Helper from "../../helpers/auth";
 import { InspectorHome } from "../../pages";
 import { ReviewerHome } from "../../pages/Reviewer/ReviewerHome";
+import { CardTwo } from "../cards";
 
 /**
  * Dashboard component
@@ -57,8 +58,8 @@ class Dashboard extends Component {
       );
       // my applications section
       const myApplicationsReq = {
-        "searchObjects" : [
-          
+        "searchObjects": [
+
         ]
       }
       FormService.getAllApplications(myApplicationsReq).then(
@@ -117,37 +118,29 @@ class Dashboard extends Component {
                 </div>
                 <div className="row mt-3">
                   {this.state.myApplications.length > 0 &&
-                    this.state.myApplications.map((form, key) => (
-                      <div className="col-md-4 col-sm-12 col-12 mb-3" key={key}>
-                        <div
-                          className="application-item white-bg"
-                          style={{ minHeight: "150px" }}
-                        >
-                          <h3 className="">{form.title}</h3>
-                          <span className="h3-subheading d-block black-60 mb-2">
-                            Submitted on:{" "}
-                            {this.formatDate(
-                              `${form.createdDate}` || "2022-01-01"
-                            )}
-                          </span>
-                          <div className="mb-3">
-                            <span className="form-status">
-                              Status: {form.status}
-                            </span>
-                          </div>
-                          <Link
-                            to={
-                              "/applications/" +
-                              form.formId +
-                              "/" +
-                              form.applicationId
-                            }
-                            className="btn btn-default smf-btn-default highlighted mt-3"
-                            disabled
-                          >
-                            View application
-                          </Link>
-                        </div>
+                    this.state.myApplications.map((i, key) => (
+                      <div
+                        className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mb-3"
+                        key={i.applicationId}
+                      >
+                        <CardTwo
+                          title={i.title}
+                          name={i.createdBy}
+                          time={`Created on: ${i.createdDate}`}
+                          showStatus={true}
+                          status={i.status}
+                          statusLabel={i.status}
+                          showBtn={true}
+                          type="button"
+                          btnText="View application"
+                          isLink={true}
+                          link={
+                            "/applications/" +
+                            i.formId
+                            + "/" +
+                            i.applicationId
+                          }
+                        />
                       </div>
                     ))}
                 </div>
