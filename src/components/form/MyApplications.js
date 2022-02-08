@@ -57,7 +57,7 @@ class ListMyApplications extends Component {
         input = event.target.value;
         filter = input.toUpperCase();
         formContainer = document.getElementById("forms-container");
-        formItems = formContainer.getElementsByClassName("application-item");
+        formItems = formContainer.getElementsByClassName("appl-item");
         for (i = 0; i < formItems.length; i++) {
             a = formItems[i].getElementsByClassName("form-title")[0];
             txtValue = a.textContent || a.innerText;
@@ -119,7 +119,7 @@ class ListMyApplications extends Component {
                             <div className="row" id="forms-container">
                                 {this.state.forms.map((i, key) => (
                                     <div
-                                        className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mb-3"
+                                        className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mb-3 appl-item"
                                         key={i.applicationId}
                                     >
                                         <CardTwo

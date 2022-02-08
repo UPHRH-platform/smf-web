@@ -24,7 +24,7 @@ interface CardTwoProps {
 export const CardTwo = ({ title, name, time, showStatus, status, showBtn, btnText, type, statusLabel, isLink, link }: CardTwoProps) => {
     return (
         <div className={`${styles.card_two} ${showStatus ? styles.card_two_custom_height : ''}`}>
-            <h1>{title}</h1>
+            <h1 className="form-title">{title}</h1>
             <label className={`${styles.label_one}`}>{name}</label>
             <p className={`${styles.label_two}`}>{time}</p>
             {showStatus && (
