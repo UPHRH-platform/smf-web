@@ -60,7 +60,7 @@ class FormViewer extends Component {
     if (nextProps.location.pathname !== this.props.location.pathname) {
       this.loadFormDetails(this.props.match.params.id);
       // console.log(this.props.match.params.applicationId);
-     
+
       if (this.props.match.params.applicationId !== null) {
         setTimeout(() => {
           this.populateForm(this.props.match.params.applicationId);
@@ -151,6 +151,10 @@ class FormViewer extends Component {
   };
 
   populateData = () => {
+    // Removing existing data
+    let inputs = document.getElementsByTagName("input");
+    for (let m = 0; m < inputs.length; m++) inputs[m].value = "";
+
     // Code for files starts
     var fileElements = document.getElementsByClassName("custom-file-display");
     for (let ele1 = 0; ele1 < fileElements.length; ele1++) {
@@ -167,7 +171,6 @@ class FormViewer extends Component {
     // console.log(this.state.formFields);
     for (var key of Object.keys(fields)) {
       var element = document.getElementsByName(key);
-
       if (element.length > 0) {
         if (element[0].type === "checkbox" || element[0].type === "radio") {
           var len = element.length;
@@ -220,8 +223,8 @@ class FormViewer extends Component {
     }
 
     if (
-      (this.props.match.params.applicationId !== null &&
-        this.props.match.params.applicationId !== undefined)
+      this.props.match.params.applicationId !== null &&
+      this.props.match.params.applicationId !== undefined
     ) {
       this.disableFormElements();
     }
@@ -437,12 +440,11 @@ class FormViewer extends Component {
                       </div>
                       <div className="col-6">
                         <div className="pull-right">
-                          {!
-                            (this.props.match.params.applicationId !== null &&
-                            this.props.match.params.applicationId !==
-                              undefined) &&
-                            Helper.getUserRole() === APP.ROLE.INSTITUTION
-                           &&
+                          {!(
+                            this.props.match.params.applicationId !== null &&
+                            this.props.match.params.applicationId !== undefined
+                          ) &&
+                            Helper.getUserRole() === APP.ROLE.INSTITUTION &&
                             this.state.headingIndex ===
                               this.state.formHeadings.length - 1 && (
                               <button
