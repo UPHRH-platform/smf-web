@@ -17,4 +17,10 @@ export const APIS = {
     GET__APPLICATIONS_STATUS_COUNT: "forms/getApplicationsStatusCount",
     GET_APPLICATION_DETAILS: "forms/getApplicationsById?applicationId="
   },
+  USER: {
+    GET_ROLES: 'user/getAllRoles',
+    CREATE_OR_UPDATE_USER: 'user/createOrUpdate',
+    GET_USER_BY_ID: 'user/getUserById',
+    GET_ALL_USERS: 'user/v1/getAllUser'
+  }
 };

@@ -1,11 +1,15 @@
 import { APP, LANG, APIS } from "./../constants";
-import { authHeader } from "../helpers/authHeader";
+import { authHeader, authHeaderWithBearer } from "../helpers/authHeader";
 import Notify from "../helpers/notify";
 
 export const UserService = {
   login,
   logout,
   getOTP,
+  getRoles,
+  createOrUpdateUser,
+  getUserByID,
+  getAllUsers,
 };
 
 function login(username, otp) {
@@ -39,11 +43,51 @@ function logout() {
   localStorage.removeItem("user");
 }
 
+function getRoles(email) {
+  const requestOptions = {
+    method: APP.REQUEST.GET,
+    headers: authHeaderWithBearer(),
+  };
+  return fetch(APIS.BASE_URL + APIS.USER.GET_ROLES, requestOptions).then(
+    handleResponse
+  );
+}
+
+function createOrUpdateUser(user) {
+  const requestOptions = {
+    method: APP.REQUEST.POST,
+    headers: authHeaderWithBearer(),
+    body: JSON.stringify(user)
+  };
+  return fetch(APIS.BASE_URL + APIS.USER.CREATE_OR_UPDATE_USER, requestOptions).then(
+    handleResponse
+  );
+}
+
+function getUserByID(id) {
+  const requestOptions = {
+    method: APP.REQUEST.GET,
+    headers: authHeaderWithBearer(),
+  };
+  return fetch(`${APIS.BASE_URL}${APIS.USER.GET_USER_BY_ID}?id=${id}`, requestOptions).then(
+    handleResponse
+  );
+}
+
+function getAllUsers() {
+  const requestOptions = {
+    method: APP.REQUEST.POST,
+    headers: authHeaderWithBearer(),
+    body: JSON.stringify({})
+  };
+  return fetch(APIS.BASE_URL + APIS.USER.GET_ALL_USERS, requestOptions).then(
+    handleResponse
+  );
+}
+
 function handleResponse(response) {
   return response.text().then(text => {
     const data = text && JSON.parse(text);
-    console.log('response', response)
-    console.log('data', data)
     if (!response.ok) {
       if (response.status === 401) {
         logout();
@@ -57,7 +101,7 @@ function handleResponse(response) {
       if(data.statusInfo.statusCode === 306) {
         const error =
         (data && data.statusInfo && data.statusInfo.errorMessage) || response.statusText;
-        this.logout()
+        logout()
         Notify.error(error.message)
         window.location.reload()
         return Promise.reject(new Error(error));

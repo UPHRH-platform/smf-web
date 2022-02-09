@@ -16,6 +16,22 @@ export function authHeader() {
   }
 }
 
+export function authHeaderWithBearer() {
+  let user = JSON.parse(localStorage.getItem("user"));
+  if (user && user.authToken) {
+    return {
+      "Authorization": `Bearer ${Auth.get('authToken')}`,
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+    };
+  } else {
+    return {
+      "Content-Type": "application/json",
+      "Accept": "application/json",
+    };
+  }
+}
+
 export function authHeaderForUpload() {
   let user = JSON.parse(localStorage.getItem("user"));
   if (user && user.authToken) {
