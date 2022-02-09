@@ -206,7 +206,7 @@ class AddForm extends Component {
           Notify.success(response.statusInfo.statusMessage);
           //   this.props.updateParent(response.responseData.id);
           setTimeout(() => {
-            this.props.history.push("/forms");
+            this.props.history.push("/manage");
           }, 500);
         } else {
           Notify.error(response.statusInfo.errorMessage);
@@ -268,10 +268,10 @@ class AddForm extends Component {
                           </>
                         )}
                       </div>
-                      <div className="col-sm-12 col-md-12 col-lg-3 mt-4 mt-md-0">
+                      <div className="col-sm-12 col-md-12 col-lg-4 mt-4 mt-md-0">
                         <div className=" pull-right">
                           <button
-                            onClick={(e) => this.props.history.push("/forms")}
+                            onClick={(e) => this.props.history.push("/manage")}
                             type="button"
                             id="submit"
                             className="btn btn-default smf-btn-default"
