@@ -5,6 +5,7 @@ import { FormService } from "../../services/form.service";
 import { APP } from "../../constants";
 import Notify from "../../helpers/notify";
 import Header from "./../common/Header";
+import { BtnTwo } from "../buttons";
 
 class ListForms extends Component {
   constructor(props) {
@@ -66,102 +67,72 @@ class ListForms extends Component {
     }
   };
 
-  static propTypes = {
-    match: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-  };
+  // static propTypes = {
+  //   match: PropTypes.object.isRequired,
+  //   location: PropTypes.object.isRequired,
+  //   history: PropTypes.object.isRequired,
+  // };
 
   render() {
     return (
       <Fragment>
-        <Header history={this.props.history} />
-        <div className="container-fluid main-container h-100 heightMin">
-          <div className="container dashboard-inner-container">
-            <div className="row tabText">
-              <div className="row col-md-12">
-                <div className="row col-md-12 mt-5">
-                  <div className="col-md-12">
-                    <h2 className="mb-4">Manage</h2>
-                  </div>
-                </div>
-                <div className="row col-md-12 mt-4">
-                  <div className="col-md-4">
-                    <div className="form-group has-search">
-                      <i className="material-icons form-control-feedback">
-                        search
-                      </i>
-                      <input
-                        type="text"
-                        className="form-control"
-                        id="search-roles"
-                        placeholder="Search for an application"
-                        autoComplete="off"
-                        onKeyUp={(event) => this.searchForms(event)}
-                      />
-                    </div>
-                  </div>
-                  <div className="col-md-8">
+        <div className="row pt-2">
+          <div className="col-sm-12 col-md-4">
+            <form className="">
+              <div className="input-group mb-2 mr-sm-2">
+                <input
+                  type="text"
+                  className="form-control"
+                  id="search-roles"
+                  placeholder="Search for an application"
+                  autoComplete="off"
+                  onKeyUp={(event) => this.searchForms(event)}
+                />
+              </div>
+            </form>
+            
+            {/* <div className="col-md-8">
                     <Link to="/forms/add" className="pull-right">
                       <button className="btn btn-default smf-btn-default-inverse">
                         Create new
                       </button>
                     </Link>
-                  </div>
-                </div>
-                <div className="row col-md-12 mt-4" id="forms-container">
-                  {/* {this.state.forms.map((form, key) => (
-                    <div className="col-md-4 form-item mb-4" key={key}>
-                      <div
-                        className="application-item"
-                        style={{ minHeight: "150px", backgroundColor: "#fff" }}
-                      >
-                        <h3 className="form-title">{form.title}</h3>
-                        <p className="h3-subheading">
-                          {form.description != null
-                            ? form.description
-                            : "Application form"}
-                        </p>
-                        <Link
-                          to={"/forms/" + form.id + "/edit"}
-                          className="btn btn-default smf-btn-default highlighted mt-3"
-                        >
-                          Edit
-                        </Link>
-                      </div>
-                    </div>
-                  ))} */}
-                  <table className="table table-smf">
-                    <thead className="thead-light">
-                      <tr>
-                        <th scope="col">Form name</th>
-                        <th scope="col">Status</th>
-                        {/* <th scope="col">Published/created on</th> */}
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {this.state.forms.map((form, key) => (
-                        <tr key={key} className="form-item">
-                          <th scope="row" className="form-title">
-                            {form.title}
-                          </th>
-                          <td>Published</td>
-                          {/* <td></td> */}
-                          <td className="td-preview">
-                            <Link to={`/forms/${form.id}`}>Preview</Link>
-                          </td>
-                          <td className="td-preview">
-                            <Link to={`/forms/${form.id}/edit`}>Edit</Link>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
+                  </div> */}
+          </div>
+          <div className="col-sm-12 col-md-8 text-right">
+              <BtnTwo btnType="button" label="Create new" isLink={true} link={`/forms/add`} floatBottom={false} isModal={false} />
+          </div>
+        </div>
+        <div className="row pt2">
+          <div className="col-12" id="forms-container">
+            <table className="table table-smf">
+              <thead className="thead-light">
+                <tr>
+                  <th scope="col">Form name</th>
+                  <th scope="col">Status</th>
+                  {/* <th scope="col">Published/created on</th> */}
+                  <th scope="col"></th>
+                  <th scope="col"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {this.state.forms.map((form, key) => (
+                  <tr key={key} className="form-item">
+                    <th scope="row" className="form-title">
+                      {form.title}
+                    </th>
+                    <td>Published</td>
+                    {/* <td></td> */}
+                    <td className="td-preview">
+                      <Link to={`/forms/${form.id}`}>Preview</Link>
+                    </td>
+                    <td className="td-preview">
+                      <Link to={`/forms/${form.id}/edit`}>Edit</Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </Fragment>

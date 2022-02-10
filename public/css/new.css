@@ -165,6 +165,14 @@ h3 {
     cursor: pointer;
 }
 
+.form-check-inline .custom-checkbox .form-check-input  {
+    position: relative;
+}
+
+.form-check-inline .custom-checkbox,  .form-radio-inline  .custom-radio  {
+    padding: 12px;
+}
+
 .custom-radio {
     padding: 12px;
 }
