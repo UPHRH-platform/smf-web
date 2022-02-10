@@ -151,11 +151,19 @@ class FormViewer extends Component {
   };
 
   populateData = () => {
-    // Removing existing data
+    // Removing existing data starts
+    var existingFields = this.state.formFieldGroups[this.state.headingIndex];
     let inputs = document.getElementsByTagName("input");
-    for (let m = 0; m < inputs.length; m++) inputs[m].value = "";
+    for (let m = 0; m < inputs.length; m++) {
+      for (var key of Object.keys(existingFields))
+        if (`field_${existingFields[key].order}` === inputs[m].name) {
+          inputs[m].type = existingFields[key].fieldType;
+        }
+      inputs[m].value = "";
+    }
     inputs = document.getElementsByTagName("select");
     for (let n = 0; n < inputs.length; n++) inputs[n].value = "";
+    // Removing existing data ends
 
     // Code for files starts
     var fileElements = document.getElementsByClassName("custom-file-display");
