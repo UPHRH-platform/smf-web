@@ -154,6 +154,8 @@ class FormViewer extends Component {
     // Removing existing data
     let inputs = document.getElementsByTagName("input");
     for (let m = 0; m < inputs.length; m++) inputs[m].value = "";
+    inputs = document.getElementsByTagName("select");
+    for (let n = 0; n < inputs.length; n++) inputs[n].value = "";
 
     // Code for files starts
     var fileElements = document.getElementsByClassName("custom-file-display");
