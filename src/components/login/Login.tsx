@@ -76,6 +76,10 @@ class Login extends Component<LoginProps, LoginState> {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           // localStorage.setItem("user", JSON.stringify(response.responseData));
           // this.props.history.push("/dashboards");
+          
+          // to reset OTP field 
+          this.setState({OTPValue: ''})
+
           this.setState({
             enterOTPEnabled: true,
             email
