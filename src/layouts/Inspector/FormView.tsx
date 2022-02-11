@@ -12,6 +12,7 @@ import { ModalTwo } from "../../components/modal";
 import { StatusBarLarge } from "../../components/status-bar";
 import { useRecoilValue } from "recoil";
 import { sideMenuData as selectedSideMenuDataAtom } from "../../states/atoms";
+import { BtnOne, BtnTwo, BtnThree } from "../../components/buttons";
 
 /**
  * FormView component renders
@@ -49,7 +50,6 @@ export const FormView = ({ data }: FormViewProps) => {
     useEffect(() => {
         let fieldsElement: any = selectedSideMenuData
         if (fieldsElement && fieldsElement.fields) {
-            console.log(fieldsElement.fields);
             setCurrentFields(fieldsElement.fields);
         }
     }, [selectedSideMenuData])
@@ -200,228 +200,6 @@ export const FormView = ({ data }: FormViewProps) => {
 
 
             <div className="mt-3">
-                {/* <div className="mb-3">
-                    <CardThree
-                        children={
-                            <>
-                                <div className="p-4">
-                                    <div className="mt-1">
-                                        <TextField
-                                            label="Registration code"
-                                            placeholder="Type here"
-                                            showLabel={true}
-                                            type="text"
-                                            enableCheck={false}
-                                        />
-                                    </div>
-                                </div>
-                                <div className="">
-                                    <InspectCheckOne
-                                        label="Is the given information found correct?"
-                                        children={
-                                            <div className="d-flex flex-row">
-                                                <div className="me-3">
-                                                    <Radio isSelected={true} label="Correct" />
-                                                </div>
-                                                <div className="me-3">
-                                                    <Radio
-                                                        isSelected={false}
-                                                        label="Incorrect"
-                                                        isModal={true}
-                                                        modalId="reasonModal"
-                                                    />
-                                                </div>
-                                            </div>
-                                        }
-                                        showComments={true}
-                                        modalId="reasonModal"
-                                    />
-                                </div>
-                            </>
-                        }
-                    />
-                </div> */}
-
-                {/* <div className="mb-3">
-                    <CardThree children={
-                        <>
-                            <div className="p-4">
-                                <div className="mt-1">
-                                    <TextField label="Course type" placeholder="Type here" showLabel={true} type="text" enableCheck={false} />
-                                </div>
-                            </div>
-                            <div className="">
-                                <InspectCheckOne label="Is the given information found correct?" children={
-                                    <div className="d-flex flex-row">
-                                        <div className="me-3">
-                                            <Radio
-                                                isSelected={true}
-                                                label="Correct"
-                                            />
-                                        </div>
-                                        <div className="me-3">
-                                            <Radio
-                                                isSelected={false}
-                                                label="Incorrect"
-                                            />
-                                        </div>
-                                    </div>
-                                } />
-                            </div>
-                        </>
-                    } />
-                </div> */}
-
-                {/* <div className="mb-3">
-                    <CardThree children={
-                        <>
-                            <div className="p-4">
-                                <div className="mt-1">
-                                    <TextField label="Course type" placeholder="Type here" showLabel={true} type="text" enableCheck={false} />
-                                </div>
-                            </div>
-                            <div className="">
-                                <InspectCheckOne label="Is the given information found correct?" children={
-                                    <div className="d-flex flex-row">
-                                        <div className="me-3">
-                                            <Radio
-                                                isSelected={true}
-                                                label="Correct"
-                                            />
-                                        </div>
-                                        <div className="me-3">
-                                            <Radio
-                                                isSelected={false}
-                                                label="Incorrect"
-                                            />
-                                        </div>
-                                    </div>
-                                } />
-                            </div>
-                        </>
-                    } />
-                </div> */}
-
-                {/* <div className="mb-3">
-                    <CardThree children={
-                        <>
-                            <div className="p-4">
-                                <div className="mt-1">
-                                    <TextField label="Course type" placeholder="Type here" showLabel={true} type="text" enableCheck={false} />
-                                </div>
-                            </div>
-                            <div className="">
-                                <InspectCheckOne label="Is the given information found correct?" children={
-                                    <div className="d-flex flex-row">
-                                        <div className="me-3">
-                                            <Radio
-                                                isSelected={true}
-                                                label="Correct"
-                                            />
-                                        </div>
-                                        <div className="me-3">
-                                            <Radio
-                                                isSelected={false}
-                                                label="Incorrect"
-                                            />
-                                        </div>
-                                    </div>
-                                } />
-                            </div>
-                        </>
-                    } />
-                </div> */}
-
-                {/* <div className="mb-3">
-                    <CardThree children={
-                        <>
-                            <div className="p-4">
-                                <div className="mt-1">
-                                    <TextField label="Course" placeholder="Type here" showLabel={true} type="text" enableCheck={false} />
-                                </div>
-                            </div>
-                            <div className="">
-                                <InspectCheckOne label="Is the given information found correct?" children={
-                                    <div className="d-flex flex-row">
-                                        <div className="me-3">
-                                            <Radio
-                                                isSelected={false}
-                                                label="Correct"
-                                            />
-                                        </div>
-                                        <div className="me-3">
-                                            <Radio
-                                                isSelected={false}
-                                                label="Incorrect"
-                                            />
-                                        </div>
-                                    </div>
-                                } />
-                            </div>
-                        </>
-                    } />
-                </div> */}
-
-                {/* <div className="mb-3">
-                    <CardThree children={
-                        <>
-                            <div className="p-4">
-                                <div className="mt-1">
-                                    <TextField label="Name of Society/Trust/Company" placeholder="Type here" showLabel={true} type="text" enableCheck={false} />
-                                </div>
-                            </div>
-                            <div className="">
-                                <InspectCheckOne label="Is the given information found correct?" children={
-                                    <div className="d-flex flex-row">
-                                        <div className="me-3">
-                                            <Radio
-                                                isSelected={false}
-                                                label="Correct"
-                                            />
-                                        </div>
-                                        <div className="me-3">
-                                            <Radio
-                                                isSelected={false}
-                                                label="Incorrect"
-                                            />
-                                        </div>
-                                    </div>
-                                } />
-                            </div>
-                        </>
-                    } />
-                </div> */}
-
-                {/* <div className="mb-3">
-                    <CardThree children={
-                        <>
-                            <div className="p-4">
-                                <div className="mt-1">
-                                    <TextField label="Proposed Institute Name" placeholder="Type here" showLabel={true} type="text" enableCheck={false} />
-                                </div>
-                            </div>
-                            <div className="">
-                                <InspectCheckOne label="Is the given information found correct?" children={
-                                    <div className="d-flex flex-row">
-                                        <div className="me-3">
-                                            <Radio
-                                                isSelected={false}
-                                                label="Correct"
-                                            />
-                                        </div>
-                                        <div className="me-3">
-                                            <Radio
-                                                isSelected={false}
-                                                label="Incorrect"
-                                            />
-                                        </div>
-                                    </div>
-                                } />
-                            </div>
-                        </>
-                    } />
-                </div> */}
-
                 <ModalTwo
                     id="reasonModal"
                     ariaLabel="reasonModalLabel"
@@ -430,6 +208,18 @@ export const FormView = ({ data }: FormViewProps) => {
 
                 {/* );
                     })} */}
+            </div>
+            <div className="row">
+                <div className="col-12 mt-3">
+                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 p-0 float-left">
+                        <BtnThree label="Cancel" btnType="button" isLink={true} link="" isModal={false} />
+                    </div>
+                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 p-0 float-right">
+                        <div className="float-right">
+                            <BtnTwo label="Next" btnType="button" isLink={true} link="/inspection-summary" isModal={false} showIcon={true} iconValue={`arrow_forward`} />
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     );

@@ -1,11 +1,11 @@
 @import url("../../styles/colors.css");
 @import url("../../assets/fonts/fonts.css");
 
-.btn_two {
+.btn_three {
   border: 1.5px solid var(--blue-primary) !important;
   border-radius: 4px !important;
-  background-color: var(--blue-primary);
-  color: var(--white-100) !important;
+  background-color: transparent;
+  color: var(--blue-primary) !important;
   font-family: "Lato-Bold" !important;
   font-size: 0.875rem !important;
   letter-spacing: 0.5px;
@@ -16,7 +16,7 @@
   width: fit-content;
 }
 
-.btn_two:hover {
+.btn_three:hover {
   background-color: var(--white-100);
   color: var(--blue-primary) !important;
 }

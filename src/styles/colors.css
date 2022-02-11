@@ -11,7 +11,12 @@ html {
     --status-amber: RGB(233, 158, 56);
     --status-red: RGB(209, 57, 36);
 
+    --green-01: RGB(59, 156, 163);
+    --purple-01: RGB(123, 65, 140);
+
     --white-100: RGB(255, 255, 255);
+    --white-90: RGB(245, 245, 245);
+    --white-95: RGBA(255, 255, 255, 0.95);
 }
 
 html[data-theme="dark"] {
@@ -26,5 +31,10 @@ html[data-theme="dark"] {
     --status-amber: RGB(233, 158, 56);
     --status-red: RGB(209, 57, 36);
 
+    --green-01: RGB(59, 156, 163);
+    --purple-01: RGB(123, 65, 140);
+
     --white-100: RGB(255, 255, 255);
+    --white-90: RGB(245, 245, 245);
+    --white-95: RGBA(255, 255, 255, 0.95);
 }

@@ -145,8 +145,9 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
 
         ApplicationDetails[0].menuList.map((k, l) => {
             if (k.id === id) {
+                setSelectedMenuLabel(k.label);
                 setSelectedDataMenu(k);
-            } 
+            }
             return null;
         })
     }
