@@ -1,3 +1,4 @@
+import { LANG } from "../../constants";
 import styles from "./StatusBar.module.css";
 
 /**
@@ -13,7 +14,12 @@ interface StatusBarProps {
 export const StatusBar = ({ label, status }: StatusBarProps) => {
     return (
         <div className={`${styles.status_bar}`}>
-            {status && (status === "New" || status === 'Submitted') && (
+            {status && 
+            (
+                status === LANG.FORM_STATUS.NEW ||
+                status === LANG.FORM_STATUS.DRAFT
+            ) 
+            && (
                 <label className={`${styles.status_one_label} px-3 m-0`}>{`Status: ${label}`}</label>
             )}
             {status && status === "Under inspection" && (

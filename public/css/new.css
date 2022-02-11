@@ -145,6 +145,12 @@ h3 {
     min-width: 87px;
 }
 
+.btn.smf-btn-primary:hover {
+    background-color: var(--primary-color) !important;
+    color: #fff;
+    opacity: 0.9;
+}
+
 .custom-form-check {
     padding-left: 0 !important;
 }
