@@ -1,40 +1,42 @@
 html {
-    --black-04: RGBA(0, 0, 0, 0.04);
-    --black-08: RGBA(0, 0, 0, 0.08);
-    --black-16: RGBA(0, 0, 0, 0.16);
-    --black-40: RGBA(0, 0, 0, 0.4);
-    --black-60: RGBA(0, 0, 0, 0.6);
-    --black-87: RGBA(0, 0, 0, 0.87);
-    --blue-primary: RGB(4, 93, 173);
+  --black-04: RGBA(0, 0, 0, 0.04);
+  --black-08: RGBA(0, 0, 0, 0.08);
+  --black-16: RGBA(0, 0, 0, 0.16);
+  --black-40: RGBA(0, 0, 0, 0.4);
+  --black-60: RGBA(0, 0, 0, 0.6);
+  --black-87: RGBA(0, 0, 0, 0.87);
+  --blue-primary: RGB(4, 93, 173);
 
-    --status-green: RGB(29, 137, 35);
-    --status-amber: RGB(233, 158, 56);
-    --status-red: RGB(209, 57, 36);
+  --status-green: RGB(29, 137, 35);
+  --status-amber: RGB(233, 158, 56);
+  --status-red: RGB(209, 57, 36);
 
-    --green-01: RGB(59, 156, 163);
-    --purple-01: RGB(123, 65, 140);
+  --green-01: RGB(59, 156, 163);
+  --green-02: RGB(48, 105, 51);
+  --purple-01: RGB(123, 65, 140);
 
-    --white-100: RGB(255, 255, 255);
-    --white-90: RGB(245, 245, 245);
-    --white-95: RGBA(255, 255, 255, 0.95);
+  --white-100: RGB(255, 255, 255);
+  --white-90: RGB(245, 245, 245);
+  --white-95: RGBA(255, 255, 255, 0.95);
 }
 
 html[data-theme="dark"] {
-    --black-04: RGBA(0, 0, 0, 0.04);
-    --black-08: RGBA(0, 0, 0, 0.08);
-    --black-16: RGBA(0, 0, 0, 0.16);
-    --black-40: RGBA(0, 0, 0, 0.4);
-    --black-60: RGBA(0, 0, 0, 0.6);
-    --black-87: RGBA(0, 0, 0, 0.87);
+  --black-04: RGBA(0, 0, 0, 0.04);
+  --black-08: RGBA(0, 0, 0, 0.08);
+  --black-16: RGBA(0, 0, 0, 0.16);
+  --black-40: RGBA(0, 0, 0, 0.4);
+  --black-60: RGBA(0, 0, 0, 0.6);
+  --black-87: RGBA(0, 0, 0, 0.87);
 
-    --status-green: RGB(29, 137, 35);
-    --status-amber: RGB(233, 158, 56);
-    --status-red: RGB(209, 57, 36);
+  --status-green: RGB(29, 137, 35);
+  --status-amber: RGB(233, 158, 56);
+  --status-red: RGB(209, 57, 36);
 
-    --green-01: RGB(59, 156, 163);
-    --purple-01: RGB(123, 65, 140);
+  --green-01: RGB(59, 156, 163);
+  --green-02: RGB(48, 105, 51);
+  --purple-01: RGB(123, 65, 140);
 
-    --white-100: RGB(255, 255, 255);
-    --white-90: RGB(245, 245, 245);
-    --white-95: RGBA(255, 255, 255, 0.95);
+  --white-100: RGB(255, 255, 255);
+  --white-90: RGB(245, 245, 245);
+  --white-95: RGBA(255, 255, 255, 0.95);
 }

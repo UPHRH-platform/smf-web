@@ -43,9 +43,7 @@ export const BtnTwo = ({ label, btnType, clickHandler, isLink, link, isModal, fl
                         <button type="submit" onClick={clickHandler} className={`${styles.btn_two} ${floatBottom ? stylesOne.btn_float_bottom : ''} mb-4`} data-toggle="modal" data-target={`#${modalId}`}>{label}<span className={`${showIcon ? "material-icons vertical_align_bottom ps-2" : ""}`}>{iconValue}</span></button>
                     </Link>
                 ) : (
-
                     <button type="submit" onClick={clickHandler} className={`${styles.btn_two} ${floatBottom ? stylesOne.btn_float_bottom : ''} mb-4`} data-toggle="modal" data-target={`#${modalId}`}>{label}<span className={`${showIcon ? "material-icons vertical_align_bottom ps-2" : ""}`}>{iconValue}</span></button>
-
                 )}
             </>
         )

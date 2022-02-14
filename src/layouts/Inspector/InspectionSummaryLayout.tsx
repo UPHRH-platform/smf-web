@@ -121,10 +121,10 @@ export const InspectionSummaryLayout = ({
                                     <BtnTwo
                                         label="Submit"
                                         showIcon={false}
-                                        btnType="submit"
+                                        btnType="button"
                                         isModal={false}
-                                        isLink={false}
-                                        link=""
+                                        isLink={true}
+                                        link="/inspection-complete"
                                     />
                                 </div>
                             </div>
