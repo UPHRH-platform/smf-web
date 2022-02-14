@@ -4,4 +4,15 @@ import { atom } from "recoil";
 export const menuSelected = atom({
     key: "selectedSideMenu",
     default: ""
+});
+
+// Tab selections
+export const selectedTabData = atom({
+    key: "selectedTabData",
+    default: [{}]
+})
+
+export const selectedTab = atom({
+    key: "selectedTab",
+    default: ""
 })

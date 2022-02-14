@@ -8,7 +8,7 @@ import ListForms from "./components/form/ListForms";
 import AddForm from "./components/form/AddForm";
 import MyApplications from "./components/form/MyApplications";
 import MyForms from "./components/form/MyForms";
-import { InspectorApplications, ViewApplications, ReviewerAllApplications } from "./pages";
+import { InspectorApplications, ViewApplications, RegulatorAllApplications } from "./pages";
 import ReviewerApplications from "./pages/Reviewer/ReviewerApplications";
 import { Manage } from "./pages/Reviewer/manage";
 import { CreateUser } from "./pages/Reviewer/CreateUser";
@@ -67,7 +67,7 @@ const Router = (props) => (
        <PrivateRoute
         exact
         path="/reviewer/all-applications"
-        component={ReviewerAllApplications}
+        component={RegulatorAllApplications}
       />
       {/* <PrivateRoute exact path="/home" component={Dashboard} /> */}
     </Switch>

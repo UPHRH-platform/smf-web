@@ -1,3 +1,4 @@
+import { useEffect } from "react"
 import "./TabOne.css"
 
 /**
@@ -26,7 +27,7 @@ export const TabOne = ({ tabId, tabContentId, tabList }: TabOneProps) => {
             <div className="tab-content mt-4" id={tabContentId}>
                 {tabList && tabList.map((m: any, n: any) => {
                     return (
-                        <div className={`${n === 0 ? "tab-pane fade show active" : "tab-pane fade"}`} id={m.id} key={m.id}role="tabpanel" aria-labelledby={m.ariaLabelled}>{m.children && <>{m.children}</>}</div>
+                        <div className={`${n === 0 ? "tab-pane fade show active" : "tab-pane fade"}`} id={m.id} key={m.id} role="tabpanel" aria-labelledby={m.ariaLabelled}>{m.children && <>{m.children}</>}</div>
                     );
                 })}
             </div>
