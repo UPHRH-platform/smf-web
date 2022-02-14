@@ -1,7 +1,7 @@
 import { BtnOne, BtnTwo } from "../../components/buttons";
 import { CardFour } from "../../components/cards";
 import { SelectField, TextAreaField } from "../../components/form-elements";
-import { HeadingOne } from "../../components/headings";
+import { HeadingFour, HeadingOne } from "../../components/headings";
 import styles from "./InspectionSummaryLayout.module.css";
 /**
  * InspectionSummaryLayout component renders
@@ -39,7 +39,8 @@ export const InspectionSummaryLayout = ({
                     placeholder="Type here"
                 />
                 <div className="mt-3">
-                    <div className="col-12">
+                    <HeadingFour heading="People accompanied you"/>
+                    {/* <div className="col-12">
                         <div className="row">
                             <div className="col-4 p-0 m-0">
                                 <SelectField
@@ -62,7 +63,7 @@ export const InspectionSummaryLayout = ({
                                 />
                             </div>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="mt-3">
                     <div className="col-12 p-0 m-0">
@@ -91,12 +92,12 @@ export const InspectionSummaryLayout = ({
                     <div className="col-12 p-0 m-0">
                         <div className="row">
                             <div className="col-1">
-                                {/* <input
+                                <input
                                     type="checkbox"
                                     id="conditions"
                                     name="Conditions"
                                     value="Accepted conditions"
-                                ></input> */}
+                                ></input>
                             </div>
                             <div className="col-11">
                                 <p>

@@ -187,7 +187,7 @@ export const FormView = ({ data }: FormViewProps) => {
                                                     </div>
                                                 </div>
                                             }
-                                            showComments={true}
+                                            showComments={i.showComments}
                                             modalId="reasonModal"
                                         />
                                     </div>

@@ -25,7 +25,7 @@ const ApplicationDetails = [{
                 id: "FI001",
                 label: "Registration code",
                 value: "UPSMF123456",
-                showComments: false
+                showComments: true
             },
             {
                 id: "FI002",
@@ -55,7 +55,7 @@ const ApplicationDetails = [{
                 id: "FI005",
                 label: "Proposed Institute Name",
                 value: "Veer Bahadur Singh Purvanchal University",
-                showComments: false
+                showComments: true
             },
             {
                 id: "FI006",
