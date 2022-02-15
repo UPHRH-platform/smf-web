@@ -8,7 +8,12 @@ import ListForms from "./components/form/ListForms";
 import AddForm from "./components/form/AddForm";
 import MyApplications from "./components/form/MyApplications";
 import MyForms from "./components/form/MyForms";
-import { InspectorApplications, ViewApplications, RegulatorAllApplications } from "./pages";
+import {
+  InspectorApplications,
+  ViewApplications,
+  RegulatorAllApplications,
+  ReviewApplication,
+} from "./pages";
 import ReviewerApplications from "./pages/Reviewer/ReviewerApplications";
 import { Manage } from "./pages/Reviewer/manage";
 import { CreateUser } from "./pages/Reviewer/CreateUser";
@@ -27,11 +32,11 @@ const Router = (props) => (
       <PrivateRoute exact path="/forms/add" component={AddForm} />
       <PrivateRoute exact path="/forms/:id/edit" component={AddForm} />
       <PrivateRoute exact path="/forms/:id" component={FormViewer} />
-      <PrivateRoute
+      {/* <PrivateRoute
         exact
         path="/applications/:id/:applicationId"
         component={FormViewer}
-      />
+      /> */}
       <PrivateRoute exact path="/applications" component={MyApplications} />
       <PrivateRoute exact path="/my-forms" component={MyForms} />
       <PrivateRoute
@@ -49,25 +54,18 @@ const Router = (props) => (
         path="/reviewer/all-applications"
         component={ReviewerApplications}
       /> */}
+      <PrivateRoute exact path="/manage" component={Manage} />
+      <PrivateRoute exact path="/create-user" component={CreateUser} />
+      <PrivateRoute exact path="/edit-user/:id" component={CreateUser} />
       <PrivateRoute
-        exact
-        path="/manage"
-        component={Manage}
-      />
-      <PrivateRoute
-        exact
-        path="/create-user"
-        component={CreateUser}
-      />
-      <PrivateRoute
-        exact
-        path="/edit-user/:id"
-        component={CreateUser}
-      />
-       <PrivateRoute
         exact
         path="/reviewer/all-applications"
         component={RegulatorAllApplications}
+      />
+      <PrivateRoute
+        exact
+        path="/applications/:id/:applicationId"
+        component={ReviewApplication}
       />
       {/* <PrivateRoute exact path="/home" component={Dashboard} /> */}
     </Switch>

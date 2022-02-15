@@ -18,7 +18,7 @@ export const TabOne = ({ tabId, tabContentId, tabList }: TabOneProps) => {
             <ul className="nav nav-tabs" id={tabId} role="tablist">
                 {tabList && tabList.map((i: any, j: any) => {
                     return (
-                        <li className="nav-item me-3" role="presentation" key={j}>
+                        <li className="nav-item me-4" role="presentation" key={j}>
                             <button className={`${j === 0 ? `tab_one nav-link active` : `tab_one nav-link`}`} id={i.ariaLabelled} data-toggle="tab" data-target={`#${i.id}`} type="button" role="tab" aria-controls={i.id} aria-selected="true">{i.label}</button>
                         </li>
                     );
