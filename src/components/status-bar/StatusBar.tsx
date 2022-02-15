@@ -14,16 +14,19 @@ interface StatusBarProps {
 export const StatusBar = ({ label, status }: StatusBarProps) => {
     return (
         <div className={`${styles.status_bar}`}>
-            {status && 
-            (
-                status === LANG.FORM_STATUS.NEW ||
-                status === LANG.FORM_STATUS.DRAFT
-            ) 
-            && (
-                <label className={`${styles.status_one_label} px-3 m-0`}>{`Status: ${label}`}</label>
-            )}
-            {status && status === "Under inspection" && (
+            {status &&
+                (
+                    status === LANG.FORM_STATUS.NEW ||
+                    status === LANG.FORM_STATUS.DRAFT
+                )
+                && (
+                    <label className={`${styles.status_one_label} px-3 m-0`}>{`Status: ${label}`}</label>
+                )}
+            {status && status === LANG.FORM_STATUS.UNDER_REVIEW && (
                 <label className={`${styles.status_two_label} px-3 m-0`}>{`Status: ${label}`}</label>
+            )}
+            {status && status === LANG.FORM_STATUS.RETURNED && (
+                <label className={`${styles.status_three_label} px-3 m-0`}>{`Status: ${label}`}</label>
             )}
         </div>
     )
