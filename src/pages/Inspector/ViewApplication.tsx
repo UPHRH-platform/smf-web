@@ -4,7 +4,7 @@ import Header from "../../components/common/Header";
 import { useHistory } from 'react-router-dom';
 import { SideNavigation } from "../../components/navigation";
 import { useRecoilState } from "recoil";
-import { menuSelected as menuSelectedAtom } from "../../states/atoms";
+import { sideMenuData as selectedSideMenuDataAtom, sideMenuLabel as sideMenuLabelAtom } from "../../states/atoms";
 import { BtnOne, BtnTwo } from "../../components/buttons";
 import { ModalOne } from "../../components/modal";
 import { FormView } from "../../layouts";
@@ -19,11 +19,51 @@ const ApplicationDetails = [{
     name: "Paramedical degree",
     menuList: [{
         id: "MN001",
-        label: "General details"
+        label: "General details",
+        fields: [
+            {
+                id: "FI001",
+                label: "Registration code",
+                value: "UPSMF123456",
+                showComments: true
+            },
+            {
+                id: "FI002",
+                label: "Course type",
+                value: "Bachelors Degree",
+                showComments: false
+            },
+            {
+                id: "FI003",
+                label: "Course",
+                value: "Paramedical",
+                showComments: false
+            },
+        ],
     },
     {
         id: "MN002",
-        label: "Institution details"
+        label: "Institution details",
+        fields: [
+            {
+                id: "FI004",
+                label: "Name of Society/Trust/Company",
+                value: "Veer Bahadur Singh Purvanchal University",
+                showComments: false
+            },
+            {
+                id: "FI005",
+                label: "Proposed Institute Name",
+                value: "Veer Bahadur Singh Purvanchal University",
+                showComments: true
+            },
+            {
+                id: "FI006",
+                label: "Address",
+                value: "Shahganj Road, Siddikpur, Uttar Pradesh 222003",
+                showComments: false
+            },
+        ],
     },
     {
         id: "MN003",
@@ -95,19 +135,27 @@ interface ViewApplicationsProps {
 
 export const ViewApplications = ({ data }: ViewApplicationsProps) => {
 
-    const [selectedMenu, setSelectedMenu] = useRecoilState(menuSelectedAtom);
+    const [selectedMenuData, setSelectedDataMenu] = useRecoilState(selectedSideMenuDataAtom);
+    const [selectedMenuLabel, setSelectedMenuLabel] = useRecoilState(sideMenuLabelAtom);
 
     let history = useHistory();
 
-    const updateMenuSelection = (e: any, value: string) => {
+    const updateMenuSelection = (e: any, id: any) => {
         e.preventDefault();
 
-        setSelectedMenu(value);
+        ApplicationDetails[0].menuList.map((k, l) => {
+            if (k.id === id) {
+                setSelectedMenuLabel(k.label);
+                setSelectedDataMenu(k);
+            }
+            return null;
+        })
     }
 
     useEffect(() => {
         if (ApplicationDetails[0].menuList) {
-            setSelectedMenu(ApplicationDetails[0].menuList[0].label)
+            setSelectedMenuLabel(ApplicationDetails[0].menuList[0].label)
+            setSelectedDataMenu(ApplicationDetails[0].menuList[0])
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
@@ -147,8 +195,8 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
                             {/* Side navigation */}
                             {ApplicationDetails[0].menuList.map((i, j) => {
                                 return (
-                                    <SideNavigation text={i.label} key={i.id} isSelected={selectedMenu && selectedMenu === i.label ? true : false} clickHandler={(e) => {
-                                        updateMenuSelection(e, i.label)
+                                    <SideNavigation text={i.label} key={i.id} isSelected={selectedMenuLabel && selectedMenuLabel === i.label ? true : false} clickHandler={(e) => {
+                                        updateMenuSelection(e, i.id)
                                     }} />
                                 );
                             })}

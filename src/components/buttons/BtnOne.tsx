@@ -15,9 +15,11 @@ interface BtnOneProps {
     isModal?: boolean
     floatBottom?: boolean
     modalId?: string
+    showIcon?: boolean
+    iconValue?: string
 }
 
-export const BtnOne = ({ label, btnType, clickHandler, isLink, link, isModal, floatBottom, modalId }: BtnOneProps) => {
+export const BtnOne = ({ label, btnType, clickHandler, isLink, link, isModal, floatBottom, modalId, showIcon, iconValue }: BtnOneProps) => {
     if (btnType === "button") {
         return (
             <>

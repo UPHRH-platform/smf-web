@@ -14,9 +14,10 @@ interface SelectFieldProps {
     selectName: string
     selectId: string
     changeHandler?: (event: any) => void
+    isReadOnly?: boolean
 }
 
-export const SelectField = ({ label, changeHandler, option, showLabel, placeholder, selectName, selectId }: SelectFieldProps) => {
+export const SelectField = ({ label, changeHandler, option, showLabel, placeholder, selectName, selectId, isReadOnly }: SelectFieldProps) => {
     return (
         <div className="">
             {showLabel && (

@@ -2,8 +2,11 @@ import { useEffect } from "react";
 import { HeadingOne } from "../../components/headings";
 import { SideNavigation } from "../../components/navigation";
 import { useRecoilState } from "recoil";
-import { menuSelected as menuSelectedAtom } from "../../states/atoms";
-import { BtnOne, BtnTwo } from "../../components/buttons";
+import {
+  sideMenuData as selectedSideMenuDataAtom,
+  sideMenuLabel as sideMenuLabelAtom,
+} from "../../states/atoms";
+import { BtnThree, BtnTwo } from "../../components/buttons";
 import { ModalOne } from "../../components/modal";
 
 /**
@@ -19,17 +22,21 @@ interface ReviewApplicationLayoutProps {
 export const ReviewApplicationLayout = ({
   data,
 }: ReviewApplicationLayoutProps) => {
-  const [selectedMenu, setSelectedMenu] = useRecoilState(menuSelectedAtom);
+  const [selectedMenuData, setSelectedDataMenu] = useRecoilState(
+    selectedSideMenuDataAtom
+  );
+  const [selectedMenuLabel, setSelectedMenuLabel] =
+    useRecoilState(sideMenuLabelAtom);
 
   const updateMenuSelection = (e: any, value: string) => {
     e.preventDefault();
 
-    setSelectedMenu(value);
+    setSelectedMenuLabel(value);
   };
 
   useEffect(() => {
     if (data.fields && data.fields[0]) {
-      setSelectedMenu(data.fields[0].name);
+      setSelectedMenuLabel(data.fields[0].name);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data.fields]);
@@ -46,14 +53,29 @@ export const ReviewApplicationLayout = ({
             </div>
             <div className="col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5">
               <div className="d-flex flex-row float-end mt-4 mt-sm-4 mt-md-0 mt-lg-0 mt-xl-0 mt-xxl-0">
-                 <div className="me-4">
-                     <BtnOne label="View status log" btnType="button" isLink={false} link="" isModal={true} floatBottom={false} modalId="staticBackdrop" />
-                 </div>
-                 <div className="">
-                     <BtnTwo label="Change status" btnType="button" isLink={false} link="" isModal={false} floatBottom={false} />
-                 </div>
-                 {/* <ModalOne id="staticBackdrop" ariaLabel="staticBackdropLabel" heading="Status log" list={modalList}/> */}
-             </div>
+                <div className="me-4">
+                  <BtnThree
+                    label="View status log"
+                    btnType="button"
+                    isLink={false}
+                    link=""
+                    isModal={true}
+                    floatBottom={false}
+                    modalId="staticBackdrop"
+                  />
+                </div>
+                <div className="">
+                  <BtnTwo
+                    label="Change status"
+                    btnType="button"
+                    isLink={false}
+                    link=""
+                    isModal={false}
+                    floatBottom={false}
+                  />
+                </div>
+                {/* <ModalOne id="staticBackdrop" ariaLabel="staticBackdropLabel" heading="Status log" list={modalList}/> */}
+              </div>
             </div>
           </div>
 
@@ -68,7 +90,9 @@ export const ReviewApplicationLayout = ({
                         text={i.name}
                         key={j}
                         isSelected={
-                          selectedMenu && selectedMenu === i.name ? true : false
+                          selectedMenuLabel && selectedMenuLabel === i.name
+                            ? true
+                            : false
                         }
                         clickHandler={(e) => {
                           updateMenuSelection(e, i.name);

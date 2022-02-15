@@ -12,9 +12,10 @@ interface RadioProps {
     isSelected: boolean
     isModal?: boolean
     modalId?: string
+    isReadOnly?: boolean
 }
 
-export const Radio = ({ label, clickHandler, isSelected, isModal, modalId }: RadioProps) => {
+export const Radio = ({ label, clickHandler, isSelected, isModal, modalId, isReadOnly }: RadioProps) => {
     if (isSelected) {
         if (!isModal) {
             return (

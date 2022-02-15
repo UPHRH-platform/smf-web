@@ -5,3 +5,5 @@ export { PastTab } from "./Inspector/PastTab";
 export { Users } from "./reviewer/Users";
 export { AllApplicationsTab } from "./Regulator/AllApplicationsTab";
 export { ReviewApplicationLayout } from "./Regulator/ReviewApplicationLayout";
+export { InspectionSummaryLayout } from "./Inspector/InspectionSummaryLayout";
+export { InspectionCompleteLayout } from "./Inspector/InspectionCompleteLayout";

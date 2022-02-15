@@ -10,6 +10,7 @@ interface TextFieldProps {
     label?: string
     placeholder?: string
     value?: string
+    defaultValue?: string
     showLabel: boolean
     type: string
     changeHandler?: (event: any) => void
@@ -17,9 +18,10 @@ interface TextFieldProps {
     checkboxId?: string
     checkBoxValue?: string
     checkBoxLabel?: string
+    isReadOnly?: boolean
 }
 
-export const TextField = ({ label, changeHandler, placeholder, showLabel, type, enableCheck, checkboxId, checkBoxValue, checkBoxLabel, value }: TextFieldProps) => {
+export const TextField = ({ label, changeHandler, placeholder, showLabel, type, enableCheck, checkboxId, checkBoxValue, checkBoxLabel, value, defaultValue, isReadOnly }: TextFieldProps) => {
     return (
         <div className={`${styles.text_field_input}`}>
             {showLabel && (
@@ -28,7 +30,12 @@ export const TextField = ({ label, changeHandler, placeholder, showLabel, type, 
                     <br />
                 </>
             )}
-            <input type={type} placeholder={placeholder} value={value} />
+
+            {isReadOnly ? (
+                <input type={type} placeholder={placeholder} value={value} defaultValue={defaultValue} readOnly />
+            ) : (
+                <input type={type} placeholder={placeholder} value={value} defaultValue={defaultValue} />
+            )}
 
             {enableCheck && (
                 <div className="form-check">

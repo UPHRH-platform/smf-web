@@ -13,6 +13,8 @@ import {
   ViewApplications,
   RegulatorAllApplications,
   ReviewApplication,
+  InspectionSummary,
+  InspectionComplete,
 } from "./pages";
 import ReviewerApplications from "./pages/Reviewer/ReviewerApplications";
 import { Manage } from "./pages/Reviewer/manage";
@@ -66,6 +68,16 @@ const Router = (props) => (
         exact
         path="/applications/:id/:applicationId"
         component={ReviewApplication}
+      />
+      <PrivateRoute
+        exact
+        path="/inspection-summary"
+        component={InspectionSummary}
+      />
+      <PrivateRoute
+        exact
+        path="/inspection-complete"
+        component={InspectionComplete}
       />
       {/* <PrivateRoute exact path="/home" component={Dashboard} /> */}
     </Switch>

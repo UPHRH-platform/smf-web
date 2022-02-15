@@ -15,9 +15,10 @@ interface TextAreaFieldProps {
     changeHandler?: (event: any) => void
     showStatus?: boolean
     value?: string
+    isReadOnly?: boolean
 }
 
-export const TextAreaField = ({ label, changeHandler, placeholder, showLabel, showStatus, value, rows }: TextAreaFieldProps) => {
+export const TextAreaField = ({ label, changeHandler, placeholder, showLabel, showStatus, value, rows, isReadOnly }: TextAreaFieldProps) => {
     const [characterCount, setCharacterCount] = useState(0);
 
     const updateCharacterCount = (e: any) => {

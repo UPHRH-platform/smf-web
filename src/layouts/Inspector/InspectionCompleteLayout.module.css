@@ -1,0 +1,22 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+
+.inspection_complete {
+  justify-content: center;
+  text-align: center;
+}
+
+.inspection_complete_cricle {
+  border-radius: 50%;
+  background-color: var(--black-08);
+  margin: 0 auto;
+  height: 3.75rem;
+  width: 3.75rem;
+}
+
+.inspection_complete_icon {
+  background-color: transparent;
+  color: var(--green-02);
+  font-size: 1.5rem;
+  vertical-align: -1.5rem;
+}
