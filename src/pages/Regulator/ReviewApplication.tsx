@@ -6,6 +6,7 @@ import Helper from "./../../helpers/auth";
 import { FormService } from "./../../services/form.service";
 import { APP } from "./../../constants";
 import Notify from "./../../helpers/notify";
+import { ReviewApplicationLayout } from "../../layouts";
 
 /**
  * ReviewApplication component renders
@@ -17,7 +18,9 @@ interface ReviewApplicationProps {
 }
 
 export const ReviewApplication = ({ data }: ReviewApplicationProps) => {
-  
+
+  const [reviewData, setReviewData] = useState({})
+
 
   let history = useHistory();
 
@@ -26,7 +29,7 @@ export const ReviewApplication = ({ data }: ReviewApplicationProps) => {
       let tempFormId = history.location.pathname.split("/")[2];
       let tempAppId = history.location.pathname.split("/")[3];
 
-     
+
 
       getApplicationDetails(tempFormId, tempAppId);
     }
@@ -36,7 +39,7 @@ export const ReviewApplication = ({ data }: ReviewApplicationProps) => {
     FormService.find(formId).then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          console.log(response.responseData);
+          setReviewData(response.responseData)
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
@@ -53,7 +56,9 @@ export const ReviewApplication = ({ data }: ReviewApplicationProps) => {
     <Fragment>
       <Header history={history} />
       <div className="container-fluid">
-        <div className="container dashboard-inner-container mt-4"></div>
+        <div className="container dashboard-inner-container mt-4">
+          <ReviewApplicationLayout data={reviewData} />
+        </div>
       </div>
     </Fragment>
   );

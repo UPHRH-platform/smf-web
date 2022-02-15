@@ -5,12 +5,14 @@ import { useHistory } from "react-router-dom";
 import { TabOne } from "../../components/tabs";
 import { AllApplicationsTab } from "../../layouts";
 import { useRecoilState } from "recoil";
-import { selectedTabData as selectedTabDataAtom, selectedTab as selectedTabAtom } from "../../states/atoms";
+import {
+    selectedTabData as selectedTabDataAtom,
+    selectedTab as selectedTabAtom,
+} from "../../states/atoms";
 import Helper from "./../../helpers/auth";
 import { FormService } from "./../../services/form.service";
 import { APP } from "./../../constants";
 import Notify from "./../../helpers/notify";
-import { tab } from "@testing-library/user-event/dist/tab";
 
 /**
  * RegulatorAllApplications component renders
@@ -92,9 +94,9 @@ interface RegulatorAllApplicationsProps {
 export const RegulatorAllApplications = ({
     data,
 }: RegulatorAllApplicationsProps) => {
-    const [currentData, setCurrentData] = useRecoilState(selectedTabDataAtom)
+    const [currentData, setCurrentData] = useRecoilState(selectedTabDataAtom);
     const [tabData, setTabData] = useState<any[]>([]);
-    const [selectedTab, setSelectedTab] = useRecoilState(selectedTabAtom)
+    const [selectedTab, setSelectedTab] = useRecoilState(selectedTabAtom);
 
     let history = useHistory();
 
@@ -145,9 +147,9 @@ export const RegulatorAllApplications = ({
 
     useEffect(() => {
         if (currentData.length && selectedTab === "") {
-            setSelectedTab("New")
+            setSelectedTab("New");
         }
-    }, [currentData])
+    }, [currentData]);
 
     const getSelectedTabData = () => {
         if (Helper.getUserRole() === APP.ROLE.REGULATOR) {
@@ -157,7 +159,7 @@ export const RegulatorAllApplications = ({
             FormService.getAllApplications(data).then(
                 (response) => {
                     if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-                        setCurrentData(response.responseData)
+                        setCurrentData(response.responseData);
                     } else {
                         Notify.error(response.statusInfo.errorMessage);
                     }
@@ -183,7 +185,38 @@ export const RegulatorAllApplications = ({
                             className="mt-3"
                             onClick={(e: any) => {
                                 if (e.target && e.target.id !== "" && e.target.innerHTML) {
-                                    setSelectedTab(e.target.innerHTML);
+                                    let tempStatus = "";
+                                    switch (e.target.innerHTML) {
+                                        case "New":
+                                            tempStatus = e.target.innerHTML;
+                                            break;
+
+                                        case "Under review":
+                                            tempStatus = "underreview";
+                                            break;
+
+                                        case "Returned":
+                                            tempStatus = "returned";
+                                            break;
+
+                                        case "Sent for inspection":
+                                            tempStatus = "sentforinspection";
+                                            break;
+
+                                        case "Inspection completed":
+                                            tempStatus = "inspectioncompleted";
+                                            break;
+
+                                        case "Approved":
+                                            tempStatus = "approved";
+                                            break;
+
+                                        default:
+                                            tempStatus = "";
+                                            break;
+                                    }
+
+                                    setSelectedTab(tempStatus);
                                 }
                             }}
                         >
