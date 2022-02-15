@@ -19,6 +19,8 @@ export const LANG = {
   FORM_STATUS: {
     DRAFT: "DRAFT",
     NEW: "NEW",
+    UNDER_REVIEW: "UNDERREVIEW",
+    RETURNED: "RETURNED"
   },
   COL: {
     1: 1,
