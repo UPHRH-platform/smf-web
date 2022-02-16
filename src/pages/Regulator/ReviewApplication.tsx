@@ -18,9 +18,8 @@ interface ReviewApplicationProps {
 }
 
 export const ReviewApplication = ({ data }: ReviewApplicationProps) => {
-
-  const [reviewData, setReviewData] = useState({})
-
+  const [formData, setFormData] = useState({});
+  const [applicationData, setApplicationData] = useState({});
 
   let history = useHistory();
 
@@ -28,8 +27,6 @@ export const ReviewApplication = ({ data }: ReviewApplicationProps) => {
     if (history.location && history.location.pathname) {
       let tempFormId = history.location.pathname.split("/")[2];
       let tempAppId = history.location.pathname.split("/")[3];
-
-
 
       getApplicationDetails(tempFormId, tempAppId);
     }
@@ -39,7 +36,14 @@ export const ReviewApplication = ({ data }: ReviewApplicationProps) => {
     FormService.find(formId).then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          setReviewData(response.responseData)
+          setFormData(response.responseData);
+          FormService.findApplication(applicationId).then((res) => {
+            if (res.statusInfo.statusCode === APP.CODE.SUCCESS) {
+              setApplicationData(res.responseData);
+            } else {
+              Notify.error(res.statusInfo.errorMessage);
+            }
+          });
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
@@ -57,7 +61,10 @@ export const ReviewApplication = ({ data }: ReviewApplicationProps) => {
       <Header history={history} />
       <div className="container-fluid">
         <div className="container dashboard-inner-container mt-4">
-          <ReviewApplicationLayout data={reviewData} />
+          <ReviewApplicationLayout
+            formData={formData}
+            applicationData={applicationData}
+          />
         </div>
       </div>
     </Fragment>

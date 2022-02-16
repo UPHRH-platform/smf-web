@@ -1,13 +1,13 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { HeadingOne } from "../../components/headings";
 import { SideNavigation } from "../../components/navigation";
 import { useRecoilState } from "recoil";
-import {
-  sideMenuData as selectedSideMenuDataAtom,
-  sideMenuLabel as sideMenuLabelAtom,
-} from "../../states/atoms";
-import { BtnThree, BtnTwo } from "../../components/buttons";
+import { sideMenuLabel as sideMenuLabelAtom } from "../../states/atoms";
+import { BtnThree, BtnTwo, BtnFour } from "../../components/buttons";
 import { ModalOne } from "../../components/modal";
+import { StatusBarLarge } from "../../components/status-bar";
+import { CardThree } from "../../components/cards";
+import { TextField } from "../../components/form-elements";
 
 /**
  * ReviewApplicationLayout component renders
@@ -16,17 +16,19 @@ import { ModalOne } from "../../components/modal";
  */
 
 interface ReviewApplicationLayoutProps {
-  data?: any;
+  formData?: any;
+  applicationData?: any;
 }
 
 export const ReviewApplicationLayout = ({
-  data,
+  formData,
+  applicationData,
 }: ReviewApplicationLayoutProps) => {
-  const [selectedMenuData, setSelectedDataMenu] = useRecoilState(
-    selectedSideMenuDataAtom
-  );
+  const [selectedMenuData, setSelectedDataMenu] = useState<any[]>([]);
   const [selectedMenuLabel, setSelectedMenuLabel] =
     useRecoilState(sideMenuLabelAtom);
+
+  const [processedData, setProcessedData] = useState<any[]>([]);
 
   const updateMenuSelection = (e: any, value: string) => {
     e.preventDefault();
@@ -35,25 +37,80 @@ export const ReviewApplicationLayout = ({
   };
 
   useEffect(() => {
-    if (data.fields && data.fields[0]) {
-      setSelectedMenuLabel(data.fields[0].name);
+    if (applicationData.dataObject) {
+      let objectKeys = Object.keys(applicationData.dataObject);
+      let objectValues = Object.values(applicationData.dataObject);
+
+      setSelectedMenuLabel(objectKeys[0]);
+
+      let tempArray: any = [];
+      let tempFormArray: any = [];
+
+      objectKeys.map((i, j) => {
+        tempArray.push({
+          sideMenu: i,
+          fields: [Object.values(objectValues)[j]],
+        });
+      });
+
+      tempArray.map((m: any, n: number) => {
+        formData &&
+          formData.fields.map((k: any, l: number) => {
+            Object.values(m.fields).map((q: any, w: number) => {
+              Object.keys(q).map((h: any, b: number) => {
+                if (h === k.name) {
+                  tempFormArray.push({
+                    id: b,
+                    parent: n,
+                    label: h,
+                    value: Object.values(q)[b],
+                    fieldType: k.fieldType,
+                  });
+                }
+              });
+            });
+          });
+      });
+
+      tempArray.map((y: any, f: number) => {
+        y.fields = [];
+        tempFormArray.map((g: any, d: number) => {
+          if (g.parent === f) {
+            y.fields.push(g);
+          }
+        });
+      });
+
+      setProcessedData(tempArray);
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data.fields]);
+  }, [applicationData]);
+
+  useEffect(() => {
+    if (selectedMenuLabel && selectedMenuLabel.length !== 0) {
+      setSelectedDataMenu([]);
+      processedData.map((i, j) => {
+        if (i.sideMenu === selectedMenuLabel) {
+          setSelectedDataMenu(i.fields);
+        }
+      });
+    }
+  }, [selectedMenuLabel]);
 
   return (
     <div className="">
-      {data && (
+      {applicationData && (
         <>
           <div className="row pt-3">
             <div className="col-sm-12 col-md-7 col-lg-7 col-xl-7 col-xxl-7">
               <div className="float-start">
-                <HeadingOne heading={data.title} />
+                <HeadingOne heading={applicationData.title} />
               </div>
             </div>
             <div className="col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5">
               <div className="d-flex flex-row float-end mt-4 mt-sm-4 mt-md-0 mt-lg-0 mt-xl-0 mt-xxl-0">
-                <div className="me-4">
+                {/* <div className="me-4">
                   <BtnThree
                     label="View status log"
                     btnType="button"
@@ -63,10 +120,10 @@ export const ReviewApplicationLayout = ({
                     floatBottom={false}
                     modalId="staticBackdrop"
                   />
-                </div>
+                </div> */}
                 <div className="">
-                  <BtnTwo
-                    label="Change status"
+                  <BtnFour
+                    label="View status log"
                     btnType="button"
                     isLink={false}
                     link=""
@@ -83,25 +140,60 @@ export const ReviewApplicationLayout = ({
             <div className="row">
               {/* Side navigation */}
               <div className="col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 pt-4">
-                {data.fields &&
-                  data.fields.map((i: any, j: number) => {
+                {processedData &&
+                  processedData.map((i: any, j: number) => {
                     return (
                       <SideNavigation
-                        text={i.name}
+                        text={i.sideMenu}
                         key={j}
                         isSelected={
-                          selectedMenuLabel && selectedMenuLabel === i.name
+                          selectedMenuLabel && selectedMenuLabel === i.sideMenu
                             ? true
                             : false
                         }
                         clickHandler={(e) => {
-                          updateMenuSelection(e, i.name);
+                          updateMenuSelection(e, i.sideMenu);
                         }}
                       />
                     );
                   })}
               </div>
-              <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mt-2"></div>
+
+              {/* Form view */}
+              <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mt-4">
+                {applicationData.status && (
+                  <StatusBarLarge
+                    status="green"
+                    label={applicationData.status}
+                  />
+                )}
+
+                {selectedMenuData &&
+                  selectedMenuData.map((k: any, l: number) => {
+                    switch (k.fieldType) {
+                      case "text":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <div className="ps-4 pe-4 pt-3">
+                                  <TextField
+                                    showLabel={k.label ? true : false}
+                                    label={k.label || ""}
+                                    type="text"
+                                    isReadOnly={true}
+                                    value={k.value || ""}
+                                  />
+                                </div>
+                              }
+                            />
+                          </div>
+                        );
+                      default:
+                        return null;
+                    }
+                  })}
+              </div>
             </div>
           </div>
         </>

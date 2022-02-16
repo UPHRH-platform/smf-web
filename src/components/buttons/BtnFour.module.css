@@ -1,0 +1,22 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+
+.btn_four {
+  border: 1.5px solid var(--black-16) !important;
+  border-radius: 4px !important;
+  background-color: transparent;
+  color: var(--blue-primary) !important;
+  font-family: "Lato-Bold" !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.5px;
+  line-height: 1.429;
+  padding: 0.45rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  width: fit-content;
+}
+
+.btn_four:hover {
+  background-color: var(--white-100);
+  color: var(--blue-primary) !important;
+}
