@@ -7,34 +7,64 @@ import styles from "./SelectField.module.css";
  */
 
 interface SelectFieldProps {
-    label?: string
-    option: any
-    placeholder?: string
-    showLabel: boolean
-    selectName: string
-    selectId: string
-    changeHandler?: (event: any) => void
-    isReadOnly?: boolean
+  label?: string;
+  option: any;
+  placeholder?: string;
+  showLabel: boolean;
+  selectName: string;
+  selectId: string;
+  changeHandler?: (event: any) => void;
+  isReadOnly?: boolean;
+  value?: string;
 }
 
-export const SelectField = ({ label, changeHandler, option, showLabel, placeholder, selectName, selectId, isReadOnly }: SelectFieldProps) => {
-    return (
-        <div className="">
-            {showLabel && (
-                <>
-                    <HeadingFour heading={label} />
-                    <br />
-                </>
-            )}
-            <select name={selectName} id={selectId} className={`${styles.select_field_input}`} defaultValue={placeholder}>
-                {placeholder && (
-                    <option disabled className={`${styles.select_field_input_placeholder}`}>{placeholder}</option>
-                )}
+export const SelectField = ({
+  label,
+  changeHandler,
+  option,
+  showLabel,
+  placeholder,
+  selectName,
+  selectId,
+  isReadOnly,
+  value,
+}: SelectFieldProps) => {
+  return (
+    <div className="">
+      {showLabel && (
+        <>
+          <HeadingFour heading={label} />
+          <br />
+        </>
+      )}
+      <select
+        name={selectName}
+        id={selectId}
+        className={`${styles.select_field_input}`}
+        value={value}
+        defaultValue={placeholder}
+        disabled={isReadOnly}
+      >
+        {placeholder && (
+          <option
+            disabled
+            className={`${styles.select_field_input_placeholder}`}
+          >
+            {placeholder}
+          </option>
+        )}
 
-                {option.map((i: any, j: any) => {
-                    return <option value={i.value} key={j}>{i.label}</option>
-                })}
-            </select>
-        </div>
-    )
-}
+        {option.map((i: any, j: any) => {
+          return (
+            <option
+              value={i.key}
+              key={j}
+            >
+              {i.value}
+            </option>
+          );
+        })}
+      </select>
+    </div>
+  );
+};

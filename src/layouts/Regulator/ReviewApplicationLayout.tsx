@@ -7,7 +7,7 @@ import { BtnThree, BtnTwo, BtnFour } from "../../components/buttons";
 import { ModalOne } from "../../components/modal";
 import { StatusBarLarge } from "../../components/status-bar";
 import { CardThree } from "../../components/cards";
-import { TextField } from "../../components/form-elements";
+import { SelectField, TextField } from "../../components/form-elements";
 
 /**
  * ReviewApplicationLayout component renders
@@ -64,6 +64,7 @@ export const ReviewApplicationLayout = ({
                     parent: n,
                     label: h,
                     value: Object.values(q)[b],
+                    defaultValues: k.values,
                     fieldType: k.fieldType,
                   });
                 }
@@ -82,6 +83,8 @@ export const ReviewApplicationLayout = ({
       });
 
       setProcessedData(tempArray);
+
+      // console.log(tempArray);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -127,11 +130,17 @@ export const ReviewApplicationLayout = ({
                     btnType="button"
                     isLink={false}
                     link=""
-                    isModal={false}
+                    isModal={true}
                     floatBottom={false}
+                    modalId="statusLog"
                   />
                 </div>
-                {/* <ModalOne id="staticBackdrop" ariaLabel="staticBackdropLabel" heading="Status log" list={modalList}/> */}
+                <ModalOne
+                  id="statusLog"
+                  ariaLabel="statusLogLabel"
+                  heading="Status log"
+                  list=""
+                />
               </div>
             </div>
           </div>
@@ -181,6 +190,62 @@ export const ReviewApplicationLayout = ({
                                     showLabel={k.label ? true : false}
                                     label={k.label || ""}
                                     type="text"
+                                    isReadOnly={true}
+                                    value={k.value || ""}
+                                  />
+                                </div>
+                              }
+                            />
+                          </div>
+                        );
+                      case "date":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <div className="ps-4 pe-4 pt-3">
+                                  <TextField
+                                    showLabel={k.label ? true : false}
+                                    label={k.label || ""}
+                                    type="date"
+                                    isReadOnly={true}
+                                    value={k.value || ""}
+                                  />
+                                </div>
+                              }
+                            />
+                          </div>
+                        );
+                      case "dropdown":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <div className="ps-4 pe-4 pt-3">
+                                  <SelectField
+                                    showLabel={k.label ? true : false}
+                                    selectName="reviewSelect"
+                                    selectId="reviewSelect"
+                                    isReadOnly={true}
+                                    label={k.label || ""}
+                                    option={k.defaultValues}
+                                    value={k.value || ""}
+                                  />
+                                </div>
+                              }
+                            />
+                          </div>
+                        );
+                      case "date":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <div className="ps-4 pe-4 pt-3">
+                                  <TextField
+                                    showLabel={k.label ? true : false}
+                                    label={k.label || ""}
+                                    type="date"
                                     isReadOnly={true}
                                     value={k.value || ""}
                                   />
