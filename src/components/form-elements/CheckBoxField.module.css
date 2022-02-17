@@ -1,0 +1,27 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+
+.checkbox_selected {
+  color: var(--blue-primary);
+  font-size: 1.5rem;
+  vertical-align: -0.4rem;
+}
+
+.checkbox_unselected {
+  color: var(--black-16);
+  font-size: 1.5rem;
+  vertical-align: -0.4rem;
+}
+
+.checkbox_cursor {
+  cursor: pointer;
+}
+
+.checkbox_label {
+  color: var(--black-87);
+  cursor: pointer;
+  font-family: "Lato-Regular";
+  font-size: 0.875rem;
+  letter-spacing: 0.25px;
+  line-height: 1.5;
+}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { HeadingOne } from "../../components/headings";
+import { HeadingFour, HeadingOne } from "../../components/headings";
 import { SideNavigation } from "../../components/navigation";
 import { useRecoilState } from "recoil";
 import { sideMenuLabel as sideMenuLabelAtom } from "../../states/atoms";
@@ -7,7 +7,16 @@ import { BtnThree, BtnTwo, BtnFour } from "../../components/buttons";
 import { ModalOne } from "../../components/modal";
 import { StatusBarLarge } from "../../components/status-bar";
 import { CardThree } from "../../components/cards";
-import { SelectField, TextField } from "../../components/form-elements";
+import {
+  BooleanField,
+  CheckBoxField,
+  FileUploadView,
+  Radio,
+  SelectField,
+  TextAreaField,
+  TextField,
+} from "../../components/form-elements";
+import Toggle from "../../components/form/fields/Toggle";
 
 /**
  * ReviewApplicationLayout component renders
@@ -83,7 +92,6 @@ export const ReviewApplicationLayout = ({
       });
 
       setProcessedData(tempArray);
-
       // console.log(tempArray);
     }
 
@@ -91,7 +99,7 @@ export const ReviewApplicationLayout = ({
   }, [applicationData]);
 
   useEffect(() => {
-    if (selectedMenuLabel && selectedMenuLabel.length !== 0) {
+    if (processedData && selectedMenuLabel && selectedMenuLabel.length !== 0) {
       setSelectedDataMenu([]);
       processedData.map((i, j) => {
         if (i.sideMenu === selectedMenuLabel) {
@@ -99,7 +107,7 @@ export const ReviewApplicationLayout = ({
         }
       });
     }
-  }, [selectedMenuLabel]);
+  }, [selectedMenuLabel, processedData]);
 
   return (
     <div className="">
@@ -145,10 +153,10 @@ export const ReviewApplicationLayout = ({
             </div>
           </div>
 
-          <div className="mt-3">
+          <div className="">
             <div className="row">
               {/* Side navigation */}
-              <div className="col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 pt-4">
+              <div className="col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 pt-3">
                 {processedData &&
                   processedData.map((i: any, j: number) => {
                     return (
@@ -169,7 +177,7 @@ export const ReviewApplicationLayout = ({
               </div>
 
               {/* Form view */}
-              <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mt-4">
+              <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mt-3 mb-4">
                 {applicationData.status && (
                   <StatusBarLarge
                     status="green"
@@ -248,6 +256,148 @@ export const ReviewApplicationLayout = ({
                                     type="date"
                                     isReadOnly={true}
                                     value={k.value || ""}
+                                  />
+                                </div>
+                              }
+                            />
+                          </div>
+                        );
+                      case "radio":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <div className="ps-4 pe-4 pt-3 mb-3">
+                                  <HeadingFour heading={k.label || ""} />
+                                  <div className="col-12 p-0 m-0">
+                                    <div className="row pt-1">
+                                      {k.defaultValues &&
+                                        k.defaultValues.map(
+                                          (d: any, f: number) => {
+                                            return (
+                                              <div
+                                                className="col-sm-12 col-md-2 col-lg-2 col-xl-2 col-xxl-2"
+                                                key={f}
+                                              >
+                                                <Radio
+                                                  label={d.key || ""}
+                                                  isSelected={
+                                                    k.value === d.value
+                                                      ? true
+                                                      : false
+                                                  }
+                                                />
+                                              </div>
+                                            );
+                                          }
+                                        )}
+                                    </div>
+                                  </div>
+                                </div>
+                              }
+                            />
+                          </div>
+                        );
+                      case "textarea":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <div className="ps-4 pe-4 pt-3 mb-3 pb-1">
+                                  <TextAreaField
+                                    showLabel={k.label ? true : false}
+                                    label={k.label || ""}
+                                    isReadOnly={true}
+                                    defaultValue={k.value || ""}
+                                  />
+                                </div>
+                              }
+                            />
+                          </div>
+                        );
+                      case "numeric":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <div className="ps-4 pe-4 pt-3">
+                                  <TextField
+                                    showLabel={k.label ? true : false}
+                                    label={k.label || ""}
+                                    type="number"
+                                    isReadOnly={true}
+                                    value={k.value || ""}
+                                  />
+                                </div>
+                              }
+                            />
+                          </div>
+                        );
+                      case "multiselect":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <div className="ps-4 pe-4 pt-3 mb-4">
+                                  <SelectField
+                                    showLabel={k.label ? true : false}
+                                    selectName="reviewSelect"
+                                    selectId="reviewSelect"
+                                    isReadOnly={true}
+                                    label={k.label || ""}
+                                    option={k.defaultValues}
+                                    value={k.value.split(",") || ""}
+                                    isMultiple={true}
+                                  />
+                                </div>
+                              }
+                            />
+                          </div>
+                        );
+                      case "checkbox":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <div className="ps-4 pe-4 pt-3 mb-3">
+                                  <HeadingFour heading={k.label || ""} />
+                                  <CheckBoxField
+                                    label={k.label || ""}
+                                    showLabel={false}
+                                    value={k.value.split(",") || ""}
+                                    defaultValues={k.defaultValues}
+                                  />
+                                </div>
+                              }
+                            />
+                          </div>
+                        );
+                      case "file":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <div className="ps-4 pe-4 pt-3 mb-4 col-7">
+                                  <FileUploadView
+                                    showLabel={k.label ? true : false}
+                                    label={k.label || ""}
+                                    value={k.value.split(",") || ""}
+                                  />
+                                </div>
+                              }
+                            />
+                          </div>
+                        );
+                      case "boolean":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <div className="ps-4 pe-4 pt-3 mb-4">
+                                  <BooleanField
+                                    showLabel={k.label ? true : false}
+                                    label={k.label || ""}
+                                    isReadOnly={true}
                                   />
                                 </div>
                               }

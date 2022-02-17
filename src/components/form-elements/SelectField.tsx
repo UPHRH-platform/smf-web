@@ -16,6 +16,7 @@ interface SelectFieldProps {
   changeHandler?: (event: any) => void;
   isReadOnly?: boolean;
   value?: string;
+  isMultiple?: boolean
 }
 
 export const SelectField = ({
@@ -28,6 +29,7 @@ export const SelectField = ({
   selectId,
   isReadOnly,
   value,
+  isMultiple
 }: SelectFieldProps) => {
   return (
     <div className="">
@@ -44,6 +46,7 @@ export const SelectField = ({
         value={value}
         defaultValue={placeholder}
         disabled={isReadOnly}
+        multiple={isMultiple}
       >
         {placeholder && (
           <option
