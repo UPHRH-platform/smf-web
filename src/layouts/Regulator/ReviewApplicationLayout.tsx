@@ -3,8 +3,14 @@ import { HeadingFour, HeadingOne } from "../../components/headings";
 import { SideNavigation } from "../../components/navigation";
 import { useRecoilState } from "recoil";
 import { sideMenuLabel as sideMenuLabelAtom } from "../../states/atoms";
-import { BtnThree, BtnTwo, BtnFour } from "../../components/buttons";
-import { ModalOne } from "../../components/modal";
+import {
+  BtnThree,
+  BtnTwo,
+  BtnFour,
+  BtnFive,
+  BtnSix,
+} from "../../components/buttons";
+import { ModalOne, ModalTwo } from "../../components/modal";
 import { StatusBarLarge } from "../../components/status-bar";
 import { CardThree } from "../../components/cards";
 import {
@@ -114,35 +120,61 @@ export const ReviewApplicationLayout = ({
       {applicationData && (
         <>
           <div className="row pt-3">
-            <div className="col-sm-12 col-md-7 col-lg-7 col-xl-7 col-xxl-7">
+            <div className="col-sm-12 col-md-12 col-lg-12 col-xl-4">
               <div className="float-start">
                 <HeadingOne heading={applicationData.title} />
               </div>
             </div>
-            <div className="col-sm-12 col-md-5 col-lg-5 col-xl-5 col-xxl-5">
-              <div className="d-flex flex-row float-end mt-4 mt-sm-4 mt-md-0 mt-lg-0 mt-xl-0 mt-xxl-0">
-                {/* <div className="me-4">
-                  <BtnThree
-                    label="View status log"
-                    btnType="button"
-                    isLink={false}
-                    link=""
-                    isModal={true}
-                    floatBottom={false}
-                    modalId="staticBackdrop"
-                  />
-                </div> */}
-                <div className="">
-                  <BtnFour
-                    label="View status log"
-                    btnType="button"
-                    isLink={false}
-                    link=""
-                    isModal={true}
-                    floatBottom={false}
-                    modalId="statusLog"
-                  />
+            <div className="col-sm-12 col-md-12 col-lg-12 col-xl-8">
+              <div className="row row-cols-1 row-cols-md-4 row-cols-lg-4 mt-4 mt-sm-4 mt-md-0 mt-lg-0 mt-xl-0 mt-xxl-0 g-0 g-md-3">
+                <div className="col"></div>
+                <div className="col">
+                  <div className="float-end">
+                    <BtnFive
+                      label="Return to institute"
+                      showIcon={true}
+                      iconValue={`arrow_back`}
+                      isLink={false}
+                      link=""
+                      btnType="button"
+                      isModal={true}
+                      modalId="returnModal"
+                    />
+                  </div>
                 </div>
+                <div className="col">
+                  <div className="float-end">
+                    <BtnSix
+                      label="Send for inspection"
+                      showIcon={true}
+                      iconValue={`arrow_forward`}
+                      isLink={false}
+                      link=""
+                      btnType="button"
+                      floatBottom={false}
+                      isModal={true}
+                      modalId="sendToInspection"
+                    />
+                  </div>
+                </div>
+                <div className="col">
+                  <div className="float-end">
+                    <BtnFour
+                      label="View status log"
+                      btnType="button"
+                      isLink={false}
+                      link=""
+                      isModal={true}
+                      floatBottom={false}
+                      modalId="statusLog"
+                    />
+                  </div>
+                </div>
+                <ModalTwo id="returnModal" ariaLabel="returnModalLabel" />
+                <ModalTwo
+                  id="sendToInspection"
+                  ariaLabel="sendToInspectionLabel"
+                />
                 <ModalOne
                   id="statusLog"
                   ariaLabel="statusLogLabel"

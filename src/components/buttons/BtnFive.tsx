@@ -1,14 +1,15 @@
 import { Link } from "react-router-dom";
-import styles from "./BtnThree.module.css";
+import styles from "./BtnFive.module.css";
 import stylesOne from "./BtnOne.module.css";
 import "../../styles/global.css";
 
+
 /**
- * BtnThree component renders
- * transparent variant of secondary button
+ * BtnFive component renders
+ * second transparent variant of left navigation button
  */
 
-interface BtnThreeProps {
+interface BtnFiveProps {
   label: string;
   btnType: string;
   clickHandler?: (event: any) => void;
@@ -21,7 +22,7 @@ interface BtnThreeProps {
   iconValue?: string;
 }
 
-export const BtnThree = ({
+export const BtnFive = ({
   label,
   btnType,
   clickHandler,
@@ -32,7 +33,7 @@ export const BtnThree = ({
   modalId,
   showIcon,
   iconValue,
-}: BtnThreeProps) => {
+}: BtnFiveProps) => {
   if (btnType === "button") {
     return (
       <>
@@ -41,13 +42,17 @@ export const BtnThree = ({
             <button
               type="button"
               onClick={clickHandler}
-              className={`${styles.btn_three} ${
+              className={`${styles.btn_five} ${
                 floatBottom ? stylesOne.btn_float_bottom : ""
               } mb-4`}
               data-toggle="modal"
               data-target={`#${modalId}`}
             >
-              <span className={`${showIcon} ? 'materical-icons': ''`}>
+              <span
+                className={`${
+                  showIcon ? "material-icons vertical_align_bottom ps-2" : ""
+                }`}
+              >
                 {iconValue}
               </span>
               {label}
@@ -57,7 +62,7 @@ export const BtnThree = ({
           <button
             type="button"
             onClick={clickHandler}
-            className={`${styles.btn_three} ${
+            className={`${styles.btn_five} ${
               floatBottom ? stylesOne.btn_float_bottom : ""
             } mb-4`}
             data-toggle="modal"
@@ -83,17 +88,13 @@ export const BtnThree = ({
             <button
               type="submit"
               onClick={clickHandler}
-              className={`${styles.btn_three} ${
+              className={`${styles.btn_five} ${
                 floatBottom ? stylesOne.btn_float_bottom : ""
               } mb-4`}
               data-toggle="modal"
               data-target={`#${modalId}`}
             >
-              <span
-                className={`${
-                  showIcon ? "material-icons vertical_align_bottom ps-2" : ""
-                }`}
-              >
+              <span className={`${showIcon} ? 'materical-icons: ''`}>
                 {iconValue}
               </span>
               {label}
@@ -103,13 +104,13 @@ export const BtnThree = ({
           <button
             type="submit"
             onClick={clickHandler}
-            className={`${styles.btn_three} ${
+            className={`${styles.btn_five} ${
               floatBottom ? stylesOne.btn_float_bottom : ""
             } mb-4`}
             data-toggle="modal"
             data-target={`#${modalId}`}
           >
-            <span className={`${showIcon} ? 'materical-icons': ''`}>
+            <span className={`${showIcon} ? 'materical-icons: ''`}>
               {iconValue}
             </span>
             {label}

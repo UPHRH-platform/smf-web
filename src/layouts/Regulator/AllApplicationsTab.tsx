@@ -38,7 +38,7 @@ export const AllApplicationsTab = ({}: AllApplicationsTabProps) => {
               >
                 <CardTwo
                   title={i.title}
-                  name={i.updatedBy}
+                  name={i.updatedBy ? i.updatedBy : i.createdBy}
                   time={`Received on: ${
                     i.updatedDate ? i.updatedDate : i.createdDate
                   }`}
