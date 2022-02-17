@@ -10,7 +10,7 @@ import {
   BtnFive,
   BtnSix,
 } from "../../components/buttons";
-import { ModalOne, ModalTwo } from "../../components/modal";
+import { ModalOne, ModalTwo, ModalThree } from "../../components/modal";
 import { StatusBarLarge } from "../../components/status-bar";
 import { CardThree } from "../../components/cards";
 import {
@@ -170,9 +170,17 @@ export const ReviewApplicationLayout = ({
                     />
                   </div>
                 </div>
-                <ModalTwo id="returnModal" ariaLabel="returnModalLabel" />
                 <ModalTwo
+                  id="returnModal"
+                  ariaLabel="returnModalLabel"
+                  showTextAreaLabel={false}
+                  heading="Add note"
+                  textAreaPlaceholder="Write here"
+                />
+                <ModalThree
                   id="sendToInspection"
+                  showTextAreaLabel={false}
+                  heading="Schedule the inspection"
                   ariaLabel="sendToInspectionLabel"
                 />
                 <ModalOne
@@ -225,7 +233,7 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3">
+                                <div className="ps-4 pe-4 pt-3 col-4">
                                   <TextField
                                     showLabel={k.label ? true : false}
                                     label={k.label || ""}
@@ -243,7 +251,7 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3">
+                                <div className="ps-4 pe-4 pt-3 col-4">
                                   <TextField
                                     showLabel={k.label ? true : false}
                                     label={k.label || ""}
@@ -261,7 +269,7 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3">
+                                <div className="ps-4 pe-4 pt-3 col-4">
                                   <SelectField
                                     showLabel={k.label ? true : false}
                                     selectName="reviewSelect"
@@ -281,7 +289,7 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3">
+                                <div className="ps-4 pe-4 pt-3 col-4">
                                   <TextField
                                     showLabel={k.label ? true : false}
                                     label={k.label || ""}
@@ -335,7 +343,7 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3 mb-3 pb-1">
+                                <div className="ps-4 pe-4 pt-3 mb-3 pb-1 col-4">
                                   <TextAreaField
                                     showLabel={k.label ? true : false}
                                     label={k.label || ""}
@@ -352,7 +360,7 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3">
+                                <div className="ps-4 pe-4 pt-3 col-4">
                                   <TextField
                                     showLabel={k.label ? true : false}
                                     label={k.label || ""}
@@ -370,7 +378,7 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3 mb-4">
+                                <div className="ps-4 pe-4 pt-3 mb-4 col-4">
                                   <SelectField
                                     showLabel={k.label ? true : false}
                                     selectName="reviewSelect"

@@ -17,6 +17,6 @@
 }
 
 .btn_five:hover {
-  background-color: transparent;
-  color: var(--black-40) !important;
+  background-color: var(--blue-primary);
+  color: var(--white-100) !important;
 }
