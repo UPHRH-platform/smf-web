@@ -28,7 +28,7 @@ class FormViewer extends Component {
       formFields: {},
       formTitle: "",
       applicationDetails: {},
-      showSaveAsDraft: true
+      showSaveAsDraft: true,
     };
     this.toggleSideBar = this.toggleSideBar.bind(this);
     this.loadFormDetails = this.loadFormDetails.bind(this);
@@ -160,15 +160,27 @@ class FormViewer extends Component {
     // Removing existing data starts
     var existingFields = this.state.formFieldGroups[this.state.headingIndex];
     let inputs = document.getElementsByTagName("input");
-    for (let m = 0; m < inputs.length; m++) {
-      for (var key of Object.keys(existingFields))
-        if (`field_${existingFields[key].order}` === inputs[m].name) {
-          inputs[m].type = existingFields[key].fieldType;
-        }
-      inputs[m].value = "";
+    if (
+      this.props.match.params.applicationId === null ||
+      this.props.match.params.applicationId === undefined
+    ) {
+      for (let m = 0; m < inputs.length; m++) {
+        for (var key of Object.keys(existingFields))
+          if (`field_${existingFields[key].order}` === inputs[m].name) {
+            inputs[m].type = existingFields[key].fieldType;
+          }
+        inputs[m].value = "";
+      }
+      inputs = document.getElementsByTagName("select");
+      for (let n = 0; n < inputs.length; n++) inputs[n].value = "";
+    } else {
+      for (let m = 0; m < inputs.length; m++) {
+        for (var key of Object.keys(existingFields))
+          if (`field_${existingFields[key].order}` === inputs[m].name) {
+            inputs[m].type = existingFields[key].fieldType;
+          }
+      }
     }
-    inputs = document.getElementsByTagName("select");
-    for (let n = 0; n < inputs.length; n++) inputs[n].value = "";
     // Removing existing data ends
 
     // Code for files starts
@@ -192,6 +204,7 @@ class FormViewer extends Component {
           var len = element.length;
           let values = fields[key].split(",");
           for (var j = 0; j < len; j++) {
+            console.log(values.includes(element[j].value));
             if (values.includes(element[j].value)) {
               element[j].parentNode.classList.add("selected");
               element[j].checked = true;
@@ -211,7 +224,6 @@ class FormViewer extends Component {
         } else if (element[0].type === "file") {
           element[0].setAttribute("path", fields[key]);
           element.innerHTML = "";
-          // alert();
 
           if (fields[key] !== "") {
             let temp = fields[key].split(",");
@@ -243,25 +255,30 @@ class FormViewer extends Component {
       this.props.match.params.applicationId !== undefined
     ) {
       // if regulator disable form
-      if(Helper.getUserRole() === APP.ROLE.REGULATOR ) {
-        this.disableFormElements();
+      if (Helper.getUserRole() === APP.ROLE.REGULATOR) {
+        setTimeout(() => {
+          this.disableFormElements();
+        }, 300);
       }
-      // if institute, 
+      // if institute,
       // check if the form is submitted (status : new)  - no edit & hide 'save as draft'
       // if status: Draft - enable form edit & show 'save as draft'
-      if(
-        Helper.getUserRole() === APP.ROLE.INSTITUTION && 
+      if (
+        Helper.getUserRole() === APP.ROLE.INSTITUTION &&
         this.state.applicationDetails.status === LANG.FORM_STATUS.NEW
       ) {
-          this.setState({
-            showSaveAsDraft: false
-          })
+        this.setState({
+          showSaveAsDraft: false,
+        });
+        setTimeout(() => {
           this.disableFormElements();
-      } 
+        }, 300);
+      }
     }
   };
 
   disableFormElements = () => {
+    // console.log("disableFormElements...");
     let fields = this.state.formFields;
     for (let key of Object.keys(fields)) {
       // console.log(key);
@@ -320,58 +337,63 @@ class FormViewer extends Component {
   };
 
   saveFields = (index) => {
-    let obj = this.state.formFields,
-      order = "";
-    var form = document.getElementById("application-form");
-    const formData = new FormData(form);
-    const data = Array.from(formData.entries()).reduce(
-      (memo, pair) => ({
-        ...memo,
-        [pair[0]]: pair[1],
-      }),
-      {}
-    );
-    for (let i = 0; i < this.state.formFieldGroups[index].length; i++) {
-      order = this.state.formFieldGroups[index][i]["order"];
-      obj["field_" + order] =
-        data["field_" + order] !== undefined ? data["field_" + order] : "";
-      var checkboxes = document.getElementsByClassName(
-        "field_" + order + "_checkbox"
+    if (
+      this.props.match.params.applicationId === null ||
+      this.props.match.params.applicationId === undefined
+    ) {
+      let obj = this.state.formFields,
+        order = "";
+      var form = document.getElementById("application-form");
+      const formData = new FormData(form);
+      const data = Array.from(formData.entries()).reduce(
+        (memo, pair) => ({
+          ...memo,
+          [pair[0]]: pair[1],
+        }),
+        {}
       );
-      if (checkboxes.length) {
-        if (checkboxes[0].type === "checkbox") {
-          var len = checkboxes.length;
-          let temp = [];
-          for (var j = 0; j < len; j++) {
-            if (checkboxes[j].checked) {
-              temp.push(checkboxes[j].value);
+      for (let i = 0; i < this.state.formFieldGroups[index].length; i++) {
+        order = this.state.formFieldGroups[index][i]["order"];
+        obj["field_" + order] =
+          data["field_" + order] !== undefined ? data["field_" + order] : "";
+        var checkboxes = document.getElementsByClassName(
+          "field_" + order + "_checkbox"
+        );
+        if (checkboxes.length) {
+          if (checkboxes[0].type === "checkbox") {
+            var len = checkboxes.length;
+            let temp = [];
+            for (var j = 0; j < len; j++) {
+              if (checkboxes[j].checked) {
+                temp.push(checkboxes[j].value);
+              }
+            }
+            obj["field_" + order] = temp.join();
+          }
+        }
+        var multiselects = document.getElementsByClassName(
+          "field_" + order + "_multiselect"
+        );
+        if (multiselects.length) {
+          var selected = [];
+          for (var option of multiselects[0].options) {
+            // console.log(option.value);
+            if (option.selected && option.value !== "Select from dropdown") {
+              selected.push(option.value);
             }
           }
-          obj["field_" + order] = temp.join();
+          obj["field_" + order] = selected.join();
         }
-      }
-      var multiselects = document.getElementsByClassName(
-        "field_" + order + "_multiselect"
-      );
-      if (multiselects.length) {
-        var selected = [];
-        for (var option of multiselects[0].options) {
-          // console.log(option.value);
-          if (option.selected && option.value !== "Select from dropdown") {
-            selected.push(option.value);
-          }
-        }
-        obj["field_" + order] = selected.join();
-      }
 
-      var files = document.getElementsByClassName("field_" + order + "_file");
-      if (files.length) {
-        obj["field_" + order] = files[0].getAttribute("path");
+        var files = document.getElementsByClassName("field_" + order + "_file");
+        if (files.length) {
+          obj["field_" + order] = files[0].getAttribute("path");
+        }
       }
+      this.setState({
+        formFields: obj,
+      });
     }
-    this.setState({
-      formFields: obj,
-    });
     // console.log(obj);
     // files={this.state.formFields["field_3"].split(",")}
     // console.log(this.state.formFields["field_3"]);
@@ -407,8 +429,10 @@ class FormViewer extends Component {
       version: this.state.formDetails.version,
       dataObject: fieldGroups,
       title: this.state.formDetails.title,
-      status: isDraft ? LANG.FORM_STATUS.DRAFT : LANG.FORM_STATUS.NEW, 
-      ...(this.props.match.params.applicationId && {applicationId: this.props.match.params.applicationId})
+      status: isDraft ? LANG.FORM_STATUS.DRAFT : LANG.FORM_STATUS.NEW,
+      ...(this.props.match.params.applicationId && {
+        applicationId: this.props.match.params.applicationId,
+      }),
     };
     // formDetails = JSON.stringify(formDetails);
     FormService.submit(formDetails).then(
@@ -418,7 +442,7 @@ class FormViewer extends Component {
           Notify.success(response.statusInfo.statusMessage);
           setTimeout(() => {
             this.props.history.push("/dashboard");
-          }, 500);
+          }, 300);
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
@@ -445,9 +469,7 @@ class FormViewer extends Component {
                       {this.state.formDetails.title}
                     </h2>
                   </div>
-                  <div className="col-12">
-                    
-                  </div>
+                  <div className="col-12"></div>
                 </div>
                 <div className="d-flex">
                   <nav
@@ -496,7 +518,9 @@ class FormViewer extends Component {
                         id="sidebarCollapse"
                         className={
                           "btn btn-info d-sm-block d-md-none " +
-                          (this.state.showSidebar ? "d-none-imp" : "d-block-imp")
+                          (this.state.showSidebar
+                            ? "d-none-imp"
+                            : "d-block-imp")
                         }
                         onClick={this.toggleSideBar}
                       >
@@ -505,118 +529,118 @@ class FormViewer extends Component {
                       </button>
                       <form id="application-form">
                         {this.state.formFieldGroups.length > 0 &&
-                          this.state.formFieldGroups[this.state.headingIndex].map(
-                            (field, index) => {
-                              // console.log(LANG.FIELD_TYPES[field.fieldType]);
-                              switch (LANG.FIELD_TYPES[field.fieldType]) {
-                                case LANG.FIELD_TYPES.text:
-                                  return (
-                                    <Input
-                                      key={index}
-                                      field={field}
-                                      title={this.state.formTitle}
-                                    />
-                                  );
-                                case LANG.FIELD_TYPES.numeric:
-                                  return (
-                                    <Input
-                                      key={index}
-                                      field={field}
-                                      title={this.state.formTitle}
-                                    />
-                                  );
-                                case LANG.FIELD_TYPES.date:
-                                  return (
-                                    <Input
-                                      key={index}
-                                      field={field}
-                                      title={this.state.formTitle}
-                                    />
-                                  );
-                                case LANG.FIELD_TYPES.email:
-                                  return (
-                                    <Input
-                                      key={index}
-                                      field={field}
-                                      title={this.state.formTitle}
-                                    />
-                                  );
-                                case LANG.FIELD_TYPES.dropdown:
-                                  return (
-                                    <Select
-                                      key={index}
-                                      field={field}
-                                      title={this.state.formTitle}
-                                    />
-                                  );
-                                case LANG.FIELD_TYPES.radio:
-                                  return (
-                                    <Radio
-                                      key={index}
-                                      field={field}
-                                      title={this.state.formTitle}
-                                    />
-                                  );
-                                case LANG.FIELD_TYPES.checkbox:
-                                  return (
-                                    <Checkbox
-                                      key={index}
-                                      field={field}
-                                      title={this.state.formTitle}
-                                    />
-                                  );
-                                case LANG.FIELD_TYPES.boolean:
-                                  return (
-                                    <Toggle
-                                      key={index}
-                                      field={field}
-                                      title={this.state.formTitle}
-                                    />
-                                  );
-                                case LANG.FIELD_TYPES.textarea:
-                                  return (
-                                    <Textarea
-                                      key={index}
-                                      field={field}
-                                      title={this.state.formTitle}
-                                    />
-                                  );
-                                // case LANG.FIELD_TYPES.rating:
-                                //   return <Rating key={index} field={field} />;
-                                case LANG.FIELD_TYPES.file:
-                                  // var fileOrder = this.state.formFieldGroups[this.state.headingIndex][index].order;
-                                  return (
-                                    <FileUpload
-                                      key={index}
-                                      field={field}
-                                      // files={
-                                      //   this.state.formFields["field_" + fileOrder] !== undefined &&
-                                      //   this.state.formFields["field_" + fileOrder] !== ""
-                                      //     ? this.state.formFields[
-                                      //         "field_" + fileOrder
-                                      //       ].split(",")
-                                      //     : []
-                                      // }
-                                    />
-                                  );
-                                case LANG.FIELD_TYPES.multiselect:
-                                  return (
-                                    <MultiSelect
-                                      key={index}
-                                      field={field}
-                                      title={this.state.formTitle}
-                                    />
-                                  );
-                                default:
-                                  return <div key={index}></div>;
-                              }
+                          this.state.formFieldGroups[
+                            this.state.headingIndex
+                          ].map((field, index) => {
+                            // console.log(LANG.FIELD_TYPES[field.fieldType]);
+                            switch (LANG.FIELD_TYPES[field.fieldType]) {
+                              case LANG.FIELD_TYPES.text:
+                                return (
+                                  <Input
+                                    key={index}
+                                    field={field}
+                                    title={this.state.formTitle}
+                                  />
+                                );
+                              case LANG.FIELD_TYPES.numeric:
+                                return (
+                                  <Input
+                                    key={index}
+                                    field={field}
+                                    title={this.state.formTitle}
+                                  />
+                                );
+                              case LANG.FIELD_TYPES.date:
+                                return (
+                                  <Input
+                                    key={index}
+                                    field={field}
+                                    title={this.state.formTitle}
+                                  />
+                                );
+                              case LANG.FIELD_TYPES.email:
+                                return (
+                                  <Input
+                                    key={index}
+                                    field={field}
+                                    title={this.state.formTitle}
+                                  />
+                                );
+                              case LANG.FIELD_TYPES.dropdown:
+                                return (
+                                  <Select
+                                    key={index}
+                                    field={field}
+                                    title={this.state.formTitle}
+                                  />
+                                );
+                              case LANG.FIELD_TYPES.radio:
+                                return (
+                                  <Radio
+                                    key={index}
+                                    field={field}
+                                    title={this.state.formTitle}
+                                  />
+                                );
+                              case LANG.FIELD_TYPES.checkbox:
+                                return (
+                                  <Checkbox
+                                    key={index}
+                                    field={field}
+                                    title={this.state.formTitle}
+                                  />
+                                );
+                              case LANG.FIELD_TYPES.boolean:
+                                return (
+                                  <Toggle
+                                    key={index}
+                                    field={field}
+                                    title={this.state.formTitle}
+                                  />
+                                );
+                              case LANG.FIELD_TYPES.textarea:
+                                return (
+                                  <Textarea
+                                    key={index}
+                                    field={field}
+                                    title={this.state.formTitle}
+                                  />
+                                );
+                              // case LANG.FIELD_TYPES.rating:
+                              //   return <Rating key={index} field={field} />;
+                              case LANG.FIELD_TYPES.file:
+                                // var fileOrder = this.state.formFieldGroups[this.state.headingIndex][index].order;
+                                return (
+                                  <FileUpload
+                                    key={index}
+                                    field={field}
+                                    // files={
+                                    //   this.state.formFields["field_" + fileOrder] !== undefined &&
+                                    //   this.state.formFields["field_" + fileOrder] !== ""
+                                    //     ? this.state.formFields[
+                                    //         "field_" + fileOrder
+                                    //       ].split(",")
+                                    //     : []
+                                    // }
+                                  />
+                                );
+                              case LANG.FIELD_TYPES.multiselect:
+                                return (
+                                  <MultiSelect
+                                    key={index}
+                                    field={field}
+                                    title={this.state.formTitle}
+                                  />
+                                );
+                              default:
+                                return <div key={index}></div>;
                             }
-                          )}
+                          })}
                       </form>
                     </div>
                     <div className="row mt-3 mb-4">
                       <div className="col-12">
-                      {this.state.headingIndex > 0 && (
+                        {this.state.headingIndex > 0 && (
                           <button
                             onClick={(e) => {
                               this.saveFields(this.state.headingIndex);
@@ -637,48 +661,49 @@ class FormViewer extends Component {
                             <i className="fa fa-arrow-left mr-2"></i>
                             Previous
                           </button>
-                          )}
+                        )}
                         <div className="pull-right">
                           {
-                          // !(
-                          //   this.props.match.params.applicationId !== null &&
-                          //   this.props.match.params.applicationId !== undefined
-                          // ) &&
+                            // !(
+                            //   this.props.match.params.applicationId !== null &&
+                            //   this.props.match.params.applicationId !== undefined
+                            // ) &&
                             Helper.getUserRole() === APP.ROLE.INSTITUTION &&
-                            this.state.showSaveAsDraft &&
-                            (
-                              <button
-                                className="btn btn-outline smf-btn-default mb-3"
-                                onClick={(e) => {
-                                  this.saveFields(this.state.headingIndex);
-                                  // if (this.validationPassed()) {
-                                  this.submitForm(true);
-                                  // }
-                                }}
-                              >
-                                Save as draft
-                              </button>
-                            )}
+                              this.state.showSaveAsDraft && (
+                                <button
+                                  className="btn btn-outline smf-btn-default mb-3"
+                                  onClick={(e) => {
+                                    this.saveFields(this.state.headingIndex);
+                                    // if (this.validationPassed()) {
+                                    this.submitForm(true);
+                                    // }
+                                  }}
+                                >
+                                  Save as draft
+                                </button>
+                              )
+                          }
                           {
-                          // !(
-                          //   this.props.match.params.applicationId !== null &&
-                          //   this.props.match.params.applicationId !== undefined
-                          // ) &&
+                            // !(
+                            //   this.props.match.params.applicationId !== null &&
+                            //   this.props.match.params.applicationId !== undefined
+                            // ) &&
                             Helper.getUserRole() === APP.ROLE.INSTITUTION &&
-                            this.state.headingIndex ===
-                              this.state.formHeadings.length - 1 && (
-                              <button
-                                className="btn smf-btn-primary mb-3"
-                                onClick={(e) => {
-                                  this.saveFields(this.state.headingIndex);
-                                  if (this.validationPassed()) {
-                                    this.submitForm(false);
-                                  }
-                                }}
-                              >
-                                Submit application
-                              </button>
-                            )}
+                              this.state.headingIndex ===
+                                this.state.formHeadings.length - 1 && (
+                                <button
+                                  className="btn smf-btn-primary mb-3"
+                                  onClick={(e) => {
+                                    this.saveFields(this.state.headingIndex);
+                                    if (this.validationPassed()) {
+                                      this.submitForm(false);
+                                    }
+                                  }}
+                                >
+                                  Submit application
+                                </button>
+                              )
+                          }
                           {this.state.headingIndex <
                             this.state.formHeadings.length - 1 && (
                             <button
