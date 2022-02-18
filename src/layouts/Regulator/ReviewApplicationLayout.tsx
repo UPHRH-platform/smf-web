@@ -285,6 +285,7 @@ export const ReviewApplicationLayout = ({
                     status={applicationData.status}
                     label={applicationData.status}
                     timeStamp={applicationData.timestamp}
+                    applicationId={applicationData.applicationId}
                     inspectionData={
                       applicationData.inspection
                         ? applicationData.inspection

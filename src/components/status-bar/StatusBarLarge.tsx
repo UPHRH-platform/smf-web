@@ -3,6 +3,7 @@ import stylesTwo from "../modal/InspectionScheduleModal.module.css";
 import { LANG } from "../../constants";
 import moment from "moment";
 import { HeadingFour } from "../headings";
+import { InspectionScheduleModal } from "../modal";
 
 /**
  * StatusBarLarge component renders
@@ -16,6 +17,7 @@ interface StatusBarLargeProps {
   showBtn?: boolean;
   btnText?: string;
   timeStamp?: any;
+  applicationId?: any;
   inspectionData?: any;
 }
 
@@ -27,6 +29,7 @@ export const StatusBarLarge = ({
   btnText,
   timeStamp,
   inspectionData,
+  applicationId
 }: StatusBarLargeProps) => {
   // Function to format the status label
   const formatLabel = (labelStatus: string) => {
@@ -95,10 +98,25 @@ export const StatusBarLarge = ({
           <hr className="" />
           <div className="pt-1 ps-4 pe-4 pb-4">
             <div className="row">
-              <div className="col-sm-12 col-md-8 col-lg-8">
+              <div className="col-sm-12 col-md-10 col-lg-10">
                 <HeadingFour heading="Inspection scheduled with" />
               </div>
-              <div className="col-sm-12 col-md-4 col-lg-4"></div>
+              <div className="col-sm-12 col-md-2 col-lg-2">
+                <div className="float-end">
+                  <label
+                    className={`${styles.edit_status}`}
+                    data-toggle="modal"
+                    data-target={`#sendToInspectionEdit`}
+                  >
+                    <span
+                      className={`${styles.edit_status_icon} material-icons pe-2`}
+                    >
+                      edit
+                    </span>
+                    Change
+                  </label>
+                </div>
+              </div>
             </div>
             <div className="pt-2">
               <label className={`${styles.status_bar_custom_heading}`}>
@@ -163,6 +181,15 @@ export const StatusBarLarge = ({
               </div>
             </div>
           </div>
+
+          <InspectionScheduleModal
+            id="sendToInspectionEdit"
+            showTextAreaLabel={false}
+            heading="Schedule the inspection"
+            ariaLabel="sendToInspectionEditLabel"
+            applicationId={applicationId}
+            inspectionData={inspectionData}
+          />
         </>
       )}
     </div>

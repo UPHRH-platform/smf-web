@@ -25,6 +25,7 @@ interface InspectionScheduleModalProps {
   showTextAreaLabel: boolean;
   textAreaPlaceholder?: string;
   applicationId?: any;
+  inspectionData?: any;
 }
 
 export const InspectionScheduleModal = ({
@@ -35,6 +36,7 @@ export const InspectionScheduleModal = ({
   showTextAreaLabel,
   textAreaPlaceholder,
   applicationId,
+  inspectionData,
 }: InspectionScheduleModalProps) => {
   const [date, setDate] = useState("");
   const [inspectorsList, setInspectorsList] = useState<any[]>([]);
@@ -77,6 +79,40 @@ export const InspectionScheduleModal = ({
     );
   }, []);
 
+  useEffect(() => {
+    if (inspectionData) {
+      let curatedObject: any = {};
+      let curatedArray: any = [];
+
+      inspectionData.assignedTo.map((i: any, j: number) => {
+        if (i.leadInspector) {
+          curatedObject = {
+            key: i.firstName,
+            value: i.id,
+            logo: i.firstName[0] + i.lastName[0],
+          };
+        } else {
+          curatedArray.push({
+            key: i.firstName,
+            value: i.id,
+            logo: i.firstName[0] + i.lastName[0],
+          });
+        }
+      });
+
+      let tempArrayOne = [...curatedLeadInspectors];
+      tempArrayOne = [curatedObject];
+      let tempArrayTwo = [...curatedAssitingInspectors];
+      tempArrayTwo = curatedArray;
+
+      setTimeout(() => {
+        setCuratedLeadInspectors(tempArrayOne);
+        setCuratedAssitingInspectors(tempArrayTwo);
+        setDate(inspectionData.scheduledDate);
+      }, 250);
+    }
+  }, [inspectionData]);
+
   const addLeadInspectors = (e: any) => {
     e.preventDefault();
     if (currentLeadIns !== "") {
@@ -115,8 +151,8 @@ export const InspectionScheduleModal = ({
     if (index > -1) {
       tempArrayTwo.splice(index, 1);
     }
-  
-    setLeadInspectors(tempArrayTwo)
+
+    setLeadInspectors(tempArrayTwo);
 
     setCuratedLeadInspectors(tempArray);
   };
@@ -159,8 +195,8 @@ export const InspectionScheduleModal = ({
     if (index > -1) {
       tempArrayTwo.splice(index, 1);
     }
-  
-    setAssitingInspectors(tempArrayTwo)
+
+    setAssitingInspectors(tempArrayTwo);
 
     setCuratedAssitingInspectors(tempArray);
   };
@@ -186,21 +222,24 @@ export const InspectionScheduleModal = ({
       scheduledDate: date,
     };
 
-    console.log(payload);
-
-    ReviewService.assignToInspection(payload).then((response) => {
-      if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-        Notify.success("Sent for inspection.")
-        history.push(APP.ROUTES.DASHBOARD)
-      } else {
-        Notify.error(response.statusInfo.errorMessage);
+    ReviewService.assignToInspection(payload).then(
+      (response) => {
+        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          Notify.success("Sent for inspection.");
+          history.push(APP.ROUTES.DASHBOARD);
+          setCuratedAssitingInspectors([]);
+          setCuratedLeadInspectors([]);
+          setDate("");
+        } else {
+          Notify.error(response.statusInfo.errorMessage);
+        }
+      },
+      (error) => {
+        error.statusInfo
+          ? Notify.error(error.statusInfo.errorMessage)
+          : Notify.error(error.message);
       }
-    }, 
-    (error) => {
-      error.statusInfo
-        ? Notify.error(error.statusInfo.errorMessage)
-        : Notify.error(error.message);
-    })
+    );
   };
 
   useEffect(() => {
@@ -279,7 +318,7 @@ export const InspectionScheduleModal = ({
                             className={`${stylesTwo.inspector_name_list} mb-2`}
                             key={l}
                           >
-                            <div className="row pt-2 ps-2 pe-2">
+                            <div className="row pt-3 ps-3 pe-3">
                               <div className="col-10">
                                 <div className="d-flex flex-row">
                                   <div
@@ -339,7 +378,7 @@ export const InspectionScheduleModal = ({
                               className={`${stylesTwo.inspector_name_list} mb-2`}
                               key={l}
                             >
-                              <div className="row pt-2 ps-2 pe-2">
+                              <div className="row pt-3 ps-3 pe-3">
                                 <div className="col-10">
                                   <div className="d-flex flex-row">
                                     <div
@@ -379,9 +418,10 @@ export const InspectionScheduleModal = ({
                       label=""
                       showLabel={false}
                       type="date"
-                      changeHandler={(e) =>
-                        setDate(moment(e.target.value).format("DD-MM-YYYY"))
-                      }
+                      value={moment(date, "DD-MM-YYYY").format("YYYY-MM-DD")}
+                      changeHandler={(e) => {
+                        setDate(moment(e.target.value).format("DD-MM-YYYY"));
+                      }}
                     />
                   </div>
                   <div className="mt-3">

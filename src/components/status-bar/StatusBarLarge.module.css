@@ -54,3 +54,17 @@ hr {
   letter-spacing: 0.25;
   line-height: 1.333;
 }
+
+.edit_status {
+  color: var(--black-60);
+  cursor: pointer;
+  font-family: "Lato-Bold";
+  font-size: 0.875rem;
+  letter-spacing: 0.5px;
+  line-height: 1.429;
+}
+
+.edit_status_icon {
+  cursor: pointer;
+  vertical-align: bottom;
+}
