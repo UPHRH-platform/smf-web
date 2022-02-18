@@ -75,6 +75,10 @@ export const RegulatorAllApplications = ({
         setTabData(tempTabData);
 
         getSelectedTabData();
+
+        if(selectedTab.length) {
+            setSelectedTab("New")
+        }
     }, []);
 
     useEffect(() => {
@@ -132,7 +136,7 @@ export const RegulatorAllApplications = ({
                                             break;
 
                                         case "Sent for inspection":
-                                            tempStatus = "sentforinspection";
+                                            tempStatus = "sentforins";
                                             break;
 
                                         case "Inspection completed":

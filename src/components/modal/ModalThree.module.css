@@ -1,8 +1,0 @@
-@import url("../../styles/colors.css");
-@import url("../../assets/fonts/fonts.css");
-
-.text_area_one {
-    border: 1px solid var(--black-16);
-    border-radius: 4px;
-    min-height: 10.875rem;
-}

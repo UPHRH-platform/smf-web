@@ -9,6 +9,10 @@
   min-height: 5.25rem;
 }
 
+hr {
+  color: var(--black-40);
+}
+
 .status_bar_large p {
   color: var(--black-60);
   font-family: "Lato-Regular";
@@ -41,4 +45,12 @@
 
 .status_bar_large_red {
   color: var(--status-red);
+}
+
+.status_bar_custom_heading {
+  color: var(--black-87);
+  font-family: "Lato-Regular";
+  font-size: 0.75rem;
+  letter-spacing: 0.25;
+  line-height: 1.333;
 }

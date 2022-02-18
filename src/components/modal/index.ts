@@ -1,3 +1,3 @@
 export { ModalOne } from "./ModalOne";
 export { ModalTwo } from "./ModalTwo";
-export { ModalThree } from "./ModalThree";
+export { InspectionScheduleModal } from "./InspectionScheduleModal";

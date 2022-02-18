@@ -3,7 +3,6 @@ import styles from "./BtnFive.module.css";
 import stylesOne from "./BtnOne.module.css";
 import "../../styles/global.css";
 
-
 /**
  * BtnFive component renders
  * second transparent variant of left navigation button
@@ -20,6 +19,7 @@ interface BtnFiveProps {
   modalId?: string;
   showIcon?: boolean;
   iconValue?: string;
+  disabled?: boolean;
 }
 
 export const BtnFive = ({
@@ -33,6 +33,7 @@ export const BtnFive = ({
   modalId,
   showIcon,
   iconValue,
+  disabled,
 }: BtnFiveProps) => {
   if (btnType === "button") {
     return (
@@ -42,11 +43,12 @@ export const BtnFive = ({
             <button
               type="button"
               onClick={clickHandler}
-              className={`${styles.btn_five} ${
+              className={`${disabled ? styles.btn_five_disabled : styles.btn_five} ${
                 floatBottom ? stylesOne.btn_float_bottom : ""
               } mb-4`}
               data-toggle="modal"
               data-target={`#${modalId}`}
+              disabled={disabled}
             >
               <span
                 className={`${
@@ -62,11 +64,12 @@ export const BtnFive = ({
           <button
             type="button"
             onClick={clickHandler}
-            className={`${styles.btn_five} ${
+            className={`${disabled ? styles.btn_five_disabled : styles.btn_five} ${
               floatBottom ? stylesOne.btn_float_bottom : ""
             } mb-4`}
             data-toggle="modal"
             data-target={`#${modalId}`}
+            disabled={disabled}
           >
             <span
               className={`${
@@ -88,11 +91,12 @@ export const BtnFive = ({
             <button
               type="submit"
               onClick={clickHandler}
-              className={`${styles.btn_five} ${
+              className={`${disabled ? styles.btn_five_disabled : styles.btn_five} ${
                 floatBottom ? stylesOne.btn_float_bottom : ""
               } mb-4`}
               data-toggle="modal"
               data-target={`#${modalId}`}
+              disabled={disabled}
             >
               <span className={`${showIcon} ? 'materical-icons: ''`}>
                 {iconValue}
@@ -104,11 +108,12 @@ export const BtnFive = ({
           <button
             type="submit"
             onClick={clickHandler}
-            className={`${styles.btn_five} ${
+            className={`${disabled ? styles.btn_five_disabled : styles.btn_five} ${
               floatBottom ? stylesOne.btn_float_bottom : ""
             } mb-4`}
             data-toggle="modal"
             data-target={`#${modalId}`}
+            disabled={disabled}
           >
             <span className={`${showIcon} ? 'materical-icons: ''`}>
               {iconValue}

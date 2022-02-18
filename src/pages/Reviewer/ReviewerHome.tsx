@@ -156,13 +156,15 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
 
   // Function to format the status label
   const formatLabel = (labelStatus: string) => {
-    
     let lowerLabel = labelStatus.toLowerCase();
     lowerLabel = lowerLabel.charAt(0).toUpperCase() + lowerLabel.slice(1);
 
     switch (lowerLabel) {
       case "Underreview":
         lowerLabel = "Under review";
+        return lowerLabel;
+      case "Sentforins":
+        lowerLabel = "Sent for inspection";
         return lowerLabel;
       default:
         return lowerLabel;
@@ -210,7 +212,10 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
             </div>
             <div className="row mt-3">
               {pendingApplications.map((i, j) => {
-                if (i.status !== LANG.FORM_STATUS.RETURNED) {
+                if (
+                  i.status !== LANG.FORM_STATUS.RETURNED &&
+                  i.status !== LANG.FORM_STATUS.SENT_FOR_INSPECTION
+                ) {
                   return (
                     <div
                       className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mb-3"

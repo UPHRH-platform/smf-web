@@ -1,6 +1,8 @@
 import styles from "./StatusBarLarge.module.css";
+import stylesTwo from "../modal/InspectionScheduleModal.module.css";
 import { LANG } from "../../constants";
 import moment from "moment";
+import { HeadingFour } from "../headings";
 
 /**
  * StatusBarLarge component renders
@@ -14,6 +16,7 @@ interface StatusBarLargeProps {
   showBtn?: boolean;
   btnText?: string;
   timeStamp?: any;
+  inspectionData?: any;
 }
 
 export const StatusBarLarge = ({
@@ -23,6 +26,7 @@ export const StatusBarLarge = ({
   showBtn,
   btnText,
   timeStamp,
+  inspectionData,
 }: StatusBarLargeProps) => {
   // Function to format the status label
   const formatLabel = (labelStatus: string) => {
@@ -54,6 +58,13 @@ export const StatusBarLarge = ({
           <label>{`Status: ${label && formatLabel(label)}`}</label>
         </div>
       )}
+      {status === LANG.FORM_STATUS.SENT_FOR_INSPECTION && (
+        <div
+          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3 ${styles.status_bar_large_green}`}
+        >
+          <label>{`Status: Sent for inspection`}</label>
+        </div>
+      )}
 
       {label && label === LANG.FORM_STATUS.NEW && (
         <p className="text-center pt-3">
@@ -70,9 +81,89 @@ export const StatusBarLarge = ({
       )}
       {label && label === LANG.FORM_STATUS.RETURNED && (
         <p className="text-center pt-3">
-          Your application is returned due to some errors in the application form data.
-          Please resubmit it.
+          Your application is returned due to some errors in the application
+          form data. Please resubmit it.
         </p>
+      )}
+
+      {/* For inspection */}
+      {label && label === LANG.FORM_STATUS.SENT_FOR_INSPECTION && (
+        <>
+          <p className="text-center pt-3">
+            {`Inspection is scheduled on ${inspectionData.scheduledDate}. Keep all the physical documents ready for the inspection.`}
+          </p>
+          <hr className="" />
+          <div className="pt-1 ps-4 pe-4 pb-4">
+            <div className="row">
+              <div className="col-sm-12 col-md-8 col-lg-8">
+                <HeadingFour heading="Inspection scheduled with" />
+              </div>
+              <div className="col-sm-12 col-md-4 col-lg-4"></div>
+            </div>
+            <div className="pt-2">
+              <label className={`${styles.status_bar_custom_heading}`}>
+                Lead inspector
+              </label>
+              <div className="pt-3">
+                {inspectionData &&
+                  inspectionData.assignedTo.map((k: any, l: number) => {
+                    if (k.leadInspector) {
+                      return (
+                        <div
+                          className={`${stylesTwo.inspector_name_list} mb-2`}
+                          key={l}
+                        >
+                          <div className="row pt-3 ps-3 pe-3">
+                            <div className="d-flex flex-row">
+                              <div
+                                className={`${stylesTwo.inspector_name_square}`}
+                              >
+                                {k.firstName[0] + k.lastName[0]}
+                              </div>
+                              <p className="ps-2">{k.firstName}</p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
+              </div>
+            </div>
+            <div className="pt-2">
+              <label className={`${styles.status_bar_custom_heading}`}>
+                Assisting inspector
+              </label>
+              <div className="pt-3">
+                {inspectionData &&
+                  inspectionData.assignedTo.map((k: any, l: number) => {
+                    if (!k.leadInspector) {
+                      return (
+                        <div
+                          className={`${stylesTwo.inspector_name_list} mb-2`}
+                          key={l}
+                        >
+                          <div className="row pt-3 ps-3 pe-3">
+                            <div className="d-flex flex-row">
+                              <div
+                                className={`${stylesTwo.inspector_name_square}`}
+                              >
+                                {k.firstName[0] + k.lastName[0]}
+                              </div>
+                              <p className="ps-2">{k.firstName}</p>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    } else {
+                      return null;
+                    }
+                  })}
+              </div>
+            </div>
+          </div>
+        </>
       )}
     </div>
   );

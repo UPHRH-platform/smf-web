@@ -47,6 +47,7 @@ export const SelectField = ({
         defaultValue={placeholder}
         disabled={isReadOnly}
         multiple={isMultiple}
+        onChange={changeHandler}
       >
         {placeholder && (
           <option
@@ -60,10 +61,10 @@ export const SelectField = ({
         {option.map((i: any, j: any) => {
           return (
             <option
-              value={i.key}
+              value={i.value}
               key={j}
             >
-              {i.value}
+              {i.key}
             </option>
           );
         })}

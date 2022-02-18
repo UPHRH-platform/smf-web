@@ -13,7 +13,11 @@ import {
   BtnFive,
   BtnSix,
 } from "../../components/buttons";
-import { ModalOne, ModalTwo, ModalThree } from "../../components/modal";
+import {
+  ModalOne,
+  ModalTwo,
+  InspectionScheduleModal,
+} from "../../components/modal";
 import { StatusBarLarge } from "../../components/status-bar";
 import { CardThree } from "../../components/cards";
 import {
@@ -185,6 +189,11 @@ export const ReviewApplicationLayout = ({
                       btnType="button"
                       isModal={true}
                       modalId="returnModal"
+                      disabled={
+                        applicationData.status === LANG.FORM_STATUS.RETURNED
+                          ? true
+                          : false
+                      }
                     />
                   </div>
                 </div>
@@ -200,6 +209,12 @@ export const ReviewApplicationLayout = ({
                       floatBottom={false}
                       isModal={true}
                       modalId="sendToInspection"
+                      disabled={
+                        applicationData.status ===
+                        LANG.FORM_STATUS.SENT_FOR_INSPECTION
+                          ? true
+                          : false
+                      }
                     />
                   </div>
                 </div>
@@ -223,11 +238,12 @@ export const ReviewApplicationLayout = ({
                   heading="Add note"
                   textAreaPlaceholder="Write here"
                 />
-                <ModalThree
+                <InspectionScheduleModal
                   id="sendToInspection"
                   showTextAreaLabel={false}
                   heading="Schedule the inspection"
                   ariaLabel="sendToInspectionLabel"
+                  applicationId={applicationData.applicationId}
                 />
                 <ModalOne
                   id="statusLog"
@@ -269,6 +285,11 @@ export const ReviewApplicationLayout = ({
                     status={applicationData.status}
                     label={applicationData.status}
                     timeStamp={applicationData.timestamp}
+                    inspectionData={
+                      applicationData.inspection
+                        ? applicationData.inspection
+                        : ""
+                    }
                   />
                 )}
 

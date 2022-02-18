@@ -16,6 +16,22 @@
   width: fit-content;
 }
 
+.btn_two_disabled {
+  border: 1.5px solid var(--blue-primary) !important;
+  border-radius: 4px !important;
+  background-color: var(--blue-primary);
+  color: var(--white-100) !important;
+  font-family: "Lato-Bold" !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.5px;
+  line-height: 1.429;
+  padding: 0.45rem;
+  padding-left: 0.75rem;
+  padding-right: 0.75rem;
+  width: fit-content;
+  opacity: 0.5;
+}
+
 .btn_two:hover {
   background-color: var(--white-100);
   color: var(--blue-primary) !important;

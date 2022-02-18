@@ -46,7 +46,7 @@ function logout() {
 function getRoles(email) {
   const requestOptions = {
     method: APP.REQUEST.GET,
-    headers: authHeaderWithBearer(),
+    headers: authHeader(),
   };
   return fetch(APIS.BASE_URL + APIS.USER.GET_ROLES, requestOptions).then(
     handleResponse
@@ -56,7 +56,7 @@ function getRoles(email) {
 function createOrUpdateUser(user) {
   const requestOptions = {
     method: APP.REQUEST.POST,
-    headers: authHeaderWithBearer(),
+    headers: authHeader(),
     body: JSON.stringify(user)
   };
   return fetch(APIS.BASE_URL + APIS.USER.CREATE_OR_UPDATE_USER, requestOptions).then(
@@ -77,7 +77,7 @@ function getUserByID(id) {
 function getAllUsers() {
   const requestOptions = {
     method: APP.REQUEST.POST,
-    headers: authHeaderWithBearer(),
+    headers: authHeader(),
     body: JSON.stringify({})
   };
   return fetch(APIS.BASE_URL + APIS.USER.GET_ALL_USERS, requestOptions).then(

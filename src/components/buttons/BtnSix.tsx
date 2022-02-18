@@ -19,6 +19,7 @@ interface BtnSixProps {
   modalId?: string;
   showIcon?: boolean;
   iconValue?: string;
+  disabled?: boolean;
 }
 
 export const BtnSix = ({
@@ -32,6 +33,7 @@ export const BtnSix = ({
   modalId,
   showIcon,
   iconValue,
+  disabled,
 }: BtnSixProps) => {
   if (btnType === "button") {
     return (
@@ -41,11 +43,12 @@ export const BtnSix = ({
             <button
               type="button"
               onClick={clickHandler}
-              className={`${styles.btn_six} ${
-                floatBottom ? stylesOne.btn_float_bottom : ""
-              } mb-4`}
+              className={`${
+                disabled ? styles.btn_six_disabled : styles.btn_six
+              } ${floatBottom ? stylesOne.btn_float_bottom : ""} mb-4`}
               data-toggle="modal"
               data-target={`#${modalId}`}
+              disabled={disabled}
             >
               {label}
               <span
@@ -61,11 +64,12 @@ export const BtnSix = ({
           <button
             type="button"
             onClick={clickHandler}
-            className={`${styles.btn_six} ${
-              floatBottom ? stylesOne.btn_float_bottom : ""
-            } mb-4`}
+            className={`${
+              disabled ? styles.btn_six_disabled : styles.btn_six
+            } ${floatBottom ? stylesOne.btn_float_bottom : ""} mb-4`}
             data-toggle="modal"
             data-target={`#${modalId}`}
+            disabled={disabled}
           >
             {label}
             <span
@@ -87,11 +91,12 @@ export const BtnSix = ({
             <button
               type="submit"
               onClick={clickHandler}
-              className={`${styles.btn_six} ${
-                floatBottom ? stylesOne.btn_float_bottom : ""
-              } mb-4`}
+              className={`${
+                disabled ? styles.btn_six_disabled : styles.btn_six
+              } ${floatBottom ? stylesOne.btn_float_bottom : ""} mb-4`}
               data-toggle="modal"
               data-target={`#${modalId}`}
+              disabled={disabled}
             >
               {label}
               <span
@@ -107,11 +112,12 @@ export const BtnSix = ({
           <button
             type="submit"
             onClick={clickHandler}
-            className={`${styles.btn_six} ${
-              floatBottom ? stylesOne.btn_float_bottom : ""
-            } mb-4`}
+            className={`${
+              disabled ? styles.btn_six_disabled : styles.btn_six
+            } ${floatBottom ? stylesOne.btn_float_bottom : ""} mb-4`}
             data-toggle="modal"
             data-target={`#${modalId}`}
+            disabled={disabled}
           >
             {label}
             <span

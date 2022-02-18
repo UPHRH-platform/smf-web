@@ -1,11 +1,12 @@
 import { APIS, APP, LANG } from "../constants";
-import { authHeader, authHeaderForUpload } from "../helpers/authHeader";
+import { authHeader, authHeaderForUpload, authHeaderWithBearer } from "../helpers/authHeader";
 import Notify from "./../helpers/notify";
 import { UserService } from "./user.service";
 
 export const ReviewService = {
   returnApplication,
   assignToInspection,
+  getAllInspectors
 };
 
 function returnApplication(payload) {
@@ -28,6 +29,21 @@ function assignToInspection(payload) {
   };
   return fetch(
     APIS.BASE_URL + APIS.REGULATOR.ASSIGN_TO_INSPECTION,
+    requestOptions
+  ).then(handleResponse);
+}
+
+function getAllInspectors() {
+  const requestOptions = {
+    method: APP.REQUEST.POST,
+    body: JSON.stringify({
+      active: true,
+      roleId: [2093],
+    }),
+    headers: authHeader(),
+  };
+  return fetch(
+    APIS.BASE_URL + APIS.USER.GET_ALL_USERS,
     requestOptions
   ).then(handleResponse);
 }
