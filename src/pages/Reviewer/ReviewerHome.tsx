@@ -3,7 +3,7 @@ import { HeadingOne, HeadingTwo } from "../../components/headings";
 import { CardOne, CardTwo } from "../../components/cards";
 import Notify from "../../helpers/notify";
 import { FormService } from "../../services/form.service";
-import { APP } from "../../constants";
+import { APP, LANG } from "../../constants";
 import { BtnOne } from "../../components/buttons";
 
 /**
@@ -153,6 +153,22 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
       }
     );
   }, []);
+
+  // Function to format the status label
+  const formatLabel = (labelStatus: string) => {
+    
+    let lowerLabel = labelStatus.toLowerCase();
+    lowerLabel = lowerLabel.charAt(0).toUpperCase() + lowerLabel.slice(1);
+
+    switch (lowerLabel) {
+      case "Underreview":
+        lowerLabel = "Under review";
+        return lowerLabel;
+      default:
+        return lowerLabel;
+    }
+  };
+
   return (
     <Fragment>
       <div className="container-fluid">
@@ -167,7 +183,7 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
                     className="col-sm-12 col-md-4 col-lg-2 col-xl-2 col-xxl-2 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0 mt-xxl-0"
                     key={j}
                   >
-                    <CardOne count={i.value} title={i.key} />
+                    <CardOne count={i.value} title={formatLabel(i.key)} />
                   </div>
                 );
               })}
@@ -194,26 +210,30 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
             </div>
             <div className="row mt-3">
               {pendingApplications.map((i, j) => {
-                return (
-                  <div
-                    className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mb-3"
-                    key={i.applicationId}
-                  >
-                    <CardTwo
-                      title={i.title}
-                      name={i.createdBy}
-                      time={`Created on: ${i.createdDate}`}
-                      showStatus={true}
-                      status={i.status}
-                      statusLabel={i.status}
-                      showBtn={true}
-                      type="button"
-                      btnText="View application"
-                      isLink={true}
-                      link={"/regulator/" + i.formId + "/" + i.applicationId}
-                    />
-                  </div>
-                );
+                if (i.status !== LANG.FORM_STATUS.RETURNED) {
+                  return (
+                    <div
+                      className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mb-3"
+                      key={i.applicationId}
+                    >
+                      <CardTwo
+                        title={i.title}
+                        name={i.createdBy}
+                        time={`Created on: ${i.createdDate}`}
+                        showStatus={true}
+                        status={i.status}
+                        statusLabel={i.status}
+                        showBtn={true}
+                        type="button"
+                        btnText="View application"
+                        isLink={true}
+                        link={"/regulator/" + i.formId + "/" + i.applicationId}
+                      />
+                    </div>
+                  );
+                } else {
+                  return null;
+                }
               })}
             </div>
           </section>

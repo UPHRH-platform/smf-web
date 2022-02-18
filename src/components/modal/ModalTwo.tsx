@@ -1,7 +1,10 @@
+import { useState } from "react";
 import styles from "./ModalOne.module.css";
 import btnStyle from "../buttons/BtnOne.module.css";
 import btnStyleTwo from "../buttons/BtnTwo.module.css";
 import { TextAreaField } from "../form-elements";
+import { useRecoilState } from "recoil";
+import { modalTwoTextArea as modalTwoTextAreaAtom } from "../../states/atoms";
 
 /**
  * ModalTwo component renders
@@ -15,6 +18,7 @@ interface ModalTwoProps {
   textAreaLabel?: string;
   showTextAreaLabel: boolean;
   textAreaPlaceholder?: string;
+  submitHandler?: (event: any) => void;
 }
 
 export const ModalTwo = ({
@@ -24,7 +28,23 @@ export const ModalTwo = ({
   textAreaLabel,
   showTextAreaLabel,
   textAreaPlaceholder,
+  submitHandler,
 }: ModalTwoProps) => {
+  const [modalTextArea, setModalTextArea] =
+    useRecoilState(modalTwoTextAreaAtom);
+
+  const [note, setNote] = useState("");
+
+  const onSubmitHandler = (e: any) => {
+    e.preventDefault();
+    if(note === "") {
+      setModalTextArea("Empty!");
+    } else {
+      setModalTextArea(note);
+    }
+   
+  };
+
   return (
     <div
       className={`modal fade`}
@@ -53,6 +73,8 @@ export const ModalTwo = ({
               placeholder={textAreaPlaceholder}
               rows={6}
               label={textAreaLabel}
+              value={note}
+              changeHandler={(e) => setNote(e.target.value)}
             />
           </div>
           <div
@@ -80,6 +102,7 @@ export const ModalTwo = ({
                   type="button"
                   className={`${btnStyleTwo.btn_two}`}
                   data-dismiss="modal"
+                  onClick={(e) => onSubmitHandler(e)}
                 >
                   Submit
                 </button>

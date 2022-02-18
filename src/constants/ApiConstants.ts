@@ -17,6 +17,10 @@ export const APIS = {
     GET__APPLICATIONS_STATUS_COUNT: "forms/getApplicationsStatusCount",
     GET_APPLICATION_DETAILS: "forms/getApplicationsById?applicationId="
   },
+  REGULATOR: {
+    RETURN_APPLICATION: "forms/returnApplication",
+    ASSIGN_TO_INSPECTION: "forms/assign",
+  },
   USER: {
     GET_ROLES: 'user/getAllRoles',
     CREATE_OR_UPDATE_USER: 'user/createOrUpdate',

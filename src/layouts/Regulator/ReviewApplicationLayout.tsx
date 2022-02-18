@@ -2,7 +2,10 @@ import { useEffect, useState } from "react";
 import { HeadingFour, HeadingOne } from "../../components/headings";
 import { SideNavigation } from "../../components/navigation";
 import { useRecoilState } from "recoil";
-import { sideMenuLabel as sideMenuLabelAtom } from "../../states/atoms";
+import {
+  sideMenuLabel as sideMenuLabelAtom,
+  modalTwoTextArea as modalTwoTextAreaAtom,
+} from "../../states/atoms";
 import {
   BtnThree,
   BtnTwo,
@@ -23,6 +26,10 @@ import {
   TextField,
 } from "../../components/form-elements";
 import Toggle from "../../components/form/fields/Toggle";
+import { ReviewService } from "../../services";
+import { useHistory } from "react-router-dom";
+import { APIS, APP, LANG } from "../../constants";
+import Notify from "../../helpers/notify";
 
 /**
  * ReviewApplicationLayout component renders
@@ -42,6 +49,10 @@ export const ReviewApplicationLayout = ({
   const [selectedMenuData, setSelectedDataMenu] = useState<any[]>([]);
   const [selectedMenuLabel, setSelectedMenuLabel] =
     useRecoilState(sideMenuLabelAtom);
+
+  const reviewerNote = useRecoilState(modalTwoTextAreaAtom);
+
+  let history = useHistory();
 
   const [processedData, setProcessedData] = useState<any[]>([]);
 
@@ -114,6 +125,41 @@ export const ReviewApplicationLayout = ({
       });
     }
   }, [selectedMenuLabel, processedData]);
+
+  useEffect(() => {
+    if (reviewerNote[0] !== "" && reviewerNote[0] !== "Empty!") {
+      let payload = {
+        applicationId: applicationData.applicationId,
+        comments: reviewerNote[0],
+      };
+
+      console.log(payload);
+      ReviewService.returnApplication(payload).then(
+        (response) => {
+          if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+            Notify.success("Application returned to institute");
+          } else {
+            Notify.error(response.statusInfo.errorMessage);
+          }
+        },
+        (error) => {
+          error.statusInfo
+            ? Notify.error(error.statusInfo.errorMessage)
+            : Notify.error(error.message);
+        }
+      );
+      history.push(APP.ROUTES.DASHBOARD);
+    }
+    if (applicationData && applicationData.applicationId) {
+      if (reviewerNote[0] === "Empty!") {
+        let payload = {
+          applicationId: applicationData.applicationId,
+        };
+        console.log(payload);
+        history.push(APP.ROUTES.DASHBOARD);
+      }
+    }
+  }, [reviewerNote]);
 
   return (
     <div className="">
@@ -220,8 +266,9 @@ export const ReviewApplicationLayout = ({
               <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mt-3 mb-4">
                 {applicationData.status && (
                   <StatusBarLarge
-                    status="green"
+                    status={applicationData.status}
                     label={applicationData.status}
+                    timeStamp={applicationData.timestamp}
                   />
                 )}
 
