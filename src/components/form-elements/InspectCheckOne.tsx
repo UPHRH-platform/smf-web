@@ -9,9 +9,10 @@ interface InspectCheckOneProps {
     label?: string
     children?: any
     showComments?: boolean
+    modalId?: string
 }
 
-export const InspectCheckOne = ({ label, children, showComments }: InspectCheckOneProps) => {
+export const InspectCheckOne = ({ label, children, showComments, modalId }: InspectCheckOneProps) => {
     return (
         <div className={`${styles.inspect_check_one} p-4`}>
             <label>{label}</label>
@@ -24,11 +25,11 @@ export const InspectCheckOne = ({ label, children, showComments }: InspectCheckO
                 <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
                     {showComments ? (
                         <div className="float-end pt-4">
-                            <label className={`${styles.inspect_check_one_custom_label_one}`}><span className={`${styles.custom_material_icons} material-icons pe-2`}>create</span>Edit reason</label>
+                            <label className={`${styles.inspect_check_one_custom_label_one}`} data-toggle="modal" data-target={`#${modalId}`}><span className={`${styles.custom_material_icons} material-icons pe-2`}>create</span>Edit reason</label>
                         </div>
                     ) : (
                         <div className="float-end pt-4">
-                            <label className={`${styles.inspect_check_one_custom_label_one}`}>Add note<span className={`${styles.custom_material_icons} material-icons ps-2`}>speaker_notes</span></label>
+                            <label className={`${styles.inspect_check_one_custom_label_one}`} data-toggle="modal" data-target={`#${modalId}`}>Add note<span className={`${styles.custom_material_icons} material-icons ps-2`}>speaker_notes</span></label>
                         </div>
                     )}
 

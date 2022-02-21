@@ -13,6 +13,9 @@ export const APP = {
     REGULATOR: "Regulator", // reviewer
     INSPECTOR: "Inspector",
   },
+  ROUTES: {
+    DASHBOARD: "/dashboard",
+  },
   FILE_UPLOAD_ALLOWED_FORMATS : [
     'image/jpg', 
     'image/jpeg', 

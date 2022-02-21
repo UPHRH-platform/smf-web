@@ -20,7 +20,8 @@ export const LANG = {
     DRAFT: "DRAFT",
     NEW: "NEW",
     UNDER_REVIEW: "UNDERREVIEW",
-    RETURNED: "RETURNED"
+    RETURNED: "RETURNED",
+    SENT_FOR_INSPECTION: "SENTFORINS"
   },
   COL: {
     1: 1,
