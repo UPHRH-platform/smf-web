@@ -6,13 +6,7 @@ import {
   sideMenuLabel as sideMenuLabelAtom,
   modalTwoTextArea as modalTwoTextAreaAtom,
 } from "../../states/atoms";
-import {
-  BtnThree,
-  BtnTwo,
-  BtnFour,
-  BtnFive,
-  BtnSix,
-} from "../../components/buttons";
+import { BtnFour, BtnFive, BtnSix } from "../../components/buttons";
 import {
   ModalOne,
   ModalTwo,
@@ -29,10 +23,9 @@ import {
   TextAreaField,
   TextField,
 } from "../../components/form-elements";
-import Toggle from "../../components/form/fields/Toggle";
 import { ReviewService } from "../../services";
 import { useHistory } from "react-router-dom";
-import { APIS, APP, LANG } from "../../constants";
+import { APP, LANG } from "../../constants";
 import Notify from "../../helpers/notify";
 
 /**
@@ -113,7 +106,10 @@ export const ReviewApplicationLayout = ({
       });
 
       setProcessedData(tempArray);
-      // console.log(tempArray);
+    }
+
+    if (applicationData.applicationId) {
+      // getApplicationStatusLog(applicationData.applicationId);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,13 +127,20 @@ export const ReviewApplicationLayout = ({
   }, [selectedMenuLabel, processedData]);
 
   useEffect(() => {
-    if (reviewerNote[0] !== "" && reviewerNote[0] !== "Empty!") {
-      let payload = {
-        applicationId: applicationData.applicationId,
-        comments: reviewerNote[0],
-      };
+    if (reviewerNote[0] !== "") {
+      let payload = {};
 
-      console.log(payload);
+      if (reviewerNote[0] === "Empty!") {
+        payload = {
+          applicationId: applicationData.applicationId,
+        };
+      } else {
+        payload = {
+          applicationId: applicationData.applicationId,
+          comments: reviewerNote[0],
+        };
+      }
+
       ReviewService.returnApplication(payload).then(
         (response) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
@@ -154,16 +157,24 @@ export const ReviewApplicationLayout = ({
       );
       history.push(APP.ROUTES.DASHBOARD);
     }
-    if (applicationData && applicationData.applicationId) {
-      if (reviewerNote[0] === "Empty!") {
-        let payload = {
-          applicationId: applicationData.applicationId,
-        };
-        console.log(payload);
-        history.push(APP.ROUTES.DASHBOARD);
-      }
-    }
   }, [reviewerNote]);
+
+  const getApplicationStatusLog = (id: any) => {
+    ReviewService.getStatusLog(id).then(
+      (response) => {
+        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          console.log(response.responseData);
+        } else {
+          Notify.error(response.statusInfo.errorMessage);
+        }
+      },
+      (error) => {
+        error.statusInfo
+          ? Notify.error(error.statusInfo.errorMessage)
+          : Notify.error(error.message);
+      }
+    );
+  };
 
   return (
     <div className="">

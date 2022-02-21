@@ -42,7 +42,6 @@ export const ModalTwo = ({
     } else {
       setModalTextArea(note);
     }
-   
   };
 
   return (
@@ -95,6 +94,7 @@ export const ModalTwo = ({
                   type="button"
                   className={`${btnStyle.btn_one} me-2`}
                   data-dismiss="modal"
+                  onClick={(e) => onSubmitHandler(e)}
                 >
                   Skip
                 </button>

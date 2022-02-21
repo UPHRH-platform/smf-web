@@ -20,6 +20,7 @@ export const APIS = {
   REGULATOR: {
     RETURN_APPLICATION: "forms/returnApplication",
     ASSIGN_TO_INSPECTION: "forms/assign",
+    GET_STATUS_LOG: "forms/getActivityLogs?applicationId="
   },
   USER: {
     GET_ROLES: 'user/getAllRoles',

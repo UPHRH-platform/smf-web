@@ -1,12 +1,13 @@
 import { APIS, APP, LANG } from "../constants";
-import { authHeader, authHeaderForUpload, authHeaderWithBearer } from "../helpers/authHeader";
+import { authHeader } from "../helpers/authHeader";
 import Notify from "./../helpers/notify";
 import { UserService } from "./user.service";
 
 export const ReviewService = {
   returnApplication,
   assignToInspection,
-  getAllInspectors
+  getAllInspectors,
+  getStatusLog,
 };
 
 function returnApplication(payload) {
@@ -42,8 +43,18 @@ function getAllInspectors() {
     }),
     headers: authHeader(),
   };
+  return fetch(APIS.BASE_URL + APIS.USER.GET_ALL_USERS, requestOptions).then(
+    handleResponse
+  );
+}
+
+function getStatusLog(applicationId) {
+  const requestOptions = {
+    method: APP.REQUEST.GET,
+    headers: authHeader(),
+  };
   return fetch(
-    APIS.BASE_URL + APIS.USER.GET_ALL_USERS,
+    APIS.BASE_URL + APIS.REGULATOR.GET_STATUS_LOG + applicationId,
     requestOptions
   ).then(handleResponse);
 }
