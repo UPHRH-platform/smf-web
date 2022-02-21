@@ -26,6 +26,7 @@
 .inspector_name_list {
   border-radius: 4px;
   background-color: var(--white-90);
+  padding-top: 0.60rem;
 }
 
 .inspector_name_list p {

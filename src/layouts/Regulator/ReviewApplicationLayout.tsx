@@ -28,6 +28,7 @@ import { ReviewService } from "../../services";
 import { useHistory } from "react-router-dom";
 import { APP, LANG } from "../../constants";
 import Notify from "../../helpers/notify";
+import Helper from "../../helpers/auth";
 
 /**
  * ReviewApplicationLayout component renders
@@ -100,7 +101,6 @@ export const ReviewApplicationLayout = ({
           });
         return null;
       });
-    
 
       tempArray.map((y: any, f: number) => {
         y.fields = [];
@@ -112,7 +112,7 @@ export const ReviewApplicationLayout = ({
         });
         return null;
       });
-      
+
       setProcessedData(tempArray);
     }
 
@@ -124,7 +124,12 @@ export const ReviewApplicationLayout = ({
   }, [applicationData]);
 
   useEffect(() => {
-    if (processedData && selectedMenuLabel && selectedMenuLabel.length !== 0 && processedData.length !== 0) {
+    if (
+      processedData &&
+      selectedMenuLabel &&
+      selectedMenuLabel.length !== 0 &&
+      processedData.length !== 0
+    ) {
       setSelectedDataMenu([]);
       processedData.map((i, j) => {
         if (i.sideMenu === selectedMenuLabel) {
@@ -266,6 +271,21 @@ export const ReviewApplicationLayout = ({
                   ariaLabel="sendToInspectionLabel"
                   applicationId={applicationData.applicationId}
                 />
+
+                {Helper.getUserRole() === APP.ROLE.REGULATOR && (
+                  <InspectionScheduleModal
+                    id="sendToInspectionEdit"
+                    showTextAreaLabel={false}
+                    heading="Schedule the inspection"
+                    ariaLabel="sendToInspectionEditLabel"
+                    applicationId={applicationData.applicationId}
+                    inspectionData={
+                      applicationData.inspection
+                        ? applicationData.inspection
+                        : ""
+                    }
+                  />
+                )}
                 <ModalOne
                   id="statusLog"
                   ariaLabel="statusLogLabel"

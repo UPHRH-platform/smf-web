@@ -140,7 +140,7 @@ export const RegulatorAllApplications = ({
                                             break;
 
                                         case "Inspection completed":
-                                            tempStatus = "inspectioncompleted";
+                                            tempStatus = "inscompleted";
                                             break;
 
                                         case "Approved":
