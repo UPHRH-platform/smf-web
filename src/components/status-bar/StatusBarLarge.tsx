@@ -19,6 +19,7 @@ interface StatusBarLargeProps {
   timeStamp?: any;
   applicationId?: any;
   inspectionData?: any;
+  isChange: boolean;
 }
 
 export const StatusBarLarge = ({
@@ -29,7 +30,8 @@ export const StatusBarLarge = ({
   btnText,
   timeStamp,
   inspectionData,
-  applicationId
+  applicationId,
+  isChange,
 }: StatusBarLargeProps) => {
   // Function to format the status label
   const formatLabel = (labelStatus: string) => {
@@ -101,22 +103,24 @@ export const StatusBarLarge = ({
               <div className="col-sm-12 col-md-10 col-lg-10">
                 <HeadingFour heading="Inspection scheduled with" />
               </div>
-              <div className="col-sm-12 col-md-2 col-lg-2">
-                <div className="float-end">
-                  <label
-                    className={`${styles.edit_status}`}
-                    data-toggle="modal"
-                    data-target={`#sendToInspectionEdit`}
-                  >
-                    <span
-                      className={`${styles.edit_status_icon} material-icons pe-2`}
+              {isChange && (
+                <div className="col-sm-12 col-md-2 col-lg-2">
+                  <div className="float-end">
+                    <label
+                      className={`${styles.edit_status}`}
+                      data-toggle="modal"
+                      data-target={`#sendToInspectionEdit`}
                     >
-                      edit
-                    </span>
-                    Change
-                  </label>
+                      <span
+                        className={`${styles.edit_status_icon} material-icons pe-2`}
+                      >
+                        edit
+                      </span>
+                      Change
+                    </label>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
             <div className="pt-2">
               <label className={`${styles.status_bar_custom_heading}`}>
@@ -182,14 +186,16 @@ export const StatusBarLarge = ({
             </div>
           </div>
 
-          <InspectionScheduleModal
-            id="sendToInspectionEdit"
-            showTextAreaLabel={false}
-            heading="Schedule the inspection"
-            ariaLabel="sendToInspectionEditLabel"
-            applicationId={applicationId}
-            inspectionData={inspectionData}
-          />
+          {isChange && (
+            <InspectionScheduleModal
+              id="sendToInspectionEdit"
+              showTextAreaLabel={false}
+              heading="Schedule the inspection"
+              ariaLabel="sendToInspectionEditLabel"
+              applicationId={applicationId}
+              inspectionData={inspectionData}
+            />
+          )}
         </>
       )}
     </div>

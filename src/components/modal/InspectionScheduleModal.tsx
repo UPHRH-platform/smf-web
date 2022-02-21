@@ -64,7 +64,6 @@ export const InspectionScheduleModal = ({
               key: i.firstName,
               logo: i.firstName[0] + i.lastName[0],
             });
-            
           });
 
           setInspectorsList(tempArray);
@@ -87,11 +86,11 @@ export const InspectionScheduleModal = ({
 
       inspectionData.assignedTo.map((i: any, j: number) => {
         if (i.leadInspector) {
-          return curatedObject = {
+          return (curatedObject = {
             key: i.firstName,
             value: i.id,
             logo: i.firstName[0] + i.lastName[0],
-          };
+          });
         } else {
           return curatedArray.push({
             key: i.firstName,
@@ -105,11 +104,17 @@ export const InspectionScheduleModal = ({
       tempArrayOne = [curatedObject];
       let tempArrayTwo = [...curatedAssitingInspectors];
       tempArrayTwo = curatedArray;
+      let tempArrayThree = [...assitingInspectors];
+
+      tempArrayTwo.map((k, l) => {
+        return tempArrayThree.push(k.value.toString());
+      });
 
       setTimeout(() => {
         setCuratedLeadInspectors(tempArrayOne);
         setCuratedAssitingInspectors(tempArrayTwo);
         setDate(inspectionData.scheduledDate);
+        setAssitingInspectors(tempArrayThree);
       }, 250);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -129,7 +134,11 @@ export const InspectionScheduleModal = ({
       removeDup.map((k: any, l: number) => {
         inspectorsList.map((m, n) => {
           if (m.value === parseInt(k)) {
-            return curatedArray = { key: m.key, value: parseInt(k), logo: m.logo };
+            return (curatedArray = {
+              key: m.key,
+              value: parseInt(k),
+              logo: m.logo,
+            });
           }
           return null;
         });
@@ -175,10 +184,15 @@ export const InspectionScheduleModal = ({
       removeDup.map((k: any, l: number) => {
         inspectorsList.map((m, n) => {
           if (m.value === parseInt(k)) {
-           return curatedArray.push({ key: m.key, value: parseInt(k), logo: m.logo });
+            return curatedArray.push({
+              key: m.key,
+              value: parseInt(k),
+              logo: m.logo,
+            });
           }
           return null;
-        });return null;
+        });
+        return null;
       });
 
       setAssitingInspectors(removeDup);
@@ -217,7 +231,6 @@ export const InspectionScheduleModal = ({
     });
 
     curatedLeadInspectors.map((i, j) => {
-
       return leadInspector.push(i.value);
     });
 
