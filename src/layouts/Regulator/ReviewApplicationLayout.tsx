@@ -83,7 +83,7 @@ export const ReviewApplicationLayout = ({
             Object.values(m.fields).map((q: any, w: number) => {
               Object.keys(q).map((h: any, b: number) => {
                 if (h === k.name) {
-                  tempFormArray.push({
+                  return tempFormArray.push({
                     id: b,
                     parent: n,
                     label: h,
@@ -100,6 +100,7 @@ export const ReviewApplicationLayout = ({
           });
         return null;
       });
+    
 
       tempArray.map((y: any, f: number) => {
         y.fields = [];
@@ -111,7 +112,7 @@ export const ReviewApplicationLayout = ({
         });
         return null;
       });
-
+      
       setProcessedData(tempArray);
     }
 
@@ -123,7 +124,7 @@ export const ReviewApplicationLayout = ({
   }, [applicationData]);
 
   useEffect(() => {
-    if (processedData && selectedMenuLabel && selectedMenuLabel.length !== 0) {
+    if (processedData && selectedMenuLabel && selectedMenuLabel.length !== 0 && processedData.length !== 0) {
       setSelectedDataMenu([]);
       processedData.map((i, j) => {
         if (i.sideMenu === selectedMenuLabel) {
@@ -145,7 +146,7 @@ export const ReviewApplicationLayout = ({
       } else {
         payload = {
           applicationId: applicationData.applicationId,
-          comments: reviewerNote[0],
+          notes: reviewerNote[0],
         };
       }
 
@@ -314,7 +315,6 @@ export const ReviewApplicationLayout = ({
                     }
                   />
                 )}
-
                 {selectedMenuData &&
                   selectedMenuData.map((k: any, l: number) => {
                     switch (k.fieldType) {
