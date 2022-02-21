@@ -44,6 +44,11 @@ export const StatusBar = ({ label, status }: StatusBarProps) => {
           className={`${styles.status_two_label} px-3 m-0`}
         >{`Status: Sent for inspection`}</label>
       )}
+      {status && status === LANG.FORM_STATUS.INSPECTION_COMPLETED && (
+        <label
+          className={`${styles.status_one_label} px-3 m-0`}
+        >{`Status: Inspection completed`}</label>
+      )}
     </div>
   );
 };

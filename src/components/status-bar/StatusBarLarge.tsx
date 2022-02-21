@@ -70,6 +70,13 @@ export const StatusBarLarge = ({
           <label>{`Status: Sent for inspection`}</label>
         </div>
       )}
+      {status === LANG.FORM_STATUS.INSPECTION_COMPLETED && (
+        <div
+          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3 ${styles.status_bar_large_green}`}
+        >
+          <label>{`Status: Inspection completed`}</label>
+        </div>
+      )}
 
       {label && label === LANG.FORM_STATUS.NEW && (
         <p className="text-center pt-3">
@@ -89,6 +96,9 @@ export const StatusBarLarge = ({
           Your application is returned due to some errors in the application
           form data. Please resubmit it.
         </p>
+      )}
+      {label && label === LANG.FORM_STATUS.INSPECTION_COMPLETED && (
+        <p className="text-center pt-3">Inspection completed!</p>
       )}
 
       {/* For inspection */}
@@ -185,17 +195,6 @@ export const StatusBarLarge = ({
               </div>
             </div>
           </div>
-
-          {isChange && (
-            <InspectionScheduleModal
-              id="sendToInspectionEdit"
-              showTextAreaLabel={false}
-              heading="Schedule the inspection"
-              ariaLabel="sendToInspectionEditLabel"
-              applicationId={applicationId}
-              inspectionData={inspectionData}
-            />
-          )}
         </>
       )}
     </div>
