@@ -41,62 +41,62 @@ interface IApplicationCount {
   value: number;
 }
 
-const ReviewerMetrics = [
-  {
-    id: 0,
-    count: 2,
-    title: "Total pending",
-  },
-  {
-    id: 1,
-    count: 1,
-    title: "Received today",
-  },
-  {
-    id: 2,
-    count: 1,
-    title: "In progress",
-  },
-  {
-    id: 3,
-    count: 0,
-    title: "Reviewed today",
-  },
-  {
-    id: 4,
-    count: 32,
-    title: "Reviewed in total",
-  },
-];
+// const ReviewerMetrics = [
+//   {
+//     id: 0,
+//     count: 2,
+//     title: "Total pending",
+//   },
+//   {
+//     id: 1,
+//     count: 1,
+//     title: "Received today",
+//   },
+//   {
+//     id: 2,
+//     count: 1,
+//     title: "In progress",
+//   },
+//   {
+//     id: 3,
+//     count: 0,
+//     title: "Reviewed today",
+//   },
+//   {
+//     id: 4,
+//     count: 32,
+//     title: "Reviewed in total",
+//   },
+// ];
 
-const ReviewerPendingApplications = [
-  {
-    id: "PA001",
-    title: "Paramedical degree",
-    name: "Name of college",
-    time: "Scheduled on: dd/mm/yyyy",
-    showStatus: true,
-    status: "New",
-    showBtn: true,
-    type: "button",
-    btnText: "View application",
-    isLink: false,
-    link: "",
-  },
-  {
-    id: "PA002",
-    title: "ANM",
-    name: "Name of college",
-    time: "Scheduled on: dd/mm/yyyy",
-    showStatus: true,
-    status: "Under inspection",
-    showBtn: true,
-    type: "button",
-    btnText: "View application",
-    isLink: false,
-    link: "",
-  },
-];
+// const ReviewerPendingApplications = [
+//   {
+//     id: "PA001",
+//     title: "Paramedical degree",
+//     name: "Name of college",
+//     time: "Scheduled on: dd/mm/yyyy",
+//     showStatus: true,
+//     status: "New",
+//     showBtn: true,
+//     type: "button",
+//     btnText: "View application",
+//     isLink: false,
+//     link: "",
+//   },
+//   {
+//     id: "PA002",
+//     title: "ANM",
+//     name: "Name of college",
+//     time: "Scheduled on: dd/mm/yyyy",
+//     showStatus: true,
+//     status: "Under inspection",
+//     showBtn: true,
+//     type: "button",
+//     btnText: "View application",
+//     isLink: false,
+//     link: "",
+//   },
+// ];
 
 interface ReviewerProps {
   data?: any;

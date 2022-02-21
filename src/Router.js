@@ -16,7 +16,7 @@ import {
   InspectionSummary,
   InspectionComplete,
 } from "./pages";
-import ReviewerApplications from "./pages/Reviewer/ReviewerApplications";
+// import ReviewerApplications from "./pages/Reviewer/ReviewerApplications";
 import { Manage } from "./pages/Reviewer/manage";
 import { CreateUser } from "./pages/Reviewer/CreateUser";
 

@@ -44,7 +44,7 @@ export const FileUploadView = ({
                       <p className="float-start p-0 m-0">{i.split("/")[5]}</p>
                     </div>
                     <div className="col-6">
-                      <a className="float-end p-0 m-0" target="_blank" href={i}>
+                      <a className="float-end p-0 m-0" target="_blank" href={i} rel="noreferrer">
                         Preview on new tab
                       </a>
                     </div>

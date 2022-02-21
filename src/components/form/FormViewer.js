@@ -13,7 +13,7 @@ import Textarea from "./fields/Textarea";
 import FileUpload from "./fields/FileUpload";
 import MultiSelect from "./fields/MultiSelect";
 import Helper from "../../helpers/auth";
-import { BtnTwo } from "../buttons";
+// import { BtnTwo } from "../buttons";
 // const $ = window.$;
 
 class FormViewer extends Component {
@@ -408,7 +408,7 @@ class FormViewer extends Component {
       temp = key.split("_");
       for (let j = 0; j < fields.length; j++) {
         // console.log(temp[1], fields[j].order);
-        if (temp[1] == fields[j].order) {
+        if (temp[1] === fields[j].order) {
           fieldsData[fields[j].name] = savedFields[key];
         }
       }

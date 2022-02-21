@@ -3,11 +3,11 @@ import styles from "./ModalOne.module.css";
 import stylesTwo from "./InspectionScheduleModal.module.css";
 import btnStyle from "../buttons/BtnOne.module.css";
 import btnStyleTwo from "../buttons/BtnTwo.module.css";
-import { SelectField, TextAreaField, TextField } from "../form-elements";
+import { SelectField, TextField } from "../form-elements";
 import { BtnOne } from "../buttons";
 import { HeadingFive } from "../headings";
 import moment from "moment";
-import { APIS, APP, LANG } from "../../constants";
+import { APP } from "../../constants";
 import { ReviewService } from "../../services";
 import Notify from "../../helpers/notify";
 import { useHistory } from "react-router-dom";
@@ -59,11 +59,12 @@ export const InspectionScheduleModal = ({
           let tempArray: any = [];
 
           response.responseData.map((i: any, j: number) => {
-            tempArray.push({
+            return tempArray.push({
               value: i.id,
               key: i.firstName,
               logo: i.firstName[0] + i.lastName[0],
             });
+            
           });
 
           setInspectorsList(tempArray);
@@ -86,13 +87,13 @@ export const InspectionScheduleModal = ({
 
       inspectionData.assignedTo.map((i: any, j: number) => {
         if (i.leadInspector) {
-          curatedObject = {
+          return curatedObject = {
             key: i.firstName,
             value: i.id,
             logo: i.firstName[0] + i.lastName[0],
           };
         } else {
-          curatedArray.push({
+          return curatedArray.push({
             key: i.firstName,
             value: i.id,
             logo: i.firstName[0] + i.lastName[0],
@@ -111,6 +112,7 @@ export const InspectionScheduleModal = ({
         setDate(inspectionData.scheduledDate);
       }, 250);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inspectionData]);
 
   const addLeadInspectors = (e: any) => {
@@ -127,9 +129,11 @@ export const InspectionScheduleModal = ({
       removeDup.map((k: any, l: number) => {
         inspectorsList.map((m, n) => {
           if (m.value === parseInt(k)) {
-            curatedArray = { key: m.key, value: parseInt(k), logo: m.logo };
+            return curatedArray = { key: m.key, value: parseInt(k), logo: m.logo };
           }
+          return null;
         });
+        return null;
       });
 
       setLeadInspectors(removeDup);
@@ -171,9 +175,10 @@ export const InspectionScheduleModal = ({
       removeDup.map((k: any, l: number) => {
         inspectorsList.map((m, n) => {
           if (m.value === parseInt(k)) {
-            curatedArray.push({ key: m.key, value: parseInt(k), logo: m.logo });
+           return curatedArray.push({ key: m.key, value: parseInt(k), logo: m.logo });
           }
-        });
+          return null;
+        });return null;
       });
 
       setAssitingInspectors(removeDup);
@@ -208,11 +213,12 @@ export const InspectionScheduleModal = ({
     let assistingInspector: any = [];
 
     curatedAssitingInspectors.map((i, j) => {
-      assistingInspector.push(i.value);
+      return assistingInspector.push(i.value);
     });
 
     curatedLeadInspectors.map((i, j) => {
-      leadInspector.push(i.value);
+
+      return leadInspector.push(i.value);
     });
 
     let payload = {
