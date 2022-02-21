@@ -94,11 +94,11 @@ export const ReviewApplicationLayout = ({
                 }
                 return null;
               });
-              return null
+              return null;
             });
             return null;
           });
-          return null;
+        return null;
       });
 
       tempArray.map((y: any, f: number) => {
@@ -116,7 +116,7 @@ export const ReviewApplicationLayout = ({
     }
 
     if (applicationData.applicationId) {
-      // getApplicationStatusLog(applicationData.applicationId);
+      getApplicationStatusLog(applicationData.applicationId);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -172,7 +172,7 @@ export const ReviewApplicationLayout = ({
     ReviewService.getStatusLog(id).then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          console.log(response.responseData);
+          // console.log(response.responseData);
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
@@ -302,6 +302,7 @@ export const ReviewApplicationLayout = ({
               <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mt-3 mb-4">
                 {applicationData.status && (
                   <StatusBarLarge
+                    isChange={true}
                     status={applicationData.status}
                     label={applicationData.status}
                     timeStamp={applicationData.timestamp}

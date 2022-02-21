@@ -7,7 +7,7 @@ import { HeadingFour } from "../headings";
  */
 
 interface CheckBoxFieldProps {
-  label: string;
+  label?: string;
   value?: any;
   clickHandler?: (event: any) => void;
   isReadOnly?: boolean;

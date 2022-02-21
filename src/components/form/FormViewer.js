@@ -13,6 +13,7 @@ import Textarea from "./fields/Textarea";
 import FileUpload from "./fields/FileUpload";
 import MultiSelect from "./fields/MultiSelect";
 import Helper from "../../helpers/auth";
+import { StatusBarLarge } from "../status-bar";
 // import { BtnTwo } from "../buttons";
 // const $ = window.$;
 
@@ -204,7 +205,7 @@ class FormViewer extends Component {
           var len = element.length;
           let values = fields[key].split(",");
           for (var j = 0; j < len; j++) {
-            console.log(values.includes(element[j].value));
+            // console.log(values.includes(element[j].value));
             if (values.includes(element[j].value)) {
               element[j].parentNode.classList.add("selected");
               element[j].checked = true;
@@ -508,7 +509,27 @@ class FormViewer extends Component {
                     </ul>
                   </nav>
 
-                  <div className="ml-4 fullWidth ">
+                  <div
+                    className="ml-4 fullWidth "
+                  >
+                    {this.props.match && this.props.match.params.applicationId && (
+                      <div className="mb-4">
+                        <StatusBarLarge
+                          isChange={false}
+                          status={this.state.applicationDetails.status}
+                          label={this.state.applicationDetails.status}
+                          timeStamp={this.state.applicationDetails.timestamp}
+                          applicationId={
+                            this.state.applicationDetails.applicationId
+                          }
+                          inspectionData={
+                            this.state.applicationDetails.inspection
+                              ? this.state.applicationDetails.inspection
+                              : ""
+                          }
+                        />
+                      </div>
+                    )}
                     <div
                       id="content"
                       className="form-content  p-4 fullWidth white-bg"
