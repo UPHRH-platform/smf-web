@@ -8,6 +8,7 @@ export const ReviewService = {
   assignToInspection,
   getAllInspectors,
   getStatusLog,
+  submitInspectionDetails,
 };
 
 function returnApplication(payload) {
@@ -55,6 +56,18 @@ function getStatusLog(applicationId) {
   };
   return fetch(
     APIS.BASE_URL + APIS.REGULATOR.GET_STATUS_LOG + applicationId,
+    requestOptions
+  ).then(handleResponse);
+}
+
+function submitInspectionDetails(payload) {
+  const requestOptions = {
+    method: APP.REQUEST.POST,
+    body: JSON.stringify(payload),
+    headers: authHeader(),
+  };
+  return fetch(
+    APIS.BASE_URL + APIS.INSPECTOR.SUBMIT_INSPECTION_DETAILS,
     requestOptions
   ).then(handleResponse);
 }

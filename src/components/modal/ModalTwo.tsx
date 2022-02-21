@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useState } from "react";
 import styles from "./ModalOne.module.css";
 import btnStyle from "../buttons/BtnOne.module.css";

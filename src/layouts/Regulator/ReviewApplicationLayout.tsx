@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from "react";
 import { HeadingFour, HeadingOne } from "../../components/headings";
 import { SideNavigation } from "../../components/navigation";
@@ -70,7 +71,7 @@ export const ReviewApplicationLayout = ({
       let tempFormArray: any = [];
 
       objectKeys.map((i, j) => {
-        tempArray.push({
+        return tempArray.push({
           sideMenu: i,
           fields: [Object.values(objectValues)[j]],
         });
@@ -91,9 +92,13 @@ export const ReviewApplicationLayout = ({
                     fieldType: k.fieldType,
                   });
                 }
+                return null;
               });
+              return null
             });
+            return null;
           });
+          return null;
       });
 
       tempArray.map((y: any, f: number) => {
@@ -102,7 +107,9 @@ export const ReviewApplicationLayout = ({
           if (g.parent === f) {
             y.fields.push(g);
           }
+          return null;
         });
+        return null;
       });
 
       setProcessedData(tempArray);
@@ -122,6 +129,7 @@ export const ReviewApplicationLayout = ({
         if (i.sideMenu === selectedMenuLabel) {
           setSelectedDataMenu(i.fields);
         }
+        return null;
       });
     }
   }, [selectedMenuLabel, processedData]);
@@ -157,6 +165,7 @@ export const ReviewApplicationLayout = ({
       );
       history.push(APP.ROUTES.DASHBOARD);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reviewerNote]);
 
   const getApplicationStatusLog = (id: any) => {
@@ -357,24 +366,6 @@ export const ReviewApplicationLayout = ({
                                     isReadOnly={true}
                                     label={k.label || ""}
                                     option={k.defaultValues}
-                                    value={k.value || ""}
-                                  />
-                                </div>
-                              }
-                            />
-                          </div>
-                        );
-                      case "date":
-                        return (
-                          <div className="mt-3" key={l}>
-                            <CardThree
-                              children={
-                                <div className="ps-4 pe-4 pt-3 col-4">
-                                  <TextField
-                                    showLabel={k.label ? true : false}
-                                    label={k.label || ""}
-                                    type="date"
-                                    isReadOnly={true}
                                     value={k.value || ""}
                                   />
                                 </div>
