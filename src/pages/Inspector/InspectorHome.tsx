@@ -1,6 +1,10 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { HeadingOne, HeadingTwo } from "../../components/headings";
 import { CardOne, CardTwo } from "../../components/cards";
+import Helper from "./../../helpers/auth";
+import { FormService } from "./../../services/form.service";
+import { APP } from "./../../constants";
+import Notify from "./../../helpers/notify";
 
 /**
  * Inspector component renders
@@ -69,6 +73,34 @@ interface InspectorProps {
 }
 
 export const InspectorHome = ({ data }: InspectorProps) => {
+
+    useEffect(() => {
+        getAllApplications();
+    }, [])
+
+    const getAllApplications = () => {
+        if (Helper.getUserRole() === APP.ROLE.INSPECTOR) {
+            let data = {
+                searchObjects: [],
+            };
+            FormService.getAllApplications(data).then(
+                (response) => {
+                    if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+                        console.log(response.responseData)
+                        // setCurrentData(response.responseData);
+                    } else {
+                        Notify.error(response.statusInfo.errorMessage);
+                    }
+                },
+                (error) => {
+                    error.statusInfo
+                        ? Notify.error(error.statusInfo.errorMessage)
+                        : Notify.error(error.message);
+                }
+            );
+        }
+    }
+
     return (
         <Fragment>
             <div className="container-fluid">
