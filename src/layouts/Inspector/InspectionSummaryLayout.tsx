@@ -1,28 +1,28 @@
-import { BtnOne, BtnTwo } from "../../components/buttons";
+import { BtnTwo } from "../../components/buttons";
 import { CardFour } from "../../components/cards";
 import {
-  CheckBoxField,
-  SelectField,
   TextAreaField,
 } from "../../components/form-elements";
 import { HeadingFour, HeadingOne } from "../../components/headings";
 import styles from "./InspectionSummaryLayout.module.css";
+
 /**
  * InspectionSummaryLayout component renders
  * fields of inspector summary page
  */
-const selectOptions = [
-  {
-    id: "SE001",
-    label: "Somorjit Phuritshabam",
-    value: "Somorjit Phuritshabam",
-  },
-  {
-    id: "SE002",
-    label: "Shoaib Muhammed",
-    value: "Shoaib Muhammed",
-  },
-];
+
+// const selectOptions = [
+//   {
+//     id: "SE001",
+//     label: "Somorjit Phuritshabam",
+//     value: "Somorjit Phuritshabam",
+//   },
+//   {
+//     id: "SE002",
+//     label: "Shoaib Muhammed",
+//     value: "Shoaib Muhammed",
+//   },
+// ];
 
 interface InspectionSummaryLayoutProps {
   data?: any;
