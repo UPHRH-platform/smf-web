@@ -453,7 +453,7 @@ class FormViewer extends Component {
       temp = key.split("_");
       for (let j = 0; j < fields.length; j++) {
         // console.log(temp[1], fields[j].order);
-        if (temp[1] === fields[j].order) {
+        if (temp[1] == fields[j].order) {
           fieldsData[fields[j].name] = savedFields[key];
         }
       }
@@ -480,9 +480,10 @@ class FormViewer extends Component {
       }),
     };
     // formDetails = JSON.stringify(formDetails);
+    // console.log(formDetails)
     FormService.submit(formDetails).then(
       (response) => {
-        console.log(response);
+        // console.log(response);
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           Notify.success(response.statusInfo.statusMessage);
           setTimeout(() => {
