@@ -79,7 +79,7 @@ class FormViewer extends Component {
         this.setState({
           breadCrumbData: [
             { title: "HOME", url: "/dashboard", icon: "" },
-            { title: "ALL APPLICATIONS", url: "/applications", icon: "" },
+            { title: "AVAILABLE FORMS", url: "/available-forms", icon: "" },
           ],
         });
       }
@@ -87,7 +87,7 @@ class FormViewer extends Component {
         this.setState({
           breadCrumbData: [
             { title: "HOME", url: "/dashboard", icon: "" },
-            { title: "ALL APPLICATIONS", url: "/applications", icon: "" },
+            { title: "MANAGE", url: "/manage", icon: "" },
           ],
         });
       }

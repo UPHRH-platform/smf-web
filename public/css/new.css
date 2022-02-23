@@ -20,6 +20,19 @@ html {
     color: var(--black-60);
 }
 
+.black-16 {
+    color: var(--black-16);
+}
+
+.black-87 {
+    color: var(--black-87);
+}
+
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .white-bg {
     background-color: #fff;
 }
@@ -518,7 +531,7 @@ a:-webkit-any-link {
     padding: 1rem 0.5rem !important;
 }
 
-.td-preview {
+.td-preview,  .td-preview a{
     color: var(--primary-color) !important;
     font-weight: 700 !important;
 }

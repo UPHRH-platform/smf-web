@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import { FormService } from "../../services/form.service";
-import { APP } from "../../constants";
+import { APP, LANG } from "../../constants";
 import Notify from "../../helpers/notify";
 import Header from "./../common/Header";
 import { BtnTwo } from "../buttons";
@@ -17,6 +17,10 @@ class ListForms extends Component {
   }
 
   componentDidMount() {
+    this.getAllForms();
+  }
+
+  getAllForms = () => {
     FormService.get().then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
@@ -49,6 +53,36 @@ class ListForms extends Component {
     }
     return shortCode;
   };
+
+  submit = (form, isPublish) => {
+    let formData = {};
+    formData.id = form.id;
+    formData.version = form.version;
+    formData.title = form.title;
+    if(isPublish) {
+      formData.status = LANG.FORM_STATUS.PUBLISH
+    } else {
+      formData.status = LANG.FORM_STATUS.UNPUBLISH
+    }
+    FormService.add(formData).then(
+      (response) => {
+        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          Notify.success(response.statusInfo.statusMessage);
+          //   this.props.updateParent(response.responseData.id);
+          setTimeout(() => {
+            this.getAllForms();
+          }, 500);
+        } else {
+          Notify.error(response.statusInfo.errorMessage);
+        }
+      },
+      (error) => {
+        error.statusInfo
+          ? Notify.error(error.statusInfo.errorMessage)
+          : Notify.error(error.message);
+      }
+    );
+  }
 
   searchForms = (event) => {
     var input, filter, formContainer, formItems, a, i, txtValue;
@@ -113,6 +147,7 @@ class ListForms extends Component {
                   {/* <th scope="col">Published/created on</th> */}
                   <th scope="col"></th>
                   <th scope="col"></th>
+                  <th scope="col"></th>
                 </tr>
               </thead>
               <tbody>
@@ -121,13 +156,37 @@ class ListForms extends Component {
                     <th scope="row" className="form-title">
                       {form.title}
                     </th>
-                    <td>Published</td>
+                    <td className="form-title text-capitalize">
+                      {form.status.toLowerCase()}
+                    </td>
+                    <td className="">
+                      {
+                        form.status === LANG.FORM_STATUS.PUBLISH && 
+                        // <button type="button" className="btn btn-link td-preview">Unpublish</button>
+                        <span className="d-inline-block td-preview cursor-pointer" onClick={(e) => this.submit(form, false)}>Unpublish</span>
+                      }
+                      {
+                        (form.status === LANG.FORM_STATUS.NEW || form.status === LANG.FORM_STATUS.UNPUBLISH) && 
+                        <span className="d-inline-block td-preview cursor-pointer" onClick={(e) => this.submit(form, true)}>publish</span>
+                      }
+                      {/* {
+                        form.status === LANG.FORM_STATUS.DRAFT && 
+                        <span className="font-weight-bold black-60">Draft</span>
+                      } */}
+                    </td>
                     {/* <td></td> */}
                     <td className="td-preview">
                       <Link to={`/forms/${form.id}`}>Preview</Link>
                     </td>
                     <td className="td-preview">
-                      <Link to={`/forms/${form.id}/edit`}>Edit</Link>
+                      {
+                        form.status === LANG.FORM_STATUS.DRAFT && 
+                        <Link to={`/forms/${form.id}/edit`}>Edit</Link>
+                      }
+                      {
+                        form.status !== LANG.FORM_STATUS.DRAFT && 
+                        <span className="font-weight-bold black-16">Edit</span>
+                      }
                     </td>
                   </tr>
                 ))}
