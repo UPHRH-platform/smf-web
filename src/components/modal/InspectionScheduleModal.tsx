@@ -337,7 +337,7 @@ export const InspectionScheduleModal = ({
                             className={`${stylesTwo.inspector_name_list} mb-2`}
                             key={l}
                           >
-                            <div className="row pt-3 ps-3 pe-3">
+                            <div className="row ps-3 pe-3">
                               <div className="col-10">
                                 <div className="d-flex flex-row">
                                   <div
@@ -397,7 +397,7 @@ export const InspectionScheduleModal = ({
                               className={`${stylesTwo.inspector_name_list} mb-2`}
                               key={l}
                             >
-                              <div className="row pt-3 ps-3 pe-3">
+                              <div className="row ps-3 pe-3">
                                 <div className="col-10">
                                   <div className="d-flex flex-row">
                                     <div

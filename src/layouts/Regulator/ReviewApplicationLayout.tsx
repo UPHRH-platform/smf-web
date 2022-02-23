@@ -28,6 +28,7 @@ import { ReviewService } from "../../services";
 import { useHistory } from "react-router-dom";
 import { APP, LANG } from "../../constants";
 import Notify from "../../helpers/notify";
+import Helper from "../../helpers/auth";
 
 /**
  * ReviewApplicationLayout component renders
@@ -83,7 +84,7 @@ export const ReviewApplicationLayout = ({
             Object.values(m.fields).map((q: any, w: number) => {
               Object.keys(q).map((h: any, b: number) => {
                 if (h === k.name) {
-                  tempFormArray.push({
+                  return tempFormArray.push({
                     id: b,
                     parent: n,
                     label: h,
@@ -123,7 +124,12 @@ export const ReviewApplicationLayout = ({
   }, [applicationData]);
 
   useEffect(() => {
-    if (processedData && selectedMenuLabel && selectedMenuLabel.length !== 0) {
+    if (
+      processedData &&
+      selectedMenuLabel &&
+      selectedMenuLabel.length !== 0 &&
+      processedData.length !== 0
+    ) {
       setSelectedDataMenu([]);
       processedData.map((i, j) => {
         if (i.sideMenu === selectedMenuLabel) {
@@ -145,7 +151,7 @@ export const ReviewApplicationLayout = ({
       } else {
         payload = {
           applicationId: applicationData.applicationId,
-          comments: reviewerNote[0],
+          notes: reviewerNote[0],
         };
       }
 
@@ -265,6 +271,21 @@ export const ReviewApplicationLayout = ({
                   ariaLabel="sendToInspectionLabel"
                   applicationId={applicationData.applicationId}
                 />
+
+                {Helper.getUserRole() === APP.ROLE.REGULATOR && (
+                  <InspectionScheduleModal
+                    id="sendToInspectionEdit"
+                    showTextAreaLabel={false}
+                    heading="Schedule the inspection"
+                    ariaLabel="sendToInspectionEditLabel"
+                    applicationId={applicationData.applicationId}
+                    inspectionData={
+                      applicationData.inspection
+                        ? applicationData.inspection
+                        : ""
+                    }
+                  />
+                )}
                 <ModalOne
                   id="statusLog"
                   ariaLabel="statusLogLabel"
@@ -314,7 +335,6 @@ export const ReviewApplicationLayout = ({
                     }
                   />
                 )}
-
                 {selectedMenuData &&
                   selectedMenuData.map((k: any, l: number) => {
                     switch (k.fieldType) {

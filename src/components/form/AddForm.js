@@ -37,6 +37,7 @@ class AddForm extends Component {
         description: "",
         fields: [],
       },
+      breadcrumbData : []
     };
   }
 
@@ -50,6 +51,13 @@ class AddForm extends Component {
       let el = document.getElementById("items");
       Sortable.create(el, { animation: 300 });
     })();
+    this.setState({
+      breadcrumbData: [
+        { title: 'HOME', url: '/dashboard', icon: '' },
+        { title: 'MANANGE', url: '/manage', icon: '' },
+        { title: 'APPLICATION FORM', url: '', icon: '' },
+      ]
+    })
     if (this.props.match.params.id) {
       let addFormItem = document.getElementById("active");
       if (addFormItem) {
@@ -61,6 +69,11 @@ class AddForm extends Component {
             this.setState({
               formDetails: response.responseData,
               formTitle: response.responseData.title,
+              breadcrumbData: [
+                ...this.state.breadcrumbData,
+                { title: response.responseData.title || '', url: '', icon: '' },
+                { title: 'Edit form', url: '', icon: '' },
+              ]
             });
             document.getElementById("id").value = response.responseData.id;
             document.getElementById("version").value =
@@ -88,6 +101,14 @@ class AddForm extends Component {
         }
       );
     } else {
+      this.setState({
+        breadcrumbData: [
+          { title: 'HOME', url: '/dashboard', icon: '' },
+          { title: 'MANANGE', url: '/manage', icon: '' },
+          { title: 'APPLICATION FORM', url: '', icon: '' },
+          { title: 'CREATE FORM', url: '', icon: '' },
+        ]
+      })
       //   this.props.eraseFormDetails();
     }
   }
@@ -227,7 +248,7 @@ class AddForm extends Component {
     );
     return (
       <Fragment>
-        <Header history={this.props.history} />
+        <Header history={this.props.history} breadCrumb={this.state.breadcrumbData}/>
         <div className="container-fluid main-container h-100 heightMin">
           <div className="container dashboard-inner-container">
             <div className="row tabText">
@@ -235,7 +256,7 @@ class AddForm extends Component {
                 <div className="row">
                   <div className="col-md-12 mt-5">
                     <div className="row">
-                      <div className="col-sm-12 col-md-12 col-lg-8">
+                      {/* <div className="col-sm-12 col-md-12 col-lg-8">
                         <Link to="/forms" className="formAnchor white-70">
                           MANAGE
                         </Link>{" "}
@@ -267,7 +288,7 @@ class AddForm extends Component {
                             <span className="ml-4">EDIT</span>
                           </>
                         )}
-                      </div>
+                      </div> */}
                       <div className="col-sm-12 col-md-12 col-lg-4 mt-4 mt-md-0">
                         <div className=" pull-right">
                           <button

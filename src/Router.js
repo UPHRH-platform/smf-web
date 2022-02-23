@@ -40,7 +40,7 @@ const Router = (props) => (
         component={FormViewer}
       />
       <PrivateRoute exact path="/applications" component={MyApplications} />
-      <PrivateRoute exact path="/my-forms" component={MyForms} />
+      <PrivateRoute exact path="/available-forms" component={MyForms} />
       <PrivateRoute
         exact
         path="/all-applications"

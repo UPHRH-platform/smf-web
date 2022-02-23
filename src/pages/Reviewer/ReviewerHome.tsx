@@ -166,6 +166,9 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
       case "Sentforins":
         lowerLabel = "Sent for inspection";
         return lowerLabel;
+      case "Inscompleted":
+        lowerLabel = "Inspection completed";
+        return lowerLabel;
       default:
         return lowerLabel;
     }

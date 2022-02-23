@@ -4,12 +4,14 @@ import { Link } from "react-router-dom";
 import { UserService } from "../../services/user.service";
 import { APP } from "../../constants";
 import Helper from "../../helpers/auth";
+import { Breadcrumbs } from "./Breadcrumbs";
 
 /**
  * Header component
  */
 interface LoginProps {
   history: any
+  breadCrumb?: any
 }
 
 interface LoginState {
@@ -84,9 +86,13 @@ class Header extends Component<LoginProps, LoginState> {
           </div>
           <div className="container top-header">
             <div
-              className="row"
+              className="row h100"
             >
-              <ul className="smf-menu mt-3">
+              {
+                (this.props.history.location.pathname.match("/dashboard") || 
+                !this.props.breadCrumb ||
+                !this.props.breadCrumb.length) &&
+                <ul className="smf-menu mt-3">
                 <li className="mr-5 active">
                   <Link to={"/dashboard"} className={`${this.props.history.location.pathname.match("/dashboard")
                     ? "active"
@@ -99,6 +105,14 @@ class Header extends Component<LoginProps, LoginState> {
                       ? "active"
                       : ""
                       }`}>MY APPLICATIONS</Link>
+                  </li>
+                )}
+                {Helper.getUserRole() === APP.ROLE.INSTITUTION && (
+                  <li className="mr-5">
+                    <Link to={"/available-forms"} className={`${this.props.history.location.pathname.match("/available-forms")
+                      ? "active"
+                      : ""
+                      }`}>AVAILABLE FORMS</Link>
                   </li>
                 )}
                 {Helper.getUserRole() === APP.ROLE.REGULATOR && (
@@ -128,6 +142,12 @@ class Header extends Component<LoginProps, LoginState> {
                   </li>
                 )}
               </ul>
+              }
+              {
+                !this.props.history.location.pathname.match("/dashboard") && this.props.breadCrumb && (this.props.breadCrumb.length > 0) &&
+                <Breadcrumbs data={this.props.breadCrumb} historyData={this.props.history}/>
+              }
+              
             </div>
           </div>
         </div>
