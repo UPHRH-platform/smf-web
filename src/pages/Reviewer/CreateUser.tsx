@@ -63,13 +63,21 @@ export const CreateUser = ({ data }: userProps) => {
     const [roles, setRoles] = useState<IRole[]>([])
     const [userEdit, setUserEdit] = useState<any>()
     const [isEditMode, setIsEditMode] = useState(false)
+    const [breadcrumbData, setBreadcrumbData] = useState<any>([
+        { title: 'HOME', url: '/dashboard', icon: '' },
+        { title: 'MANANGE', url: '/manage', icon: '' },
+        { title: 'USERS', url: '', icon: '' },
+    ])
     useEffect(() => {
         let loc: any = history.location
         if (loc.state && loc.state.userId) {
+            setBreadcrumbData([
+                ...breadcrumbData,
+                { title: 'EDIT USER', url: '', icon: '' },
+              ])
             UserService.getUserByID(loc.state.userId).then(
                 (response2) => {
                     if (response2.statusInfo && response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
-                        console.log(response2.responseData)
                         setUserEdit(response2.responseData)
                         setIsEditMode(true)
                     } else {
@@ -84,6 +92,10 @@ export const CreateUser = ({ data }: userProps) => {
             );
             // setUserEdit(user)
         } else{
+            setBreadcrumbData([
+                ...breadcrumbData,
+                { title: 'CREATE USER', url: '', icon: '' },
+              ])
             setIsEditMode(false)
         }
     }, [])
@@ -218,7 +230,7 @@ export const CreateUser = ({ data }: userProps) => {
 
     return (
         <Fragment>
-            <Header history={history} />
+            <Header history={history} breadCrumb={breadcrumbData}/>
             <div className="container-fluid">
                 <div className="container dashboard-inner-container mt-4">
                     <form onSubmit={e => createUser(e)}>

@@ -159,7 +159,7 @@ class Dashboard extends Component {
                   <div className="col-md-2 col-sm-12 col-12 pt-5">
                     <button
                       className="btn btn-default smf-btn-default float-right mr-0"
-                      onClick={(e) => this.props.history.push("/my-forms")}
+                      onClick={(e) => this.props.history.push("/available-forms")}
                     >
                       SEE ALL
                     </button>
