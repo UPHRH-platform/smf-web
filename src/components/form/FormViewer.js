@@ -593,7 +593,7 @@ class FormViewer extends Component {
                         <i className="fa fa-bars"></i>
                         {/* <span>Toggle Sidebar</span> */}
                       </button>
-                      <form id="application-form">
+                      <form id="application-form" className="custom-form">
                         {this.state.formFieldGroups.length > 0 &&
                           this.state.formFieldGroups[
                             this.state.headingIndex
