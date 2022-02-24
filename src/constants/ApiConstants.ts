@@ -20,6 +20,8 @@ export const APIS = {
     RETURN_APPLICATION: "forms/returnApplication",
     ASSIGN_TO_INSPECTION: "forms/assign",
     GET_STATUS_LOG: "forms/getActivityLogs?applicationId=",
+    APPROVE_APPLICATION: "forms/approveApplication",
+    REJECT_APPLICATION: "forms/rejectApplication"
   },
   INSPECTOR: {
     SUBMIT_INSPECTION_DETAILS: "forms/submitInspection",
