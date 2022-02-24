@@ -174,6 +174,7 @@ export const ReviewApplicationLayout = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reviewerNote]);
 
+
   const getApplicationStatusLog = (id: any) => {
     ReviewService.getStatusLog(id).then(
       (response) => {
@@ -204,7 +205,9 @@ export const ReviewApplicationLayout = ({
             <div className="col-sm-12 col-md-12 col-lg-12 col-xl-8">
               <div className="row row-cols-1 row-cols-md-4 row-cols-lg-4 mt-4 mt-sm-4 mt-md-0 mt-lg-0 mt-xl-0 mt-xxl-0 g-0 g-md-3">
                 <div className="col"></div>
-                <div className="col">
+               { applicationData.status !== LANG.FORM_STATUS.INSPECTION_COMPLETED && 
+                 <>
+                  <div className="col">
                   <div className="float-end">
                     <BtnFive
                       label="Return to institute"
@@ -222,28 +225,72 @@ export const ReviewApplicationLayout = ({
                       }
                     />
                   </div>
-                </div>
-                <div className="col">
-                  <div className="float-end">
-                    <BtnSix
-                      label="Send for inspection"
-                      showIcon={true}
-                      iconValue={`arrow_forward`}
-                      isLink={false}
-                      link=""
-                      btnType="button"
-                      floatBottom={false}
-                      isModal={true}
-                      modalId="sendToInspection"
-                      disabled={
-                        applicationData.status ===
-                        LANG.FORM_STATUS.SENT_FOR_INSPECTION
-                          ? true
-                          : false
-                      }
-                    />
                   </div>
-                </div>
+                  <div className="col">
+                    <div className="float-end">
+                      <BtnSix
+                        label="Send for inspection"
+                        showIcon={true}
+                        iconValue={`arrow_forward`}
+                        isLink={false}
+                        link=""
+                        btnType="button"
+                        floatBottom={false}
+                        isModal={true}
+                        modalId="sendToInspection"
+                        disabled={
+                          applicationData.status ===
+                          LANG.FORM_STATUS.SENT_FOR_INSPECTION
+                            ? true
+                            : false
+                        }
+                      />
+                    </div>
+                  </div>
+                 </>
+                }
+                { applicationData.status === LANG.FORM_STATUS.INSPECTION_COMPLETED && 
+                  <>
+                    <div className="col">
+                      <div className="float-end">
+                        <BtnSix
+                          label="Reject"
+                          showIcon={true}
+                          iconValue={`close`}
+                          isLink={false}
+                          link=""
+                          btnType="button"
+                          isModal={true}
+                          modalId="rejectModal"
+                          disabled={
+                            applicationData.status === LANG.FORM_STATUS.RETURNED
+                              ? true
+                              : false
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="col">
+                      <div className="float-end">
+                        <BtnSix
+                          label="Approve"
+                          showIcon={true}
+                          iconValue={`check`}
+                          isLink={false}
+                          link=""
+                          btnType="button"
+                          isModal={true}
+                          modalId="approveModal"
+                          disabled={
+                            applicationData.status === LANG.FORM_STATUS.RETURNED
+                              ? true
+                              : false
+                          }
+                        />
+                      </div>
+                    </div>
+                  </>
+                }
                 <div className="col">
                   <div className="float-end">
                     <BtnFour
@@ -259,6 +306,20 @@ export const ReviewApplicationLayout = ({
                 </div>
                 <ModalTwo
                   id="returnModal"
+                  ariaLabel="returnModalLabel"
+                  showTextAreaLabel={false}
+                  heading="Add note"
+                  textAreaPlaceholder="Write here"
+                />
+                <ModalTwo
+                  id="rejectModal"
+                  ariaLabel="returnModalLabel"
+                  showTextAreaLabel={false}
+                  heading="Add note"
+                  textAreaPlaceholder="Write here"
+                />
+                <ModalTwo
+                  id="approveModal"
                   ariaLabel="returnModalLabel"
                   showTextAreaLabel={false}
                   heading="Add note"
