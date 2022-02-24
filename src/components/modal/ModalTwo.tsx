@@ -19,6 +19,7 @@ interface ModalTwoProps {
   textAreaLabel?: string;
   showTextAreaLabel: boolean;
   textAreaPlaceholder?: string;
+  enableHandler: boolean;
   submitHandler?: (event: any) => void;
 }
 
@@ -29,6 +30,7 @@ export const ModalTwo = ({
   textAreaLabel,
   showTextAreaLabel,
   textAreaPlaceholder,
+  enableHandler,
   submitHandler,
 }: ModalTwoProps) => {
   const [modalTextArea, setModalTextArea] =
@@ -38,7 +40,7 @@ export const ModalTwo = ({
 
   const onSubmitHandler = (e: any) => {
     e.preventDefault();
-    if(note === "") {
+    if (note === "") {
       setModalTextArea("Empty!");
     } else {
       setModalTextArea(note);
@@ -91,22 +93,47 @@ export const ModalTwo = ({
             </div>
             <div className="col-6 m-0">
               <div className="float-end">
-                <button
-                  type="button"
-                  className={`${btnStyle.btn_one} me-2`}
-                  data-dismiss="modal"
-                  onClick={(e) => onSubmitHandler(e)}
-                >
-                  Skip
-                </button>
-                <button
-                  type="button"
-                  className={`${btnStyleTwo.btn_two}`}
-                  data-dismiss="modal"
-                  onClick={(e) => onSubmitHandler(e)}
-                >
-                  Submit
-                </button>
+                {!enableHandler ? (
+                  <button
+                    type="button"
+                    className={`${btnStyle.btn_one} me-2`}
+                    data-dismiss="modal"
+                    onClick={(e) => onSubmitHandler(e)}
+                  >
+                    Skip
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className={`${btnStyle.btn_one} me-2`}
+                    data-dismiss="modal"
+                    onClick={submitHandler}
+                  >
+                    Skip
+                  </button>
+                )}
+
+                {!enableHandler ? (
+                  <button
+                    type="button"
+                    className={`${btnStyleTwo.btn_two}`}
+                    data-dismiss="modal"
+                    onClick={(e) => {
+                      onSubmitHandler(e);
+                    }}
+                  >
+                    Submit
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    className={`${btnStyleTwo.btn_two}`}
+                    data-dismiss="modal"
+                    onClick={submitHandler}
+                  >
+                    Submit
+                  </button>
+                )}
               </div>
             </div>
           </div>
