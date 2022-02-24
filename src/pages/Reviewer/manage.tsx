@@ -1,7 +1,7 @@
 import { Fragment, useEffect } from "react";
 import { HeadingOne } from "../../components/headings";
 import Header from "../../components/common/Header";
-import { useHistory } from "react-router";
+import { useHistory, useLocation } from "react-router";
 import { TabOne } from "../../components/tabs";
 import { Users } from "../../layouts/reviewer/Users";
 import ListForms from "../../components/form/ListForms";
@@ -27,6 +27,9 @@ const tabData = [{
 
 export const Manage = ({ data }: IManageProps) => {
     let history = useHistory();
+    const search = useLocation().search;
+    const activeTabNumber = new URLSearchParams(search).get('tab');
+    console.log('activeTabNumber', activeTabNumber)
     useEffect(() => {
     }, []);
     return (
@@ -42,7 +45,7 @@ export const Manage = ({ data }: IManageProps) => {
                             
                         </div>
                         <div className="row mt-3">
-                            <TabOne tabId="myTab" tabContentId="myTabContent" tabList={tabData} />
+                            <TabOne tabId="myTab" tabContentId="myTabContent" tabList={tabData} activeTab={parseInt(activeTabNumber || '0')}/>
                         </div>
                     </section>
                 </div>

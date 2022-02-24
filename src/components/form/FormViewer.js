@@ -30,7 +30,7 @@ class FormViewer extends Component {
       formTitle: "",
       applicationDetails: {},
       showSaveAsDraft: true,
-      breadCrumbData: []
+      breadCrumbData: [],
     };
     this.toggleSideBar = this.toggleSideBar.bind(this);
     this.loadFormDetails = this.loadFormDetails.bind(this);
@@ -55,40 +55,40 @@ class FormViewer extends Component {
       this.props.match.params.applicationId !== null &&
       this.props.match.params.applicationId !== undefined
     ) {
-      if(Helper.getUserRole() === APP.ROLE.INSTITUTION){
+      if (Helper.getUserRole() === APP.ROLE.INSTITUTION) {
         this.setState({
           breadCrumbData: [
-            { title: 'HOME', url: '/dashboard', icon: '' },
-            { title: 'MY APPLICATIONS', url: '/applications', icon: '' },
-          ]
-        })
+            { title: "HOME", url: "/dashboard", icon: "" },
+            { title: "MY APPLICATIONS", url: "/applications", icon: "" },
+          ],
+        });
       }
-      if(Helper.getUserRole() === APP.ROLE.REGULATOR){
+      if (Helper.getUserRole() === APP.ROLE.REGULATOR) {
         this.setState({
           breadCrumbData: [
-            { title: 'HOME', url: '/dashboard', icon: '' },
-            { title: 'ALL APPLICATIONS', url: '/applications', icon: '' },
-          ]
+            { title: "HOME", url: "/dashboard", icon: "" },
+            { title: "ALL APPLICATIONS", url: "/applications", icon: "" },
+          ],
         });
       }
       setTimeout(() => {
         this.populateForm(this.props.match.params.applicationId);
       }, 50);
     } else {
-      if(Helper.getUserRole() === APP.ROLE.INSTITUTION){
+      if (Helper.getUserRole() === APP.ROLE.INSTITUTION) {
         this.setState({
           breadCrumbData: [
-            { title: 'HOME', url: '/dashboard', icon: '' },
-            { title: 'ALL APPLICATIONS', url: '/applications', icon: '' },
-          ]
-        })
+            { title: "HOME", url: "/dashboard", icon: "" },
+            { title: "AVAILABLE FORMS", url: "/available-forms", icon: "" },
+          ],
+        });
       }
-      if(Helper.getUserRole() === APP.ROLE.REGULATOR){
+      if (Helper.getUserRole() === APP.ROLE.REGULATOR) {
         this.setState({
           breadCrumbData: [
-            { title: 'HOME', url: '/dashboard', icon: '' },
-            { title: 'ALL APPLICATIONS', url: '/applications', icon: '' },
-          ]
+            { title: "HOME", url: "/dashboard", icon: "" },
+            { title: "MANAGE", url: "/manage", icon: "" },
+          ],
         });
       }
     }
@@ -114,9 +114,14 @@ class FormViewer extends Component {
           this.setState({
             breadCrumbData: [
               ...this.state.breadCrumbData,
-              { title: (response.responseData && response.responseData.title) || '', url: '', icon: '' }
-            ]
-          })
+              {
+                title:
+                  (response.responseData && response.responseData.title) || "",
+                url: "",
+                icon: "",
+              },
+            ],
+          });
           let fields = response.responseData.fields,
             i = 0,
             temp = [];
@@ -202,6 +207,7 @@ class FormViewer extends Component {
   };
 
   populateData = () => {
+    console.log("populateData...");
     // Removing existing data starts
     var existingFields = this.state.formFieldGroups[this.state.headingIndex];
     let inputs = document.getElementsByTagName("input");
@@ -214,7 +220,9 @@ class FormViewer extends Component {
           if (`field_${existingFields[key].order}` === inputs[m].name) {
             inputs[m].type = existingFields[key].fieldType;
           }
-        inputs[m].value = "";
+        if (inputs[m].type !== "radio" && inputs[m].type !== "checkbox") {
+          inputs[m].value = "";
+        }
       }
       inputs = document.getElementsByTagName("select");
       for (let n = 0; n < inputs.length; n++) inputs[n].value = "";
@@ -323,7 +331,7 @@ class FormViewer extends Component {
   };
 
   disableFormElements = () => {
-    // console.log("disableFormElements...");
+    console.log("disableFormElements...");
     let fields = this.state.formFields;
     for (let key of Object.keys(fields)) {
       // console.log(key);
@@ -382,6 +390,7 @@ class FormViewer extends Component {
   };
 
   saveFields = (index) => {
+    console.log("saveFields...");
     if (
       this.props.match.params.applicationId === null ||
       this.props.match.params.applicationId === undefined
@@ -504,7 +513,10 @@ class FormViewer extends Component {
   render() {
     return (
       <Fragment>
-        <Header history={this.props.history} breadCrumb={this.state.breadCrumbData}/>
+        <Header
+          history={this.props.history}
+          breadCrumb={this.state.breadCrumbData}
+        />
         <div className="container-fluid main-container">
           <div className="row">
             <div className="col-12">
@@ -554,9 +566,7 @@ class FormViewer extends Component {
                     </ul>
                   </nav>
 
-                  <div
-                    className="ml-4 fullWidth "
-                  >
+                  <div className="ml-4 fullWidth ">
                     {this.props.match && this.props.match.params.applicationId && (
                       <div className="mb-4">
                         <StatusBarLarge
@@ -593,7 +603,7 @@ class FormViewer extends Component {
                         <i className="fa fa-bars"></i>
                         {/* <span>Toggle Sidebar</span> */}
                       </button>
-                      <form id="application-form">
+                      <form id="application-form" className="custom-form">
                         {this.state.formFieldGroups.length > 0 &&
                           this.state.formFieldGroups[
                             this.state.headingIndex
