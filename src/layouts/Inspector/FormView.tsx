@@ -1735,16 +1735,28 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                     }
                   })}
                 <div className="row">
-                  <div className="col-12 mt-3">
-                    {/* <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 p-0 float-left">
-                      <BtnThree
-                        label="Cancel"
-                        btnType="button"
-                        isLink={true}
-                        link=""
-                        isModal={false}
-                      />
-                    </div> */}
+                  <div className="col-12 mt-4">
+                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 p-0 float-left">
+                      {processedData.length &&
+                        processedData[0].sideMenu !== selectedMenuLabel && (
+                          <BtnThree
+                            label="Previous"
+                            btnType="button"
+                            isLink={false}
+                            link=""
+                            isModal={false}
+                            clickHandler={(e) => {
+                              processedData.map((m, n) => {
+                                if (m.sideMenu === selectedMenuLabel) {
+                                  setSelectedMenuLabel(
+                                    processedData[n - 1].sideMenu
+                                  );
+                                }
+                              });
+                            }}
+                          />
+                        )}
+                    </div>
                     <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 p-0 float-right">
                       <div className="float-right">
                         <BtnTwo
@@ -1755,6 +1767,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                           isModal={false}
                           showIcon={true}
                           iconValue={`arrow_forward`}
+                          clickHandler={(e) => {
+                            processedData.map((m, n) => {
+                              if (m.sideMenu === selectedMenuLabel) {
+                                setSelectedMenuLabel(
+                                  processedData[n + 1].sideMenu
+                                );
+                              }
+                            });
+                          }}
                         />
                       </div>
                     </div>

@@ -147,7 +147,7 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
   const [applicationData, setApplicationData] = useState({});
   const [breadcrumbData, setBreadcrumbData] = useState<any>([
     { title: "HOME", url: "/dashboard", icon: "" },
-    { title: "ALL APPLICATIONS", url: "/reviewer/all-applications", icon: "" },
+    { title: "ALL APPLICATIONS", url: "/all-applications", icon: "" },
   ]);
 
   const [selectedMenuData, setSelectedDataMenu] = useRecoilState(
