@@ -31,23 +31,6 @@ import { kill } from "process";
  * view application page
  */
 
-// const selectOptions = [{
-//     id: 0,
-//     value: "option_a",
-//     label: "Option A"
-// },
-// {
-//     id: 1,
-//     value: "option_b",
-//     label: "Option B"
-// },
-// {
-//     id: 2,
-//     value: "option_c",
-//     label: "Option C"
-// }
-// ]
-
 interface FormViewProps {
   applicationData?: any;
   formData?: any;
@@ -152,12 +135,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
     e: any,
     menuLabel: any,
     field: any,
-    status: string,
+    status?: string,
     comments?: any
   ) => {
     e.preventDefault();
 
     // console.log(menuLabel, field, status);
+
+    let correctTarget = e.target.innerHTML;
 
     let textAreaElement = document.getElementById(field);
 
@@ -177,8 +162,12 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
               m.isCorrect = true;
               m.comments = comments;
             } else {
-              m.isCorrect = false;
-              m.comments = comments;
+              if (correctTarget !== "Submit") {
+                m.isCorrect = false;
+                m.comments = comments;
+              } else {
+                m.comments = comments;
+              }
             }
           }
         });
@@ -190,207 +179,8 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
     setProcessedData(tempArray);
   };
 
-  // const [radioData, setRadioData] = useState<any>();
-
-  // const selectedSideMenuData = useRecoilValue(selectedSideMenuDataAtom);
-  // const [currentFields, setCurrentFields] = useState([]);
-
-  // useEffect(() => {
-  //   let fieldsElement: any = selectedSideMenuData;
-  //   if (fieldsElement && fieldsElement.fields) {
-  //     setCurrentFields(fieldsElement.fields);
-  //   }
-  // }, [selectedSideMenuData]);
-
-  // useEffect(() => {
-  //   console.log(formData);
-  //   console.log(applicationData);
-  // }, [formData, applicationData]);
-
-  useEffect(() => {
-    // let questions = [
-    //     {
-    //         id: 0,
-    //         question: "Radio",
-    //         options: [
-    //             {
-    //                 id: 0,
-    //                 label: "Yes",
-    //                 isSelected: true,
-    //             },
-    //             {
-    //                 id: 1,
-    //                 label: "No",
-    //                 isSelected: false,
-    //             },
-    //         ],
-    //     },
-    // ]
-    // setRadioData(questions);
-  }, []);
-
-  // const updateRadioSelection = (e: any, id: number, itemId: any) => {
-  //     e.preventDefault();
-
-  //     let tempArray = [...radioData];
-
-  //     tempArray.map((k: any, l: any) => {
-  //         if (k.id === id) {
-  //             k.options.map((h: any, f: any) => {
-  //                 if (h.isSelected === true) {
-  //                     h.isSelected = false;
-  //                 } else {
-  //                     if (h.id === itemId) {
-  //                         h.isSelected = true;
-  //                     } else {
-  //                         h.isSelected = false;
-  //                     }
-  //                 }
-  //                 return null;
-  //             })
-  //         }
-  //         return null;
-  //     });
-
-  //     setRadioData(tempArray);
-  // };
-
   return (
     <div className="">
-      {/* Section one */}
-      {/* <div className="">
-                <StatusBarLarge label="New" status="green" />
-            </div> */}
-
-      {/* Section two */}
-      {/* <div className="mt-3">
-                 {radioData &&
-                    radioData.map((i: any, j: any) => {
-                        return ( 
-                <div className="mb-3">
-                    <CardThree
-                        children={
-                            <div className="p-4">
-                                <div className="pb-2">
-                                                <HeadingFour heading={i.question} />
-                                            </div>
-                                <div className="d-flex flex-row">
-                                                {i.options.map((m: any, n: any) => {
-                                                    return (
-                                                        <div className="me-3" key={m.id}>
-                                                            <Radio
-                                                                isSelected={m.isSelected}
-                                                                label={m.label}
-                                                                clickHandler={(e) =>
-                                                                    updateRadioSelection(e, i.id, m.id)
-                                                                }
-                                                            />
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                <div className="mt-1">
-                                    <TextField label="Registration code" placeholder="Type here" showLabel={true} type="text" enableCheck={false} checkBoxLabel="This is my official email" checkBoxValue="This is my official email" checkboxId="emailCheckBox" />
-                                </div>
-                                <div className="mt-3">
-                                                <SelectField showLabel={true} label="Select" option={selectOptions} selectId="optionSelect" selectName="optionSelect" placeholder="Select from the list" />
-                                            </div>
-                                            <div className="mt-3">
-                                                <TextAreaField showLabel={true} label="Textarea" placeholder="Type here" showStatus={true}/>
-                                            </div>
-                            </div>
-                        }
-                    /> 
-                </div>*/}
-      {/* 
-      {currentFields &&
-        currentFields.map((i: any, j: any) => {
-          return (
-            <div className="mt-3" key={i.id}>
-              <div className="mb-3">
-                <CardThree
-                  children={
-                    <>
-                      <div className="p-4">
-                        <div className="mt-1 col-4 p-0 m-0">
-                          <TextField
-                            label={i.label}
-                            placeholder="Type here"
-                            showLabel={true}
-                            type="text"
-                            enableCheck={false}
-                            isReadOnly={true}
-                            defaultValue={i.value || ""}
-                          />
-                        </div>
-                      </div>
-                      <div className="">
-                        <InspectCheckOne
-                          label="Is the given information found correct?"
-                          children={
-                            <div className="d-flex flex-row">
-                              <div className="me-3">
-                                <Radio isSelected={true} label="Correct" />
-                              </div>
-                              <div className="me-3">
-                                <Radio
-                                  isSelected={false}
-                                  label="Incorrect"
-                                  isModal={true}
-                                  modalId="reasonModal"
-                                />
-                              </div>
-                            </div>
-                          }
-                          showComments={i.showComments}
-                          modalId="reasonModal"
-                        />
-                      </div>
-                    </>
-                  }
-                />
-              </div>
-            </div>
-          );
-        })} */}
-
-      {/* <div className="mt-3"> */}
-      {/* <ModalTwo
-                    id="reasonModal"
-                    ariaLabel="reasonModalLabel"
-                    heading="Enter the reason for the incorrect selection"
-                /> */}
-
-      {/* );
-                    })} */}
-      {/* </div> */}
-      {/* <div className="row">
-        <div className="col-12 mt-3">
-          <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 p-0 float-left">
-            <BtnThree
-              label="Cancel"
-              btnType="button"
-              isLink={true}
-              link=""
-              isModal={false}
-            />
-          </div>
-          <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 p-0 float-right">
-            <div className="float-right">
-              <BtnTwo
-                label="Next"
-                btnType="button"
-                isLink={true}
-                link="/inspection-summary"
-                isModal={false}
-                showIcon={true}
-                iconValue={`arrow_forward`}
-              />
-            </div>
-          </div>
-        </div>
-      </div> */}
-
       {applicationData && (
         <>
           <div className="row pt-3">
@@ -477,6 +267,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -497,6 +295,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -525,6 +331,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -539,19 +353,18 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     />
                                   </div>
                                   <ModalTwo
-                                    id={k.label}
+                                    id={k.label.replace(/\s/g, "")}
                                     enableHandler={true}
                                     ariaLabel={`${k.label}Label`}
                                     heading="Enter the reason for the incorrect selection"
                                     showTextAreaLabel={false}
-                                    submitHandler={(e) =>
+                                    submitHandler={(e) => {
                                       onCheckCorrectness(
                                         e,
                                         selectedMenuLabel,
-                                        k.label,
-                                        "incorrect"
-                                      )
-                                    }
+                                        k.label
+                                      );
+                                    }}
                                   />
                                 </>
                               }
@@ -603,6 +416,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -623,6 +444,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -651,6 +480,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -665,19 +502,18 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     />
                                   </div>
                                   <ModalTwo
-                                    id={k.label}
+                                    id={k.label.replace(/\s/g, "")}
                                     enableHandler={true}
                                     ariaLabel={`${k.label}Label`}
                                     heading="Enter the reason for the incorrect selection"
                                     showTextAreaLabel={false}
-                                    submitHandler={(e) =>
+                                    submitHandler={(e) => {
                                       onCheckCorrectness(
                                         e,
                                         selectedMenuLabel,
-                                        k.label,
-                                        "incorrect"
-                                      )
-                                    }
+                                        k.label
+                                      );
+                                    }}
                                   />
                                 </>
                               }
@@ -731,6 +567,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -751,6 +595,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -779,6 +631,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -793,19 +653,18 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     />
                                   </div>
                                   <ModalTwo
-                                    id={k.label}
+                                    id={k.label.replace(/\s/g, "")}
                                     enableHandler={true}
                                     ariaLabel={`${k.label}Label`}
                                     heading="Enter the reason for the incorrect selection"
                                     showTextAreaLabel={false}
-                                    submitHandler={(e) =>
+                                    submitHandler={(e) => {
                                       onCheckCorrectness(
                                         e,
                                         selectedMenuLabel,
-                                        k.label,
-                                        "incorrect"
-                                      )
-                                    }
+                                        k.label
+                                      );
+                                    }}
                                   />
                                 </>
                               }
@@ -875,6 +734,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -895,6 +762,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -923,6 +798,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -937,19 +820,18 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     />
                                   </div>
                                   <ModalTwo
-                                    id={k.label}
+                                    id={k.label.replace(/\s/g, "")}
                                     enableHandler={true}
                                     ariaLabel={`${k.label}Label`}
                                     heading="Enter the reason for the incorrect selection"
                                     showTextAreaLabel={false}
-                                    submitHandler={(e) =>
+                                    submitHandler={(e) => {
                                       onCheckCorrectness(
                                         e,
                                         selectedMenuLabel,
-                                        k.label,
-                                        "incorrect"
-                                      )
-                                    }
+                                        k.label
+                                      );
+                                    }}
                                   />
                                 </>
                               }
@@ -1000,6 +882,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1020,6 +910,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1048,6 +946,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1062,19 +968,18 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     />
                                   </div>
                                   <ModalTwo
-                                    id={k.label.replace(/\s/g, "")}
+                                    id={k.label}
                                     enableHandler={true}
                                     ariaLabel={`${k.label}Label`}
                                     heading="Enter the reason for the incorrect selection"
                                     showTextAreaLabel={false}
-                                    submitHandler={(e) =>
+                                    submitHandler={(e) => {
                                       onCheckCorrectness(
                                         e,
                                         selectedMenuLabel,
-                                        k.label,
-                                        "incorrect"
-                                      )
-                                    }
+                                        k.label
+                                      );
+                                    }}
                                   />
                                 </>
                               }
@@ -1126,6 +1031,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1146,6 +1059,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1174,6 +1095,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1188,19 +1117,18 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     />
                                   </div>
                                   <ModalTwo
-                                    id={k.label.replace(/\s/g, "")}
+                                    id={k.label}
                                     enableHandler={true}
                                     ariaLabel={`${k.label}Label`}
                                     heading="Enter the reason for the incorrect selection"
                                     showTextAreaLabel={false}
-                                    submitHandler={(e) =>
+                                    submitHandler={(e) => {
                                       onCheckCorrectness(
                                         e,
                                         selectedMenuLabel,
-                                        k.label,
-                                        "incorrect"
-                                      )
-                                    }
+                                        k.label
+                                      );
+                                    }}
                                   />
                                 </>
                               }
@@ -1255,6 +1183,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1275,6 +1211,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1303,6 +1247,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1317,19 +1269,18 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     />
                                   </div>
                                   <ModalTwo
-                                    id={k.label.replace(/\s/g, "")}
+                                    id={k.label}
                                     enableHandler={true}
                                     ariaLabel={`${k.label}Label`}
                                     heading="Enter the reason for the incorrect selection"
                                     showTextAreaLabel={false}
-                                    submitHandler={(e) =>
+                                    submitHandler={(e) => {
                                       onCheckCorrectness(
                                         e,
                                         selectedMenuLabel,
-                                        k.label,
-                                        "incorrect"
-                                      )
-                                    }
+                                        k.label
+                                      );
+                                    }}
                                   />
                                 </>
                               }
@@ -1381,6 +1332,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1401,6 +1360,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1429,6 +1396,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1443,19 +1418,18 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     />
                                   </div>
                                   <ModalTwo
-                                    id={k.label.replace(/\s/g, "")}
+                                    id={k.label}
                                     enableHandler={true}
                                     ariaLabel={`${k.label}Label`}
                                     heading="Enter the reason for the incorrect selection"
                                     showTextAreaLabel={false}
-                                    submitHandler={(e) =>
+                                    submitHandler={(e) => {
                                       onCheckCorrectness(
                                         e,
                                         selectedMenuLabel,
-                                        k.label,
-                                        "incorrect"
-                                      )
-                                    }
+                                        k.label
+                                      );
+                                    }}
                                   />
                                 </>
                               }
@@ -1505,6 +1479,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1525,6 +1507,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1553,6 +1543,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1567,19 +1565,18 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     />
                                   </div>
                                   <ModalTwo
-                                    id={k.label.replace(/\s/g, "")}
+                                    id={k.label}
                                     enableHandler={true}
                                     ariaLabel={`${k.label}Label`}
                                     heading="Enter the reason for the incorrect selection"
                                     showTextAreaLabel={false}
-                                    submitHandler={(e) =>
+                                    submitHandler={(e) => {
                                       onCheckCorrectness(
                                         e,
                                         selectedMenuLabel,
-                                        k.label,
-                                        "incorrect"
-                                      )
-                                    }
+                                        k.label
+                                      );
+                                    }}
                                   />
                                 </>
                               }
@@ -1629,6 +1626,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1649,6 +1654,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1677,6 +1690,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                     /\s/g,
                                                     ""
                                                   )}
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                             </>
@@ -1691,19 +1712,18 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     />
                                   </div>
                                   <ModalTwo
-                                    id={k.label.replace(/\s/g, "")}
+                                    id={k.label}
                                     enableHandler={true}
                                     ariaLabel={`${k.label}Label`}
                                     heading="Enter the reason for the incorrect selection"
                                     showTextAreaLabel={false}
-                                    submitHandler={(e) =>
+                                    submitHandler={(e) => {
                                       onCheckCorrectness(
                                         e,
                                         selectedMenuLabel,
-                                        k.label,
-                                        "incorrect"
-                                      )
-                                    }
+                                        k.label
+                                      );
+                                    }}
                                   />
                                 </>
                               }
@@ -1714,6 +1734,32 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                         return null;
                     }
                   })}
+                <div className="row">
+                  <div className="col-12 mt-3">
+                    {/* <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 p-0 float-left">
+                      <BtnThree
+                        label="Cancel"
+                        btnType="button"
+                        isLink={true}
+                        link=""
+                        isModal={false}
+                      />
+                    </div> */}
+                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 p-0 float-right">
+                      <div className="float-right">
+                        <BtnTwo
+                          label="Next"
+                          btnType="button"
+                          isLink={false}
+                          link=""
+                          isModal={false}
+                          showIcon={true}
+                          iconValue={`arrow_forward`}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
