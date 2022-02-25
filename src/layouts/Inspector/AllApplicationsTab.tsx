@@ -22,10 +22,14 @@ export const AllApplicationsInspectorTab =
     const selectTab = useRecoilState(selectedTabAtom);
 
     useEffect(() => {
-      if (selectedTabData) {
+      if (selectedTabData && selectedTabData[0].length) {
         setData(selectedTabData[0]);
+      } else {
+        setData([])
       }
     }, [selectTab]);
+
+   
 
     return (
       <div className="row pt-2">

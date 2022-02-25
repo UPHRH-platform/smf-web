@@ -207,7 +207,7 @@ class FormViewer extends Component {
   };
 
   populateData = () => {
-    console.log("populateData...");
+    // console.log("populateData...");
     // Removing existing data starts
     var existingFields = this.state.formFieldGroups[this.state.headingIndex];
     let inputs = document.getElementsByTagName("input");
@@ -346,7 +346,7 @@ class FormViewer extends Component {
   };
 
   disableFormElements = () => {
-    console.log("disableFormElements...");
+    // console.log("disableFormElements...");
     let fields = this.state.formFields;
     for (let key of Object.keys(fields)) {
       // console.log(key);
@@ -405,7 +405,7 @@ class FormViewer extends Component {
   };
 
   saveFields = (index) => {
-    console.log("saveFields...");
+    // console.log("saveFields...");
     if (
       this.props.match.params.applicationId === null ||
       this.props.match.params.applicationId === undefined

@@ -11,6 +11,7 @@ interface InspectCheckOneProps {
   showComments?: boolean;
   comments?: any;
   modalId?: string;
+  modalTriggerLabel?: string
 }
 
 export const InspectCheckOne = ({
@@ -19,6 +20,7 @@ export const InspectCheckOne = ({
   showComments,
   comments,
   modalId,
+  modalTriggerLabel
 }: InspectCheckOneProps) => {
   return (
     <div className={`${styles.inspect_check_one} p-4`}>
@@ -40,7 +42,7 @@ export const InspectCheckOne = ({
                 >
                   create
                 </span>
-                Edit reason
+                {modalTriggerLabel ? modalTriggerLabel : "Edit reason"}
               </label>
             </div>
           ) : (

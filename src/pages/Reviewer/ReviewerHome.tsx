@@ -217,7 +217,8 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
               {pendingApplications.map((i, j) => {
                 if (
                   i.status !== LANG.FORM_STATUS.RETURNED &&
-                  i.status !== LANG.FORM_STATUS.SENT_FOR_INSPECTION
+                  i.status !== LANG.FORM_STATUS.SENT_FOR_INSPECTION &&
+                  i.status !== LANG.FORM_STATUS.INSPECTION_COMPLETED
                 ) {
                   return (
                     <div
