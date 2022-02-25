@@ -20,6 +20,7 @@ interface StatusBarLargeProps {
   applicationId?: any;
   inspectionData?: any;
   isChange: boolean;
+  comments?:any;
 }
 
 export const StatusBarLarge = ({
@@ -31,6 +32,7 @@ export const StatusBarLarge = ({
   timeStamp,
   inspectionData,
   applicationId,
+  comments,
   isChange,
 }: StatusBarLargeProps) => {
   // Function to format the status label
@@ -106,10 +108,29 @@ export const StatusBarLarge = ({
         </p>
       )}
       {label && label === LANG.FORM_STATUS.RETURNED && (
-        <p className="text-center pt-3">
-          Your application is returned due to some errors in the application
-          form data. Please resubmit it.
-        </p>
+        <>
+          <p className="text-center pt-3">
+            Your application is returned due to some errors in the application
+            form data. Please resubmit it.
+          </p>
+          <hr className="m-2" />
+          <div className="pt-1 ps-4 pe-4 pb-4">
+            <div className="row">
+              <div className="col-sm-12 ">
+                <HeadingFour heading="Comments" />
+              </div>
+              <div className="col-sm-12">
+                  {comments.map((c: any) => {
+                    return (
+                    <p className="px-0 pt-2">
+                      {c.value}
+                    </p>
+                    )
+                  })}
+              </div>
+            </div>
+          </div>
+        </>
       )}
       {label && label === LANG.FORM_STATUS.INSPECTION_COMPLETED && (
         <p className="text-center pt-3">Inspection completed!</p>

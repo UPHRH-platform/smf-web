@@ -122,7 +122,7 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
       (response2) => {
         if (response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
           setPendingApplications(
-            response2.responseData.length > 6
+            response2.responseData.length > 8
               ? response2.responseData.splice(0, 8)
               : response2.responseData
           );
