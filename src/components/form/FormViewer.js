@@ -314,11 +314,24 @@ class FormViewer extends Component {
         }, 300);
       }
       // if institute,
-      // check if the form is submitted (status : new)  - no edit & hide 'save as draft'
       // if status: Draft - enable form edit & show 'save as draft'
       if (
         Helper.getUserRole() === APP.ROLE.INSTITUTION &&
-        this.state.applicationDetails.status === LANG.FORM_STATUS.NEW
+        this.state.applicationDetails.status === LANG.FORM_STATUS.DRAFT
+      ) {
+        this.setState({
+          showSaveAsDraft: true,
+        });
+        setTimeout(() => {
+          this.disableFormElements();
+        }, 300);
+      }
+
+      // if institute,
+      // if status: not Draft - disable form edit & hide 'save as draft'
+      if (
+        Helper.getUserRole() === APP.ROLE.INSTITUTION &&
+        this.state.applicationDetails.status !== LANG.FORM_STATUS.DRAFT
       ) {
         this.setState({
           showSaveAsDraft: false,
@@ -327,6 +340,8 @@ class FormViewer extends Component {
           this.disableFormElements();
         }, 300);
       }
+
+
     }
   };
 
@@ -568,22 +583,27 @@ class FormViewer extends Component {
 
                   <div className="ml-4 fullWidth ">
                     {this.props.match && this.props.match.params.applicationId && (
-                      <div className="mb-4">
-                        <StatusBarLarge
-                          isChange={false}
-                          status={this.state.applicationDetails.status}
-                          label={this.state.applicationDetails.status}
-                          timeStamp={this.state.applicationDetails.timestamp}
-                          applicationId={
-                            this.state.applicationDetails.applicationId
-                          }
-                          inspectionData={
-                            this.state.applicationDetails.inspection
-                              ? this.state.applicationDetails.inspection
-                              : ""
-                          }
-                        />
-                      </div>
+                        this.state.applicationDetails.status !== LANG.FORM_STATUS.DRAFT &&
+                          <div className="mb-4">
+                              <StatusBarLarge
+                              isChange={false}
+                              status={this.state.applicationDetails.status}
+                              label={this.state.applicationDetails.status}
+                              timeStamp={this.state.applicationDetails.timestamp}
+                              applicationId={
+                                this.state.applicationDetails.applicationId
+                              }
+                              inspectionData={
+                                this.state.applicationDetails.inspection
+                                  ? this.state.applicationDetails.inspection
+                                  : ""
+                              }
+                              comments = {
+                                this.state.applicationDetails.comments ?
+                                this.state.applicationDetails.comments : ""
+                              }
+                            />
+                          </div>
                     )}
                     <div
                       id="content"
@@ -765,6 +785,7 @@ class FormViewer extends Component {
                             //   this.props.match.params.applicationId !== undefined
                             // ) &&
                             Helper.getUserRole() === APP.ROLE.INSTITUTION &&
+                            this.state.showSaveAsDraft &&
                               this.state.headingIndex ===
                                 this.state.formHeadings.length - 1 && (
                                 <button
