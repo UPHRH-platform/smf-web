@@ -17,6 +17,7 @@ interface TextAreaFieldProps {
   value?: string;
   defaultValue?: string;
   isReadOnly?: boolean;
+  isRequired?: boolean;
 }
 
 export const TextAreaField = ({
@@ -28,6 +29,7 @@ export const TextAreaField = ({
   value,
   rows,
   isReadOnly,
+  isRequired,
   defaultValue,
 }: TextAreaFieldProps) => {
   const [characterCount, setCharacterCount] = useState(0);
@@ -59,6 +61,7 @@ export const TextAreaField = ({
           value={value}
           defaultValue={defaultValue}
           readOnly={isReadOnly ? true : false}
+          required={isRequired ? true : false}
         />
 
         {showStatus && (

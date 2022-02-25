@@ -15,6 +15,8 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import Header from "./../common/Header";
 import Sortable from "sortablejs";
+import { BtnTwo } from "../buttons/BtnTwo";
+import { BtnOne } from "../buttons/BtnOne";
 
 let strings = new LocalizedStrings(translations);
 
@@ -167,12 +169,17 @@ class AddForm extends Component {
     });
   };
 
-  submit = () => {
+  submit = (isDraft) => {
     let formData = {};
     formData.id = this.state.formDetails.id;
     formData.version = this.state.formDetails.version;
     formData.title = this.state.formDetails.title;
     formData.description = this.state.formDetails.description;
+    if(isDraft) {
+      formData.status = LANG.FORM_STATUS.DRAFT
+    } else {
+      formData.status = LANG.FORM_STATUS.PUBLISH
+    }
     formData.fields = [];
     let cards = document.getElementsByClassName("card");
     for (let i = 0; i < cards.length; i++) {
@@ -227,7 +234,7 @@ class AddForm extends Component {
           Notify.success(response.statusInfo.statusMessage);
           //   this.props.updateParent(response.responseData.id);
           setTimeout(() => {
-            this.props.history.push("/manage");
+            this.props.history.push("/manage?tab=1");
           }, 500);
         } else {
           Notify.error(response.statusInfo.errorMessage);
@@ -254,62 +261,38 @@ class AddForm extends Component {
             <div className="row tabText">
               <div className="col-md-12 ">
                 <div className="row">
-                  <div className="col-md-12 mt-5">
-                    <div className="row">
-                      {/* <div className="col-sm-12 col-md-12 col-lg-8">
-                        <Link to="/forms" className="formAnchor white-70">
-                          MANAGE
-                        </Link>{" "}
-                        <>
-                          <i className="material-icons white-70 absolute">
-                            arrow_forward_ios
-                          </i>
-                          <span className="ml-4">FORMS</span>
-                        </>
-                        {!this.props.match.params.id && (
-                          <>
-                            <i className="material-icons white-70 absolute">
-                              arrow_forward_ios
-                            </i>
-                            <span className="ml-4">ADD</span>
-                          </>
-                        )}
-                        {this.props.match.params.id && (
-                          <>
-                            <i className="material-icons white-70 absolute">
-                              arrow_forward_ios
-                            </i>
-                            <span className="ml-4">
-                              {this.state.formTitle.toUpperCase()}
-                            </span>
-                            <i className="material-icons white-70 absolute">
-                              arrow_forward_ios
-                            </i>
-                            <span className="ml-4">EDIT</span>
-                          </>
-                        )}
-                      </div> */}
-                      <div className="col-sm-12 col-md-12 col-lg-4 mt-4 mt-md-0">
-                        <div className=" pull-right">
-                          <button
-                            onClick={(e) => this.props.history.push("/manage")}
-                            type="button"
-                            id="submit"
-                            className="btn btn-default smf-btn-default"
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            onClick={this.submit}
-                            type="button"
-                            id="submit"
-                            className="btn btn-default smf-btn-default-inverse mr-0"
-                          >
-                            Save Changes
-                          </button>
+                  <div className="col-12 mt-5">
+                    <div className="d-flex pull-right">
+                          <div className="mr-3">
+                            <BtnOne
+                              label="Cancel"
+                              btnType="button"
+                              isLink={false}
+                              link=""
+                              clickHandler={(e) => this.props.history.push("/manage?tab=1")}
+                            />
+                          </div>
+                          { this.state.formDetails.status !== LANG.FORM_STATUS.NEW && 
+                          <div className="mr-3">
+                            <BtnOne
+                              label="Save as draft"
+                              btnType="button"
+                              isLink={false}
+                              link=""
+                              clickHandler={(e) => this.submit(true)}
+                            />
+                          </div>
+                          }
+                          <div className="mr-0">
+                            <BtnTwo
+                              label="Submit"
+                              btnType="button"
+                              isLink={false}
+                              link=""
+                              clickHandler={(e) => this.submit(false)}
+                            />
+                          </div>
                         </div>
-                      </div>
-                    </div>
                   </div>
                 </div>
                 <div className="row">

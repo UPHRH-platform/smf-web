@@ -4,6 +4,7 @@ export { UpcomingTab } from "./Inspector/UpcomingTab";
 export { PastTab } from "./Inspector/PastTab";
 export { Users } from "./reviewer/Users";
 export { AllApplicationsTab } from "./Regulator/AllApplicationsTab";
+export { AllApplicationsInspectorTab } from "./Inspector/AllApplicationsTab";
 export { ReviewApplicationLayout } from "./Regulator/ReviewApplicationLayout";
 export { InspectionSummaryLayout } from "./Inspector/InspectionSummaryLayout";
 export { InspectionCompleteLayout } from "./Inspector/InspectionCompleteLayout";

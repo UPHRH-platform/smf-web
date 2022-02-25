@@ -65,7 +65,7 @@ export const BtnThree = ({
           >
             <span
               className={`${
-                showIcon ? "material-icons vertical_align_bottom ps-2" : ""
+                showIcon ? "material-icons vertical_align_bottom pe-2" : ""
               }`}
             >
               {iconValue}
@@ -91,7 +91,7 @@ export const BtnThree = ({
             >
               <span
                 className={`${
-                  showIcon ? "material-icons vertical_align_bottom ps-2" : ""
+                  showIcon ? "material-icons vertical_align_bottom pe-2" : ""
                 }`}
               >
                 {iconValue}

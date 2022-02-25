@@ -77,6 +77,20 @@ export const StatusBarLarge = ({
           <label>{`Status: Inspection completed`}</label>
         </div>
       )}
+      {status === LANG.FORM_STATUS.APPROVED && (
+        <div
+          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3 ${styles.status_bar_large_green}`}
+        >
+          <label>{`Status: ${label && formatLabel(label)}`}</label>
+        </div>
+      )}
+      {status === LANG.FORM_STATUS.REJECTED && (
+        <div
+          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-2 ${styles.status_bar_large_red}`}
+        >
+          <label>{`Status: ${label && formatLabel(label)}`}</label>
+        </div>
+      )}
 
       {label && label === LANG.FORM_STATUS.NEW && (
         <p className="text-center pt-3">
@@ -99,6 +113,14 @@ export const StatusBarLarge = ({
       )}
       {label && label === LANG.FORM_STATUS.INSPECTION_COMPLETED && (
         <p className="text-center pt-3">Inspection completed!</p>
+      )}
+      {label && label === LANG.FORM_STATUS.APPROVED && (
+        <p className="text-center pt-3">
+          This application is approved with no flaws.
+        </p>
+      )}
+      {label && label === LANG.FORM_STATUS.REJECTED && (
+        <p className="text-center pt-3">Rejected</p>
       )}
 
       {/* For inspection */}
@@ -145,7 +167,7 @@ export const StatusBarLarge = ({
                           className={`${stylesTwo.inspector_name_list} mb-2`}
                           key={l}
                         >
-                          <div className="row pt-3 ps-3 pe-3">
+                          <div className="row pt-2 ps-3 pe-3">
                             <div className="d-flex flex-row">
                               <div
                                 className={`${stylesTwo.inspector_name_square}`}
@@ -158,7 +180,15 @@ export const StatusBarLarge = ({
                         </div>
                       );
                     } else {
-                      return null;
+                      if (l === 0) {
+                        return (
+                          <p className="ps-2" key={l}>
+                            No lead inspector found!
+                          </p>
+                        );
+                      } else {
+                        return null;
+                      }
                     }
                   })}
               </div>
@@ -176,7 +206,7 @@ export const StatusBarLarge = ({
                           className={`${stylesTwo.inspector_name_list} mb-2`}
                           key={l}
                         >
-                          <div className="row pt-3 ps-3 pe-3">
+                          <div className="row pt-2 ps-3 pe-3">
                             <div className="d-flex flex-row">
                               <div
                                 className={`${stylesTwo.inspector_name_square}`}
@@ -189,7 +219,15 @@ export const StatusBarLarge = ({
                         </div>
                       );
                     } else {
-                      return null;
+                      if (l === 0) {
+                        return (
+                          <p className="ps-2" key={l}>
+                            No assiting inspectors found!
+                          </p>
+                        );
+                      } else {
+                        return null;
+                      }
                     }
                   })}
               </div>

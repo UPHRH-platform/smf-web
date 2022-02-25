@@ -20,6 +20,19 @@ html {
     color: var(--black-60);
 }
 
+.black-16 {
+    color: var(--black-16);
+}
+
+.black-87 {
+    color: var(--black-87);
+}
+
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
 .white-bg {
     background-color: #fff;
 }
@@ -314,6 +327,39 @@ h3 {
     cursor: pointer;
 }
 
+/* Form styles */
+.custom-form label{
+    color: var(--black-87);
+    font-family: Lato-Bold;
+    font-size: .875rem;
+    letter-spacing: .25px;
+    line-height: 1.429;
+}
+
+.custom-form input{
+    border: 1px solid var(--black-16)!important;
+    border-radius: 4px!important;
+    box-shadow: none!important;
+    color: var(--black-87)!important;
+    font-family: Lato-Regular!important;
+    font-size: .875rem!important;
+    letter-spacing: .25px!important;
+    line-height: 1.429!important;
+    outline: none!important;
+    padding: 0.5rem!important;
+    width: 100%;
+}
+
+.custom-form input[type='checkbox'], .custom-form input[type='radio'] {
+    border: none !important;
+    width: auto;
+    margin-right: 1rem !important;
+}
+
+.custom-form input[type='radio'] {
+    margin-right: .5rem !important;
+}
+
 /* Breadcrumb */
 .custom.breadcrumb {
     background-color: transparent !important;
@@ -411,12 +457,16 @@ a:focus {
 }
 
 #sidebar ul li a {
-    padding: 14px 16px;
+    padding: 1rem;
     display: block;
     text-decoration: none;
     color: var(--black-87);
-    font-size: 14px;
     font-family: 'Lato';
+    cursor: pointer;
+    font-family: Lato-Bold;
+    font-size: .875rem;
+    letter-spacing: .25px;
+    line-height: 1.429;
 }
 
 #sidebar ul li a:hover {
@@ -481,7 +531,7 @@ a:-webkit-any-link {
     padding: 1rem 0.5rem !important;
 }
 
-.td-preview {
+.td-preview,  .td-preview a{
     color: var(--primary-color) !important;
     font-weight: 700 !important;
 }

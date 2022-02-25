@@ -48,7 +48,7 @@ const Router = (props) => (
       />
       <PrivateRoute
         exact
-        path="/all-applications/:id"
+        path="/inspector/:id/:applicationId"
         component={ViewApplications}
       />
       {/* <PrivateRoute
@@ -71,7 +71,7 @@ const Router = (props) => (
       />
       <PrivateRoute
         exact
-        path="/inspection-summary"
+        path="/inspection-summary/:id/:applicationId"
         component={InspectionSummary}
       />
       <PrivateRoute
