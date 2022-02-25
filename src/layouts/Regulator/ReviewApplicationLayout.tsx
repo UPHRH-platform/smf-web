@@ -174,6 +174,7 @@ export const ReviewApplicationLayout = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reviewerNote]);
 
+
   const getApplicationStatusLog = (id: any) => {
     ReviewService.getStatusLog(id).then(
       (response) => {
@@ -191,6 +192,49 @@ export const ReviewApplicationLayout = ({
     );
   };
 
+  const approveOrReject = (e: any, id: string) => {
+    e.preventDefault();
+    let textAreaElement = document.getElementById(id);
+    const comments = textAreaElement?.querySelector("textarea")?.value;
+    const req = {
+      applicationId: applicationData.applicationId,
+      notes: comments,
+    }
+    if (id === 'approveModal') {
+      ReviewService.approveApplication(req).then(
+        (response) => {
+          if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+            // console.log(response.responseData);
+            history.push(APP.ROUTES.DASHBOARD);
+          } else {
+            Notify.error(response.statusInfo.errorMessage);
+          }
+        },
+        (error) => {
+          error.statusInfo
+            ? Notify.error(error.statusInfo.errorMessage)
+            : Notify.error(error.message);
+        }
+      );
+    } else {
+      ReviewService.rejectApplication(req).then(
+        (response) => {
+          if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+            // console.log(response.responseData);
+            history.push(APP.ROUTES.DASHBOARD);
+          } else {
+            Notify.error(response.statusInfo.errorMessage);
+          }
+        },
+        (error) => {
+          error.statusInfo
+            ? Notify.error(error.statusInfo.errorMessage)
+            : Notify.error(error.message);
+        }
+      );
+    }
+  }
+
   return (
     <div className="">
       {applicationData && (
@@ -202,59 +246,100 @@ export const ReviewApplicationLayout = ({
               </div>
             </div>
             <div className="col-sm-12 col-md-12 col-lg-12 col-xl-8">
-              <div className="row row-cols-1 row-cols-md-4 row-cols-lg-4 mt-4 mt-sm-4 mt-md-0 mt-lg-0 mt-xl-0 mt-xxl-0 g-0 g-md-3">
-                <div className="col"></div>
-                <div className="col">
-                  <div className="float-end">
-                    <BtnFive
-                      label="Return to institute"
-                      showIcon={true}
-                      iconValue={`arrow_back`}
-                      isLink={false}
-                      link=""
-                      btnType="button"
-                      isModal={true}
-                      modalId="returnModal"
-                      disabled={
-                        applicationData.status === LANG.FORM_STATUS.RETURNED
-                          ? true
-                          : false
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="col">
-                  <div className="float-end">
-                    <BtnSix
-                      label="Send for inspection"
-                      showIcon={true}
-                      iconValue={`arrow_forward`}
-                      isLink={false}
-                      link=""
-                      btnType="button"
-                      floatBottom={false}
-                      isModal={true}
-                      modalId="sendToInspection"
-                      disabled={
-                        applicationData.status ===
-                        LANG.FORM_STATUS.SENT_FOR_INSPECTION
-                          ? true
-                          : false
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="col">
-                  <div className="float-end">
-                    <BtnFour
-                      label="View status log"
-                      btnType="button"
-                      isLink={false}
-                      link=""
-                      isModal={true}
-                      floatBottom={false}
-                      modalId="statusLog"
-                    />
+              <div className="row  mt-4 mt-sm-4 mt-md-0 mt-lg-0 mt-xl-0 mt-xxl-0 g-0 g-md-3">
+                <div className="col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 pt-3"></div>
+                <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mt-3 mb-4">
+                  <div className="d-flex justify-content-end align-items-center">
+
+                    {applicationData.status === LANG.FORM_STATUS.NEW &&
+                      <>
+                        <div className="mr-3">
+                          <BtnFive
+                            label="Return to institute"
+                            showIcon={true}
+                            iconValue={`arrow_back`}
+                            isLink={false}
+                            link=""
+                            btnType="button"
+                            isModal={true}
+                            modalId="returnModal"
+                            disabled={
+                              applicationData.status === LANG.FORM_STATUS.RETURNED
+                                ? true
+                                : false
+                            }
+                          />
+                        </div>
+                        <div className="mr-3">
+                          <BtnSix
+                            label="Send for inspection"
+                            showIcon={true}
+                            iconValue={`arrow_forward`}
+                            isLink={false}
+                            link=""
+                            btnType="button"
+                            floatBottom={false}
+                            isModal={true}
+                            modalId="sendToInspection"
+                            disabled={
+                              applicationData.status ===
+                                LANG.FORM_STATUS.SENT_FOR_INSPECTION
+                                ? true
+                                : false
+                            }
+                          />
+                        </div>
+                      </>
+                    }
+                    {applicationData.status === LANG.FORM_STATUS.INSPECTION_COMPLETED &&
+                      <>
+                        <div className="mr-3">
+                          <BtnSix
+                            label="Reject"
+                            showIcon={true}
+                            iconValue={`close`}
+                            isLink={false}
+                            link=""
+                            btnType="button"
+                            isModal={true}
+                            modalId="rejectModal"
+                            disabled={
+                              applicationData.status === LANG.FORM_STATUS.RETURNED
+                                ? true
+                                : false
+                            }
+                          />
+                        </div>
+                        <div className="mr-3">
+                          <BtnSix
+                            label="Approve"
+                            showIcon={true}
+                            iconValue={`check`}
+                            isLink={false}
+                            link=""
+                            btnType="button"
+                            isModal={true}
+                            modalId="approveModal"
+                            disabled={
+                              applicationData.status === LANG.FORM_STATUS.RETURNED
+                                ? true
+                                : false
+                            }
+                          />
+                        </div>
+                      </>
+                    }
+                    <div className="">
+                      <BtnFour
+                        label="View status log"
+                        btnType="button"
+                        isLink={false}
+                        link=""
+                        isModal={true}
+                        floatBottom={false}
+                        modalId="statusLog"
+                      />
+                    </div>
                   </div>
                 </div>
                 <ModalTwo
@@ -265,6 +350,34 @@ export const ReviewApplicationLayout = ({
                   showTextAreaLabel={false}
                   heading="Add note"
                   textAreaPlaceholder="Write here"
+                />
+                <ModalTwo
+                  id="rejectModal"
+                  enableHandler={true}
+                  ariaLabel="returnModalLabel"
+                  showTextAreaLabel={false}
+                  heading="Add note"
+                  textAreaPlaceholder="Write here"
+                  submitHandler={(e: any) => {
+                    approveOrReject(
+                      e,
+                      'rejectModal'
+                    );
+                  }}
+                />
+                <ModalTwo
+                  id="approveModal"
+                  enableHandler={true}
+                  ariaLabel="returnModalLabel"
+                  showTextAreaLabel={false}
+                  heading="Add note"
+                  textAreaPlaceholder="Write here"
+                  submitHandler={(e: any) => {
+                    approveOrReject(
+                      e,
+                      'approveModal'
+                    );
+                  }}
                 />
                 <InspectionScheduleModal
                   id="sendToInspection"

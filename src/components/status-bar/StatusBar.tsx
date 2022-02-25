@@ -49,6 +49,16 @@ export const StatusBar = ({ label, status }: StatusBarProps) => {
           className={`${styles.status_one_label} px-3 m-0`}
         >{`Status: Inspection completed`}</label>
       )}
+      {status && status === LANG.FORM_STATUS.APPROVED && (
+        <label
+          className={`${styles.status_one_label} px-3 m-0`}
+        >{`Status: ${formatLabel(label)}`}</label>
+      )}
+      {status && status === LANG.FORM_STATUS.REJECTED && (
+        <label
+          className={`${styles.status_three_label} px-3 m-0`}
+        >{`Status: ${formatLabel(label)}`}</label>
+      )}
     </div>
   );
 };

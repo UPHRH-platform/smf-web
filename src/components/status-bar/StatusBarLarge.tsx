@@ -77,6 +77,20 @@ export const StatusBarLarge = ({
           <label>{`Status: Inspection completed`}</label>
         </div>
       )}
+      {status === LANG.FORM_STATUS.APPROVED && (
+        <div
+          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3 ${styles.status_bar_large_green}`}
+        >
+          <label>{`Status: ${label && formatLabel(label)}`}</label>
+        </div>
+      )}
+      {status === LANG.FORM_STATUS.REJECTED && (
+        <div
+          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-2 ${styles.status_bar_large_red}`}
+        >
+          <label>{`Status: ${label && formatLabel(label)}`}</label>
+        </div>
+      )}
 
       {label && label === LANG.FORM_STATUS.NEW && (
         <p className="text-center pt-3">
@@ -99,6 +113,14 @@ export const StatusBarLarge = ({
       )}
       {label && label === LANG.FORM_STATUS.INSPECTION_COMPLETED && (
         <p className="text-center pt-3">Inspection completed!</p>
+      )}
+      {label && label === LANG.FORM_STATUS.APPROVED && (
+        <p className="text-center pt-3">This application is approved with no flaws.</p>
+      )}
+      {label && label === LANG.FORM_STATUS.REJECTED && (
+        <p className="text-center pt-3">
+         Rejected
+        </p>
       )}
 
       {/* For inspection */}

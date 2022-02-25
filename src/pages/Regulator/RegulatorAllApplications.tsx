@@ -70,6 +70,12 @@ export const RegulatorAllApplications = ({
                 ariaLabelled: "approved-tab",
                 children: <AllApplicationsTab />,
             },
+            {
+                id: "rejected",
+                label: "Rejected",
+                ariaLabelled: "rejected-tab",
+                children: <AllApplicationsTab />,
+            },
         ];
 
         setTabData(tempTabData);
@@ -145,6 +151,10 @@ export const RegulatorAllApplications = ({
 
                                         case "Approved":
                                             tempStatus = "approved";
+                                            break;
+
+                                        case "Rejected":
+                                            tempStatus = "rejected";
                                             break;
 
                                         default:

@@ -9,6 +9,8 @@ export const ReviewService = {
   getAllInspectors,
   getStatusLog,
   submitInspectionDetails,
+  approveApplication,
+  rejectApplication
 };
 
 function returnApplication(payload) {
@@ -68,6 +70,30 @@ function submitInspectionDetails(payload) {
   };
   return fetch(
     APIS.BASE_URL + APIS.INSPECTOR.SUBMIT_INSPECTION_DETAILS,
+    requestOptions
+  ).then(handleResponse);
+}
+
+function approveApplication(payload) {
+  const requestOptions = {
+    method: APP.REQUEST.POST,
+    body: JSON.stringify(payload),
+    headers: authHeader(),
+  };
+  return fetch(
+    APIS.BASE_URL + APIS.REGULATOR.APPROVE_APPLICATION,
+    requestOptions
+  ).then(handleResponse);
+}
+
+function rejectApplication(payload) {
+  const requestOptions = {
+    method: APP.REQUEST.POST,
+    body: JSON.stringify(payload),
+    headers: authHeader(),
+  };
+  return fetch(
+    APIS.BASE_URL + APIS.REGULATOR.REJECT_APPLICATION,
     requestOptions
   ).then(handleResponse);
 }
