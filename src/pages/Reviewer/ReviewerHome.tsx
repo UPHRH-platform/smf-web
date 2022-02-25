@@ -215,11 +215,7 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
             </div>
             <div className="row mt-3">
               {pendingApplications.map((i, j) => {
-                if (
-                  i.status !== LANG.FORM_STATUS.RETURNED &&
-                  i.status !== LANG.FORM_STATUS.SENT_FOR_INSPECTION &&
-                  i.status !== LANG.FORM_STATUS.INSPECTION_COMPLETED
-                ) {
+                if (i.status === LANG.FORM_STATUS.NEW) {
                   return (
                     <div
                       className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mb-3"
