@@ -117,9 +117,9 @@ export const StatusBarLarge = ({
           <div className="pt-1 pb-4 mx-3">
             <div className="row">
               <div className="col-12">
-                  {comments.map((c: any) => {
+                  {comments.map((c: any, i: any) => {
                     return (
-                    <p className={`${styles.review_comment} p-2 `}>
+                    <p key={i} className={`${styles.review_comment} p-2 `}>
                       {c.value}
                     </p>
                     )

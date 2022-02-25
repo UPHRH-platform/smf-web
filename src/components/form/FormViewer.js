@@ -317,21 +317,23 @@ class FormViewer extends Component {
       // if status: Draft - enable form edit & show 'save as draft'
       if (
         Helper.getUserRole() === APP.ROLE.INSTITUTION &&
-        this.state.applicationDetails.status === LANG.FORM_STATUS.DRAFT
+        (this.state.applicationDetails.status === LANG.FORM_STATUS.DRAFT ||
+        this.state.applicationDetails.status === LANG.FORM_STATUS.RETURNED)
       ) {
         this.setState({
           showSaveAsDraft: true,
         });
-        setTimeout(() => {
-          this.disableFormElements();
-        }, 300);
+        // setTimeout(() => {
+        //   this.disableFormElements();
+        // }, 300);
       }
 
       // if institute,
       // if status: not Draft - disable form edit & hide 'save as draft'
       if (
         Helper.getUserRole() === APP.ROLE.INSTITUTION &&
-        this.state.applicationDetails.status !== LANG.FORM_STATUS.DRAFT
+        (this.state.applicationDetails.status !== LANG.FORM_STATUS.DRAFT &&
+        this.state.applicationDetails.status !== LANG.FORM_STATUS.RETURNED)
       ) {
         this.setState({
           showSaveAsDraft: false,
