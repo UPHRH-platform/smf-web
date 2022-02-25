@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./ModalOne.module.css";
 import btnStyle from "../buttons/BtnOne.module.css";
 import btnStyleTwo from "../buttons/BtnTwo.module.css";
-import { TextAreaField } from "../form-elements";
+import { TextAreaField, TextField } from "../form-elements";
 import { useRecoilState } from "recoil";
 import { modalTwoTextArea as modalTwoTextAreaAtom } from "../../states/atoms";
 
@@ -20,7 +20,10 @@ interface ModalTwoProps {
   showTextAreaLabel: boolean;
   textAreaPlaceholder?: string;
   enableHandler: boolean;
+  enableSkip: boolean;
   submitHandler?: (event: any) => void;
+  cancelHandler?: (event: any) => void;
+  subHeading?: string;
 }
 
 export const ModalTwo = ({
@@ -32,9 +35,14 @@ export const ModalTwo = ({
   textAreaPlaceholder,
   enableHandler,
   submitHandler,
+  enableSkip,
+  cancelHandler,
+  subHeading,
 }: ModalTwoProps) => {
   const [modalTextArea, setModalTextArea] =
     useRecoilState(modalTwoTextAreaAtom);
+
+  const [enableSubmit, setEnableSubmit] = useState(false);
 
   const [note, setNote] = useState("");
 
@@ -46,6 +54,18 @@ export const ModalTwo = ({
       setModalTextArea(note);
     }
   };
+
+  useEffect(() => {
+    setNote("");
+  }, [id]);
+
+  useEffect(() => {
+    if (note.length) {
+      setEnableSubmit(true);
+    } else {
+      setEnableSubmit(false);
+    }
+  }, [note]);
 
   return (
     <div
@@ -78,58 +98,99 @@ export const ModalTwo = ({
               value={note}
               changeHandler={(e) => setNote(e.target.value)}
             />
+
+            {subHeading && (
+              <div className="mt-2">
+                <TextField
+                  showLabel={true}
+                  label={subHeading}
+                  isReadOnly={false}
+                  type="text"
+                />
+              </div>
+            )}
           </div>
           <div
             className={`${styles.custom_modal_footer} modal-footer p-0 m-0 pt-3 pb-3`}
           >
             <div className="col-6 m-0">
-              <button
-                type="button"
-                className={`${btnStyle.btn_one} me-2`}
-                data-dismiss="modal"
-              >
-                Cancel
-              </button>
+              {!enableHandler ? (
+                <button
+                  type="button"
+                  className={`${btnStyle.btn_one} me-2`}
+                  data-dismiss="modal"
+                >
+                  Cancel
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className={`${btnStyle.btn_one} me-2`}
+                  data-dismiss="modal"
+                  onClick={cancelHandler}
+                >
+                  Cancel
+                </button>
+              )}
             </div>
             <div className="col-6 m-0">
               <div className="float-end">
-                {!enableHandler ? (
-                  <button
-                    type="button"
-                    className={`${btnStyle.btn_one} me-2`}
-                    data-dismiss="modal"
-                    onClick={(e) => onSubmitHandler(e)}
-                  >
-                    Skip
-                  </button>
-                ) : (
-                  <button
-                    type="button"
-                    className={`${btnStyle.btn_one} me-2`}
-                    data-dismiss="modal"
-                    onClick={submitHandler}
-                  >
-                    Skip
-                  </button>
-                )}
+                {enableSkip &&
+                  (!enableHandler ? (
+                    <button
+                      type="button"
+                      className={`${btnStyle.btn_one} me-2`}
+                      data-dismiss="modal"
+                      onClick={(e) => onSubmitHandler(e)}
+                    >
+                      Skip
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className={`${btnStyle.btn_one} me-2`}
+                      data-dismiss="modal"
+                      onClick={submitHandler}
+                    >
+                      Skip
+                    </button>
+                  ))}
 
                 {!enableHandler ? (
+                  enableSubmit ? (
+                    <button
+                      type="button"
+                      className={`${btnStyleTwo.btn_two}`}
+                      data-dismiss="modal"
+                      onClick={(e) => {
+                        onSubmitHandler(e);
+                      }}
+                    >
+                      Submit
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      className={`${btnStyleTwo.btn_two}`}
+                      disabled={true}
+                    >
+                      Submit
+                    </button>
+                  )
+                ) : enableSubmit ? (
                   <button
                     type="button"
                     className={`${btnStyleTwo.btn_two}`}
                     data-dismiss="modal"
-                    onClick={(e) => {
-                      onSubmitHandler(e);
-                    }}
+                    onClick={submitHandler}
                   >
                     Submit
                   </button>
                 ) : (
                   <button
                     type="button"
-                    className={`${btnStyleTwo.btn_two}`}
-                    data-dismiss="modal"
-                    onClick={submitHandler}
+                    className={`${btnStyleTwo.btn_two_disabled}`}
+                    disabled={true}
                   >
                     Submit
                   </button>

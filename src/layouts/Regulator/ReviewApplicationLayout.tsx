@@ -260,6 +260,7 @@ export const ReviewApplicationLayout = ({
                 <ModalTwo
                   id="returnModal"
                   enableHandler={false}
+                  enableSkip={false}
                   ariaLabel="returnModalLabel"
                   showTextAreaLabel={false}
                   heading="Add note"
