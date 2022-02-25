@@ -65,7 +65,7 @@ export const StatusBarLarge = ({
       )}
       {status === LANG.FORM_STATUS.SENT_FOR_INSPECTION && (
         <div
-          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3 ${styles.status_bar_large_green}`}
+          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3 ${styles.status_bar_large_amber}`}
         >
           <label>{`Status: Sent for inspection`}</label>
         </div>
