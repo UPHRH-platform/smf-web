@@ -82,7 +82,11 @@ export const ModalTwo = ({
       } else if (subHeading === "") {
         setEnableSubmit(true);
       } else {
-        setEnableSubmit(false);
+        if (!subHeading) {
+          setEnableSubmit(true);
+        } else {
+          setEnableSubmit(false);
+        }
       }
     } else {
       setEnableSubmit(false);

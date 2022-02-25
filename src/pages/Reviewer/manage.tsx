@@ -29,7 +29,7 @@ export const Manage = ({ data }: IManageProps) => {
     let history = useHistory();
     const search = useLocation().search;
     const activeTabNumber = new URLSearchParams(search).get('tab');
-    console.log('activeTabNumber', activeTabNumber)
+    // console.log('activeTabNumber', activeTabNumber)
     useEffect(() => {
     }, []);
     return (

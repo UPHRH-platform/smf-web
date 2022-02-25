@@ -75,13 +75,20 @@ export const InspectionSummaryLayout = ({
       inspectorSummaryDataObject,
     };
 
-    ReviewService.submitInspectionDetails(payload).then((response) => {
-      if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-        history.push("/inspection-complete");
-      } else {
-        Notify.error(response.statusInfo.errorMessage);
+    ReviewService.submitInspectionDetails(payload).then(
+      (response) => {
+        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          history.push("/inspection-complete");
+        } else {
+          Notify.error(response.statusInfo.errorMessage);
+        }
+      },
+      (error) => {
+        error.statusInfo
+          ? Notify.error(error.statusInfo.errorMessage)
+          : Notify.error(error.message);
       }
-    });
+    );
   };
 
   return (
