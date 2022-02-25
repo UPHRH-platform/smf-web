@@ -23,6 +23,7 @@ import {
   sideMenuLabel as sideMenuLabelAtom,
   modalTwoTextArea as modalTwoTextAreaAtom,
   modalTwoInspectionValue as modalTwoInspectionValueAtom,
+  dataObjectInspectionForm as dataObjectInspectionFormAtom,
 } from "../../states/atoms";
 import { useHistory } from "react-router-dom";
 
@@ -48,6 +49,9 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
     useRecoilState(modalTwoTextAreaAtom);
   const [modalInspectionValue, setModalInspectionValue] = useRecoilState(
     modalTwoInspectionValueAtom
+  );
+  const [dataObjectFormValue, setDataObjectFormValue] = useRecoilState(
+    dataObjectInspectionFormAtom
   );
 
   let history = useHistory();
@@ -226,7 +230,11 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
       if (tempArray.includes("")) {
         setEnableInspectionComplete(false);
       } else {
-        setEnableInspectionComplete(true);
+        if (formData.inspectionFields) {
+          setEnableInspectionComplete(true);
+        } else {
+          setEnableInspectionComplete(false);
+        }
       }
     }
   }, [selectedMenuLabel, processedData]);
@@ -234,20 +242,31 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
   const processFormData = (e: any) => {
     e.preventDefault();
 
-    console.log(processedData);
-
     let dataObject: any = {};
 
     let tempArray = [...processedData];
 
     tempArray.map((i, j) => {
       i.fields.map((m: any, n: number) => {
-        console.log(m);
-        dataObject[`${i.sideMenu}`] = "";
+        dataObject[i.sideMenu] = {
+          [m.label]: {
+            value: m.isCorrect ? "correct" : "incorrect",
+            comments: m.comments,
+            inspectionValue: m.inspectionValue,
+          },
+          ...dataObject[i.sideMenu],
+        };
       });
     });
 
     console.log(dataObject);
+
+    history.push({
+      pathname: `/inspection-summary/${formData.id}/${applicationData.applicationId}`,
+      state: [formData, applicationData, dataObject],
+    });
+
+    setDataObjectFormValue(dataObject);
   };
 
   return (
@@ -1874,8 +1893,9 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                           <BtnTwo
                             label="Inspection completed"
                             btnType="button"
-                            isLink={false}
-                            link="/inspection-summary"
+                            isLink={true}
+                            link={`/inspection-summary/${formData.id}/${applicationData.applicationId}`}
+                            stateData={formData}
                             isModal={false}
                             showIcon={false}
                             iconValue=""

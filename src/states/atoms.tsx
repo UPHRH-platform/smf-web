@@ -32,3 +32,9 @@ export const modalTwoInspectionValue = atom({
   key: "modalTwoInspectionValue",
   default: "",
 });
+
+// Inspection
+export const dataObjectInspectionForm = atom({
+  key: "dataObjectInspectionForm",
+  default: "",
+});

@@ -1,4 +1,4 @@
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import Header from "../../components/common/Header";
 import { useHistory } from 'react-router-dom';
 import { InspectionSummaryLayout } from "../../layouts";
@@ -14,12 +14,13 @@ interface InspectionSummaryProps {
 
 export const InspectionSummary = ({ data }: InspectionSummaryProps) => {
     let history = useHistory();
+    
     return (
         <Fragment>
             <Header history={history} />
             <div className="container-fluid">
                 <div className="container dashboard-inner-container mt-4">
-                    <InspectionSummaryLayout />
+                    <InspectionSummaryLayout data={history}/>
                 </div>
             </div>
         </Fragment>
