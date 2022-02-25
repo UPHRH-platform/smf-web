@@ -22,9 +22,9 @@ import { useRecoilState } from "recoil";
 import {
   sideMenuLabel as sideMenuLabelAtom,
   modalTwoTextArea as modalTwoTextAreaAtom,
+  modalTwoInspectionValue as modalTwoInspectionValueAtom,
 } from "../../states/atoms";
 import { useHistory } from "react-router-dom";
-import { kill } from "process";
 
 /**
  * FormView component renders
@@ -46,6 +46,9 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
 
   const [modalTextArea, setModalTextArea] =
     useRecoilState(modalTwoTextAreaAtom);
+  const [modalInspectionValue, setModalInspectionValue] = useRecoilState(
+    modalTwoInspectionValueAtom
+  );
 
   let history = useHistory();
 
@@ -88,7 +91,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                     defaultValues: k.values,
                     fieldType: k.fieldType,
                     isCorrect: "",
-                    inspectionvValue: "",
+                    inspectionValue: "",
                     comments: "",
                   });
                 }
@@ -155,12 +158,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
             if (status === "correct") {
               m.isCorrect = true;
               m.comments = "";
+              m.inspectionValue= "";
             } else if (status === "incorrect") {
               m.isCorrect = false;
               m.comments = "";
+              m.inspectionValue = "";
             } else {
               m.isCorrect = "";
               m.comments = "";
+              m.inspectionValue = "";
             }
           }
         });
@@ -178,10 +184,13 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
     // console.log(menuLabel, field);
 
     let comments: any = "";
+    let correctField: any = "";
 
-    let textAreaElement = document.getElementById(field);
+    let targetElement = document.getElementById(field);
 
-    comments = textAreaElement?.querySelector("textarea")?.value;
+    comments = targetElement?.querySelector("textarea")?.value;
+
+    correctField = targetElement?.querySelector("input")?.value;
 
     let tempArray = [...processedData];
 
@@ -191,12 +200,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
           if (m.label.replace(/\s/g, "") === field) {
             setModalTextArea(comments);
             m.comments = comments;
+            setModalInspectionValue(correctField);
+            m.inspectionValue = correctField;
           }
         });
       }
     });
 
     setModalTextArea("");
+    setModalInspectionValue("");
     // console.log(tempArray);
     setProcessedData(tempArray);
   };
@@ -229,12 +241,9 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
     let tempArray = [...processedData];
 
     tempArray.map((i, j) => {
-      // dataObject[`${i.sideMenu}`] = "";
-
       i.fields.map((m: any, n: number) => {
-       console.log(m)
-       dataObject[`${i.sideMenu}`] = ""
-       
+        console.log(m);
+        dataObject[`${i.sideMenu}`] = "";
       });
     });
 
@@ -1665,6 +1674,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                           id={m.label.replace(/\s/g, "")}
                           enableHandler={true}
                           enableSkip={false}
+                          subFieldType={m.fieldType}
                           subHeading={"Enter the correct value"}
                           ariaLabel={`${m.label.replace(/\s/g, "")}Label`}
                           heading={

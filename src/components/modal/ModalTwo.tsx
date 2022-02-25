@@ -5,7 +5,10 @@ import btnStyle from "../buttons/BtnOne.module.css";
 import btnStyleTwo from "../buttons/BtnTwo.module.css";
 import { TextAreaField, TextField } from "../form-elements";
 import { useRecoilState } from "recoil";
-import { modalTwoTextArea as modalTwoTextAreaAtom } from "../../states/atoms";
+import {
+  modalTwoTextArea as modalTwoTextAreaAtom,
+  modalTwoInspectionValue as modalTwoInspectionValueAtom,
+} from "../../states/atoms";
 
 /**
  * ModalTwo component renders
@@ -21,6 +24,7 @@ interface ModalTwoProps {
   textAreaPlaceholder?: string;
   enableHandler: boolean;
   enableSkip: boolean;
+  subFieldType?: string;
   submitHandler?: (event: any) => void;
   cancelHandler?: (event: any) => void;
   subHeading?: string;
@@ -38,13 +42,18 @@ export const ModalTwo = ({
   enableSkip,
   cancelHandler,
   subHeading,
+  subFieldType,
 }: ModalTwoProps) => {
   const [modalTextArea, setModalTextArea] =
     useRecoilState(modalTwoTextAreaAtom);
+  const [modalInspectionValue, setModalInspectionValue] = useRecoilState(
+    modalTwoInspectionValueAtom
+  );
 
   const [enableSubmit, setEnableSubmit] = useState(false);
 
   const [note, setNote] = useState("");
+  const [correctValue, setCorrectValue] = useState("");
 
   const onSubmitHandler = (e: any) => {
     e.preventDefault();
@@ -53,19 +62,26 @@ export const ModalTwo = ({
     } else {
       setModalTextArea(note);
     }
+
+    if (correctValue === "") {
+      setModalInspectionValue("Empty!");
+    } else {
+      setModalInspectionValue(correctValue);
+    }
   };
 
   useEffect(() => {
     setNote("");
+    setCorrectValue("");
   }, [id]);
 
   useEffect(() => {
-    if (note.length) {
+    if (note.length && correctValue.length) {
       setEnableSubmit(true);
     } else {
       setEnableSubmit(false);
     }
-  }, [note]);
+  }, [note, correctValue]);
 
   return (
     <div
@@ -106,6 +122,8 @@ export const ModalTwo = ({
                   label={subHeading}
                   isReadOnly={false}
                   type="text"
+                  value={correctValue}
+                  changeHandler={(e) => setCorrectValue(e.target.value)}
                 />
               </div>
             )}

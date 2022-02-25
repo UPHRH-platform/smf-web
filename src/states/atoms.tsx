@@ -27,3 +27,8 @@ export const modalTwoTextArea = atom({
   key: "modalTwoTextArea",
   default: "",
 });
+
+export const modalTwoInspectionValue = atom({
+  key: "modalTwoInspectionValue",
+  default: "",
+});
