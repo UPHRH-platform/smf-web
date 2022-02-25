@@ -9,6 +9,10 @@ import stylesThree from "../../components/status-bar/StatusBarLarge.module.css";
 import btnStylesTwo from "../../components/buttons/BtnTwo.module.css";
 import { useRecoilValue } from "recoil";
 import { dataObjectInspectionForm as dataObjectInspectionFormAtom } from "../../states/atoms";
+import { ReviewService } from "../../services";
+import Notify from "../../helpers/notify";
+import { APP } from "../../constants/index";
+import { useHistory } from "react-router-dom";
 
 /**
  * InspectionSummaryLayout component renders
@@ -30,11 +34,7 @@ export const InspectionSummaryLayout = ({
   const [acceptConditions, setAcceptConditions] = useState(false);
 
   const dataObjectFormValue = useRecoilValue(dataObjectInspectionFormAtom);
-
-  useEffect(() => {
-    // console.log(data.location.state[1])
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  let history = useHistory();
 
   useEffect(() => {
     if (
@@ -69,22 +69,19 @@ export const InspectionSummaryLayout = ({
         });
     }
 
-
-    let aggereatedObject = {
-      inspectorSummaryDataObject,
-      ...data.location.state[2],
-    };
-
-    // console.log(aggereatedObject);
-
     let payload = {
       applicationId: data.location.state[1].applicationId,
-      dataObject: aggereatedObject,
+      dataObject: data.location.state[2],
+      inspectorSummaryDataObject,
     };
 
-    // console.log(payload);
-
-    // Rev
+    ReviewService.submitInspectionDetails(payload).then((response) => {
+      if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+        history.push("/inspection-complete");
+      } else {
+        Notify.error(response.statusInfo.errorMessage);
+      }
+    });
   };
 
   return (
