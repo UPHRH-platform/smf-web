@@ -63,7 +63,7 @@ export const ModalTwo = ({
       setModalTextArea(note);
     }
 
-    if (correctValue === "") {
+    if (correctValue === "" && subHeading) {
       setModalInspectionValue("Empty!");
     } else {
       setModalInspectionValue(correctValue);
@@ -76,8 +76,14 @@ export const ModalTwo = ({
   }, [id]);
 
   useEffect(() => {
-    if (note.length && correctValue.length) {
-      setEnableSubmit(true);
+    if (note.length) {
+      if (subHeading && correctValue.length) {
+        setEnableSubmit(true);
+      } else if (subHeading === "") {
+        setEnableSubmit(true);
+      } else {
+        setEnableSubmit(false);
+      }
     } else {
       setEnableSubmit(false);
     }

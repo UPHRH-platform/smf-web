@@ -158,7 +158,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
             if (status === "correct") {
               m.isCorrect = true;
               m.comments = "";
-              m.inspectionValue= "";
+              m.inspectionValue = "";
             } else if (status === "incorrect") {
               m.isCorrect = false;
               m.comments = "";
@@ -311,6 +311,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -446,6 +457,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -583,6 +605,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -736,6 +769,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -870,6 +914,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1005,6 +1060,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1143,6 +1209,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1278,6 +1355,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1411,6 +1499,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1544,6 +1643,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1675,7 +1785,13 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                           enableHandler={true}
                           enableSkip={false}
                           subFieldType={m.fieldType}
-                          subHeading={"Enter the correct value"}
+                          subHeading={
+                            m.comments === "" && m.isCorrect === ""
+                              ? ""
+                              : !m.isCorrect && m.comments === ""
+                              ? "Enter the correct value"
+                              : ""
+                          }
                           ariaLabel={`${m.label.replace(/\s/g, "")}Label`}
                           heading={
                             m.comments === "" && m.isCorrect === ""
