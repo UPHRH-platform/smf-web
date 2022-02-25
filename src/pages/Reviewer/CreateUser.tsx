@@ -171,7 +171,7 @@ export const CreateUser = ({ data }: userProps) => {
         UserService.createOrUpdateUser(req).then(
             (response2) => {
                 if (response2.statusInfo && response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
-                    console.log(response2.responseData);
+                    // console.log(response2.responseData);
                     if(isEditMode) {
                         Notify.success('User edited successfully!');
                     } else {
@@ -203,24 +203,24 @@ export const CreateUser = ({ data }: userProps) => {
 
         // tempRoles[i].isChecked  = !tempRoles[i].isChecked
         setRoles(tempRoles)
-        console.log(roles)
+        // console.log(roles)
     }
 
     const inputChange = (e: any) => {
         if(e.target.name === 'firstname'){
-            console.log('e.target:', e.target.value)
+            // console.log('e.target:', e.target.value)
             setUserEdit({
                 ...userEdit,
                 firstName: e.target.value
             })
         } else if(e.target.name === 'lastname'){
-            console.log('e.target:', e.target.value)
+            // console.log('e.target:', e.target.value)
             setUserEdit({
                 ...userEdit,
                 lastName: e.target.value
             })
         } else if(e.target.name === 'email') {
-            console.log('e.target:', e.target.value)
+            // console.log('e.target:', e.target.value)
             setUserEdit({
                 ...userEdit,
                 emailId: e.target.value

@@ -46,6 +46,7 @@ export const ReviewApplicationLayout = ({
   applicationData,
 }: ReviewApplicationLayoutProps) => {
   const [selectedMenuData, setSelectedDataMenu] = useState<any[]>([]);
+  const [statusLog, setStatusLog] = useState<any[]>([]);
   const [selectedMenuLabel, setSelectedMenuLabel] =
     useRecoilState(sideMenuLabelAtom);
 
@@ -174,12 +175,11 @@ export const ReviewApplicationLayout = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reviewerNote]);
 
-
   const getApplicationStatusLog = (id: any) => {
     ReviewService.getStatusLog(id).then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          // console.log(response.responseData);
+          setStatusLog(response.responseData)
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
@@ -199,8 +199,8 @@ export const ReviewApplicationLayout = ({
     const req = {
       applicationId: applicationData.applicationId,
       notes: comments,
-    }
-    if (id === 'approveModal') {
+    };
+    if (id === "approveModal") {
       ReviewService.approveApplication(req).then(
         (response) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
@@ -233,7 +233,7 @@ export const ReviewApplicationLayout = ({
         }
       );
     }
-  }
+  };
 
   return (
     <div className="">
@@ -250,8 +250,7 @@ export const ReviewApplicationLayout = ({
                 <div className="col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 pt-3"></div>
                 <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mt-3 mb-4">
                   <div className="d-flex justify-content-end align-items-center">
-
-                    {applicationData.status === LANG.FORM_STATUS.NEW &&
+                    {applicationData.status === LANG.FORM_STATUS.NEW && (
                       <>
                         <div className="mr-3">
                           <BtnFive
@@ -264,7 +263,8 @@ export const ReviewApplicationLayout = ({
                             isModal={true}
                             modalId="returnModal"
                             disabled={
-                              applicationData.status === LANG.FORM_STATUS.RETURNED
+                              applicationData.status ===
+                              LANG.FORM_STATUS.RETURNED
                                 ? true
                                 : false
                             }
@@ -283,15 +283,16 @@ export const ReviewApplicationLayout = ({
                             modalId="sendToInspection"
                             disabled={
                               applicationData.status ===
-                                LANG.FORM_STATUS.SENT_FOR_INSPECTION
+                              LANG.FORM_STATUS.SENT_FOR_INSPECTION
                                 ? true
                                 : false
                             }
                           />
                         </div>
                       </>
-                    }
-                    {applicationData.status === LANG.FORM_STATUS.INSPECTION_COMPLETED &&
+                    )}
+                    {applicationData.status ===
+                      LANG.FORM_STATUS.INSPECTION_COMPLETED && (
                       <>
                         <div className="mr-3">
                           <BtnSix
@@ -304,7 +305,8 @@ export const ReviewApplicationLayout = ({
                             isModal={true}
                             modalId="rejectModal"
                             disabled={
-                              applicationData.status === LANG.FORM_STATUS.RETURNED
+                              applicationData.status ===
+                              LANG.FORM_STATUS.RETURNED
                                 ? true
                                 : false
                             }
@@ -321,14 +323,15 @@ export const ReviewApplicationLayout = ({
                             isModal={true}
                             modalId="approveModal"
                             disabled={
-                              applicationData.status === LANG.FORM_STATUS.RETURNED
+                              applicationData.status ===
+                              LANG.FORM_STATUS.RETURNED
                                 ? true
                                 : false
                             }
                           />
                         </div>
                       </>
-                    }
+                    )}
                     <div className="">
                       <BtnFour
                         label="View status log"
@@ -345,6 +348,7 @@ export const ReviewApplicationLayout = ({
                 <ModalTwo
                   id="returnModal"
                   enableHandler={false}
+                  enableSkip={false}
                   ariaLabel="returnModalLabel"
                   showTextAreaLabel={false}
                   heading="Add note"
@@ -353,29 +357,25 @@ export const ReviewApplicationLayout = ({
                 <ModalTwo
                   id="rejectModal"
                   enableHandler={true}
+                  enableSkip={false}
                   ariaLabel="returnModalLabel"
                   showTextAreaLabel={false}
                   heading="Add note"
                   textAreaPlaceholder="Write here"
                   submitHandler={(e: any) => {
-                    approveOrReject(
-                      e,
-                      'rejectModal'
-                    );
+                    approveOrReject(e, "rejectModal");
                   }}
                 />
                 <ModalTwo
                   id="approveModal"
                   enableHandler={true}
+                  enableSkip={false}
                   ariaLabel="returnModalLabel"
                   showTextAreaLabel={false}
                   heading="Add note"
                   textAreaPlaceholder="Write here"
                   submitHandler={(e: any) => {
-                    approveOrReject(
-                      e,
-                      'approveModal'
-                    );
+                    approveOrReject(e, "approveModal");
                   }}
                 />
                 <InspectionScheduleModal
@@ -404,7 +404,7 @@ export const ReviewApplicationLayout = ({
                   id="statusLog"
                   ariaLabel="statusLogLabel"
                   heading="Status log"
-                  list=""
+                  list={statusLog}
                 />
               </div>
             </div>

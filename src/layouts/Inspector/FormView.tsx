@@ -13,6 +13,7 @@ import { StatusBarLarge } from "../../components/status-bar";
 import { useRecoilValue } from "recoil";
 import { sideMenuData as selectedSideMenuDataAtom } from "../../states/atoms";
 import { BtnOne, BtnTwo, BtnThree } from "../../components/buttons";
+import btnStylesTwo from "../../components/buttons/BtnTwo.module.css";
 import { CheckBoxField } from "../../components/form-elements";
 import { BooleanField } from "../../components/form-elements";
 import { FileUploadView } from "../../components/form-elements";
@@ -21,9 +22,10 @@ import { useRecoilState } from "recoil";
 import {
   sideMenuLabel as sideMenuLabelAtom,
   modalTwoTextArea as modalTwoTextAreaAtom,
+  modalTwoInspectionValue as modalTwoInspectionValueAtom,
+  dataObjectInspectionForm as dataObjectInspectionFormAtom,
 } from "../../states/atoms";
 import { useHistory } from "react-router-dom";
-import { kill } from "process";
 
 /**
  * FormView component renders
@@ -38,10 +40,19 @@ interface FormViewProps {
 
 export const FormView = ({ applicationData, formData }: FormViewProps) => {
   const [selectedMenuData, setSelectedDataMenu] = useState<any[]>([]);
+  const [enableInspectioComplete, setEnableInspectionComplete] =
+    useState(false);
   const [selectedMenuLabel, setSelectedMenuLabel] =
     useRecoilState(sideMenuLabelAtom);
 
-  const reviewerNote = useRecoilState(modalTwoTextAreaAtom);
+  const [modalTextArea, setModalTextArea] =
+    useRecoilState(modalTwoTextAreaAtom);
+  const [modalInspectionValue, setModalInspectionValue] = useRecoilState(
+    modalTwoInspectionValueAtom
+  );
+  const [dataObjectFormValue, setDataObjectFormValue] = useRecoilState(
+    dataObjectInspectionFormAtom
+  );
 
   let history = useHistory();
 
@@ -84,7 +95,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                     defaultValues: k.values,
                     fieldType: k.fieldType,
                     isCorrect: "",
-                    inspectionvValue: "",
+                    inspectionValue: "",
                     comments: "",
                   });
                 }
@@ -142,16 +153,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
 
     // console.log(menuLabel, field, status);
 
-    let correctTarget = e.target.innerHTML;
-
-    let textAreaElement = document.getElementById(field);
-
-    if (status === "correct") {
-      comments = "";
-    } else {
-      comments = textAreaElement?.querySelector("textarea")?.value;
-    }
-
     let tempArray = [...processedData];
 
     tempArray.map((i, j) => {
@@ -160,14 +161,16 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
           if (m.label === field) {
             if (status === "correct") {
               m.isCorrect = true;
-              m.comments = comments;
+              m.comments = "";
+              m.inspectionValue = "";
+            } else if (status === "incorrect") {
+              m.isCorrect = false;
+              m.comments = "";
+              m.inspectionValue = "";
             } else {
-              if (correctTarget !== "Submit") {
-                m.isCorrect = false;
-                m.comments = comments;
-              } else {
-                m.comments = comments;
-              }
+              m.isCorrect = "";
+              m.comments = "";
+              m.inspectionValue = "";
             }
           }
         });
@@ -177,6 +180,93 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
     // console.log(tempArray);
 
     setProcessedData(tempArray);
+  };
+
+  const submitFieldCorrectness = (e: any, menuLabel: any, field: any) => {
+    e.preventDefault();
+
+    // console.log(menuLabel, field);
+
+    let comments: any = "";
+    let correctField: any = "";
+
+    let targetElement = document.getElementById(field);
+
+    comments = targetElement?.querySelector("textarea")?.value;
+
+    correctField = targetElement?.querySelector("input")?.value;
+
+    let tempArray = [...processedData];
+
+    tempArray.map((i, j) => {
+      if (i.sideMenu === menuLabel) {
+        i.fields.map((m: any, n: number) => {
+          if (m.label.replace(/\s/g, "") === field) {
+            setModalTextArea(comments);
+            m.comments = comments;
+            setModalInspectionValue(correctField);
+            m.inspectionValue = correctField;
+          }
+        });
+      }
+    });
+
+    setModalTextArea("");
+    setModalInspectionValue("");
+    // console.log(tempArray);
+    setProcessedData(tempArray);
+  };
+
+  useEffect(() => {
+    if (processedData.length) {
+      let tempArray: any = [];
+      processedData.map((i, j) => {
+        i.fields &&
+          i.fields.map((m: any, n: number) => {
+            tempArray.push(m.isCorrect);
+          });
+      });
+
+      if (tempArray.includes("")) {
+        setEnableInspectionComplete(false);
+      } else {
+        if (formData.inspectionFields) {
+          setEnableInspectionComplete(true);
+        } else {
+          setEnableInspectionComplete(false);
+        }
+      }
+    }
+  }, [selectedMenuLabel, processedData]);
+
+  const processFormData = (e: any) => {
+    e.preventDefault();
+
+    let dataObject: any = {};
+
+    let tempArray = [...processedData];
+
+    tempArray.map((i, j) => {
+      i.fields.map((m: any, n: number) => {
+        dataObject[i.sideMenu] = {
+          [m.label]: {
+            value: m.isCorrect ? "correct" : "incorrect",
+            comments: m.comments,
+            inspectionValue: m.inspectionValue,
+          },
+          ...dataObject[i.sideMenu],
+        };
+      });
+    });
+
+    console.log(dataObject);
+
+    history.push({
+      pathname: `/inspection-summary/${formData.id}/${applicationData.applicationId}`,
+      state: [formData, applicationData, dataObject],
+    });
+
+    setDataObjectFormValue(dataObject);
   };
 
   return (
@@ -219,7 +309,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
 
               {/* Form view */}
               <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mb-4">
-                {selectedMenuData &&
+                {selectedMenuData.length > 0 &&
                   selectedMenuData.map((k: any, l: number) => {
                     switch (k.fieldType) {
                       case "text":
@@ -240,6 +330,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -352,20 +453,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       modalId={k.label.replace(/\s/g, "")}
                                     />
                                   </div>
-                                  <ModalTwo
-                                    id={k.label.replace(/\s/g, "")}
-                                    enableHandler={true}
-                                    ariaLabel={`${k.label}Label`}
-                                    heading="Enter the reason for the incorrect selection"
-                                    showTextAreaLabel={false}
-                                    submitHandler={(e) => {
-                                      onCheckCorrectness(
-                                        e,
-                                        selectedMenuLabel,
-                                        k.label
-                                      );
-                                    }}
-                                  />
                                 </>
                               }
                             />
@@ -389,6 +476,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -501,20 +599,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       modalId={k.label.replace(/\s/g, "")}
                                     />
                                   </div>
-                                  <ModalTwo
-                                    id={k.label.replace(/\s/g, "")}
-                                    enableHandler={true}
-                                    ariaLabel={`${k.label}Label`}
-                                    heading="Enter the reason for the incorrect selection"
-                                    showTextAreaLabel={false}
-                                    submitHandler={(e) => {
-                                      onCheckCorrectness(
-                                        e,
-                                        selectedMenuLabel,
-                                        k.label
-                                      );
-                                    }}
-                                  />
                                 </>
                               }
                             />
@@ -540,6 +624,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -652,20 +747,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       modalId={k.label.replace(/\s/g, "")}
                                     />
                                   </div>
-                                  <ModalTwo
-                                    id={k.label.replace(/\s/g, "")}
-                                    enableHandler={true}
-                                    ariaLabel={`${k.label}Label`}
-                                    heading="Enter the reason for the incorrect selection"
-                                    showTextAreaLabel={false}
-                                    submitHandler={(e) => {
-                                      onCheckCorrectness(
-                                        e,
-                                        selectedMenuLabel,
-                                        k.label
-                                      );
-                                    }}
-                                  />
                                 </>
                               }
                             />
@@ -707,6 +788,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -819,20 +911,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       modalId={k.label.replace(/\s/g, "")}
                                     />
                                   </div>
-                                  <ModalTwo
-                                    id={k.label.replace(/\s/g, "")}
-                                    enableHandler={true}
-                                    ariaLabel={`${k.label}Label`}
-                                    heading="Enter the reason for the incorrect selection"
-                                    showTextAreaLabel={false}
-                                    submitHandler={(e) => {
-                                      onCheckCorrectness(
-                                        e,
-                                        selectedMenuLabel,
-                                        k.label
-                                      );
-                                    }}
-                                  />
                                 </>
                               }
                             />
@@ -855,6 +933,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -967,20 +1056,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       modalId={k.label.replace(/\s/g, "")}
                                     />
                                   </div>
-                                  <ModalTwo
-                                    id={k.label}
-                                    enableHandler={true}
-                                    ariaLabel={`${k.label}Label`}
-                                    heading="Enter the reason for the incorrect selection"
-                                    showTextAreaLabel={false}
-                                    submitHandler={(e) => {
-                                      onCheckCorrectness(
-                                        e,
-                                        selectedMenuLabel,
-                                        k.label
-                                      );
-                                    }}
-                                  />
                                 </>
                               }
                             />
@@ -1004,6 +1079,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1116,20 +1202,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       modalId={k.label.replace(/\s/g, "")}
                                     />
                                   </div>
-                                  <ModalTwo
-                                    id={k.label}
-                                    enableHandler={true}
-                                    ariaLabel={`${k.label}Label`}
-                                    heading="Enter the reason for the incorrect selection"
-                                    showTextAreaLabel={false}
-                                    submitHandler={(e) => {
-                                      onCheckCorrectness(
-                                        e,
-                                        selectedMenuLabel,
-                                        k.label
-                                      );
-                                    }}
-                                  />
                                 </>
                               }
                             />
@@ -1156,6 +1228,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1268,20 +1351,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       modalId={k.label.replace(/\s/g, "")}
                                     />
                                   </div>
-                                  <ModalTwo
-                                    id={k.label}
-                                    enableHandler={true}
-                                    ariaLabel={`${k.label}Label`}
-                                    heading="Enter the reason for the incorrect selection"
-                                    showTextAreaLabel={false}
-                                    submitHandler={(e) => {
-                                      onCheckCorrectness(
-                                        e,
-                                        selectedMenuLabel,
-                                        k.label
-                                      );
-                                    }}
-                                  />
                                 </>
                               }
                             />
@@ -1305,6 +1374,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1417,20 +1497,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       modalId={k.label.replace(/\s/g, "")}
                                     />
                                   </div>
-                                  <ModalTwo
-                                    id={k.label}
-                                    enableHandler={true}
-                                    ariaLabel={`${k.label}Label`}
-                                    heading="Enter the reason for the incorrect selection"
-                                    showTextAreaLabel={false}
-                                    submitHandler={(e) => {
-                                      onCheckCorrectness(
-                                        e,
-                                        selectedMenuLabel,
-                                        k.label
-                                      );
-                                    }}
-                                  />
                                 </>
                               }
                             />
@@ -1452,6 +1518,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1564,20 +1641,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       modalId={k.label.replace(/\s/g, "")}
                                     />
                                   </div>
-                                  <ModalTwo
-                                    id={k.label}
-                                    enableHandler={true}
-                                    ariaLabel={`${k.label}Label`}
-                                    heading="Enter the reason for the incorrect selection"
-                                    showTextAreaLabel={false}
-                                    submitHandler={(e) => {
-                                      onCheckCorrectness(
-                                        e,
-                                        selectedMenuLabel,
-                                        k.label
-                                      );
-                                    }}
-                                  />
                                 </>
                               }
                             />
@@ -1599,6 +1662,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
+                                      modalTriggerLabel={
+                                        k.comments === "" && k.isCorrect === ""
+                                          ? "Edit note"
+                                          : k.comments !== "" && !k.isCorrect
+                                          ? k.isCorrect === ""
+                                            ? "Edit note"
+                                            : "Edit reason"
+                                          : !k.isCorrect && k.comments === ""
+                                          ? "Edit reason"
+                                          : "Edit note"
+                                      }
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1711,20 +1785,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       modalId={k.label.replace(/\s/g, "")}
                                     />
                                   </div>
-                                  <ModalTwo
-                                    id={k.label}
-                                    enableHandler={true}
-                                    ariaLabel={`${k.label}Label`}
-                                    heading="Enter the reason for the incorrect selection"
-                                    showTextAreaLabel={false}
-                                    submitHandler={(e) => {
-                                      onCheckCorrectness(
-                                        e,
-                                        selectedMenuLabel,
-                                        k.label
-                                      );
-                                    }}
-                                  />
                                 </>
                               }
                             />
@@ -1734,28 +1794,122 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                         return null;
                     }
                   })}
+
+                {selectedMenuData.length > 0 &&
+                  selectedMenuData.map((m: any, n: number) => {
+                    return (
+                      <div className="" key={n}>
+                        <ModalTwo
+                          id={m.label.replace(/\s/g, "")}
+                          enableHandler={true}
+                          enableSkip={false}
+                          subFieldType={m.fieldType}
+                          subHeading={
+                            m.comments === "" && m.isCorrect === ""
+                              ? ""
+                              : !m.isCorrect && m.comments === ""
+                              ? "Enter the correct value"
+                              : ""
+                          }
+                          ariaLabel={`${m.label.replace(/\s/g, "")}Label`}
+                          heading={
+                            m.comments === "" && m.isCorrect === ""
+                              ? "Add note"
+                              : m.comments !== "" && !m.isCorrect
+                              ? "Enter the reason for the incorrect selection"
+                              : !m.isCorrect && m.comments === ""
+                              ? "Enter the reason for the incorrect selection"
+                              : "Add note"
+                          }
+                          showTextAreaLabel={false}
+                          submitHandler={(e) => {
+                            submitFieldCorrectness(
+                              e,
+                              selectedMenuLabel,
+                              m.label.replace(/\s/g, "")
+                            );
+                          }}
+                          cancelHandler={(e) => {
+                            onCheckCorrectness(
+                              e,
+                              selectedMenuLabel,
+                              m.label.replace(/\s/g, ""),
+                              ""
+                            );
+                          }}
+                        />
+                      </div>
+                    );
+                  })}
                 <div className="row">
-                  <div className="col-12 mt-3">
-                    {/* <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 p-0 float-left">
-                      <BtnThree
-                        label="Cancel"
-                        btnType="button"
-                        isLink={true}
-                        link=""
-                        isModal={false}
-                      />
-                    </div> */}
+                  <div className="col-12 mt-4">
+                    <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 p-0 float-left">
+                      {processedData.length > 0 &&
+                        processedData[0].sideMenu !== selectedMenuLabel && (
+                          <BtnThree
+                            label="Previous"
+                            btnType="button"
+                            isLink={false}
+                            link=""
+                            isModal={false}
+                            showIcon={true}
+                            iconValue={`arrow_back`}
+                            clickHandler={(e) => {
+                              processedData.map((m, n) => {
+                                if (m.sideMenu === selectedMenuLabel) {
+                                  setSelectedMenuLabel(
+                                    processedData[n - 1].sideMenu
+                                  );
+                                }
+                              });
+                            }}
+                          />
+                        )}
+                    </div>
                     <div className="col-sm-12 col-md-6 col-lg-6 col-xl-6 m-0 p-0 float-right">
                       <div className="float-right">
-                        <BtnTwo
-                          label="Next"
-                          btnType="button"
-                          isLink={false}
-                          link=""
-                          isModal={false}
-                          showIcon={true}
-                          iconValue={`arrow_forward`}
-                        />
+                        {processedData.length > 0 &&
+                        processedData[processedData.length - 1].sideMenu !==
+                          selectedMenuLabel ? (
+                          <BtnTwo
+                            label="Next"
+                            btnType="button"
+                            isLink={false}
+                            link=""
+                            isModal={false}
+                            showIcon={true}
+                            iconValue={`arrow_forward`}
+                            clickHandler={(e) => {
+                              processedData.map((m, n) => {
+                                if (m.sideMenu === selectedMenuLabel) {
+                                  setSelectedMenuLabel(
+                                    processedData[n + 1].sideMenu
+                                  );
+                                }
+                              });
+                            }}
+                          />
+                        ) : enableInspectioComplete ? (
+                          <BtnTwo
+                            label="Inspection completed"
+                            btnType="button"
+                            isLink={true}
+                            link={`/inspection-summary/${formData.id}/${applicationData.applicationId}`}
+                            stateData={formData}
+                            isModal={false}
+                            showIcon={false}
+                            iconValue=""
+                            clickHandler={(e) => processFormData(e)}
+                          />
+                        ) : (
+                          <button
+                            type="button"
+                            className={`${btnStylesTwo.btn_two_disabled}`}
+                            disabled={true}
+                          >
+                            Inspection completed
+                          </button>
+                        )}
                       </div>
                     </div>
                   </div>

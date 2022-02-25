@@ -16,7 +16,7 @@ import {
 } from "../../states/atoms";
 import Helper from "./../../helpers/auth";
 import { FormService } from "./../../services/form.service";
-import { APP } from "./../../constants";
+import { APP, LANG } from "./../../constants";
 import Notify from "./../../helpers/notify";
 import { useRecoilState } from "recoil";
 import moment from "moment";
@@ -25,56 +25,6 @@ import moment from "moment";
  * InspectorApplications component renders
  * all applications page layout and its UI components
  */
-
-const InspectorPendingApplications = [
-  {
-    id: "PA001",
-    title: "Paramedical degree",
-    name: "Name of college",
-    time: "Scheduled on: dd/mm/yyyy",
-    showStatus: true,
-    status: "New",
-    showBtn: true,
-    type: "button",
-    btnText: "View application",
-    isLink: true,
-    link: "/all-applications/PA001",
-  },
-  {
-    id: "PA002",
-    title: "ANM",
-    name: "Name of college",
-    time: "Scheduled on: dd/mm/yyyy",
-    showStatus: true,
-    status: "Under inspection",
-    showBtn: true,
-    type: "button",
-    btnText: "View application",
-    isLink: true,
-    link: "/all-applications/PA002",
-  },
-];
-
-const tabData = [
-  {
-    id: "today",
-    label: "Scheduled today",
-    ariaLabelled: "today-tab",
-    children: <ScheduledTodayTab />,
-  },
-  {
-    id: "upcoming",
-    label: "Upcoming",
-    ariaLabelled: "upcoming-tab",
-    children: <UpcomingTab />,
-  },
-  {
-    id: "past",
-    label: "Past",
-    ariaLabelled: "past-tab",
-    children: <PastTab />,
-  },
-];
 
 interface InspectorApplicationsProps {
   data?: any;
@@ -124,11 +74,13 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
 
   useEffect(() => {
     if (selectedTab !== "") {
+      setCurrentData([])
       filterData(selectedTab);
     } else {
-      setSelectedTab("Scheduled today");
+      setCurrentData([])
+      filterData("Scheduled today");
     }
-  }, [selectedTab]);
+  }, [selectedTab, scheduledToday]);
 
   const getSelectedTabData = () => {
     let todayDate = moment().format("DD-MM-YYYY");
@@ -141,20 +93,22 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
             // setCurrentData(response.responseData);
             response.responseData.map((i: any, j: number) => {
-              if (
-                moment(todayDate, "DD-MM-YYYY").isBefore(
-                  moment(i.inspection.scheduledDate, "DD-MM-YYYY")
-                )
-              ) {
-                setUpcoming((upcoming) => [...upcoming, i]);
-              } else if (
-                moment(todayDate, "DD-MM-YYYY").isSame(
-                  moment(i.inspection.scheduledDate, "DD-MM-YYYY")
-                )
-              ) {
-                setScheduledToday((today) => [...today, i]);
-              } else {
-                setPast((past) => [...past, i]);
+              if (i.status !== LANG.FORM_STATUS.INSPECTION_COMPLETED) {
+                if (
+                  moment(todayDate, "DD-MM-YYYY").isBefore(
+                    moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                  )
+                ) {
+                  setUpcoming((upcoming) => [...upcoming, i]);
+                } else if (
+                  moment(todayDate, "DD-MM-YYYY").isSame(
+                    moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                  )
+                ) {
+                  setScheduledToday((today) => [...today, i]);
+                } else {
+                  setPast((past) => [...past, i]);
+                }
               }
             });
           } else {
@@ -191,7 +145,6 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
           {/* Section one */}
           <section className="pt-3">
             <HeadingOne heading="All applications" />
-
             <div
               className="mt-3"
               onClick={(e: any) => {
