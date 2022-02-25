@@ -68,3 +68,16 @@ hr {
   cursor: pointer;
   vertical-align: bottom;
 }
+
+.review_comment {
+  color: var(--black-60);
+  font-family: "Lato-Regular";
+  font-size: 0.875rem;
+  letter-spacing: 0.25;
+  line-height: 1.429;
+  padding: 0.5rem;
+  border: 1px solid var(--black-08);
+  background-color: #fff;
+  border: 1px solid var(--black-08);
+  border-radius: 4px;
+}

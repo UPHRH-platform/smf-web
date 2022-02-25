@@ -46,7 +46,7 @@ export const StatusBarLarge = ({
     <div className={`${styles.status_bar_large}`}>
       {status === LANG.FORM_STATUS.NEW && (
         <div
-          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3 ${styles.status_bar_large_green}`}
+          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3  ${styles.status_bar_large_green}`}
         >
           <label>{`Status: ${label && formatLabel(label)}`}</label>
         </div>
@@ -113,16 +113,13 @@ export const StatusBarLarge = ({
             Your application is returned due to some errors in the application
             form data. Please resubmit it.
           </p>
-          <hr className="m-2" />
-          <div className="pt-1 ps-4 pe-4 pb-4">
+          <hr className="m-2 mx-3" />
+          <div className="pt-1 pb-4 mx-3">
             <div className="row">
-              <div className="col-sm-12 ">
-                <HeadingFour heading="Comments" />
-              </div>
-              <div className="col-sm-12">
+              <div className="col-12">
                   {comments.map((c: any) => {
                     return (
-                    <p className="px-0 pt-2">
+                    <p className={`${styles.review_comment} p-2 `}>
                       {c.value}
                     </p>
                     )
@@ -150,7 +147,7 @@ export const StatusBarLarge = ({
           <p className="text-center pt-3">
             {`Inspection is scheduled on ${inspectionData.scheduledDate}. Keep all the physical documents ready for the inspection.`}
           </p>
-          <hr className="" />
+          <hr className="m-2 mx-3"  />
           <div className="pt-1 ps-4 pe-4 pb-4">
             <div className="row">
               <div className="col-sm-12 col-md-10 col-lg-10">
