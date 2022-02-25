@@ -53,14 +53,14 @@ export const StatusBarLarge = ({
       )}
       {status === LANG.FORM_STATUS.UNDER_REVIEW && (
         <div
-          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-2 ${styles.status_bar_large_amber}`}
+          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3 ${styles.status_bar_large_amber}`}
         >
           <label>{`Status: ${label && formatLabel(label)}`}</label>
         </div>
       )}
       {status === LANG.FORM_STATUS.RETURNED && (
         <div
-          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-2 ${styles.status_bar_large_red}`}
+          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3 ${styles.status_bar_large_red}`}
         >
           <label>{`Status: ${label && formatLabel(label)}`}</label>
         </div>
@@ -88,7 +88,7 @@ export const StatusBarLarge = ({
       )}
       {status === LANG.FORM_STATUS.REJECTED && (
         <div
-          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-2 ${styles.status_bar_large_red}`}
+          className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3 ${styles.status_bar_large_red}`}
         >
           <label>{`Status: ${label && formatLabel(label)}`}</label>
         </div>
