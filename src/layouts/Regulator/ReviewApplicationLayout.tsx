@@ -23,6 +23,7 @@ import {
   SelectField,
   TextAreaField,
   TextField,
+  InspectCheckOne,
 } from "../../components/form-elements";
 import { ReviewService } from "../../services";
 import { useHistory } from "react-router-dom";
@@ -64,49 +65,145 @@ export const ReviewApplicationLayout = ({
 
   useEffect(() => {
     if (applicationData.dataObject) {
-      let objectKeys = Object.keys(applicationData.dataObject);
-      let objectValues = Object.values(applicationData.dataObject);
+      let objectValues: any = [];
+      let objectValueApp: any = [];
 
-      setSelectedMenuLabel(objectKeys[0]);
+      let objectKeys = Object.keys(applicationData.dataObject).sort();
+
+      Object.keys(applicationData.dataObject)
+        .sort()
+        .forEach(function (v, i) {
+          objectValues.push(applicationData.dataObject[v]);
+        });
+
+      let inspectorDataObj: any = [];
+      if (applicationData.inspectorDataObject) {
+        inspectorDataObj = Object.keys(
+          applicationData.inspectorDataObject.dataObject
+        ).sort();
+
+        Object.keys(applicationData.dataObject)
+          .sort()
+          .forEach(function (v, i) {
+            objectValueApp.push(
+              applicationData.inspectorDataObject.dataObject[v]
+            );
+          });
+      }
+
+      let arrOne: any = [];
+      let arrTwo: any = {};
+      let arrThree: any = [];
+
+      formData.fields.map((i: any, j: number) => {
+        return arrOne.push(i);
+      });
+
+      let res = arrOne.reduce(
+        ((i) => (r: any, s: any) => {
+          if (s.name === "heading") {
+            r.push([]);
+            i++;
+          }
+
+          r.length > 0 && r[r.length - 1].push(s);
+          return r;
+        })(0),
+        []
+      );
+
+      res.map((i: any, j: number) => {
+        let fields: any = [];
+        i.map((k: any, l: number) => {
+          if (k.fieldType === "heading") {
+            arrTwo = {
+              sideMenu: k.values[0].heading,
+            };
+          } else {
+            fields.push({
+              id: j.toString() + l.toString(),
+              label: k.name,
+              value: "",
+              defaultValues: k.values,
+              fieldType: k.fieldType,
+              isCorrect: "",
+              inspectionValue: "",
+              comments: "",
+            });
+          }
+          return null;
+        });
+        arrTwo = { ...arrTwo, fields };
+
+        arrThree.push(arrTwo);
+
+        return null;
+      });
 
       let tempArray: any = [];
       let tempFormArray: any = [];
+      let tempArrayTwo: any = [];
 
       objectKeys.map((i, j) => {
         return tempArray.push({
           sideMenu: i,
-          fields: [Object.values(objectValues)[j]],
+          fields: Object.values(objectValues)[j],
         });
       });
 
-      tempArray.map((m: any, n: number) => {
-        formData &&
-          formData.fields.map((k: any, l: number) => {
-            Object.values(m.fields).map((q: any, w: number) => {
-              Object.keys(q).map((h: any, b: number) => {
-                if (h === k.name) {
-                  return tempFormArray.push({
-                    id: b,
-                    parent: n,
-                    label: h,
-                    value: Object.values(q)[b],
-                    defaultValues: k.values,
-                    fieldType: k.fieldType,
-                  });
-                }
-                return null;
-              });
-              return null;
+      objectKeys.map((i, j) => {
+        return tempArrayTwo.push({
+          sideMenu: i,
+          fields: Object.values(objectValueApp)[j],
+        });
+      });
+
+      tempArray.map((i: any, n: number) => {
+        arrThree.map((m: any, l: number) => {
+          if (m.sideMenu === i.sideMenu) {
+            m.fields.map((k: any, y: number) => {
+              if (!applicationData.inspectorDataObject) {
+                return tempFormArray.push({
+                  id: parseInt(k.id),
+                  parent: parseInt(k.id.split("")[0]),
+                  sideMenu: m.sideMenu,
+                  label: k.label,
+                  value: i.fields[k.label],
+                  defaultValues: k.defaultValues,
+                  fieldType: k.fieldType,
+                  isCorrect: "",
+                  inspectionValue: "",
+                  comments: "",
+                });
+              } else {
+                return tempFormArray.push({
+                  id: parseInt(k.id),
+                  parent: parseInt(k.id.split("")[0]),
+                  sideMenu: m.sideMenu,
+                  label: k.label,
+                  value: i.fields[k.label],
+                  defaultValues: k.defaultValues,
+                  fieldType: k.fieldType,
+                  isCorrect:
+                    tempArrayTwo[n].fields[k.label]["value"] === "correct"
+                      ? true
+                      : false,
+                  inspectionValue:
+                    tempArrayTwo[n].fields[k.label]["inspectionValue"],
+                  comments: tempArrayTwo[n].fields[k.label]["comments"],
+                });
+              }
             });
-            return null;
-          });
+          }
+          return null;
+        });
         return null;
       });
 
       tempArray.map((y: any, f: number) => {
         y.fields = [];
         tempFormArray.map((g: any, d: number) => {
-          if (g.parent === f) {
+          if (g.sideMenu === y.sideMenu) {
             y.fields.push(g);
           }
           return null;
@@ -114,10 +211,10 @@ export const ReviewApplicationLayout = ({
         return null;
       });
 
-      setProcessedData(tempArray);
-    }
+      setSelectedMenuLabel(tempArray[0].sideMenu);
 
-    if (applicationData.applicationId) {
+      setProcessedData(tempArray);
+
       getApplicationStatusLog(applicationData.applicationId);
     }
 
@@ -179,7 +276,7 @@ export const ReviewApplicationLayout = ({
     ReviewService.getStatusLog(id).then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          setStatusLog(response.responseData)
+          setStatusLog(response.responseData);
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
@@ -204,7 +301,6 @@ export const ReviewApplicationLayout = ({
       ReviewService.approveApplication(req).then(
         (response) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-            // console.log(response.responseData);
             history.push(APP.ROUTES.DASHBOARD);
           } else {
             Notify.error(response.statusInfo.errorMessage);
@@ -220,7 +316,6 @@ export const ReviewApplicationLayout = ({
       ReviewService.rejectApplication(req).then(
         (response) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-            // console.log(response.responseData);
             history.push(APP.ROUTES.DASHBOARD);
           } else {
             Notify.error(response.statusInfo.errorMessage);
@@ -447,6 +542,25 @@ export const ReviewApplicationLayout = ({
                         ? applicationData.inspection
                         : ""
                     }
+                    comments={
+                      applicationData.comments ? applicationData.comments : ""
+                    }
+                    approvedNote={
+                      applicationData.status !== LANG.FORM_STATUS.RETURNED &&
+                      (applicationData.status === LANG.FORM_STATUS.APPROVED ||
+                        applicationData.status === LANG.FORM_STATUS.REJECTED)
+                        ? applicationData.notes
+                        : ""
+                    }
+                    inspectorSummary={
+                      applicationData.status ===
+                      LANG.FORM_STATUS.INSPECTION_COMPLETED
+                        ? applicationData.inspectorSummaryDataObject &&
+                          applicationData.inspectorSummaryDataObject[
+                            "Inspection Summary"
+                          ]["Enter the summary of this inspection"]
+                        : ""
+                    }
                   />
                 )}
                 {selectedMenuData &&
@@ -457,15 +571,88 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3 col-4">
-                                  <TextField
-                                    showLabel={k.label ? true : false}
-                                    label={k.label || ""}
-                                    type="text"
-                                    isReadOnly={true}
-                                    value={k.value || ""}
-                                  />
-                                </div>
+                                <>
+                                  <div className="ps-4 pe-4 pt-3 col-4">
+                                    <TextField
+                                      showLabel={k.label ? true : false}
+                                      label={k.label || ""}
+                                      type="text"
+                                      isReadOnly={true}
+                                      value={k.value || ""}
+                                    />
+                                  </div>
+                                  {(applicationData.status ===
+                                    LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.APPROVED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.REJECTED) && (
+                                    <div className="mt-3">
+                                      <InspectCheckOne
+                                        label="Is the given information found correct?"
+                                        inspectionValue={k.inspectionValue}
+                                        disableEdit={true}
+                                        children={
+                                          <div className="d-flex flex-row">
+                                            {k.isCorrect === "" ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : k.isCorrect === true ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            )}
+                                          </div>
+                                        }
+                                        showComments={
+                                          k.comments !== "" ? true : false
+                                        }
+                                        comments={k.comments}
+                                      />
+                                    </div>
+                                  )}
+                                </>
                               }
                             />
                           </div>
@@ -475,15 +662,88 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3 col-4">
-                                  <TextField
-                                    showLabel={k.label ? true : false}
-                                    label={k.label || ""}
-                                    type="date"
-                                    isReadOnly={true}
-                                    value={k.value || ""}
-                                  />
-                                </div>
+                                <>
+                                  <div className="ps-4 pe-4 pt-3 col-4">
+                                    <TextField
+                                      showLabel={k.label ? true : false}
+                                      label={k.label || ""}
+                                      type="date"
+                                      isReadOnly={true}
+                                      value={k.value || ""}
+                                    />
+                                  </div>
+                                  {(applicationData.status ===
+                                    LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.APPROVED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.REJECTED) && (
+                                    <div className="mt-3">
+                                      <InspectCheckOne
+                                        label="Is the given information found correct?"
+                                        inspectionValue={k.inspectionValue}
+                                        disableEdit={true}
+                                        children={
+                                          <div className="d-flex flex-row">
+                                            {k.isCorrect === "" ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : k.isCorrect === true ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            )}
+                                          </div>
+                                        }
+                                        showComments={
+                                          k.comments !== "" ? true : false
+                                        }
+                                        comments={k.comments}
+                                      />
+                                    </div>
+                                  )}
+                                </>
                               }
                             />
                           </div>
@@ -493,17 +753,90 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3 col-4">
-                                  <SelectField
-                                    showLabel={k.label ? true : false}
-                                    selectName="reviewSelect"
-                                    selectId="reviewSelect"
-                                    isReadOnly={true}
-                                    label={k.label || ""}
-                                    option={k.defaultValues}
-                                    value={k.value || ""}
-                                  />
-                                </div>
+                                <>
+                                  <div className="ps-4 pe-4 pt-3 col-4">
+                                    <SelectField
+                                      showLabel={k.label ? true : false}
+                                      selectName="reviewSelect"
+                                      selectId="reviewSelect"
+                                      isReadOnly={true}
+                                      label={k.label || ""}
+                                      option={k.defaultValues}
+                                      value={k.value || ""}
+                                    />
+                                  </div>
+                                  {(applicationData.status ===
+                                    LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.APPROVED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.REJECTED) && (
+                                    <div className="mt-3">
+                                      <InspectCheckOne
+                                        label="Is the given information found correct?"
+                                        inspectionValue={k.inspectionValue}
+                                        disableEdit={true}
+                                        children={
+                                          <div className="d-flex flex-row">
+                                            {k.isCorrect === "" ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : k.isCorrect === true ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            )}
+                                          </div>
+                                        }
+                                        showComments={
+                                          k.comments !== "" ? true : false
+                                        }
+                                        comments={k.comments}
+                                      />
+                                    </div>
+                                  )}
+                                </>
                               }
                             />
                           </div>
@@ -513,33 +846,106 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3 mb-3">
-                                  <HeadingFour heading={k.label || ""} />
-                                  <div className="col-12 p-0 m-0">
-                                    <div className="row pt-1">
-                                      {k.defaultValues &&
-                                        k.defaultValues.map(
-                                          (d: any, f: number) => {
-                                            return (
-                                              <div
-                                                className="col-sm-12 col-md-2 col-lg-2 col-xl-2 col-xxl-2"
-                                                key={f}
-                                              >
-                                                <Radio
-                                                  label={d.key || ""}
-                                                  isSelected={
-                                                    k.value === d.value
-                                                      ? true
-                                                      : false
-                                                  }
-                                                />
-                                              </div>
-                                            );
-                                          }
-                                        )}
+                                <>
+                                  <div className="ps-4 pe-4 pt-3 mb-3">
+                                    <HeadingFour heading={k.label || ""} />
+                                    <div className="col-12 p-0 m-0">
+                                      <div className="row pt-1">
+                                        {k.defaultValues &&
+                                          k.defaultValues.map(
+                                            (d: any, f: number) => {
+                                              return (
+                                                <div
+                                                  className="col-sm-12 col-md-2 col-lg-2 col-xl-2 col-xxl-2"
+                                                  key={f}
+                                                >
+                                                  <Radio
+                                                    label={d.key || ""}
+                                                    isSelected={
+                                                      k.value === d.value
+                                                        ? true
+                                                        : false
+                                                    }
+                                                  />
+                                                </div>
+                                              );
+                                            }
+                                          )}
+                                      </div>
                                     </div>
                                   </div>
-                                </div>
+                                  {(applicationData.status ===
+                                    LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.APPROVED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.REJECTED) && (
+                                    <div className="mt-3">
+                                      <InspectCheckOne
+                                        label="Is the given information found correct?"
+                                        inspectionValue={k.inspectionValue}
+                                        disableEdit={true}
+                                        children={
+                                          <div className="d-flex flex-row">
+                                            {k.isCorrect === "" ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : k.isCorrect === true ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            )}
+                                          </div>
+                                        }
+                                        showComments={
+                                          k.comments !== "" ? true : false
+                                        }
+                                        comments={k.comments}
+                                      />
+                                    </div>
+                                  )}
+                                </>
                               }
                             />
                           </div>
@@ -549,14 +955,87 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3 mb-3 pb-1 col-4">
-                                  <TextAreaField
-                                    showLabel={k.label ? true : false}
-                                    label={k.label || ""}
-                                    isReadOnly={true}
-                                    defaultValue={k.value || ""}
-                                  />
-                                </div>
+                                <>
+                                  <div className="ps-4 pe-4 pt-3 mb-3 pb-1 col-4">
+                                    <TextAreaField
+                                      showLabel={k.label ? true : false}
+                                      label={k.label || ""}
+                                      isReadOnly={true}
+                                      defaultValue={k.value || ""}
+                                    />
+                                  </div>
+                                  {(applicationData.status ===
+                                    LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.APPROVED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.REJECTED) && (
+                                    <div className="mt-3">
+                                      <InspectCheckOne
+                                        label="Is the given information found correct?"
+                                        inspectionValue={k.inspectionValue}
+                                        disableEdit={true}
+                                        children={
+                                          <div className="d-flex flex-row">
+                                            {k.isCorrect === "" ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : k.isCorrect === true ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            )}
+                                          </div>
+                                        }
+                                        showComments={
+                                          k.comments !== "" ? true : false
+                                        }
+                                        comments={k.comments}
+                                      />
+                                    </div>
+                                  )}
+                                </>
                               }
                             />
                           </div>
@@ -566,15 +1045,88 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3 col-4">
-                                  <TextField
-                                    showLabel={k.label ? true : false}
-                                    label={k.label || ""}
-                                    type="number"
-                                    isReadOnly={true}
-                                    value={k.value || ""}
-                                  />
-                                </div>
+                                <>
+                                  <div className="ps-4 pe-4 pt-3 col-4">
+                                    <TextField
+                                      showLabel={k.label ? true : false}
+                                      label={k.label || ""}
+                                      type="number"
+                                      isReadOnly={true}
+                                      value={k.value || ""}
+                                    />
+                                  </div>
+                                  {(applicationData.status ===
+                                    LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.APPROVED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.REJECTED) && (
+                                    <div className="mt-3">
+                                      <InspectCheckOne
+                                        label="Is the given information found correct?"
+                                        inspectionValue={k.inspectionValue}
+                                        disableEdit={true}
+                                        children={
+                                          <div className="d-flex flex-row">
+                                            {k.isCorrect === "" ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : k.isCorrect === true ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            )}
+                                          </div>
+                                        }
+                                        showComments={
+                                          k.comments !== "" ? true : false
+                                        }
+                                        comments={k.comments}
+                                      />
+                                    </div>
+                                  )}
+                                </>
                               }
                             />
                           </div>
@@ -584,18 +1136,91 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3 mb-4 col-4">
-                                  <SelectField
-                                    showLabel={k.label ? true : false}
-                                    selectName="reviewSelect"
-                                    selectId="reviewSelect"
-                                    isReadOnly={true}
-                                    label={k.label || ""}
-                                    option={k.defaultValues}
-                                    value={k.value.split(",") || ""}
-                                    isMultiple={true}
-                                  />
-                                </div>
+                                <>
+                                  <div className="ps-4 pe-4 pt-3 mb-4 col-4">
+                                    <SelectField
+                                      showLabel={k.label ? true : false}
+                                      selectName="reviewSelect"
+                                      selectId="reviewSelect"
+                                      isReadOnly={true}
+                                      label={k.label || ""}
+                                      option={k.defaultValues}
+                                      value={k.value.split(",") || ""}
+                                      isMultiple={true}
+                                    />
+                                  </div>
+                                  {(applicationData.status ===
+                                    LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.APPROVED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.REJECTED) && (
+                                    <div className="mt-3">
+                                      <InspectCheckOne
+                                        label="Is the given information found correct?"
+                                        inspectionValue={k.inspectionValue}
+                                        disableEdit={true}
+                                        children={
+                                          <div className="d-flex flex-row">
+                                            {k.isCorrect === "" ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : k.isCorrect === true ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            )}
+                                          </div>
+                                        }
+                                        showComments={
+                                          k.comments !== "" ? true : false
+                                        }
+                                        comments={k.comments}
+                                      />
+                                    </div>
+                                  )}
+                                </>
                               }
                             />
                           </div>
@@ -605,15 +1230,88 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3 mb-3">
-                                  <HeadingFour heading={k.label || ""} />
-                                  <CheckBoxField
-                                    label={k.label || ""}
-                                    showLabel={false}
-                                    value={k.value.split(",") || ""}
-                                    defaultValues={k.defaultValues}
-                                  />
-                                </div>
+                                <>
+                                  <div className="ps-4 pe-4 pt-3 mb-3">
+                                    <HeadingFour heading={k.label || ""} />
+                                    <CheckBoxField
+                                      label={k.label || ""}
+                                      showLabel={false}
+                                      value={k.value.split(",") || ""}
+                                      defaultValues={k.defaultValues}
+                                    />
+                                  </div>
+                                  {(applicationData.status ===
+                                    LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.APPROVED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.REJECTED) && (
+                                    <div className="mt-3">
+                                      <InspectCheckOne
+                                        label="Is the given information found correct?"
+                                        inspectionValue={k.inspectionValue}
+                                        disableEdit={true}
+                                        children={
+                                          <div className="d-flex flex-row">
+                                            {k.isCorrect === "" ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : k.isCorrect === true ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            )}
+                                          </div>
+                                        }
+                                        showComments={
+                                          k.comments !== "" ? true : false
+                                        }
+                                        comments={k.comments}
+                                      />
+                                    </div>
+                                  )}
+                                </>
                               }
                             />
                           </div>
@@ -623,13 +1321,86 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3 mb-4 col-7">
-                                  <FileUploadView
-                                    showLabel={k.label ? true : false}
-                                    label={k.label || ""}
-                                    value={k.value.split(",") || ""}
-                                  />
-                                </div>
+                                <>
+                                  <div className="ps-4 pe-4 pt-3 mb-4 col-7">
+                                    <FileUploadView
+                                      showLabel={k.label ? true : false}
+                                      label={k.label || ""}
+                                      value={k.value.split(",") || ""}
+                                    />
+                                  </div>
+                                  {(applicationData.status ===
+                                    LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.APPROVED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.REJECTED) && (
+                                    <div className="mt-3">
+                                      <InspectCheckOne
+                                        label="Is the given information found correct?"
+                                        inspectionValue={k.inspectionValue}
+                                        disableEdit={true}
+                                        children={
+                                          <div className="d-flex flex-row">
+                                            {k.isCorrect === "" ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : k.isCorrect === true ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            )}
+                                          </div>
+                                        }
+                                        showComments={
+                                          k.comments !== "" ? true : false
+                                        }
+                                        comments={k.comments}
+                                      />
+                                    </div>
+                                  )}
+                                </>
                               }
                             />
                           </div>
@@ -639,13 +1410,86 @@ export const ReviewApplicationLayout = ({
                           <div className="mt-3" key={l}>
                             <CardThree
                               children={
-                                <div className="ps-4 pe-4 pt-3 mb-4">
-                                  <BooleanField
-                                    showLabel={k.label ? true : false}
-                                    label={k.label || ""}
-                                    isReadOnly={true}
-                                  />
-                                </div>
+                                <>
+                                  <div className="ps-4 pe-4 pt-3 mb-4">
+                                    <BooleanField
+                                      showLabel={k.label ? true : false}
+                                      label={k.label || ""}
+                                      isReadOnly={true}
+                                    />
+                                  </div>
+                                  {(applicationData.status ===
+                                    LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.APPROVED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.REJECTED) && (
+                                    <div className="mt-3">
+                                      <InspectCheckOne
+                                        label="Is the given information found correct?"
+                                        inspectionValue={k.inspectionValue}
+                                        disableEdit={true}
+                                        children={
+                                          <div className="d-flex flex-row">
+                                            {k.isCorrect === "" ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : k.isCorrect === true ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            )}
+                                          </div>
+                                        }
+                                        showComments={
+                                          k.comments !== "" ? true : false
+                                        }
+                                        comments={k.comments}
+                                      />
+                                    </div>
+                                  )}
+                                </>
                               }
                             />
                           </div>

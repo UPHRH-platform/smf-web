@@ -1,8 +1,6 @@
 import { Fragment, useEffect, useState } from "react";
 import Header from "../../components/common/Header";
-import { HeadingOne } from "../../components/headings";
 import { useHistory } from "react-router-dom";
-import Helper from "./../../helpers/auth";
 import { FormService } from "./../../services/form.service";
 import { APP } from "./../../constants";
 import Notify from "./../../helpers/notify";
@@ -30,10 +28,10 @@ export const ReviewApplication = ({ data }: ReviewApplicationProps) => {
     if (history.location && history.location.pathname) {
       let tempFormId = history.location.pathname.split("/")[2];
       let tempAppId = history.location.pathname.split("/")[3];
-
+  
       getApplicationDetails(tempFormId, tempAppId);
     }
-   
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getApplicationDetails = (formId: any, applicationId: any) => {

@@ -1,15 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Fragment, useState, useEffect } from "react";
-import { HeadingOne, HeadingTwo } from "../../components/headings";
-import { CardTwo } from "../../components/cards";
+import { HeadingOne } from "../../components/headings";
 import Header from "../../components/common/Header";
 import { useHistory } from "react-router-dom";
 import { TabOne } from "../../components/tabs";
-import {
-  AllApplicationsInspectorTab,
-  PastTab,
-  ScheduledTodayTab,
-  UpcomingTab,
-} from "../../layouts";
+import { AllApplicationsInspectorTab } from "../../layouts";
 import {
   selectedTabData as selectedTabDataAtom,
   selectedTab as selectedTabAtom,
@@ -70,16 +65,18 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
     if (selectedTab.length) {
       setSelectedTab("Scheduled today");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     if (selectedTab !== "") {
-      setCurrentData([])
+      setCurrentData([]);
       filterData(selectedTab);
     } else {
-      setCurrentData([])
+      setCurrentData([]);
       filterData("Scheduled today");
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTab, scheduledToday]);
 
   const getSelectedTabData = () => {
@@ -93,23 +90,22 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
             // setCurrentData(response.responseData);
             response.responseData.map((i: any, j: number) => {
-              if (i.status !== LANG.FORM_STATUS.INSPECTION_COMPLETED) {
-                if (
-                  moment(todayDate, "DD-MM-YYYY").isBefore(
-                    moment(i.inspection.scheduledDate, "DD-MM-YYYY")
-                  )
-                ) {
-                  setUpcoming((upcoming) => [...upcoming, i]);
-                } else if (
-                  moment(todayDate, "DD-MM-YYYY").isSame(
-                    moment(i.inspection.scheduledDate, "DD-MM-YYYY")
-                  )
-                ) {
-                  setScheduledToday((today) => [...today, i]);
-                } else {
-                  setPast((past) => [...past, i]);
-                }
+              if (
+                moment(todayDate, "DD-MM-YYYY").isBefore(
+                  moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                )
+              ) {
+                setUpcoming((upcoming) => [...upcoming, i]);
+              } else if (
+                moment(todayDate, "DD-MM-YYYY").isSame(
+                  moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                )
+              ) {
+                setScheduledToday((today) => [...today, i]);
+              } else {
+                setPast((past) => [...past, i]);
               }
+              return null;
             });
           } else {
             Notify.error(response.statusInfo.errorMessage);

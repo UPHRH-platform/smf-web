@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/*eslint-disable no-self-assign*/
 import { useEffect, useState } from "react";
 import { CardThree } from "../../components/cards";
 import {
@@ -66,58 +68,152 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
 
   useEffect(() => {
     if (applicationData.dataObject) {
-      let objectKeys = Object.keys(applicationData.dataObject);
-      let objectValues = Object.values(applicationData.dataObject);
+      let objectValues: any = [];
+      let objectValueApp: any = [];
 
-      setSelectedMenuLabel(objectKeys[0]);
+      let objectKeys = Object.keys(applicationData.dataObject).sort();
+
+      let inspectorDataObj: any = [];
+      if (applicationData.inspectorDataObject) {
+        inspectorDataObj = Object.keys(
+          applicationData.inspectorDataObject.dataObject
+        ).sort();
+
+        Object.keys(applicationData.dataObject)
+          .sort()
+          .forEach(function (v, i) {
+            objectValueApp.push(
+              applicationData.inspectorDataObject.dataObject[v]
+            );
+          });
+      }
+
+      Object.keys(applicationData.dataObject)
+        .sort()
+        .forEach(function (v, i) {
+          objectValues.push(applicationData.dataObject[v]);
+        });
+
+      let arrOne: any = [];
+      let arrTwo: any = {};
+      let arrThree: any = [];
+
+      formData.fields.map((i: any, j: number) => {
+        return arrOne.push(i);
+      });
+
+      let res = arrOne.reduce(
+        ((i) => (r: any, s: any) => {
+          if (s.name === "heading") {
+            r.push([]);
+            i++;
+          }
+          r[r.length - 1].push(s);
+          return r;
+        })(0),
+        []
+      );
+
+      res.map((i: any, j: number) => {
+        let fields: any = [];
+        i.map((k: any, l: number) => {
+          if (k.fieldType === "heading") {
+            arrTwo = {
+              sideMenu: k.values[0].heading,
+            };
+          } else {
+            fields.push({
+              id: j.toString() + l.toString(),
+              label: k.name,
+              value: "",
+              defaultValues: k.values,
+              fieldType: k.fieldType,
+              isCorrect: "",
+              inspectionValue: "",
+              comments: "",
+            });
+          }
+          return null;
+        });
+        arrTwo = { ...arrTwo, fields };
+
+        arrThree.push(arrTwo);
+
+        return null;
+      });
 
       let tempArray: any = [];
       let tempFormArray: any = [];
+      let tempArrayTwo: any = [];
 
       objectKeys.map((i, j) => {
         return tempArray.push({
           sideMenu: i,
-          fields: [Object.values(objectValues)[j]],
+          fields: Object.values(objectValues)[j],
         });
       });
 
-      tempArray.map((m: any, n: number) => {
-        formData &&
-          formData.fields.map((k: any, l: number) => {
-            Object.values(m.fields).map((q: any, w: number) => {
-              Object.keys(q).map((h: any, b: number) => {
-                if (h === k.name) {
-                  return tempFormArray.push({
-                    id: b,
-                    parent: n,
-                    label: h,
-                    value: Object.values(q)[b],
-                    defaultValues: k.values,
-                    fieldType: k.fieldType,
-                    isCorrect: "",
-                    inspectionValue: "",
-                    comments: "",
-                  });
-                }
-                return null;
-              });
-              return null;
+      objectKeys.map((i, j) => {
+        return tempArrayTwo.push({
+          sideMenu: i,
+          fields: Object.values(objectValueApp)[j],
+        });
+      });
+
+      tempArray.map((i: any, n: number) => {
+        arrThree.map((m: any, l: number) => {
+          if (m.sideMenu === i.sideMenu) {
+            m.fields.map((k: any, y: number) => {
+              if (!applicationData.inspectorDataObject) {
+                return tempFormArray.push({
+                  id: parseInt(k.id),
+                  parent: parseInt(k.id.split("")[0]),
+                  sideMenu: m.sideMenu,
+                  label: k.label,
+                  value: i.fields[k.label],
+                  defaultValues: k.defaultValues,
+                  fieldType: k.fieldType,
+                  isCorrect: "",
+                  inspectionValue: "",
+                  comments: "",
+                });
+              } else {
+                return tempFormArray.push({
+                  id: parseInt(k.id),
+                  parent: parseInt(k.id.split("")[0]),
+                  sideMenu: m.sideMenu,
+                  label: k.label,
+                  value: i.fields[k.label],
+                  defaultValues: k.defaultValues,
+                  fieldType: k.fieldType,
+                  isCorrect:
+                    tempArrayTwo[n].fields[k.label]["value"] === "correct"
+                      ? true
+                      : false,
+                  inspectionValue:
+                    tempArrayTwo[n].fields[k.label]["inspectionValue"],
+                  comments: tempArrayTwo[n].fields[k.label]["comments"],
+                });
+              }
             });
-            return null;
-          });
+          }
+          return null;
+        });
         return null;
       });
 
       tempArray.map((y: any, f: number) => {
         y.fields = [];
         tempFormArray.map((g: any, d: number) => {
-          if (g.parent === f) {
+          if (g.sideMenu === y.sideMenu) {
             y.fields.push(g);
           }
           return null;
         });
         return null;
       });
+
+      setSelectedMenuLabel(tempArray[0].sideMenu);
 
       setProcessedData(tempArray);
     }
@@ -151,41 +247,43 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
   ) => {
     e.preventDefault();
 
-    // console.log(menuLabel, field, status);
-
     let tempArray = [...processedData];
 
     tempArray.map((i, j) => {
       if (i.sideMenu === menuLabel) {
         i.fields.map((m: any, n: number) => {
           if (m.label === field) {
+            setModalTextArea(m.comments);
+            setModalInspectionValue(m.inspectionValue);
             if (status === "correct") {
               m.isCorrect = true;
-              m.comments = "";
-              m.inspectionValue = "";
+              m.comments = m.comments;
+              m.inspectionValue = m.inspectionValue;
             } else if (status === "incorrect") {
               m.isCorrect = false;
-              m.comments = "";
-              m.inspectionValue = "";
+              m.comments = m.comments;
+              m.inspectionValue = m.inspectionValue;
             } else {
               m.isCorrect = "";
-              m.comments = "";
-              m.inspectionValue = "";
+              m.comments = m.comments;
+              m.inspectionValue = m.inspectionValue;
+            }
+          } else {
+            if (!m.comments && !m.isCorrect) {
+              m.isCorrect = "";
             }
           }
+          return null;
         });
       }
+      return null;
     });
-
-    // console.log(tempArray);
 
     setProcessedData(tempArray);
   };
 
   const submitFieldCorrectness = (e: any, menuLabel: any, field: any) => {
     e.preventDefault();
-
-    // console.log(menuLabel, field);
 
     let comments: any = "";
     let correctField: any = "";
@@ -201,19 +299,23 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
     tempArray.map((i, j) => {
       if (i.sideMenu === menuLabel) {
         i.fields.map((m: any, n: number) => {
-          if (m.label.replace(/\s/g, "") === field) {
+          if (
+            m.label.replace(/\s/g, "").replace(/[^a-zA-Z ]/g, "") + m.id ===
+            field
+          ) {
             setModalTextArea(comments);
             m.comments = comments;
             setModalInspectionValue(correctField);
             m.inspectionValue = correctField;
           }
+          return null;
         });
       }
+      return null;
     });
 
     setModalTextArea("");
     setModalInspectionValue("");
-    // console.log(tempArray);
     setProcessedData(tempArray);
   };
 
@@ -223,8 +325,9 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
       processedData.map((i, j) => {
         i.fields &&
           i.fields.map((m: any, n: number) => {
-            tempArray.push(m.isCorrect);
+            return tempArray.push(m.isCorrect);
           });
+        return null;
       });
 
       if (tempArray.includes("")) {
@@ -237,6 +340,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
         }
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMenuLabel, processedData]);
 
   const processFormData = (e: any) => {
@@ -256,10 +360,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
           },
           ...dataObject[i.sideMenu],
         };
+        return null;
       });
+      return null;
     });
-
-    console.log(dataObject);
 
     history.push({
       pathname: `/inspection-summary/${formData.id}/${applicationData.applicationId}`,
@@ -330,17 +434,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
-                                      modalTriggerLabel={
-                                        k.comments === "" && k.isCorrect === ""
-                                          ? "Edit note"
-                                          : k.comments !== "" && !k.isCorrect
-                                          ? k.isCorrect === ""
-                                            ? "Edit note"
-                                            : "Edit reason"
-                                          : !k.isCorrect && k.comments === ""
-                                          ? "Edit reason"
-                                          : "Edit note"
-                                      }
+                                      modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
+                                      clickHandler={(e) => {
+                                        setModalTextArea(k.comments);
+                                        setModalInspectionValue(
+                                          k.inspectionValue
+                                        );
+                                      }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -349,14 +451,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                 <Radio
                                                   isSelected={false}
                                                   label="Correct"
-                                                  clickHandler={(e) =>
+                                                  clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
                                                       selectedMenuLabel,
                                                       k.label,
                                                       "correct"
-                                                    )
-                                                  }
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                               <div className="me-3">
@@ -364,10 +466,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -392,10 +498,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -413,14 +523,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                 <Radio
                                                   isSelected={false}
                                                   label="Correct"
-                                                  clickHandler={(e) =>
+                                                  clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
                                                       selectedMenuLabel,
                                                       k.label,
                                                       "correct"
-                                                    )
-                                                  }
+                                                    );
+                                                  }}
                                                 />
                                               </div>
                                               <div className="me-3">
@@ -428,10 +538,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={true}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -450,7 +564,11 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                         k.comments !== "" ? true : false
                                       }
                                       comments={k.comments}
-                                      modalId={k.label.replace(/\s/g, "")}
+                                      modalId={
+                                        k.label
+                                          .replace(/\s/g, "")
+                                          .replace(/[^a-zA-Z ]/g, "") + k.id
+                                      }
                                     />
                                   </div>
                                 </>
@@ -476,17 +594,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
-                                      modalTriggerLabel={
-                                        k.comments === "" && k.isCorrect === ""
-                                          ? "Edit note"
-                                          : k.comments !== "" && !k.isCorrect
-                                          ? k.isCorrect === ""
-                                            ? "Edit note"
-                                            : "Edit reason"
-                                          : !k.isCorrect && k.comments === ""
-                                          ? "Edit reason"
-                                          : "Edit note"
-                                      }
+                                      modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
+                                      clickHandler={(e) => {
+                                        setModalTextArea(k.comments);
+                                        setModalInspectionValue(
+                                          k.inspectionValue
+                                        );
+                                      }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -510,10 +626,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -538,10 +658,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -574,10 +698,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={true}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -596,7 +724,11 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                         k.comments !== "" ? true : false
                                       }
                                       comments={k.comments}
-                                      modalId={k.label.replace(/\s/g, "")}
+                                      modalId={
+                                        k.label
+                                          .replace(/\s/g, "")
+                                          .replace(/[^a-zA-Z ]/g, "") + k.id
+                                      }
                                     />
                                   </div>
                                 </>
@@ -624,17 +756,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
-                                      modalTriggerLabel={
-                                        k.comments === "" && k.isCorrect === ""
-                                          ? "Edit note"
-                                          : k.comments !== "" && !k.isCorrect
-                                          ? k.isCorrect === ""
-                                            ? "Edit note"
-                                            : "Edit reason"
-                                          : !k.isCorrect && k.comments === ""
-                                          ? "Edit reason"
-                                          : "Edit note"
-                                      }
+                                      modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
+                                      clickHandler={(e) => {
+                                        setModalTextArea(k.comments);
+                                        setModalInspectionValue(
+                                          k.inspectionValue
+                                        );
+                                      }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -658,10 +788,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -686,10 +820,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -722,10 +860,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={true}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -744,7 +886,11 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                         k.comments !== "" ? true : false
                                       }
                                       comments={k.comments}
-                                      modalId={k.label.replace(/\s/g, "")}
+                                      modalId={
+                                        k.label
+                                          .replace(/\s/g, "")
+                                          .replace(/[^a-zA-Z ]/g, "") + k.id
+                                      }
                                     />
                                   </div>
                                 </>
@@ -788,17 +934,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
-                                      modalTriggerLabel={
-                                        k.comments === "" && k.isCorrect === ""
-                                          ? "Edit note"
-                                          : k.comments !== "" && !k.isCorrect
-                                          ? k.isCorrect === ""
-                                            ? "Edit note"
-                                            : "Edit reason"
-                                          : !k.isCorrect && k.comments === ""
-                                          ? "Edit reason"
-                                          : "Edit note"
-                                      }
+                                      modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
+                                      clickHandler={(e) => {
+                                        setModalTextArea(k.comments);
+                                        setModalInspectionValue(
+                                          k.inspectionValue
+                                        );
+                                      }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -822,10 +966,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -850,10 +998,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -886,10 +1038,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={true}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -908,7 +1064,11 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                         k.comments !== "" ? true : false
                                       }
                                       comments={k.comments}
-                                      modalId={k.label.replace(/\s/g, "")}
+                                      modalId={
+                                        k.label
+                                          .replace(/\s/g, "")
+                                          .replace(/[^a-zA-Z ]/g, "") + k.id
+                                      }
                                     />
                                   </div>
                                 </>
@@ -933,17 +1093,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
-                                      modalTriggerLabel={
-                                        k.comments === "" && k.isCorrect === ""
-                                          ? "Edit note"
-                                          : k.comments !== "" && !k.isCorrect
-                                          ? k.isCorrect === ""
-                                            ? "Edit note"
-                                            : "Edit reason"
-                                          : !k.isCorrect && k.comments === ""
-                                          ? "Edit reason"
-                                          : "Edit note"
-                                      }
+                                      modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
+                                      clickHandler={(e) => {
+                                        setModalTextArea(k.comments);
+                                        setModalInspectionValue(
+                                          k.inspectionValue
+                                        );
+                                      }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -967,10 +1125,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -995,10 +1157,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1031,10 +1197,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={true}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1053,7 +1223,11 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                         k.comments !== "" ? true : false
                                       }
                                       comments={k.comments}
-                                      modalId={k.label.replace(/\s/g, "")}
+                                      modalId={
+                                        k.label
+                                          .replace(/\s/g, "")
+                                          .replace(/[^a-zA-Z ]/g, "") + k.id
+                                      }
                                     />
                                   </div>
                                 </>
@@ -1079,17 +1253,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="mt-3">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
-                                      modalTriggerLabel={
-                                        k.comments === "" && k.isCorrect === ""
-                                          ? "Edit note"
-                                          : k.comments !== "" && !k.isCorrect
-                                          ? k.isCorrect === ""
-                                            ? "Edit note"
-                                            : "Edit reason"
-                                          : !k.isCorrect && k.comments === ""
-                                          ? "Edit reason"
-                                          : "Edit note"
-                                      }
+                                      modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
+                                      clickHandler={(e) => {
+                                        setModalTextArea(k.comments);
+                                        setModalInspectionValue(
+                                          k.inspectionValue
+                                        );
+                                      }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1113,10 +1285,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1141,10 +1317,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1177,10 +1357,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={true}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1199,7 +1383,11 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                         k.comments !== "" ? true : false
                                       }
                                       comments={k.comments}
-                                      modalId={k.label.replace(/\s/g, "")}
+                                      modalId={
+                                        k.label
+                                          .replace(/\s/g, "")
+                                          .replace(/[^a-zA-Z ]/g, "") + k.id
+                                      }
                                     />
                                   </div>
                                 </>
@@ -1228,17 +1416,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
-                                      modalTriggerLabel={
-                                        k.comments === "" && k.isCorrect === ""
-                                          ? "Edit note"
-                                          : k.comments !== "" && !k.isCorrect
-                                          ? k.isCorrect === ""
-                                            ? "Edit note"
-                                            : "Edit reason"
-                                          : !k.isCorrect && k.comments === ""
-                                          ? "Edit reason"
-                                          : "Edit note"
-                                      }
+                                      modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
+                                      clickHandler={(e) => {
+                                        setModalTextArea(k.comments);
+                                        setModalInspectionValue(
+                                          k.inspectionValue
+                                        );
+                                      }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1262,10 +1448,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1290,10 +1480,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1326,10 +1520,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={true}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label.replace(/\s/g, "") +
+                                                    k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1348,7 +1542,11 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                         k.comments !== "" ? true : false
                                       }
                                       comments={k.comments}
-                                      modalId={k.label.replace(/\s/g, "")}
+                                      modalId={
+                                        k.label
+                                          .replace(/\s/g, "")
+                                          .replace(/[^a-zA-Z ]/g, "") + k.id
+                                      }
                                     />
                                   </div>
                                 </>
@@ -1374,17 +1572,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
-                                      modalTriggerLabel={
-                                        k.comments === "" && k.isCorrect === ""
-                                          ? "Edit note"
-                                          : k.comments !== "" && !k.isCorrect
-                                          ? k.isCorrect === ""
-                                            ? "Edit note"
-                                            : "Edit reason"
-                                          : !k.isCorrect && k.comments === ""
-                                          ? "Edit reason"
-                                          : "Edit note"
-                                      }
+                                      modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
+                                      clickHandler={(e) => {
+                                        setModalTextArea(k.comments);
+                                        setModalInspectionValue(
+                                          k.inspectionValue
+                                        );
+                                      }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1408,10 +1604,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1436,10 +1636,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1472,10 +1676,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={true}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1494,7 +1702,11 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                         k.comments !== "" ? true : false
                                       }
                                       comments={k.comments}
-                                      modalId={k.label.replace(/\s/g, "")}
+                                      modalId={
+                                        k.label
+                                          .replace(/\s/g, "")
+                                          .replace(/[^a-zA-Z ]/g, "") + k.id
+                                      }
                                     />
                                   </div>
                                 </>
@@ -1512,23 +1724,23 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <FileUploadView
                                       showLabel={k.label ? true : false}
                                       label={k.label || ""}
-                                      value={k.value.split(",") || ""}
+                                      value={
+                                        (k.value && k.value.split(",")) || ""
+                                      }
                                     />
                                   </div>
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
-                                      modalTriggerLabel={
-                                        k.comments === "" && k.isCorrect === ""
-                                          ? "Edit note"
-                                          : k.comments !== "" && !k.isCorrect
-                                          ? k.isCorrect === ""
-                                            ? "Edit note"
-                                            : "Edit reason"
-                                          : !k.isCorrect && k.comments === ""
-                                          ? "Edit reason"
-                                          : "Edit note"
-                                      }
+                                      modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
+                                      clickHandler={(e) => {
+                                        setModalTextArea(k.comments);
+                                        setModalInspectionValue(
+                                          k.inspectionValue
+                                        );
+                                      }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1552,10 +1764,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1580,10 +1796,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1616,10 +1836,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={true}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1638,7 +1862,11 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                         k.comments !== "" ? true : false
                                       }
                                       comments={k.comments}
-                                      modalId={k.label.replace(/\s/g, "")}
+                                      modalId={
+                                        k.label
+                                          .replace(/\s/g, "")
+                                          .replace(/[^a-zA-Z ]/g, "") + k.id
+                                      }
                                     />
                                   </div>
                                 </>
@@ -1662,17 +1890,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                   <div className="">
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
-                                      modalTriggerLabel={
-                                        k.comments === "" && k.isCorrect === ""
-                                          ? "Edit note"
-                                          : k.comments !== "" && !k.isCorrect
-                                          ? k.isCorrect === ""
-                                            ? "Edit note"
-                                            : "Edit reason"
-                                          : !k.isCorrect && k.comments === ""
-                                          ? "Edit reason"
-                                          : "Edit note"
-                                      }
+                                      modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
+                                      clickHandler={(e) => {
+                                        setModalTextArea(k.comments);
+                                        setModalInspectionValue(
+                                          k.inspectionValue
+                                        );
+                                      }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1696,10 +1922,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1724,10 +1954,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={false}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1760,10 +1994,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   isSelected={true}
                                                   label="Incorrect"
                                                   isModal={true}
-                                                  modalId={k.label.replace(
-                                                    /\s/g,
-                                                    ""
-                                                  )}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
                                                       e,
@@ -1782,7 +2020,11 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                         k.comments !== "" ? true : false
                                       }
                                       comments={k.comments}
-                                      modalId={k.label.replace(/\s/g, "")}
+                                      modalId={
+                                        k.label
+                                          .replace(/\s/g, "")
+                                          .replace(/[^a-zA-Z ]/g, "") + k.id
+                                      }
                                     />
                                   </div>
                                 </>
@@ -1800,22 +2042,50 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                     return (
                       <div className="" key={n}>
                         <ModalTwo
-                          id={m.label.replace(/\s/g, "")}
+                          id={
+                            m.label
+                              .replace(/\s/g, "")
+                              .replace(/[^a-zA-Z ]/g, "") + m.id
+                          }
                           enableHandler={true}
                           enableSkip={false}
                           subFieldType={m.fieldType}
                           subHeading={
                             m.comments === "" && m.isCorrect === ""
                               ? ""
+                              : m.comments !== "" &&
+                                !m.inspectionValue &&
+                                m.isCorrect === undefined
+                              ? "Enter the correct value"
                               : !m.isCorrect && m.comments === ""
                               ? "Enter the correct value"
-                              : ""
+                              : m.comments !== "" &&
+                                m.isCorrect === "" &&
+                                !m.inspectionValue
+                              ? ""
+                              : m.comments !== "" &&
+                                m.isCorrect &&
+                                m.inspectionValue
+                              ? ""
+                              : m.comments !== "" &&
+                                m.isCorrect &&
+                                !m.inspectionValue
+                              ? ""
+                              : !m.comments && m.isCorrect && !m.inspectionValue
+                              ? ""
+                              : "Enter the correct value"
                           }
-                          ariaLabel={`${m.label.replace(/\s/g, "")}Label`}
+                          ariaLabel={`${
+                            m.label
+                              .replace(/\s/g, "")
+                              .replace(/[^a-zA-Z ]/g, "") + m.id
+                          }Label`}
                           heading={
                             m.comments === "" && m.isCorrect === ""
                               ? "Add note"
-                              : m.comments !== "" && !m.isCorrect
+                              : m.comments !== "" &&
+                                !m.isCorrect &&
+                                m.inspectionValue
                               ? "Enter the reason for the incorrect selection"
                               : !m.isCorrect && m.comments === ""
                               ? "Enter the reason for the incorrect selection"
@@ -1826,15 +2096,18 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                             submitFieldCorrectness(
                               e,
                               selectedMenuLabel,
-                              m.label.replace(/\s/g, "")
+                              m.label
+                                .replace(/\s/g, "")
+                                .replace(/[^a-zA-Z ]/g, "") + m.id
                             );
                           }}
                           cancelHandler={(e) => {
                             onCheckCorrectness(
                               e,
                               selectedMenuLabel,
-                              m.label.replace(/\s/g, ""),
-                              ""
+                              m.label
+                                .replace(/\s/g, "")
+                                .replace(/[^a-zA-Z ]/g, "") + m.id
                             );
                           }}
                         />
@@ -1861,6 +2134,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     processedData[n - 1].sideMenu
                                   );
                                 }
+                                return null;
                               });
                             }}
                           />
@@ -1886,6 +2160,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     processedData[n + 1].sideMenu
                                   );
                                 }
+                                return null;
                               });
                             }}
                           />

@@ -71,9 +71,22 @@ export const ModalTwo = ({
   };
 
   useEffect(() => {
-    setNote("");
-    setCorrectValue("");
-  }, [id]);
+    // console.log(modalTextArea, modalInspectionValue);
+
+    if (modalTextArea) {
+      setNote(modalTextArea.length === 0 ? "" : modalTextArea);
+    } else {
+      setNote("");
+    }
+
+    if (modalInspectionValue) {
+      setCorrectValue(
+        modalInspectionValue.length === 0 ? "" : modalInspectionValue
+      );
+    } else {
+      setCorrectValue("");
+    }
+  }, [id, modalInspectionValue, modalTextArea]);
 
   useEffect(() => {
     if (note.length) {

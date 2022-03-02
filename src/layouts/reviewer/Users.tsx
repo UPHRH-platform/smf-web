@@ -1,7 +1,8 @@
+/*eslint-disable eqeqeq*/ 
 import { Fragment, useEffect, useState } from "react"
-import { useHistory } from "react-router"
+// import { useHistory } from "react-router"
 import { Link } from "react-router-dom"
-import { BtnOne, BtnTwo } from "../../components/buttons"
+import { BtnTwo } from "../../components/buttons"
 import { APP } from "../../constants"
 import Notify from "../../helpers/notify"
 import { UserService } from "../../services/user.service"
@@ -59,13 +60,13 @@ interface Iuser {
 }
 
 export const Users = ({ data }: userProps) => {
-    let history = useHistory();
+    // let history = useHistory();
     let [users, setUsers] = useState<Iuser[]>([])
     let [filteredUsers, setFilteredUsers] = useState<Iuser[]>([])
     const handleSearch = (event: any) => {
         let value = event.target.value.toLowerCase();
         let result = [];
-        console.log(value);
+        // console.log(value);
         result = users.filter((data) => {
             return (
                 data.firstName.toLocaleLowerCase().search(value) != -1 //search firstname

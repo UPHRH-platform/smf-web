@@ -58,7 +58,7 @@ export const SelectField = ({
           </option>
         )}
 
-        {option.map((i: any, j: any) => {
+        {option && option.map((i: any, j: any) => {
           return (
             <option
               value={i.value}

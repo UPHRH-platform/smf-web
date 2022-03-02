@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import styles from "./InspectCheckOne.module.css";
+import { TextField } from "./TextField";
 
 /**
  * InspectCheckOne component renders
@@ -11,7 +13,10 @@ interface InspectCheckOneProps {
   showComments?: boolean;
   comments?: any;
   modalId?: string;
-  modalTriggerLabel?: string
+  modalTriggerLabel?: string;
+  clickHandler?: (event: any) => void;
+  inspectionValue?: any;
+  disableEdit: boolean;
 }
 
 export const InspectCheckOne = ({
@@ -20,17 +25,28 @@ export const InspectCheckOne = ({
   showComments,
   comments,
   modalId,
-  modalTriggerLabel
+  modalTriggerLabel,
+  clickHandler,
+  inspectionValue,
+  disableEdit,
 }: InspectCheckOneProps) => {
+  const [insValue, setInsValue] = useState("");
+
+  useEffect(() => {
+    if (inspectionValue !== "") {
+      setInsValue(inspectionValue);
+    }
+  }, [inspectionValue]);
+
   return (
-    <div className={`${styles.inspect_check_one} p-4`}>
+    <div className={`${styles.inspect_check_one} p-4`} onClick={clickHandler}>
       <label>{label}</label>
       <div className="row">
         <div className="col-sm-12 col-md-8 col-lg-8 col-xl-8 col-xxl-8">
           <div className="mt-2 float-start">{children}</div>
         </div>
         <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
-          {showComments ? (
+          {showComments && !disableEdit ? (
             <div className="float-end pt-4">
               <label
                 className={`${styles.inspect_check_one_custom_label_one}`}
@@ -45,7 +61,7 @@ export const InspectCheckOne = ({
                 {modalTriggerLabel ? modalTriggerLabel : "Edit reason"}
               </label>
             </div>
-          ) : (
+          ) : !disableEdit ? (
             <div className="float-end pt-4">
               <label
                 className={`${styles.inspect_check_one_custom_label_one}`}
@@ -60,6 +76,8 @@ export const InspectCheckOne = ({
                 </span>
               </label>
             </div>
+          ) : (
+            ""
           )}
         </div>
       </div>
@@ -67,6 +85,20 @@ export const InspectCheckOne = ({
       {showComments && comments && (
         <div className={`${styles.inspect_check_one_comments} mt-3`}>
           <p className="p-0">{comments}</p>
+        </div>
+      )}
+
+      {inspectionValue && (
+        <div className={`mt-3`}>
+          <div className="mt-2 col-sm-12 col-md-3 col-lg-3 p-0 m-0">
+            <TextField
+              showLabel={true}
+              label="Actual value"
+              isReadOnly={true}
+              type="text"
+              value={insValue}
+            />
+          </div>
         </div>
       )}
     </div>

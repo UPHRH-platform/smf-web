@@ -3,7 +3,6 @@ import stylesTwo from "../modal/InspectionScheduleModal.module.css";
 import { LANG } from "../../constants";
 import moment from "moment";
 import { HeadingFour } from "../headings";
-import { InspectionScheduleModal } from "../modal";
 
 /**
  * StatusBarLarge component renders
@@ -20,7 +19,9 @@ interface StatusBarLargeProps {
   applicationId?: any;
   inspectionData?: any;
   isChange: boolean;
-  comments?:any;
+  comments?: any;
+  approvedNote?: string;
+  inspectorSummary?: string;
 }
 
 export const StatusBarLarge = ({
@@ -34,6 +35,8 @@ export const StatusBarLarge = ({
   applicationId,
   comments,
   isChange,
+  approvedNote,
+  inspectorSummary,
 }: StatusBarLargeProps) => {
   // Function to format the status label
   const formatLabel = (labelStatus: string) => {
@@ -96,9 +99,8 @@ export const StatusBarLarge = ({
 
       {label && label === LANG.FORM_STATUS.NEW && (
         <p className="text-center pt-3">
-          {`Received this application on ${moment(new Date(timeStamp)).format(
-            "DD/MM/YYYY"
-          )}`}
+          Received this application on{" "}
+          <b>{`${moment(new Date(timeStamp)).format("DD/MM/YYYY")}`}</b>.
         </p>
       )}
       {label && label === LANG.FORM_STATUS.UNDER_REVIEW && (
@@ -117,12 +119,13 @@ export const StatusBarLarge = ({
           <div className="pt-1 pb-4 mx-3">
             <div className="row">
               <div className="col-12">
-                  {comments.map((c: any, i: any) => {
+                {comments &&
+                  comments.map((c: any, i: any) => {
                     return (
-                    <p key={i} className={`${styles.review_comment} p-2 `}>
-                      {c.value}
-                    </p>
-                    )
+                      <p key={i} className={`${styles.review_comment} p-2 `}>
+                        {c.value}
+                      </p>
+                    );
                   })}
               </div>
             </div>
@@ -145,9 +148,11 @@ export const StatusBarLarge = ({
       {label && label === LANG.FORM_STATUS.SENT_FOR_INSPECTION && (
         <>
           <p className="text-center pt-3">
-            {`Inspection is scheduled on ${inspectionData.scheduledDate}. Keep all the physical documents ready for the inspection.`}
+            Inspection is scheduled on{" "}
+            <b>{`${inspectionData.scheduledDate}`}</b>. Keep all the physical
+            documents ready for the inspection.
           </p>
-          <hr className="m-2 mx-3"  />
+          <hr className="m-2 mx-3" />
           <div className="pt-1 ps-4 pe-4 pb-4">
             <div className="row">
               <div className="col-sm-12 col-md-10 col-lg-10">
@@ -197,17 +202,8 @@ export const StatusBarLarge = ({
                           </div>
                         </div>
                       );
-                    } else {
-                      if (l === 0) {
-                        return (
-                          <p className="ps-2" key={l}>
-                            No lead inspector found!
-                          </p>
-                        );
-                      } else {
-                        return null;
-                      }
                     }
+                    return null;
                   })}
               </div>
             </div>
@@ -236,22 +232,27 @@ export const StatusBarLarge = ({
                           </div>
                         </div>
                       );
-                    } else {
-                      if (l === 0) {
-                        return (
-                          <p className="ps-2" key={l}>
-                            No assiting inspectors found!
-                          </p>
-                        );
-                      } else {
-                        return null;
-                      }
                     }
+                    return null;
                   })}
               </div>
             </div>
           </div>
         </>
+      )}
+
+      {approvedNote && (
+        <div className="ps-4 pe-4 mt-1">
+          <HeadingFour heading="Notes from final reviewer" />
+          <p className="p-0 mt-2">{approvedNote}</p>
+        </div>
+      )}
+
+      {inspectorSummary && (
+        <div className="ps-4 pe-4 mt-1">
+          <HeadingFour heading="Inspection summary" />
+          <p className="p-0 mt-2">{inspectorSummary}</p>
+        </div>
       )}
     </div>
   );
