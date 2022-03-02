@@ -415,6 +415,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -567,6 +568,13 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
+                                      clickHandler={(e) => {
+                                        setModalTextArea(k.comments);
+                                        setModalInspectionValue(
+                                          k.inspectionValue
+                                        );
+                                      }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -727,6 +735,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -903,6 +912,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1060,6 +1070,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1218,6 +1229,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1379,6 +1391,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1533,6 +1546,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1691,6 +1705,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1847,6 +1862,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (

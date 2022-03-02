@@ -1,4 +1,6 @@
+import { useState, useEffect } from "react";
 import styles from "./InspectCheckOne.module.css";
+import { TextField } from "./TextField";
 
 /**
  * InspectCheckOne component renders
@@ -11,8 +13,9 @@ interface InspectCheckOneProps {
   showComments?: boolean;
   comments?: any;
   modalId?: string;
-  modalTriggerLabel?: string
+  modalTriggerLabel?: string;
   clickHandler?: (event: any) => void;
+  inspectionValue?: any;
 }
 
 export const InspectCheckOne = ({
@@ -22,8 +25,17 @@ export const InspectCheckOne = ({
   comments,
   modalId,
   modalTriggerLabel,
-  clickHandler
+  clickHandler,
+  inspectionValue,
 }: InspectCheckOneProps) => {
+  const [insValue, setInsValue] = useState("");
+
+  useEffect(() => {
+    if (inspectionValue !== "") {
+      setInsValue(inspectionValue);
+    }
+  }, [inspectionValue]);
+
   return (
     <div className={`${styles.inspect_check_one} p-4`} onClick={clickHandler}>
       <label>{label}</label>
@@ -69,6 +81,20 @@ export const InspectCheckOne = ({
       {showComments && comments && (
         <div className={`${styles.inspect_check_one_comments} mt-3`}>
           <p className="p-0">{comments}</p>
+        </div>
+      )}
+
+      {inspectionValue && (
+        <div className={`mt-3`}>
+          <div className="mt-2 col-sm-12 col-md-3 col-lg-3 p-0 m-0">
+            <TextField
+              showLabel={true}
+              label="Actual value"
+              isReadOnly={true}
+              type="text"
+              value={insValue}
+            />
+          </div>
         </div>
       )}
     </div>

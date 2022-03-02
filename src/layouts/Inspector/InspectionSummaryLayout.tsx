@@ -195,7 +195,7 @@ export const InspectionSummaryLayout = ({
         </div>
         <div className="pt-2">
           <label className={`${stylesThree.status_bar_custom_heading}`}>
-            Assisting inspector's
+            Assisting inspector
           </label>
           <div className="pt-3">
             {data &&

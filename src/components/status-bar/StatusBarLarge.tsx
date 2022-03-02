@@ -20,7 +20,7 @@ interface StatusBarLargeProps {
   applicationId?: any;
   inspectionData?: any;
   isChange: boolean;
-  comments?:any;
+  comments?: any;
 }
 
 export const StatusBarLarge = ({
@@ -96,9 +96,8 @@ export const StatusBarLarge = ({
 
       {label && label === LANG.FORM_STATUS.NEW && (
         <p className="text-center pt-3">
-          {`Received this application on ${moment(new Date(timeStamp)).format(
-            "DD/MM/YYYY"
-          )}`}
+          Received this application on{" "}
+          <b>{`${moment(new Date(timeStamp)).format("DD/MM/YYYY")}`}</b>.
         </p>
       )}
       {label && label === LANG.FORM_STATUS.UNDER_REVIEW && (
@@ -117,13 +116,13 @@ export const StatusBarLarge = ({
           <div className="pt-1 pb-4 mx-3">
             <div className="row">
               <div className="col-12">
-                  {comments.map((c: any, i: any) => {
-                    return (
+                {comments.map((c: any, i: any) => {
+                  return (
                     <p key={i} className={`${styles.review_comment} p-2 `}>
                       {c.value}
                     </p>
-                    )
-                  })}
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -145,9 +144,11 @@ export const StatusBarLarge = ({
       {label && label === LANG.FORM_STATUS.SENT_FOR_INSPECTION && (
         <>
           <p className="text-center pt-3">
-            {`Inspection is scheduled on ${inspectionData.scheduledDate}. Keep all the physical documents ready for the inspection.`}
+            Inspection is scheduled on{" "}
+            <b>{`${inspectionData.scheduledDate}`}</b>. Keep all the physical
+            documents ready for the inspection.
           </p>
-          <hr className="m-2 mx-3"  />
+          <hr className="m-2 mx-3" />
           <div className="pt-1 ps-4 pe-4 pb-4">
             <div className="row">
               <div className="col-sm-12 col-md-10 col-lg-10">
