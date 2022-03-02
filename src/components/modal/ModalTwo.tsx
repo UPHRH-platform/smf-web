@@ -104,6 +104,7 @@ export const ModalTwo = ({
     } else {
       setEnableSubmit(false);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [note, correctValue]);
 
   return (

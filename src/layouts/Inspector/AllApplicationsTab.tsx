@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRecoilState } from "recoil";
 import {
   selectedTabData as selectedTabDataAtom,
@@ -19,18 +19,9 @@ interface AllApplicationsInspectorTabProps {
 export const AllApplicationsInspectorTab = ({
   customData,
 }: AllApplicationsInspectorTabProps) => {
-  // const [data, setData] = useState<any[]>([]);
 
   const selectedTabData: any = useRecoilState(selectedTabDataAtom);
   const selectTab = useRecoilState(selectedTabAtom);
-
-  // useEffect(() => {
-  //   if (selectedTabData && selectedTabData[0].length) {
-  //     setData(selectedTabData[0]);
-  //   } else {
-  //     setData([])
-  //   }
-  // }, []);
 
   return (
     <div className="row pt-2">

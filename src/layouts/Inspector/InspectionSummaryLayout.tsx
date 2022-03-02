@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-lone-blocks */
 import { useEffect, useState } from "react";
 import { BtnTwo } from "../../components/buttons";
-import { CardFour } from "../../components/cards";
 import { TextAreaField, TextField } from "../../components/form-elements";
-import { HeadingFour, HeadingOne } from "../../components/headings";
+import { HeadingOne } from "../../components/headings";
 import styles from "./InspectionSummaryLayout.module.css";
 import stylesTwo from "../../components/modal/InspectionScheduleModal.module.css";
 import stylesThree from "../../components/status-bar/StatusBarLarge.module.css";
@@ -66,6 +67,7 @@ export const InspectionSummaryLayout = ({
               [i.name]: targetValue,
             };
           }
+          return null;
         });
     }
 
@@ -267,6 +269,7 @@ export const InspectionSummaryLayout = ({
                         if (m.fieldType === "checkbox") {
                           return m.name;
                         }
+                        return null;
                       }
                     )}
                 </p>
