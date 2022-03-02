@@ -16,6 +16,7 @@ interface InspectCheckOneProps {
   modalTriggerLabel?: string;
   clickHandler?: (event: any) => void;
   inspectionValue?: any;
+  disableEdit: boolean;
 }
 
 export const InspectCheckOne = ({
@@ -27,6 +28,7 @@ export const InspectCheckOne = ({
   modalTriggerLabel,
   clickHandler,
   inspectionValue,
+  disableEdit,
 }: InspectCheckOneProps) => {
   const [insValue, setInsValue] = useState("");
 
@@ -44,7 +46,7 @@ export const InspectCheckOne = ({
           <div className="mt-2 float-start">{children}</div>
         </div>
         <div className="col-sm-12 col-md-4 col-lg-4 col-xl-4 col-xxl-4">
-          {showComments ? (
+          {showComments && !disableEdit ? (
             <div className="float-end pt-4">
               <label
                 className={`${styles.inspect_check_one_custom_label_one}`}
@@ -59,7 +61,7 @@ export const InspectCheckOne = ({
                 {modalTriggerLabel ? modalTriggerLabel : "Edit reason"}
               </label>
             </div>
-          ) : (
+          ) : !disableEdit ? (
             <div className="float-end pt-4">
               <label
                 className={`${styles.inspect_check_one_custom_label_one}`}
@@ -74,6 +76,8 @@ export const InspectCheckOne = ({
                 </span>
               </label>
             </div>
+          ) : (
+            ""
           )}
         </div>
       </div>

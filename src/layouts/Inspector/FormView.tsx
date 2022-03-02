@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/*eslint-disable no-self-assign*/
 import { useEffect, useState } from "react";
 import { CardThree } from "../../components/cards";
 import {
@@ -67,8 +69,24 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
   useEffect(() => {
     if (applicationData.dataObject) {
       let objectValues: any = [];
+      let objectValueApp: any = [];
 
       let objectKeys = Object.keys(applicationData.dataObject).sort();
+
+      let inspectorDataObj: any = [];
+      if (applicationData.inspectorDataObject) {
+        inspectorDataObj = Object.keys(
+          applicationData.inspectorDataObject.dataObject
+        ).sort();
+
+        Object.keys(applicationData.dataObject)
+          .sort()
+          .forEach(function (v, i) {
+            objectValueApp.push(
+              applicationData.inspectorDataObject.dataObject[v]
+            );
+          });
+      }
 
       Object.keys(applicationData.dataObject)
         .sort()
@@ -81,7 +99,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
       let arrThree: any = [];
 
       formData.fields.map((i: any, j: number) => {
-        arrOne.push(i);
+        return arrOne.push(i);
       });
 
       let res = arrOne.reduce(
@@ -115,18 +133,18 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
               comments: "",
             });
           }
+          return null;
         });
         arrTwo = { ...arrTwo, fields };
 
         arrThree.push(arrTwo);
+
+        return null;
       });
-
-      // console.log(arrThree);
-
-      setSelectedMenuLabel(arrThree[0].sideMenu);
 
       let tempArray: any = [];
       let tempFormArray: any = [];
+      let tempArrayTwo: any = [];
 
       objectKeys.map((i, j) => {
         return tempArray.push({
@@ -135,44 +153,54 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
         });
       });
 
-      // console.log(tempArray);
+      objectKeys.map((i, j) => {
+        return tempArrayTwo.push({
+          sideMenu: i,
+          fields: Object.values(objectValueApp)[j],
+        });
+      });
 
       tempArray.map((i: any, n: number) => {
         arrThree.map((m: any, l: number) => {
           if (m.sideMenu === i.sideMenu) {
             m.fields.map((k: any, y: number) => {
-              // console.log(i.fields[k.label]);
-
-              // console.log({
-              //   id: k.id,
-              //   parent: k.id.split("")[0],
-              //   label: k.label,
-              //   value: i.fields[k.label],
-              //   defaultValues: "",
-              //   fieldType: k.fieldType,
-              //   isCorrect: "",
-              //   inspectionValue: "",
-              //   comments: "",
-              // });
-
-              return tempFormArray.push({
-                id: parseInt(k.id),
-                parent: parseInt(k.id.split("")[0]),
-                sideMenu: m.sideMenu,
-                label: k.label,
-                value: i.fields[k.label],
-                defaultValues: k.values,
-                fieldType: k.fieldType,
-                isCorrect: "",
-                inspectionValue: "",
-                comments: "",
-              });
+              if (!applicationData.inspectorDataObject) {
+                return tempFormArray.push({
+                  id: parseInt(k.id),
+                  parent: parseInt(k.id.split("")[0]),
+                  sideMenu: m.sideMenu,
+                  label: k.label,
+                  value: i.fields[k.label],
+                  defaultValues: k.defaultValues,
+                  fieldType: k.fieldType,
+                  isCorrect: "",
+                  inspectionValue: "",
+                  comments: "",
+                });
+              } else {
+                return tempFormArray.push({
+                  id: parseInt(k.id),
+                  parent: parseInt(k.id.split("")[0]),
+                  sideMenu: m.sideMenu,
+                  label: k.label,
+                  value: i.fields[k.label],
+                  defaultValues: k.defaultValues,
+                  fieldType: k.fieldType,
+                  isCorrect:
+                    tempArrayTwo[n].fields[k.label]["value"] === "correct"
+                      ? true
+                      : false,
+                  inspectionValue:
+                    tempArrayTwo[n].fields[k.label]["inspectionValue"],
+                  comments: tempArrayTwo[n].fields[k.label]["comments"],
+                });
+              }
             });
           }
+          return null;
         });
+        return null;
       });
-
-      // console.log(arrTwo);
 
       tempArray.map((y: any, f: number) => {
         y.fields = [];
@@ -185,7 +213,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
         return null;
       });
 
-      // console.log(tempArray);
+      setSelectedMenuLabel(tempArray[0].sideMenu);
 
       setProcessedData(tempArray);
     }
@@ -219,8 +247,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
   ) => {
     e.preventDefault();
 
-    // console.log(menuLabel, field, status);
-
     let tempArray = [...processedData];
 
     tempArray.map((i, j) => {
@@ -247,19 +273,17 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
               m.isCorrect = "";
             }
           }
+          return null;
         });
       }
+      return null;
     });
-
-    // console.log(tempArray);
 
     setProcessedData(tempArray);
   };
 
   const submitFieldCorrectness = (e: any, menuLabel: any, field: any) => {
     e.preventDefault();
-
-    // console.log(menuLabel, field);
 
     let comments: any = "";
     let correctField: any = "";
@@ -284,13 +308,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
             setModalInspectionValue(correctField);
             m.inspectionValue = correctField;
           }
+          return null;
         });
       }
+      return null;
     });
 
     setModalTextArea("");
     setModalInspectionValue("");
-    // console.log(tempArray);
     setProcessedData(tempArray);
   };
 
@@ -300,8 +325,9 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
       processedData.map((i, j) => {
         i.fields &&
           i.fields.map((m: any, n: number) => {
-            tempArray.push(m.isCorrect);
+            return tempArray.push(m.isCorrect);
           });
+        return null;
       });
 
       if (tempArray.includes("")) {
@@ -314,6 +340,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
         }
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMenuLabel, processedData]);
 
   const processFormData = (e: any) => {
@@ -333,10 +360,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
           },
           ...dataObject[i.sideMenu],
         };
+        return null;
       });
+      return null;
     });
-
-    // console.log(dataObject);
 
     history.push({
       pathname: `/inspection-summary/${formData.id}/${applicationData.applicationId}`,
@@ -386,7 +413,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
 
               {/* Form view */}
               <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mb-4">
-                {/* {console.log(selectedMenuData)} */}
                 {selectedMenuData.length > 0 &&
                   selectedMenuData.map((k: any, l: number) => {
                     switch (k.fieldType) {
@@ -409,6 +435,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
@@ -568,6 +595,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
@@ -729,6 +757,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
@@ -906,6 +935,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
@@ -1064,6 +1094,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
@@ -1223,6 +1254,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
@@ -1385,6 +1417,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
@@ -1488,8 +1521,8 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                                   label="Incorrect"
                                                   isModal={true}
                                                   modalId={
-                                                    k.label.replace(/\s/g, "").k
-                                                      .id
+                                                    k.label.replace(/\s/g, "") +
+                                                    k.id
                                                   }
                                                   clickHandler={(e) => {
                                                     onCheckCorrectness(
@@ -1540,6 +1573,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
@@ -1699,6 +1733,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
@@ -1856,6 +1891,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
@@ -2020,9 +2056,9 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                               : m.comments !== "" &&
                                 !m.inspectionValue &&
                                 m.isCorrect === undefined
-                              ? "Enter the correct value1"
+                              ? "Enter the correct value"
                               : !m.isCorrect && m.comments === ""
-                              ? "Enter the correct value2"
+                              ? "Enter the correct value"
                               : m.comments !== "" &&
                                 m.isCorrect === "" &&
                                 !m.inspectionValue
@@ -2037,7 +2073,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                               ? ""
                               : !m.comments && m.isCorrect && !m.inspectionValue
                               ? ""
-                              : "Enter the correct value3"
+                              : "Enter the correct value"
                           }
                           ariaLabel={`${
                             m.label
@@ -2098,6 +2134,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     processedData[n - 1].sideMenu
                                   );
                                 }
+                                return null;
                               });
                             }}
                           />
@@ -2123,6 +2160,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     processedData[n + 1].sideMenu
                                   );
                                 }
+                                return null;
                               });
                             }}
                           />

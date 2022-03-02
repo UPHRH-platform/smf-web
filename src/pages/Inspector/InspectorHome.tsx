@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Fragment, useEffect, useState } from "react";
 import { HeadingOne, HeadingTwo } from "../../components/headings";
 import { CardOne, CardTwo } from "../../components/cards";
 import Helper from "./../../helpers/auth";
 import { FormService } from "./../../services/form.service";
-import { APP, LANG } from "./../../constants";
+import { APP } from "./../../constants";
 import Notify from "./../../helpers/notify";
 import moment from "moment";
 
@@ -58,7 +59,7 @@ export const InspectorHome = ({ data }: InspectorProps) => {
     FormService.getApplicationsStatusCount().then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          console.log(response.responseData);
+          // console.log(response.responseData);
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
@@ -81,23 +82,22 @@ export const InspectorHome = ({ data }: InspectorProps) => {
         (response) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
             response.responseData.map((i: any, j: number) => {
-              if (i.status !== LANG.FORM_STATUS.INSPECTION_COMPLETED) {
-                if (
-                  moment(todayDate, "DD-MM-YYYY").isBefore(
-                    moment(i.inspection.scheduledDate, "DD-MM-YYYY")
-                  )
-                ) {
-                  setUpcoming((upcoming) => [...upcoming, i]);
-                } else if (
-                  moment(todayDate, "DD-MM-YYYY").isSame(
-                    moment(i.inspection.scheduledDate, "DD-MM-YYYY")
-                  )
-                ) {
-                  setScheduledToday((today) => [...today, i]);
-                } else {
-                  setPast((past) => [...past, i]);
-                }
+              if (
+                moment(todayDate, "DD-MM-YYYY").isBefore(
+                  moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                )
+              ) {
+                setUpcoming((upcoming) => [...upcoming, i]);
+              } else if (
+                moment(todayDate, "DD-MM-YYYY").isSame(
+                  moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                )
+              ) {
+                setScheduledToday((today) => [...today, i]);
+              } else {
+                setPast((past) => [...past, i]);
               }
+              return null;
             });
           } else {
             Notify.error(response.statusInfo.errorMessage);

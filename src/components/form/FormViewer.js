@@ -1,3 +1,7 @@
+/*eslint-disable no-redeclare*/
+/*eslint-disable no-multi-str*/ 
+/*eslint-disable eqeqeq*/ 
+/*eslint-disable jsx-a11y/anchor-is-valid */
 import { Component, Fragment } from "react";
 import Header from "../common/Header";
 import { LANG, APP } from "../../constants";
@@ -318,7 +322,7 @@ class FormViewer extends Component {
       if (
         Helper.getUserRole() === APP.ROLE.INSTITUTION &&
         (this.state.applicationDetails.status === LANG.FORM_STATUS.DRAFT ||
-        this.state.applicationDetails.status === LANG.FORM_STATUS.RETURNED)
+          this.state.applicationDetails.status === LANG.FORM_STATUS.RETURNED)
       ) {
         this.setState({
           showSaveAsDraft: true,
@@ -332,8 +336,8 @@ class FormViewer extends Component {
       // if status: not Draft - disable form edit & hide 'save as draft'
       if (
         Helper.getUserRole() === APP.ROLE.INSTITUTION &&
-        (this.state.applicationDetails.status !== LANG.FORM_STATUS.DRAFT &&
-        this.state.applicationDetails.status !== LANG.FORM_STATUS.RETURNED)
+        this.state.applicationDetails.status !== LANG.FORM_STATUS.DRAFT &&
+        this.state.applicationDetails.status !== LANG.FORM_STATUS.RETURNED
       ) {
         this.setState({
           showSaveAsDraft: false,
@@ -342,8 +346,6 @@ class FormViewer extends Component {
           this.disableFormElements();
         }, 300);
       }
-
-
     }
   };
 
@@ -584,29 +586,53 @@ class FormViewer extends Component {
                   </nav>
 
                   <div className="ml-4 fullWidth ">
-                    {this.props.match && this.props.match.params.applicationId && (
-                        this.state.applicationDetails.status !== LANG.FORM_STATUS.DRAFT &&
-                          <div className="mb-4">
-                              <StatusBarLarge
-                              isChange={false}
-                              status={this.state.applicationDetails.status}
-                              label={this.state.applicationDetails.status}
-                              timeStamp={this.state.applicationDetails.timestamp}
-                              applicationId={
-                                this.state.applicationDetails.applicationId
-                              }
-                              inspectionData={
-                                this.state.applicationDetails.inspection
-                                  ? this.state.applicationDetails.inspection
-                                  : ""
-                              }
-                              comments = {
-                                this.state.applicationDetails.comments ?
-                                this.state.applicationDetails.comments : ""
-                              }
-                            />
-                          </div>
-                    )}
+                    {this.props.match &&
+                      this.props.match.params.applicationId &&
+                      this.state.applicationDetails.status !==
+                        LANG.FORM_STATUS.DRAFT && (
+                        <div className="mb-4">
+                          <StatusBarLarge
+                            isChange={false}
+                            status={this.state.applicationDetails.status}
+                            approvedNote={
+                              this.state.applicationDetails.status !==
+                                LANG.FORM_STATUS.RETURNED &&
+                              (this.state.applicationDetails.status ===
+                                LANG.FORM_STATUS.APPROVED ||
+                                this.state.applicationDetails.status ===
+                                  LANG.FORM_STATUS.REJECTED)
+                                ? this.state.applicationDetails.notes
+                                : ""
+                            }
+                            inspectorSummary={
+                              this.state.applicationDetails.status ===
+                              LANG.FORM_STATUS.INSPECTION_COMPLETED
+                                ? this.state.applicationDetails
+                                    .inspectorSummaryDataObject &&
+                                  this.state.applicationDetails
+                                    .inspectorSummaryDataObject[
+                                    "Inspection Summary"
+                                  ]["Enter the summary of this inspection"]
+                                : ""
+                            }
+                            label={this.state.applicationDetails.status}
+                            timeStamp={this.state.applicationDetails.timestamp}
+                            applicationId={
+                              this.state.applicationDetails.applicationId
+                            }
+                            inspectionData={
+                              this.state.applicationDetails.inspection
+                                ? this.state.applicationDetails.inspection
+                                : ""
+                            }
+                            comments={
+                              this.state.applicationDetails.comments
+                                ? this.state.applicationDetails.comments
+                                : ""
+                            }
+                          />
+                        </div>
+                      )}
                     <div
                       id="content"
                       className="form-content  p-4 fullWidth white-bg"
@@ -787,7 +813,7 @@ class FormViewer extends Component {
                             //   this.props.match.params.applicationId !== undefined
                             // ) &&
                             Helper.getUserRole() === APP.ROLE.INSTITUTION &&
-                            this.state.showSaveAsDraft &&
+                              this.state.showSaveAsDraft &&
                               this.state.headingIndex ===
                                 this.state.formHeadings.length - 1 && (
                                 <button
