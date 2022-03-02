@@ -12,6 +12,7 @@ interface InspectCheckOneProps {
   comments?: any;
   modalId?: string;
   modalTriggerLabel?: string
+  clickHandler?: (event: any) => void;
 }
 
 export const InspectCheckOne = ({
@@ -20,10 +21,11 @@ export const InspectCheckOne = ({
   showComments,
   comments,
   modalId,
-  modalTriggerLabel
+  modalTriggerLabel,
+  clickHandler
 }: InspectCheckOneProps) => {
   return (
-    <div className={`${styles.inspect_check_one} p-4`}>
+    <div className={`${styles.inspect_check_one} p-4`} onClick={clickHandler}>
       <label>{label}</label>
       <div className="row">
         <div className="col-sm-12 col-md-8 col-lg-8 col-xl-8 col-xxl-8">
