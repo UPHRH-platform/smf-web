@@ -202,7 +202,18 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
         return null;
       });
 
-      tempArray.map((y: any, f: number) => {
+      // tempArray.map((y: any, f: number) => {
+      //   y.fields = [];
+      //   tempFormArray.map((g: any, d: number) => {
+      //     if (g.sideMenu === y.sideMenu) {
+      //       y.fields.push(g);
+      //     }
+      //     return null;
+      //   });
+      //   return null;
+      // });
+
+      arrThree.map((y: any, f: number) => {
         y.fields = [];
         tempFormArray.map((g: any, d: number) => {
           if (g.sideMenu === y.sideMenu) {
@@ -213,9 +224,13 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
         return null;
       });
 
-      setSelectedMenuLabel(tempArray[0].sideMenu);
+      setSelectedMenuLabel(arrThree[0].sideMenu);
 
-      setProcessedData(tempArray);
+      // console.log(tempArray)
+      // console.log(arrThree)
+
+      // setProcessedData(tempArray);
+      setProcessedData(arrThree)
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
