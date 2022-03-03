@@ -231,7 +231,7 @@ export const ReviewApplicationLayout = ({
       // console.log(arrThree)
 
       // setProcessedData(tempArray);
-      setProcessedData(arrThree)
+      setProcessedData(arrThree);
 
       getApplicationStatusLog(applicationData.applicationId);
     }
@@ -570,17 +570,27 @@ export const ReviewApplicationLayout = ({
                         ? applicationData.notes
                         : ""
                     }
-                    inspectorSummary={
-                      applicationData.status ===
-                      LANG.FORM_STATUS.INSPECTION_COMPLETED
-                        ? applicationData.inspectorSummaryDataObject &&
-                          applicationData.inspectorSummaryDataObject[
-                            "Inspection Summary"
-                          ]["Enter the summary of this inspection"]
-                        : ""
-                    }
                   />
                 )}
+                {applicationData.status ===
+                  LANG.FORM_STATUS.INSPECTION_COMPLETED &&
+                  applicationData.inspectorSummaryDataObject && (
+                    <div className="mt-3">
+                      <CardThree
+                        children={
+                          <div className="">
+                            <p>
+                              {
+                                applicationData.inspectorSummaryDataObject[
+                                  "Inspection Summary"
+                                ]["Enter the summary of this inspection"]
+                              }
+                            </p>
+                          </div>
+                        }
+                      />
+                    </div>
+                  )}
                 {selectedMenuData &&
                   selectedMenuData.map((k: any, l: number) => {
                     switch (k.fieldType) {
