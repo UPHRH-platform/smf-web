@@ -105,7 +105,6 @@ export const ReviewApplicationLayout = ({
             r.push([]);
             i++;
           }
-
           r.length > 0 && r[r.length - 1].push(s);
           return r;
         })(0),
