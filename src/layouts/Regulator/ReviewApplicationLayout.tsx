@@ -157,47 +157,70 @@ export const ReviewApplicationLayout = ({
         });
       });
 
-      tempArray.map((i: any, n: number) => {
-        arrThree.map((m: any, l: number) => {
-          if (m.sideMenu === i.sideMenu) {
-            m.fields.map((k: any, y: number) => {
-              if (!applicationData.inspectorDataObject) {
-                return tempFormArray.push({
-                  id: parseInt(k.id),
-                  parent: parseInt(k.id.split("")[0]),
-                  sideMenu: m.sideMenu,
-                  label: k.label,
-                  value: i.fields[k.label],
-                  defaultValues: k.defaultValues,
-                  fieldType: k.fieldType,
-                  isCorrect: "",
-                  inspectionValue: "",
-                  comments: "",
-                });
-              } else {
-                return tempFormArray.push({
-                  id: parseInt(k.id),
-                  parent: parseInt(k.id.split("")[0]),
-                  sideMenu: m.sideMenu,
-                  label: k.label,
-                  value: i.fields[k.label],
-                  defaultValues: k.defaultValues,
-                  fieldType: k.fieldType,
-                  isCorrect:
-                    tempArrayTwo[n].fields[k.label]["value"] === "correct"
-                      ? true
-                      : false,
-                  inspectionValue:
-                    tempArrayTwo[n].fields[k.label]["inspectionValue"],
-                  comments: tempArrayTwo[n].fields[k.label]["comments"],
-                });
-              }
-            });
-          }
+      if (arrThree.length !== 0) {
+        tempArray.map((i: any, n: number) => {
+          arrThree.map((m: any, l: number) => {
+            if (m.sideMenu === i.sideMenu) {
+              m.fields.map((k: any, y: number) => {
+                if (!applicationData.inspectorDataObject) {
+                  return tempFormArray.push({
+                    id: parseInt(k.id),
+                    parent: parseInt(k.id.split("")[0]),
+                    sideMenu: m.sideMenu,
+                    label: k.label,
+                    value: i.fields[k.label],
+                    defaultValues: k.values,
+                    fieldType: k.fieldType,
+                    isCorrect: "",
+                    inspectionValue: "",
+                    comments: "",
+                  });
+                } else {
+                  return tempFormArray.push({
+                    id: parseInt(k.id),
+                    parent: parseInt(k.id.split("")[0]),
+                    sideMenu: m.sideMenu,
+                    label: k.label,
+                    value: i.fields[k.label],
+                    defaultValues: k.values,
+                    fieldType: k.fieldType,
+                    isCorrect:
+                      tempArrayTwo[n].fields[k.label]["value"] === "correct"
+                        ? true
+                        : false,
+                    inspectionValue:
+                      tempArrayTwo[n].fields[k.label]["inspectionValue"],
+                    comments: tempArrayTwo[n].fields[k.label]["comments"],
+                  });
+                }
+              });
+            }
+            return null;
+          });
           return null;
         });
-        return null;
-      });
+      } else {
+        // console.log(arrOne);
+        tempArray.map((i: any, n: number) => {
+          arrOne.map((m: any, l: number) => {
+            return tempFormArray.push({
+              id: l,
+              parent: l,
+              sideMenu: i.sideMenu,
+              label: m.name,
+              value: i.fields[m.name],
+              defaultValues: m.values,
+              fieldType: m.fieldType,
+              isCorrect: "",
+              inspectionValue: "",
+              comments: "",
+            });
+          });
+          return null;
+        });
+      }
+
+      // console.log(tempFormArray)
 
       // tempArray.map((y: any, f: number) => {
       //   y.fields = [];
@@ -214,24 +237,42 @@ export const ReviewApplicationLayout = ({
 
       // setProcessedData(tempArray);
 
-      arrThree.map((y: any, f: number) => {
-        y.fields = [];
-        tempFormArray.map((g: any, d: number) => {
-          if (g.sideMenu === y.sideMenu) {
-            y.fields.push(g);
-          }
+      if (arrThree.length !== 0) {
+        arrThree.map((y: any, f: number) => {
+          y.fields = [];
+          tempFormArray.map((g: any, d: number) => {
+            if (g.sideMenu === y.sideMenu) {
+              y.fields.push(g);
+            }
+            return null;
+          });
           return null;
         });
-        return null;
-      });
+      } else {
+        tempArray.map((y: any, f: number) => {
+          y.fields = [];
+          tempFormArray.map((g: any, d: number) => {
+            if (g.sideMenu === y.sideMenu) {
+              y.fields.push(g);
+            }
+            return null;
+          });
+          return null;
+        });
+      }
 
-      setSelectedMenuLabel(arrThree[0].sideMenu);
+      if (arrThree.length > 0) {
+        setSelectedMenuLabel(arrThree[0].sideMenu);
+        setProcessedData(arrThree);
+      } else {
+        setSelectedMenuLabel(tempArray[0].sideMenu);
+        setProcessedData(tempArray);
+      }
 
       // console.log(tempArray)
       // console.log(arrThree)
 
       // setProcessedData(tempArray);
-      setProcessedData(arrThree)
 
       getApplicationStatusLog(applicationData.applicationId);
     }
@@ -581,7 +622,8 @@ export const ReviewApplicationLayout = ({
                     }
                   />
                 )}
-                {selectedMenuData &&
+
+                {selectedMenuData.length > 0 &&
                   selectedMenuData.map((k: any, l: number) => {
                     switch (k.fieldType) {
                       case "text":
