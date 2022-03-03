@@ -108,7 +108,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
             r.push([]);
             i++;
           }
-          r[r.length - 1].push(s);
+          r.length > 0 && r[r.length - 1].push(s);
           return r;
         })(0),
         []
@@ -224,13 +224,14 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
         return null;
       });
 
+      // console.log(tempArray)
+
       setSelectedMenuLabel(arrThree[0].sideMenu);
 
       // console.log(tempArray)
-      // console.log(arrThree)
-
+      
       // setProcessedData(tempArray);
-      setProcessedData(arrThree)
+      setProcessedData(arrThree);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
