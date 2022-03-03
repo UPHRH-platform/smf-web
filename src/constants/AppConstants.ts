@@ -10,9 +10,11 @@ export const APP = {
   },
   ROLE: {
     INSTITUTION: "Institution",
-    REGULATOR: "Regulator",
+    REGULATOR: "Regulator", // reviewer
     INSPECTOR: "Inspector",
-    REVIEWER: "Reviewer"
+  },
+  ROUTES: {
+    DASHBOARD: "/dashboard",
   },
   FILE_UPLOAD_ALLOWED_FORMATS : [
     'image/jpg', 

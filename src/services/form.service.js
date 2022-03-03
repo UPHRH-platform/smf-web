@@ -12,7 +12,8 @@ export const FormService = {
   submit,
   getAllApplications,
   findApplication,
-  uploadfile
+  uploadfile,
+  getApplicationsStatusCount
 };
 
 function get() {
@@ -79,14 +80,25 @@ function submit(form) {
   );
 }
 
-function getAllApplications(data) {
+function getAllApplications(req) {
   const requestOptions = {
     method: APP.REQUEST.POST,
-    body: JSON.stringify(data),
     headers: authHeader(),
+    body: JSON.stringify(req)
   };
   return fetch(
     APIS.BASE_URL + APIS.FORM.GET_ALL_APPLICATIONS,
+    requestOptions
+  ).then(handleResponse);
+}
+
+function getApplicationsStatusCount() {
+  const requestOptions = {
+    method: APP.REQUEST.GET,
+    headers: authHeader(),
+  };
+  return fetch(
+    APIS.BASE_URL + APIS.FORM.GET__APPLICATIONS_STATUS_COUNT,
     requestOptions
   ).then(handleResponse);
 }
@@ -118,6 +130,7 @@ function uploadfile(form) {
 }
 
 function handleResponse(response) {
+  
   return response.text().then((text) => {
     const data = text && JSON.parse(text);
     if (!response.ok) {

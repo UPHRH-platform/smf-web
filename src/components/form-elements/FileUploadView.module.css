@@ -1,0 +1,26 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+
+.file_uploaded_view {
+  border: 1px solid var(--black-16);
+  min-height: 12.875rem;
+}
+
+.file_upload_list {
+  background-color: var(--black-04);
+}
+
+.file_upload_list p {
+  color: var(--black-87);
+  font-family: "Lato-Regular";
+  font-size: 0.875rem;
+  letter-spacing: 0.25px;
+  line-height: 1.429;
+}
+
+.file_upload_list a {
+  color: var(--blue-primary);
+  font-family: "Lato-Bold";
+  font-size: 0.875rem;
+  letter-spacing: 0.5px;
+}

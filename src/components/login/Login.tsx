@@ -3,31 +3,30 @@ import { UserService } from "../../services/user.service";
 import Auth from "../../helpers/auth";
 import Notify from "../../helpers/notify";
 import { APP } from "../../constants";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 /**
  * Login component
  */
 interface LoginState {
-  email: string
-  enterOTPEnabled: boolean
-  OTPValue: string
+  email: string;
+  enterOTPEnabled: boolean;
+  OTPValue: string;
 }
 
 interface LoginProps {
-  history: any
+  history: any;
 }
 
-interface LoginState {
-}
+interface LoginState {}
 class Login extends Component<LoginProps, LoginState> {
-  formLayout: any
+  formLayout: any;
   constructor(props: any) {
     super(props);
     this.state = {
-      email: '',
+      email: "",
       enterOTPEnabled: false,
-      OTPValue: '',
+      OTPValue: "",
     };
     if (Auth.isLoggedIn()) {
       this.props.history.push("dashboard");
@@ -37,8 +36,8 @@ class Login extends Component<LoginProps, LoginState> {
 
     // for email/OTP login
     this.getOTP = this.getOTP.bind(this);
-    this.loginWithOTP = this.loginWithOTP.bind(this)
-    this.handleOTPFieldChange = this.handleOTPFieldChange.bind(this)
+    this.loginWithOTP = this.loginWithOTP.bind(this);
+    this.handleOTPFieldChange = this.handleOTPFieldChange.bind(this);
     // Notify.success('This is a test message.');
   }
 
@@ -48,7 +47,7 @@ class Login extends Component<LoginProps, LoginState> {
       event.target.email.value,
       event.target.password.value
     ).then(
-      response => {
+      (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           // console.log(response.responseData);
           localStorage.setItem("user", JSON.stringify(response.responseData));
@@ -57,7 +56,7 @@ class Login extends Component<LoginProps, LoginState> {
           Notify.error(response.statusInfo.errorMessage);
         }
       },
-      error => {
+      (error) => {
         error.statusInfo
           ? Notify.error(error.statusInfo.errorMessage)
           : Notify.error(error.message);
@@ -68,43 +67,41 @@ class Login extends Component<LoginProps, LoginState> {
 
   getOTP(event: any) {
     event.preventDefault();
-    const email = event.target.email.value
-    UserService.getOTP(
-      event.target.email.value,
-    ).then(
-      response => {
+    const email = event.target.email.value;
+    UserService.getOTP(event.target.email.value).then(
+      (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           // localStorage.setItem("user", JSON.stringify(response.responseData));
           // this.props.history.push("/dashboards");
+
+          // to reset OTP field
+          this.setState({ OTPValue: "" });
+
           this.setState({
             enterOTPEnabled: true,
-            email
-          })
+            email,
+          });
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
       },
-      error => {
+      (error) => {
         error.statusInfo
           ? Notify.error(error.statusInfo.errorMessage)
           : Notify.error(error.message);
         this.setState({
           enterOTPEnabled: false,
-          email
-        })
-      },
+          email,
+        });
+      }
     );
     return;
-
   }
 
   loginWithOTP(event: any) {
     event.preventDefault();
-    UserService.login(
-      this.state.email,
-      event.target.otp.value
-    ).then(
-      response => {
+    UserService.login(this.state.email, event.target.otp.value).then(
+      (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           localStorage.setItem("user", JSON.stringify(response.responseData));
           this.props.history.push("/dashboard");
@@ -112,22 +109,22 @@ class Login extends Component<LoginProps, LoginState> {
           Notify.error(response.statusInfo.errorMessage);
         }
       },
-      error => {
+      (error) => {
         error.statusInfo
           ? Notify.error(error.statusInfo.errorMessage)
           : Notify.error(error.message);
-      },
+      }
     );
     return;
   }
 
   handleOTPFieldChange(event: any) {
-    console.log(event)
+    // console.log(event)
     const re = /^[0-9\b]+$/;
-    if (event.target.value === '' || re.test(event.target.value)) {
-       this.setState({OTPValue: event.target.value})
+    if (event.target.value === "" || re.test(event.target.value)) {
+      this.setState({ OTPValue: event.target.value });
     }
-  } 
+  }
 
   render() {
     return (
@@ -135,17 +132,22 @@ class Login extends Component<LoginProps, LoginState> {
         <div className="d-md-flex d-lg-flex d-xl-flex fullHeight login-root text-center">
           {/* <div className="col-md-3 d-none d-md-block d-lg-block d-xl-block">
           </div> */}
-          <div className="col-xs-12 col-md-7 col-lg-6 col-xl-5  centerAlign verticalCenter " style={{ maxWidth: '100vw' }}>
-            <img src="img/Logo - Login.svg" className="mb-5 login-logo" alt="SMF-logo" />
-            <div className="row mt-5 d-none d-md-block d-lg-block d-xl-block">
-
-            </div>
+          <div
+            className="col-xs-12 col-md-7 col-lg-6 col-xl-5  centerAlign verticalCenter "
+            style={{ maxWidth: "100vw" }}
+          >
+            <img
+              src="img/Logo - Login.svg"
+              className="mb-5 login-logo"
+              alt="SMF-logo"
+            />
+            <div className="row mt-5 d-none d-md-block d-lg-block d-xl-block"></div>
             <div className="row">
               <div className="col-12  login-container">
                 <h4 className="mb-4">Login</h4>
-                {!this.state.enterOTPEnabled &&
+                {!this.state.enterOTPEnabled && (
                   <form className="form-signin" onSubmit={this.getOTP}>
-                    <label className="form-label" htmlFor="inputEmail" >
+                    <label className="form-label" htmlFor="inputEmail">
                       Email address
                     </label>
                     <input
@@ -165,10 +167,10 @@ class Login extends Component<LoginProps, LoginState> {
                       Get otp
                     </button>
                   </form>
-                }
-                {this.state.enterOTPEnabled &&
+                )}
+                {this.state.enterOTPEnabled && (
                   <form className="form-signin" onSubmit={this.loginWithOTP}>
-                    <label className="form-label" htmlFor="inputEmail" >
+                    <label className="form-label" htmlFor="inputEmail">
                       Enter OTP
                     </label>
                     <input
@@ -185,7 +187,7 @@ class Login extends Component<LoginProps, LoginState> {
                     <small id="otpHelp" className="form-text text-muted">
                       Enter the 6 digit OTP sent to your email address.
                     </small>
-                    
+
                     <button
                       className="btn btn-lg btn-primary btn-block text-uppercase"
                       id="loginBtn"
@@ -193,15 +195,15 @@ class Login extends Component<LoginProps, LoginState> {
                     >
                       SIGN IN
                     </button>
-                    <a
+                    <button
                       className="btn btn-block anchor-btn"
                       type="button"
-                      onClick={e=> this.setState({enterOTPEnabled: false})}
+                      onClick={(e) => this.setState({ enterOTPEnabled: false })}
                     >
                       Go back, re-enter the email
-                    </a>
+                    </button>
                   </form>
-                }
+                )}
                 {/* <form className="form-signin" onSubmit={this.handleSubmit}>
                   <label className="form-label" htmlFor="inputEmail" >
                     Email address

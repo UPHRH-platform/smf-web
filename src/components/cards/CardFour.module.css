@@ -1,0 +1,44 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+
+.card_four {
+  background-color: var(--white-90);
+  border-radius: 4px;
+  min-height: 5.875rem;
+  width: 100%;
+}
+
+.card_four h1 {
+  color: var(--black-87);
+  font-family: "Lato-Regular";
+  font-size: 1rem;
+  letter-spacing: 0.25px;
+  line-height: 1.5;
+}
+
+.card_four label {
+  color: var(--black-60);
+  font-family: "Lato-Regular";
+  font-size: 0.875rem;
+  letter-spacing: 0.25px;
+  line-height: 1.429;
+}
+
+.card_four_logo {
+  background-color: var(--green-01);
+  border-radius: 4px;
+  min-height: 3rem;
+  min-width: 3.063rem;
+}
+
+.card_four_logo_text {
+  color: var(--white-95);
+  font-family: "Lato-Bold" !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.25px !important;
+  line-height: 1.429 !important;
+  text-align: center;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+}

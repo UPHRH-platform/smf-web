@@ -16,6 +16,18 @@ export const LANG = {
     // rating: "Rating",
     file: "File",
   },
+  FORM_STATUS: {
+    DRAFT: "DRAFT",
+    NEW: "NEW",
+    PUBLISH: "PUBLISH",
+    UNPUBLISH: "UNPUBLISH",
+    UNDER_REVIEW: "UNDERREVIEW",
+    RETURNED: "RETURNED",
+    SENT_FOR_INSPECTION: "SENTFORINS",
+    INSPECTION_COMPLETED: "INSCOMPLETED",
+    APPROVED: "APPROVED",
+    REJECTED: "REJECTED"
+  },
   COL: {
     1: 1,
     2: 2,

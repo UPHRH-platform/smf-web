@@ -1,0 +1,41 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+
+.inspect_check_one {
+    background-color: var(--black-04);
+    border: 1px solid var(--black-08);
+    border-radius: 4px;
+    min-height: 8.25rem;
+}
+
+.inspect_check_one label {
+    color: var(--black-60);
+    font-family: "Lato-Bold";
+    font-size: 0.875rem;
+    letter-spacing: 0.25px;
+    line-height: 1.429;
+    cursor: pointer;
+}
+
+.inspect_check_one_custom_label_one {
+    color: var(--black-60);
+    font-family: "Lato-Bold";
+    font-size: 0.875rem;
+    letter-spacing: 0.5px;
+    line-height: 1.429;
+}
+
+.inspect_check_one_comments {
+    background-color: var(--white-100);
+    color: var(--black-60);
+    font-family: "Lato-Regular";
+    font-size: 0.875rem;
+    letter-spacing: 0.25px;
+    line-height: 1.5;
+    padding: 1.25rem 1.15rem 0.25rem 1.15rem;
+}
+
+.custom_material_icons {
+    color: var(--black-60);
+    vertical-align: middle;
+}

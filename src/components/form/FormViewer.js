@@ -1,3 +1,7 @@
+/*eslint-disable no-redeclare*/
+/*eslint-disable no-multi-str*/ 
+/*eslint-disable eqeqeq*/ 
+/*eslint-disable jsx-a11y/anchor-is-valid */
 import { Component, Fragment } from "react";
 import Header from "../common/Header";
 import { LANG, APP } from "../../constants";
@@ -13,6 +17,8 @@ import Textarea from "./fields/Textarea";
 import FileUpload from "./fields/FileUpload";
 import MultiSelect from "./fields/MultiSelect";
 import Helper from "../../helpers/auth";
+import { StatusBarLarge } from "../status-bar";
+// import { BtnTwo } from "../buttons";
 // const $ = window.$;
 
 class FormViewer extends Component {
@@ -26,6 +32,9 @@ class FormViewer extends Component {
       headingIndex: 0,
       formFields: {},
       formTitle: "",
+      applicationDetails: {},
+      showSaveAsDraft: true,
+      breadCrumbData: [],
     };
     this.toggleSideBar = this.toggleSideBar.bind(this);
     this.loadFormDetails = this.loadFormDetails.bind(this);
@@ -50,9 +59,42 @@ class FormViewer extends Component {
       this.props.match.params.applicationId !== null &&
       this.props.match.params.applicationId !== undefined
     ) {
+      if (Helper.getUserRole() === APP.ROLE.INSTITUTION) {
+        this.setState({
+          breadCrumbData: [
+            { title: "HOME", url: "/dashboard", icon: "" },
+            { title: "MY APPLICATIONS", url: "/applications", icon: "" },
+          ],
+        });
+      }
+      if (Helper.getUserRole() === APP.ROLE.REGULATOR) {
+        this.setState({
+          breadCrumbData: [
+            { title: "HOME", url: "/dashboard", icon: "" },
+            { title: "ALL APPLICATIONS", url: "/applications", icon: "" },
+          ],
+        });
+      }
       setTimeout(() => {
         this.populateForm(this.props.match.params.applicationId);
       }, 50);
+    } else {
+      if (Helper.getUserRole() === APP.ROLE.INSTITUTION) {
+        this.setState({
+          breadCrumbData: [
+            { title: "HOME", url: "/dashboard", icon: "" },
+            { title: "AVAILABLE FORMS", url: "/available-forms", icon: "" },
+          ],
+        });
+      }
+      if (Helper.getUserRole() === APP.ROLE.REGULATOR) {
+        this.setState({
+          breadCrumbData: [
+            { title: "HOME", url: "/dashboard", icon: "" },
+            { title: "MANAGE", url: "/manage", icon: "" },
+          ],
+        });
+      }
     }
   }
 
@@ -60,7 +102,7 @@ class FormViewer extends Component {
     if (nextProps.location.pathname !== this.props.location.pathname) {
       this.loadFormDetails(this.props.match.params.id);
       // console.log(this.props.match.params.applicationId);
-     
+
       if (this.props.match.params.applicationId !== null) {
         setTimeout(() => {
           this.populateForm(this.props.match.params.applicationId);
@@ -73,6 +115,17 @@ class FormViewer extends Component {
     FormService.find(formId).then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          this.setState({
+            breadCrumbData: [
+              ...this.state.breadCrumbData,
+              {
+                title:
+                  (response.responseData && response.responseData.title) || "",
+                url: "",
+                icon: "",
+              },
+            ],
+          });
           let fields = response.responseData.fields,
             i = 0,
             temp = [];
@@ -117,7 +170,10 @@ class FormViewer extends Component {
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           // console.log(response.responseData[0].dataObject);
-          var savedFields = response.responseData[0].dataObject;
+          this.setState({
+            applicationDetails: response.responseData,
+          });
+          var savedFields = response.responseData.dataObject;
           var fields = this.state.formDetails.fields;
           var newFields = {};
           // console.log(fields);
@@ -134,6 +190,10 @@ class FormViewer extends Component {
           }
           this.setState({
             formFields: newFields,
+            // breadCrumbData: [
+            //   { title: 'HOME', url: '/dashboard', icon: '' },
+            //   { title: 'MY APPLICATIONS', url: '/my-applications', icon: '' },
+            // ]
           });
           setTimeout(() => {
             this.populateData();
@@ -151,6 +211,35 @@ class FormViewer extends Component {
   };
 
   populateData = () => {
+    // console.log("populateData...");
+    // Removing existing data starts
+    var existingFields = this.state.formFieldGroups[this.state.headingIndex];
+    let inputs = document.getElementsByTagName("input");
+    if (
+      this.props.match.params.applicationId === null ||
+      this.props.match.params.applicationId === undefined
+    ) {
+      for (let m = 0; m < inputs.length; m++) {
+        for (var key of Object.keys(existingFields))
+          if (`field_${existingFields[key].order}` === inputs[m].name) {
+            inputs[m].type = existingFields[key].fieldType;
+          }
+        if (inputs[m].type !== "radio" && inputs[m].type !== "checkbox") {
+          inputs[m].value = "";
+        }
+      }
+      inputs = document.getElementsByTagName("select");
+      for (let n = 0; n < inputs.length; n++) inputs[n].value = "";
+    } else {
+      for (let m = 0; m < inputs.length; m++) {
+        for (var key of Object.keys(existingFields))
+          if (`field_${existingFields[key].order}` === inputs[m].name) {
+            inputs[m].type = existingFields[key].fieldType;
+          }
+      }
+    }
+    // Removing existing data ends
+
     // Code for files starts
     var fileElements = document.getElementsByClassName("custom-file-display");
     for (let ele1 = 0; ele1 < fileElements.length; ele1++) {
@@ -167,12 +256,12 @@ class FormViewer extends Component {
     // console.log(this.state.formFields);
     for (var key of Object.keys(fields)) {
       var element = document.getElementsByName(key);
-
       if (element.length > 0) {
         if (element[0].type === "checkbox" || element[0].type === "radio") {
           var len = element.length;
           let values = fields[key].split(",");
           for (var j = 0; j < len; j++) {
+            // console.log(values.includes(element[j].value));
             if (values.includes(element[j].value)) {
               element[j].parentNode.classList.add("selected");
               element[j].checked = true;
@@ -192,7 +281,6 @@ class FormViewer extends Component {
         } else if (element[0].type === "file") {
           element[0].setAttribute("path", fields[key]);
           element.innerHTML = "";
-          // alert();
 
           if (fields[key] !== "") {
             let temp = fields[key].split(",");
@@ -220,14 +308,49 @@ class FormViewer extends Component {
     }
 
     if (
-      (this.props.match.params.applicationId !== null &&
-        this.props.match.params.applicationId !== undefined)
+      this.props.match.params.applicationId !== null &&
+      this.props.match.params.applicationId !== undefined
     ) {
-      this.disableFormElements();
+      // if regulator disable form
+      if (Helper.getUserRole() === APP.ROLE.REGULATOR) {
+        setTimeout(() => {
+          this.disableFormElements();
+        }, 300);
+      }
+      // if institute,
+      // if status: Draft - enable form edit & show 'save as draft'
+      if (
+        Helper.getUserRole() === APP.ROLE.INSTITUTION &&
+        (this.state.applicationDetails.status === LANG.FORM_STATUS.DRAFT ||
+          this.state.applicationDetails.status === LANG.FORM_STATUS.RETURNED)
+      ) {
+        this.setState({
+          showSaveAsDraft: true,
+        });
+        // setTimeout(() => {
+        //   this.disableFormElements();
+        // }, 300);
+      }
+
+      // if institute,
+      // if status: not Draft - disable form edit & hide 'save as draft'
+      if (
+        Helper.getUserRole() === APP.ROLE.INSTITUTION &&
+        this.state.applicationDetails.status !== LANG.FORM_STATUS.DRAFT &&
+        this.state.applicationDetails.status !== LANG.FORM_STATUS.RETURNED
+      ) {
+        this.setState({
+          showSaveAsDraft: false,
+        });
+        setTimeout(() => {
+          this.disableFormElements();
+        }, 300);
+      }
     }
   };
 
   disableFormElements = () => {
+    // console.log("disableFormElements...");
     let fields = this.state.formFields;
     for (let key of Object.keys(fields)) {
       // console.log(key);
@@ -286,64 +409,70 @@ class FormViewer extends Component {
   };
 
   saveFields = (index) => {
-    let obj = this.state.formFields,
-      order = "";
-    var form = document.getElementById("application-form");
-    const formData = new FormData(form);
-    const data = Array.from(formData.entries()).reduce(
-      (memo, pair) => ({
-        ...memo,
-        [pair[0]]: pair[1],
-      }),
-      {}
-    );
-    for (let i = 0; i < this.state.formFieldGroups[index].length; i++) {
-      order = this.state.formFieldGroups[index][i]["order"];
-      obj["field_" + order] =
-        data["field_" + order] !== undefined ? data["field_" + order] : "";
-      var checkboxes = document.getElementsByClassName(
-        "field_" + order + "_checkbox"
+    // console.log("saveFields...");
+    if (
+      this.props.match.params.applicationId === null ||
+      this.props.match.params.applicationId === undefined
+    ) {
+      let obj = this.state.formFields,
+        order = "";
+      var form = document.getElementById("application-form");
+      const formData = new FormData(form);
+      const data = Array.from(formData.entries()).reduce(
+        (memo, pair) => ({
+          ...memo,
+          [pair[0]]: pair[1],
+        }),
+        {}
       );
-      if (checkboxes.length) {
-        if (checkboxes[0].type === "checkbox") {
-          var len = checkboxes.length;
-          let temp = [];
-          for (var j = 0; j < len; j++) {
-            if (checkboxes[j].checked) {
-              temp.push(checkboxes[j].value);
+      for (let i = 0; i < this.state.formFieldGroups[index].length; i++) {
+        order = this.state.formFieldGroups[index][i]["order"];
+        obj["field_" + order] =
+          data["field_" + order] !== undefined ? data["field_" + order] : "";
+        var checkboxes = document.getElementsByClassName(
+          "field_" + order + "_checkbox"
+        );
+        if (checkboxes.length) {
+          if (checkboxes[0].type === "checkbox") {
+            var len = checkboxes.length;
+            let temp = [];
+            for (var j = 0; j < len; j++) {
+              if (checkboxes[j].checked) {
+                temp.push(checkboxes[j].value);
+              }
+            }
+            obj["field_" + order] = temp.join();
+          }
+        }
+        var multiselects = document.getElementsByClassName(
+          "field_" + order + "_multiselect"
+        );
+        if (multiselects.length) {
+          var selected = [];
+          for (var option of multiselects[0].options) {
+            // console.log(option.value);
+            if (option.selected && option.value !== "Select from dropdown") {
+              selected.push(option.value);
             }
           }
-          obj["field_" + order] = temp.join();
+          obj["field_" + order] = selected.join();
         }
-      }
-      var multiselects = document.getElementsByClassName(
-        "field_" + order + "_multiselect"
-      );
-      if (multiselects.length) {
-        var selected = [];
-        for (var option of multiselects[0].options) {
-          // console.log(option.value);
-          if (option.selected && option.value !== "Select from dropdown") {
-            selected.push(option.value);
-          }
-        }
-        obj["field_" + order] = selected.join();
-      }
 
-      var files = document.getElementsByClassName("field_" + order + "_file");
-      if (files.length) {
-        obj["field_" + order] = files[0].getAttribute("path");
+        var files = document.getElementsByClassName("field_" + order + "_file");
+        if (files.length) {
+          obj["field_" + order] = files[0].getAttribute("path");
+        }
       }
+      this.setState({
+        formFields: obj,
+      });
     }
-    this.setState({
-      formFields: obj,
-    });
     // console.log(obj);
     // files={this.state.formFields["field_3"].split(",")}
     // console.log(this.state.formFields["field_3"]);
   };
 
-  submitForm = () => {
+  submitForm = (isDraft) => {
     var fieldsData = {},
       temp;
     var savedFields = this.state.formFields;
@@ -373,16 +502,21 @@ class FormViewer extends Component {
       version: this.state.formDetails.version,
       dataObject: fieldGroups,
       title: this.state.formDetails.title,
+      status: isDraft ? LANG.FORM_STATUS.DRAFT : LANG.FORM_STATUS.NEW,
+      ...(this.props.match.params.applicationId && {
+        applicationId: this.props.match.params.applicationId,
+      }),
     };
     // formDetails = JSON.stringify(formDetails);
+    // console.log(formDetails)
     FormService.submit(formDetails).then(
       (response) => {
-        console.log(response);
+        // console.log(response);
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
           Notify.success(response.statusInfo.statusMessage);
           setTimeout(() => {
             this.props.history.push("/dashboard");
-          }, 500);
+          }, 300);
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
@@ -398,7 +532,10 @@ class FormViewer extends Component {
   render() {
     return (
       <Fragment>
-        <Header history={this.props.history} />
+        <Header
+          history={this.props.history}
+          breadCrumb={this.state.breadCrumbData}
+        />
         <div className="container-fluid main-container">
           <div className="row">
             <div className="col-12">
@@ -409,78 +546,7 @@ class FormViewer extends Component {
                       {this.state.formDetails.title}
                     </h2>
                   </div>
-                  <div className="col-12">
-                    <div className="row mt-3">
-                      <div className="col-6 ">
-                        {this.state.headingIndex > 0 && (
-                          <button
-                            onClick={(e) => {
-                              this.saveFields(this.state.headingIndex);
-                              // if (this.validationPassed()) {
-                              this.setState({
-                                headingIndex: this.state.headingIndex - 1,
-                              });
-                              setTimeout(() => {
-                                this.populateData();
-                              }, 100);
-                              setTimeout(() => {
-                                this.populateData();
-                              }, 150);
-                              // }
-                            }}
-                            className="btn btn-primary smf-btn-primary float-left"
-                          >
-                            <i className="fa fa-arrow-left mr-2"></i>
-                            Previous
-                          </button>
-                        )}
-                      </div>
-                      <div className="col-6">
-                        <div className="pull-right">
-                          {!
-                            (this.props.match.params.applicationId !== null &&
-                            this.props.match.params.applicationId !==
-                              undefined) &&
-                            Helper.getUserRole() === APP.ROLE.INSTITUTION
-                           &&
-                            this.state.headingIndex ===
-                              this.state.formHeadings.length - 1 && (
-                              <button
-                                className="btn btn-outline smf-btn-default"
-                                onClick={(e) => {
-                                  this.saveFields(this.state.headingIndex);
-                                  if (this.validationPassed()) {
-                                    this.submitForm();
-                                  }
-                                }}
-                              >
-                                Save
-                              </button>
-                            )}
-                          {this.state.headingIndex <
-                            this.state.formHeadings.length - 1 && (
-                            <button
-                              onClick={(e) => {
-                                this.saveFields(this.state.headingIndex);
-                                if (this.validationPassed()) {
-                                  this.setState({
-                                    headingIndex: this.state.headingIndex + 1,
-                                  });
-                                  setTimeout(() => {
-                                    this.populateData();
-                                  }, 100);
-                                }
-                              }}
-                              className="btn btn-primary smf-btn-primary mr-0 ml-2"
-                            >
-                              Next
-                              <i className="fa fa-arrow-right ml-2"></i>
-                            </button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <div className="col-12"></div>
                 </div>
                 <div className="d-flex">
                   <nav
@@ -519,26 +585,77 @@ class FormViewer extends Component {
                     </ul>
                   </nav>
 
-                  <div
-                    id="content"
-                    className="form-content ml-4 mb-4 p-4 fullWidth white-bg"
-                  >
-                    <button
-                      type="button"
-                      id="sidebarCollapse"
-                      className={
-                        "btn btn-info d-sm-block d-md-none " +
-                        (this.state.showSidebar ? "d-none-imp" : "d-block-imp")
-                      }
-                      onClick={this.toggleSideBar}
+                  <div className="ml-4 fullWidth ">
+                    {this.props.match &&
+                      this.props.match.params.applicationId &&
+                      this.state.applicationDetails.status !==
+                        LANG.FORM_STATUS.DRAFT && (
+                        <div className="mb-4">
+                          <StatusBarLarge
+                            isChange={false}
+                            status={this.state.applicationDetails.status}
+                            approvedNote={
+                              this.state.applicationDetails.status !==
+                                LANG.FORM_STATUS.RETURNED &&
+                              (this.state.applicationDetails.status ===
+                                LANG.FORM_STATUS.APPROVED ||
+                                this.state.applicationDetails.status ===
+                                  LANG.FORM_STATUS.REJECTED)
+                                ? this.state.applicationDetails.notes
+                                : ""
+                            }
+                            inspectorSummary={
+                              this.state.applicationDetails.status ===
+                              LANG.FORM_STATUS.INSPECTION_COMPLETED
+                                ? this.state.applicationDetails
+                                    .inspectorSummaryDataObject &&
+                                  this.state.applicationDetails
+                                    .inspectorSummaryDataObject[
+                                    "Inspection Summary"
+                                  ]["Enter the summary of this inspection"]
+                                : ""
+                            }
+                            label={this.state.applicationDetails.status}
+                            timeStamp={this.state.applicationDetails.timestamp}
+                            applicationId={
+                              this.state.applicationDetails.applicationId
+                            }
+                            inspectionData={
+                              this.state.applicationDetails.inspection
+                                ? this.state.applicationDetails.inspection
+                                : ""
+                            }
+                            comments={
+                              this.state.applicationDetails.comments
+                                ? this.state.applicationDetails.comments
+                                : ""
+                            }
+                          />
+                        </div>
+                      )}
+                    <div
+                      id="content"
+                      className="form-content  p-4 fullWidth white-bg"
                     >
-                      <i className="fa fa-bars"></i>
-                      {/* <span>Toggle Sidebar</span> */}
-                    </button>
-                    <form id="application-form">
-                      {this.state.formFieldGroups.length > 0 &&
-                        this.state.formFieldGroups[this.state.headingIndex].map(
-                          (field, index) => {
+                      <button
+                        type="button"
+                        id="sidebarCollapse"
+                        className={
+                          "btn btn-info d-sm-block d-md-none " +
+                          (this.state.showSidebar
+                            ? "d-none-imp"
+                            : "d-block-imp")
+                        }
+                        onClick={this.toggleSideBar}
+                      >
+                        <i className="fa fa-bars"></i>
+                        {/* <span>Toggle Sidebar</span> */}
+                      </button>
+                      <form id="application-form" className="custom-form">
+                        {this.state.formFieldGroups.length > 0 &&
+                          this.state.formFieldGroups[
+                            this.state.headingIndex
+                          ].map((field, index) => {
                             // console.log(LANG.FIELD_TYPES[field.fieldType]);
                             switch (LANG.FIELD_TYPES[field.fieldType]) {
                               case LANG.FIELD_TYPES.text:
@@ -642,9 +759,99 @@ class FormViewer extends Component {
                               default:
                                 return <div key={index}></div>;
                             }
-                          }
+                          })}
+                      </form>
+                    </div>
+                    <div className="row mt-3 mb-4">
+                      <div className="col-12">
+                        {this.state.headingIndex > 0 && (
+                          <button
+                            onClick={(e) => {
+                              this.saveFields(this.state.headingIndex);
+                              // if (this.validationPassed()) {
+                              this.setState({
+                                headingIndex: this.state.headingIndex - 1,
+                              });
+                              setTimeout(() => {
+                                this.populateData();
+                              }, 100);
+                              setTimeout(() => {
+                                this.populateData();
+                              }, 150);
+                              // }
+                            }}
+                            className="btn btn-primary smf-btn-primary float-left mb-3"
+                          >
+                            <i className="fa fa-arrow-left mr-2"></i>
+                            Previous
+                          </button>
                         )}
-                    </form>
+                        <div className="pull-right">
+                          {
+                            // !(
+                            //   this.props.match.params.applicationId !== null &&
+                            //   this.props.match.params.applicationId !== undefined
+                            // ) &&
+                            Helper.getUserRole() === APP.ROLE.INSTITUTION &&
+                              this.state.showSaveAsDraft && (
+                                <button
+                                  className="btn btn-outline smf-btn-default mb-3"
+                                  onClick={(e) => {
+                                    this.saveFields(this.state.headingIndex);
+                                    // if (this.validationPassed()) {
+                                    this.submitForm(true);
+                                    // }
+                                  }}
+                                >
+                                  Save as draft
+                                </button>
+                              )
+                          }
+                          {
+                            // !(
+                            //   this.props.match.params.applicationId !== null &&
+                            //   this.props.match.params.applicationId !== undefined
+                            // ) &&
+                            Helper.getUserRole() === APP.ROLE.INSTITUTION &&
+                              this.state.showSaveAsDraft &&
+                              this.state.headingIndex ===
+                                this.state.formHeadings.length - 1 && (
+                                <button
+                                  className="btn smf-btn-primary mb-3"
+                                  onClick={(e) => {
+                                    this.saveFields(this.state.headingIndex);
+                                    if (this.validationPassed()) {
+                                      this.submitForm(false);
+                                    }
+                                  }}
+                                >
+                                  Submit application
+                                </button>
+                              )
+                          }
+                          {this.state.headingIndex <
+                            this.state.formHeadings.length - 1 && (
+                            <button
+                              onClick={(e) => {
+                                this.saveFields(this.state.headingIndex);
+                                if (this.validationPassed()) {
+                                  this.setState({
+                                    headingIndex: this.state.headingIndex + 1,
+                                  });
+                                  setTimeout(() => {
+                                    this.populateData();
+                                  }, 100);
+                                }
+                              }}
+                              className="btn btn-primary smf-btn-primary mr-0 ml-2 mb-3"
+                            >
+                              Next
+                              <i className="fa fa-arrow-right ml-2"></i>
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>

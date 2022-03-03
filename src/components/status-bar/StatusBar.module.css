@@ -11,13 +11,16 @@
   height: 1.5rem;
   min-height: 1.5rem;
   width: fit-content;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .status_one_label {
   color: var(--status-green);
   font-size: 0.75rem;
   font-family: "Lato-Regular";
-  letter-spacing: 0.21;
+  letter-spacing: 0.21px;
   line-height: 1.333;
   vertical-align: text-top;
 }
@@ -26,7 +29,16 @@
   color: var(--status-amber);
   font-size: 0.75rem;
   font-family: "Lato-Regular";
-  letter-spacing: 0.21;
+  letter-spacing: 0.21px;
+  line-height: 1.333;
+  vertical-align: text-top;
+}
+
+.status_three_label {
+  color: var(--status-red);
+  font-size: 0.75rem;
+  font-family: "Lato-Regular";
+  letter-spacing: 0.21px;
   line-height: 1.333;
   vertical-align: text-top;
 }

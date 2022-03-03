@@ -6,6 +6,7 @@ import { APP } from "./../../constants";
 import Notify from "./../../helpers/notify";
 import Helper from "./../../helpers/auth";
 import { ViewApplications } from "..";
+import { CardTwo } from "../../components/cards";
 
 /**
  * ReviewerApplications Component
@@ -19,12 +20,18 @@ interface ReviewerApplicationsState {
     applications: Array<{
         title: string,
         createdDate: Date,
-        status: string
+        status: string,
+        formId: number,
+        applicationId: string,
+        createdBy: string,
     }>,
     filteredApplications: Array<{
         title: string,
         createdDate: Date,
-        status: string
+        status: string,
+        formId: number,
+        applicationId: string,
+        createdBy: string,
     }>,
     currentStatus: string,
 }
@@ -45,7 +52,7 @@ class ReviewerApplications extends Component<ReviewerApplicationsProps, Reviewer
         this.state = {
             applications: [],
             filteredApplications: [],
-            currentStatus: "New",
+            currentStatus: "New"
         };
         this.filterApplications = this.filterApplications.bind(this);
     }
@@ -79,7 +86,15 @@ class ReviewerApplications extends Component<ReviewerApplicationsProps, Reviewer
 
     filterApplications = (status: string) => {
         // if (status === "New") status = "Submitted";
-        let applications = [];
+        let applications: Array<{
+            title: string,
+            createdDate: Date,
+            status: string,
+            formId: number,
+            applicationId: string,
+            createdBy: string,
+        }>;
+        applications = [];
         for (let i = 0; i < this.state.applications.length; i++) {
             if (this.state.applications[i].status === status || (status === "New" && this.state.applications[i].status === "Submitted")) {
                 applications.push(this.state.applications[i]);
@@ -141,31 +156,31 @@ class ReviewerApplications extends Component<ReviewerApplicationsProps, Reviewer
                             <div className="container dashboard-inner-container">
 
                                 <div className="row mt-1 pb-5">
-                                    {this.state.filteredApplications.map((application, key) => {
+                                    {this.state.filteredApplications.map((i, key) => {
                                         return (
-                                            <div className="col-md-3 col-sm-6 col-12 mb-3" key={key}>
-                                                <div className="dashboard-form-item">
-                                                    <h3 className="">{application.title}</h3>
-                                                    <p className="h3-subheading">
-                                                        <b>Collage name</b>
-                                                        <br />
-                                                        Recieved on: {" "}
-                                                        {this.formatDate(
-                                                            `${application.createdDate}` || "2022-01-01"
-                                                        )}
-                                                    </p>
-                                                    <div>
-                                                        <button className="form-item-button">
-                                                            Status: {application.status}
-                                                        </button>
-                                                    </div>
-                                                    <div className="mt-3">
-                                                        <button className="btn btn-default smf-btn-default highlighted mt-2">
-                                                            View application
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <div
+                                            className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mb-3"
+                                            key={i.applicationId}
+                                        >
+                                            <CardTwo
+                                                title={i.title}
+                                                name={i.createdBy}
+                                                time={`Created on: ${i.createdDate}`}
+                                                showStatus={true}
+                                                status={i.status}
+                                                statusLabel={i.status}
+                                                showBtn={true}
+                                                type="button"
+                                                btnText="View application"
+                                                isLink={true}
+                                                link={
+                                                    "/applications/" +
+                                                    i.formId 
+                                                    + "/" +
+                                                    i.applicationId
+                                                  }
+                                            />
+                                        </div>
                                         );
                                     })}
                                 </div>
