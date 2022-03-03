@@ -1,10 +1,8 @@
-import React, { Component, Fragment } from "react";
-import PropTypes from "prop-types";
+import { Component, Fragment } from "react";
 import { Link } from "react-router-dom";
 import { FormService } from "../../services/form.service";
 import { APP, LANG } from "../../constants";
 import Notify from "../../helpers/notify";
-import Header from "./../common/Header";
 import { BtnTwo } from "../buttons";
 
 class ListForms extends Component {

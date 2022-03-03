@@ -85,12 +85,14 @@ export const RegulatorAllApplications = ({
         if(selectedTab.length) {
             setSelectedTab("New")
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     useEffect(() => {
         if (currentData.length && selectedTab === "") {
             setSelectedTab("New");
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentData]);
 
     const getSelectedTabData = () => {

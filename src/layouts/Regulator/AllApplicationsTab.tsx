@@ -1,3 +1,4 @@
+/*eslint-disable no-empty-pattern*/
 import { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import {
@@ -24,6 +25,7 @@ export const AllApplicationsTab = ({}: AllApplicationsTabProps) => {
     if (selectedTabData && selectedTabData[0]) {
       setData(selectedTabData[0]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectTab]);
 
   return (

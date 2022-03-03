@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable no-mixed-operators */
 import { Fragment, useEffect, useState } from "react";
 import { useHistory } from "react-router";
 import { BtnOne, BtnTwo } from "../../components/buttons"
@@ -98,6 +100,7 @@ export const CreateUser = ({ data }: userProps) => {
               ])
             setIsEditMode(false)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -106,6 +109,7 @@ export const CreateUser = ({ data }: userProps) => {
         } else {
             handlesRoles(false)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isEditMode])
 
     const handlesRoles = (isEdit: boolean) => {
@@ -122,6 +126,7 @@ export const CreateUser = ({ data }: userProps) => {
                                     return { ...r, isChecked: false }
                                 }
                             })
+                            return null;
                         })
                         setRoles(rolesUpdated)
                     } else {
@@ -199,6 +204,7 @@ export const CreateUser = ({ data }: userProps) => {
             } else {
                 k.isChecked = false
             }
+            return null;
         });
 
         // tempRoles[i].isChecked  = !tempRoles[i].isChecked

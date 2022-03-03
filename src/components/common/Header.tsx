@@ -1,4 +1,5 @@
-import React, { Component, Fragment } from "react";
+/* eslint-disable no-mixed-operators */
+import { Component, Fragment } from "react";
 import Auth from "../../helpers/auth";
 import { Link } from "react-router-dom";
 import { UserService } from "../../services/user.service";
@@ -51,7 +52,7 @@ class Header extends Component<LoginProps, LoginState> {
               className="row"
             >
               <div className="col-6 pt-3">
-                <img src="./../../img/smf-header-logo.svg" className="img-fluid" alt="Responsive image" />
+                <img src="./../../img/smf-header-logo.svg" className="img-fluid" alt="SMF logo" />
               </div>
               <div className="col-6 pt-3">
                 <div className="dropdown">

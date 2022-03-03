@@ -1,5 +1,5 @@
-import { BtnOne } from "../buttons";
 import styles from "./ModalOne.module.css";
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import btnStyle from "../buttons/BtnOne.module.css";
 import { LANG } from "../../constants";
 
