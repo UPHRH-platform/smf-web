@@ -3,7 +3,6 @@ import stylesTwo from "../modal/InspectionScheduleModal.module.css";
 import { LANG } from "../../constants";
 import moment from "moment";
 import { HeadingFour } from "../headings";
-import { CardThree } from "../cards";
 
 /**
  * StatusBarLarge component renders
@@ -35,7 +34,7 @@ export const StatusBarLarge = ({
   applicationId,
   comments,
   isChange,
-  approvedNote
+  approvedNote,
 }: StatusBarLargeProps) => {
   // Function to format the status label
   const formatLabel = (labelStatus: string) => {
@@ -240,12 +239,15 @@ export const StatusBarLarge = ({
         </>
       )}
 
-      {approvedNote && (
-        <div className="ps-4 pe-4 mt-1">
-          <HeadingFour heading="Notes from final reviewer" />
-          <p className="p-0 mt-2">{approvedNote}</p>
-        </div>
-      )}
+      {/* {approvedNote && (
+        <>
+          <hr className="m-2 mx-3" />
+          <div className="ps-4 pe-4 mt-1">
+            <HeadingFour heading="Comments from reviewer" />
+            <p className="p-0 mt-2">{approvedNote}</p>
+          </div>
+        </>
+      )} */}
 
       {/* {inspectorSummary && (
         <div className="ps-4 pe-4 mt-1">

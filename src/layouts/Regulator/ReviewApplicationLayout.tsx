@@ -30,6 +30,8 @@ import { useHistory } from "react-router-dom";
 import { APP, LANG } from "../../constants";
 import Notify from "../../helpers/notify";
 import Helper from "../../helpers/auth";
+import styles from "../../components/status-bar/StatusBarLarge.module.css";
+import stylesTwo from "../../components/modal/InspectionScheduleModal.module.css";
 
 /**
  * ReviewApplicationLayout component renders
@@ -613,27 +615,134 @@ export const ReviewApplicationLayout = ({
                     }
                   />
                 )}
-                
+
                 {applicationData.status ===
                   LANG.FORM_STATUS.INSPECTION_COMPLETED &&
                   applicationData.inspectorSummaryDataObject && (
                     <div className="mt-3">
                       <CardThree
                         children={
-                          <div className="">
-                            <p>
-                              {
-                                applicationData.inspectorSummaryDataObject[
-                                  "Inspection Summary"
-                                ]["Enter the summary of this inspection"]
-                              }
-                            </p>
+                          <div className="p-4">
+                            <div className="">
+                              <TextAreaField
+                                isReadOnly={true}
+                                label="Inspection summary"
+                                showLabel={true}
+                                defaultValue={
+                                  applicationData.inspectorSummaryDataObject[
+                                    "Inspection Summary"
+                                  ]["Enter the summary of this inspection"]
+                                }
+                              />
+                            </div>
+                            <div className="pt-2">
+                              <label
+                                className={`${styles.status_bar_custom_heading}`}
+                              >
+                                Lead inspector
+                              </label>
+                              <div className="pt-3">
+                                {applicationData &&
+                                  applicationData.inspection &&
+                                  applicationData.inspection.assignedTo.map(
+                                    (k: any, l: number) => {
+                                      if (k.leadInspector) {
+                                        return (
+                                          <div
+                                            className={`${stylesTwo.inspector_name_list} mb-2`}
+                                            key={l}
+                                          >
+                                            <div className="row ps-3 pe-3">
+                                              <div className="d-flex flex-row">
+                                                <div
+                                                  className={`${stylesTwo.inspector_name_square}`}
+                                                >
+                                                  {k.firstName[0] +
+                                                    k.lastName[0]}
+                                                </div>
+                                                <p className="ps-2">
+                                                  {k.firstName}
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        );
+                                      }
+                                      return null;
+                                    }
+                                  )}
+                              </div>
+                            </div>
+                            <div className="pt-2">
+                              <label
+                                className={`${styles.status_bar_custom_heading}`}
+                              >
+                                Assisting inspector
+                              </label>
+                              <div className="pt-3">
+                                {applicationData &&
+                                  applicationData.inspection &&
+                                  applicationData.inspection.assignedTo.map(
+                                    (k: any, l: number) => {
+                                      if (!k.leadInspector) {
+                                        return (
+                                          <div
+                                            className={`${stylesTwo.inspector_name_list} mb-2`}
+                                            key={l}
+                                          >
+                                            <div className="row ps-3 pe-3">
+                                              <div className="d-flex flex-row">
+                                                <div
+                                                  className={`${stylesTwo.inspector_name_square}`}
+                                                >
+                                                  {k.firstName[0] +
+                                                    k.lastName[0]}
+                                                </div>
+                                                <p className="ps-2">
+                                                  {k.firstName}
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        );
+                                      }
+                                      return null;
+                                    }
+                                  )}
+                              </div>
+                            </div>
                           </div>
                         }
                       />
                     </div>
                   )}
-            
+
+                {(applicationData.status === LANG.FORM_STATUS.APPROVED ||
+                  applicationData.status === LANG.FORM_STATUS.REJECTED) && (
+                  <div className="mt-3">
+                    <div className="mt-3 mb-3">
+                      <CardThree
+                        children={
+                          <div className="p-4">
+                            <div className="">
+                              <TextAreaField
+                                isReadOnly={true}
+                                label="Comments from reviewer"
+                                showLabel={true}
+                                defaultValue={
+                                  applicationData.comments
+                                    ? applicationData.comments[0].value
+                                    : ""
+                                }
+                              />
+                            </div>
+                          </div>
+                        }
+                      />
+                    </div>
+                  </div>
+                )}
+
                 {selectedMenuData.length > 0 &&
                   selectedMenuData.map((k: any, l: number) => {
                     switch (k.fieldType) {
