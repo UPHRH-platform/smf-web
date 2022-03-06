@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
+/* eslint-disable no-multi-str */
+import { Component } from "react";
 // import LocalizedStrings from "react-localization";
 // import { translations } from "./../../../../translations.js";
 import { LANG, APP } from "./../../../constants/index";

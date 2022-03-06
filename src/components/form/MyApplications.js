@@ -1,6 +1,5 @@
-import React, { Component, Fragment } from "react";
+import { Component, Fragment } from "react";
 import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
 import { FormService } from "../../services/form.service";
 import { APP } from "../../constants";
 import Notify from "../../helpers/notify";

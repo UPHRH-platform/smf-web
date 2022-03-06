@@ -1,6 +1,6 @@
 /*eslint-disable no-redeclare*/
-/*eslint-disable no-multi-str*/ 
-/*eslint-disable eqeqeq*/ 
+/*eslint-disable no-multi-str*/
+/*eslint-disable eqeqeq*/
 /*eslint-disable jsx-a11y/anchor-is-valid */
 import { Component, Fragment } from "react";
 import Header from "../common/Header";
@@ -18,6 +18,8 @@ import FileUpload from "./fields/FileUpload";
 import MultiSelect from "./fields/MultiSelect";
 import Helper from "../../helpers/auth";
 import { StatusBarLarge } from "../status-bar";
+import { CardThree } from "../cards";
+import { TextAreaField } from "../form-elements";
 // import { BtnTwo } from "../buttons";
 // const $ = window.$;
 
@@ -590,48 +592,79 @@ class FormViewer extends Component {
                       this.props.match.params.applicationId &&
                       this.state.applicationDetails.status !==
                         LANG.FORM_STATUS.DRAFT && (
-                        <div className="mb-4">
-                          <StatusBarLarge
-                            isChange={false}
-                            status={this.state.applicationDetails.status}
-                            approvedNote={
-                              this.state.applicationDetails.status !==
-                                LANG.FORM_STATUS.RETURNED &&
-                              (this.state.applicationDetails.status ===
-                                LANG.FORM_STATUS.APPROVED ||
+                        <>
+                          <div className="mb-4">
+                            <StatusBarLarge
+                              isChange={false}
+                              status={this.state.applicationDetails.status}
+                              approvedNote={
+                                this.state.applicationDetails.status !==
+                                  LANG.FORM_STATUS.RETURNED &&
+                                (this.state.applicationDetails.status ===
+                                  LANG.FORM_STATUS.APPROVED ||
+                                  this.state.applicationDetails.status ===
+                                    LANG.FORM_STATUS.REJECTED)
+                                  ? this.state.applicationDetails.notes
+                                  : ""
+                              }
+                              inspectorSummary={
                                 this.state.applicationDetails.status ===
-                                  LANG.FORM_STATUS.REJECTED)
-                                ? this.state.applicationDetails.notes
-                                : ""
-                            }
-                            inspectorSummary={
-                              this.state.applicationDetails.status ===
-                              LANG.FORM_STATUS.INSPECTION_COMPLETED
-                                ? this.state.applicationDetails
-                                    .inspectorSummaryDataObject &&
-                                  this.state.applicationDetails
-                                    .inspectorSummaryDataObject[
-                                    "Inspection Summary"
-                                  ]["Enter the summary of this inspection"]
-                                : ""
-                            }
-                            label={this.state.applicationDetails.status}
-                            timeStamp={this.state.applicationDetails.timestamp}
-                            applicationId={
-                              this.state.applicationDetails.applicationId
-                            }
-                            inspectionData={
-                              this.state.applicationDetails.inspection
-                                ? this.state.applicationDetails.inspection
-                                : ""
-                            }
-                            comments={
-                              this.state.applicationDetails.comments
-                                ? this.state.applicationDetails.comments
-                                : ""
-                            }
-                          />
-                        </div>
+                                LANG.FORM_STATUS.INSPECTION_COMPLETED
+                                  ? this.state.applicationDetails
+                                      .inspectorSummaryDataObject &&
+                                    this.state.applicationDetails
+                                      .inspectorSummaryDataObject[
+                                      "Inspection Summary"
+                                    ]["Enter the summary of this inspection"]
+                                  : ""
+                              }
+                              label={this.state.applicationDetails.status}
+                              timeStamp={
+                                this.state.applicationDetails.timestamp
+                              }
+                              applicationId={
+                                this.state.applicationDetails.applicationId
+                              }
+                              inspectionData={
+                                this.state.applicationDetails.inspection
+                                  ? this.state.applicationDetails.inspection
+                                  : ""
+                              }
+                              comments={
+                                this.state.applicationDetails.comments
+                                  ? this.state.applicationDetails.comments
+                                  : ""
+                              }
+                            />
+                          </div>
+
+                          {(this.state.applicationDetails.status ===
+                            LANG.FORM_STATUS.APPROVED ||
+                            this.state.applicationDetails.status ===
+                              LANG.FORM_STATUS.REJECTED) && (
+                            <div className="mt-3 mb-3">
+                              <CardThree
+                                children={
+                                  <div className="p-4">
+                                    <div className="">
+                                      <TextAreaField
+                                        isReadOnly={true}
+                                        label="Comments from reviewer"
+                                        showLabel={true}
+                                        defaultValue={
+                                          this.state.applicationDetails.comments
+                                            ? this.state.applicationDetails
+                                                .comments[0].value
+                                            : ""
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                }
+                              />
+                            </div>
+                          )}
+                        </>
                       )}
                     <div
                       id="content"

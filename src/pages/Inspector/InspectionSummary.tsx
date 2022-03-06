@@ -1,4 +1,4 @@
-import { Fragment, useEffect } from "react";
+import { Fragment } from "react";
 import Header from "../../components/common/Header";
 import { useHistory } from 'react-router-dom';
 import { InspectionSummaryLayout } from "../../layouts";

@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { LANG } from "../../constants";
 import styles from "./StatusBar.module.css";
 

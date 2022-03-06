@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import { Component } from "react";
 import { UserService } from "../../services/user.service";
 import Auth from "../../helpers/auth";
 import Notify from "../../helpers/notify";

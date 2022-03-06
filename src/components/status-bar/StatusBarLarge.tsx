@@ -21,7 +21,6 @@ interface StatusBarLargeProps {
   isChange: boolean;
   comments?: any;
   approvedNote?: string;
-  inspectorSummary?: string;
 }
 
 export const StatusBarLarge = ({
@@ -36,7 +35,6 @@ export const StatusBarLarge = ({
   comments,
   isChange,
   approvedNote,
-  inspectorSummary,
 }: StatusBarLargeProps) => {
   // Function to format the status label
   const formatLabel = (labelStatus: string) => {
@@ -241,19 +239,22 @@ export const StatusBarLarge = ({
         </>
       )}
 
-      {approvedNote && (
-        <div className="ps-4 pe-4 mt-1">
-          <HeadingFour heading="Notes from final reviewer" />
-          <p className="p-0 mt-2">{approvedNote}</p>
-        </div>
-      )}
+      {/* {approvedNote && (
+        <>
+          <hr className="m-2 mx-3" />
+          <div className="ps-4 pe-4 mt-1">
+            <HeadingFour heading="Comments from reviewer" />
+            <p className="p-0 mt-2">{approvedNote}</p>
+          </div>
+        </>
+      )} */}
 
-      {inspectorSummary && (
+      {/* {inspectorSummary && (
         <div className="ps-4 pe-4 mt-1">
           <HeadingFour heading="Inspection summary" />
           <p className="p-0 mt-2">{inspectorSummary}</p>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
