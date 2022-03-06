@@ -160,6 +160,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
         });
       });
 
+      if (arrThree.length !== 0) {
       tempArray.map((i: any, n: number) => {
         arrThree.map((m: any, l: number) => {
           if (m.sideMenu === i.sideMenu) {
@@ -171,7 +172,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                   sideMenu: m.sideMenu,
                   label: k.label,
                   value: i.fields[k.label],
-                  defaultValues: k.defaultValues,
+                  defaultValues: k.values,
                   fieldType: k.fieldType,
                   isCorrect: "",
                   inspectionValue: "",
@@ -184,7 +185,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                   sideMenu: m.sideMenu,
                   label: k.label,
                   value: i.fields[k.label],
-                  defaultValues: k.defaultValues,
+                  defaultValues: k.values,
                   fieldType: k.fieldType,
                   isCorrect:
                     tempArrayTwo[n].fields[k.label]["value"] === "correct"
@@ -201,6 +202,25 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
         });
         return null;
       });
+    } else {
+      tempArray.map((i: any, n: number) => {
+        arrOne.map((m: any, l: number) => {
+          return tempFormArray.push({
+            id: l,
+            parent: l,
+            sideMenu: i.sideMenu,
+            label: m.name,
+            value: i.fields[m.name],
+            defaultValues: m.values,
+            fieldType: m.fieldType,
+            isCorrect: "",
+            inspectionValue: "",
+            comments: "",
+          });
+        });
+        return null;
+      });
+    }
 
       // tempArray.map((y: any, f: number) => {
       //   y.fields = [];
@@ -213,25 +233,45 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
       //   return null;
       // });
 
-      arrThree.map((y: any, f: number) => {
-        y.fields = [];
-        tempFormArray.map((g: any, d: number) => {
-          if (g.sideMenu === y.sideMenu) {
-            y.fields.push(g);
-          }
+      if (arrThree.length !== 0) {
+        arrThree.map((y: any, f: number) => {
+          y.fields = [];
+          tempFormArray.map((g: any, d: number) => {
+            if (g.sideMenu === y.sideMenu) {
+              y.fields.push(g);
+            }
+            return null;
+          });
           return null;
         });
-        return null;
-      });
+      } else {
+        tempArray.map((y: any, f: number) => {
+          y.fields = [];
+          tempFormArray.map((g: any, d: number) => {
+            if (g.sideMenu === y.sideMenu) {
+              y.fields.push(g);
+            }
+            return null;
+          });
+          return null;
+        });
+      }
+
+      // console.log(tempArray)
+      if (arrThree.length > 0) {
+        setSelectedMenuLabel(arrThree[0].sideMenu);
+        setProcessedData(arrThree);
+      } else {
+        setSelectedMenuLabel(tempArray[0].sideMenu);
+        setProcessedData(tempArray);
+      }
+
+      // setSelectedMenuLabel(arrThree[0].sideMenu);
 
       // console.log(tempArray)
 
-      setSelectedMenuLabel(arrThree[0].sideMenu);
-
-      // console.log(tempArray)
-      
       // setProcessedData(tempArray);
-      setProcessedData(arrThree);
+      // setProcessedData(arrThree);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
