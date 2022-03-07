@@ -635,6 +635,7 @@ class FormViewer extends Component {
                                   ? this.state.applicationDetails.comments
                                   : ""
                               }
+                              showInspectionDetails={true}
                             />
                           </div>
 

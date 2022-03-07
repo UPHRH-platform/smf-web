@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom } from "recoil";;
 
 // Inspector - View applications
 export const sideMenuData = atom({

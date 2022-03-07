@@ -7,21 +7,24 @@ import {
   sideMenuData as selectedSideMenuDataAtom,
   sideMenuLabel as sideMenuLabelAtom,
 } from "../../states/atoms";
-import { ConsentFormView, FormView } from "../../layouts";
+import { ConsentFormView } from "../../layouts";
 import { FormService } from "./../../services/form.service";
 import { APP, LANG } from "./../../constants";
 import Notify from "./../../helpers/notify";
 
 /**
- * ViewApplications component renders
+ * ViewConsentApplications component renders
  * application detail page layout and its UI components
+ * for assisting inspector rol
  */
 
-interface ViewApplicationsProps {
+interface ViewConsentApplicationsProps {
   data?: any;
 }
 
-export const ViewApplications = ({ data }: ViewApplicationsProps) => {
+export const ViewConsentApplications = ({
+  data,
+}: ViewConsentApplicationsProps) => {
   const [formData, setFormData] = useState({});
   const [applicationData, setApplicationData] = useState<any>({});
   const [breadcrumbData, setBreadcrumbData] = useState<any>([
@@ -107,8 +110,25 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
     <Fragment>
       <Header history={history} breadCrumb={breadcrumbData} />
       <div className="container-fluid">
-        <div className="container dashboard-inner-container mt-4">
-          <FormView formData={formData} applicationData={applicationData} />
+        <div className="container dashboard-inner-container">
+          {applicationData.inspection &&
+            applicationData.inspection.status ===
+              LANG.FORM_STATUS.SENT_FOR_INSPECTION && (
+              <ConsentFormView
+                formData={formData}
+                applicationData={applicationData}
+                showConsentBtns={true}
+              />
+            )}
+             {applicationData.inspection &&
+            applicationData.inspection.status ===
+              LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED && (
+              <ConsentFormView
+                formData={formData}
+                applicationData={applicationData}
+                showConsentBtns={false}
+              />
+            )}
         </div>
       </div>
     </Fragment>

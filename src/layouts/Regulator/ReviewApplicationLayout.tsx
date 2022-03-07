@@ -613,6 +613,7 @@ export const ReviewApplicationLayout = ({
                         ? applicationData.notes
                         : ""
                     }
+                    showInspectionDetails={true}
                   />
                 )}
 
@@ -686,24 +687,39 @@ export const ReviewApplicationLayout = ({
                                     (k: any, l: number) => {
                                       if (!k.leadInspector) {
                                         return (
-                                          <div
-                                            className={`${stylesTwo.inspector_name_list} mb-2`}
-                                            key={l}
-                                          >
-                                            <div className="row ps-3 pe-3">
-                                              <div className="d-flex flex-row">
-                                                <div
-                                                  className={`${stylesTwo.inspector_name_square}`}
-                                                >
-                                                  {k.firstName[0] +
-                                                    k.lastName[0]}
+                                          <>
+                                            <div
+                                              className={`${stylesTwo.inspector_name_list} mb-2`}
+                                              key={l}
+                                            >
+                                              <div className="row ps-3 pe-3">
+                                                <div className="d-flex flex-row">
+                                                  <div
+                                                    className={`${stylesTwo.inspector_name_square}`}
+                                                  >
+                                                    {k.firstName[0] +
+                                                      k.lastName[0]}
+                                                  </div>
+                                                  <p className="ps-2">
+                                                    {k.firstName}
+                                                  </p>
                                                 </div>
-                                                <p className="ps-2">
-                                                  {k.firstName}
-                                                </p>
                                               </div>
                                             </div>
-                                          </div>
+                                            {/* <div className="px-4">
+                                              {k.comments && (
+                                                <div className="">
+                                                  <TextField
+                                                    showLabel={true}
+                                                    label="Comments"
+                                                    type="text"
+                                                    defaultValue={k.comments}
+                                                    isReadOnly={true}
+                                                  />
+                                                </div>
+                                              )}
+                                            </div> */}
+                                          </>
                                         );
                                       }
                                       return null;

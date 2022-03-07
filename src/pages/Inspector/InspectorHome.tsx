@@ -4,7 +4,7 @@ import { HeadingOne, HeadingTwo } from "../../components/headings";
 import { CardOne, CardTwo } from "../../components/cards";
 import Helper from "./../../helpers/auth";
 import { FormService } from "./../../services/form.service";
-import { APP } from "./../../constants";
+import { APP, LANG } from "./../../constants";
 import Notify from "./../../helpers/notify";
 import moment from "moment";
 
@@ -12,34 +12,6 @@ import moment from "moment";
  * Inspector component renders
  * inspector page layout and its UI components
  */
-
-const InspectorMetrics = [
-  {
-    id: 0,
-    count: 2,
-    title: "Total pending",
-  },
-  {
-    id: 1,
-    count: 1,
-    title: "Received today",
-  },
-  {
-    id: 2,
-    count: 1,
-    title: "In progress",
-  },
-  {
-    id: 3,
-    count: 0,
-    title: "Reviewed today",
-  },
-  {
-    id: 4,
-    count: 32,
-    title: "Reviewed in total",
-  },
-];
 
 interface InspectorProps {
   data?: any;
@@ -49,17 +21,33 @@ export const InspectorHome = ({ data }: InspectorProps) => {
   const [scheduledToday, setScheduledToday] = useState<any[]>([]);
   const [upcoming, setUpcoming] = useState<any[]>([]);
   const [past, setPast] = useState<any[]>([]);
+  const [scheduledTodayForConsent, setScheduledTodayForConsent] = useState<
+    any[]
+  >([]);
+  const [upcomingForConsent, setUpcomingForConsent] = useState<any[]>([]);
+  const [pastForConsent, setPastForConsent] = useState<any[]>([]);
+  const [inspectorMetrics, setInspectorMetrics] = useState<any[]>([]);
+  const [userDetails, setUserDetails] = useState<any>(
+    localStorage.getItem("user")
+  );
 
   useEffect(() => {
-    getAllApplications();
-    // getDashboardData();
+    let user: any = JSON.parse(userDetails);
+    setUserDetails(user);
   }, []);
+
+  useEffect(() => {
+    if (userDetails.id) {
+      getAllApplications();
+      getDashboardData();
+    }
+  }, [userDetails]);
 
   const getDashboardData = () => {
     FormService.getApplicationsStatusCount().then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          // console.log(response.responseData);
+          setInspectorMetrics(response.responseData["keyValues"]);
         } else {
           Notify.error(response.statusInfo.errorMessage);
         }
@@ -75,27 +63,80 @@ export const InspectorHome = ({ data }: InspectorProps) => {
   const getAllApplications = () => {
     let todayDate = moment().format("DD-MM-YYYY");
     if (Helper.getUserRole() === APP.ROLE.INSPECTOR) {
-      let data = {
-        searchObjects: [],
+      let data = {};
+      let dataForConsent = {
+        filterObjects: [
+          {
+            key: "toConsent",
+            values: true,
+          },
+        ],
       };
+
       FormService.getAllApplications(data).then(
         (response) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
             response.responseData.map((i: any, j: number) => {
               if (
-                moment(todayDate, "DD-MM-YYYY").isBefore(
-                  moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                i.inspection.leadInspector.includes(
+                  userDetails && userDetails.id
                 )
               ) {
-                setUpcoming((upcoming) => [...upcoming, i]);
-              } else if (
-                moment(todayDate, "DD-MM-YYYY").isSame(
-                  moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                if (
+                  moment(todayDate, "DD-MM-YYYY").isBefore(
+                    moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                  )
+                ) {
+                  setUpcoming((upcoming) => [...upcoming, i]);
+                } else if (
+                  moment(todayDate, "DD-MM-YYYY").isSame(
+                    moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                  )
+                ) {
+                  setScheduledToday((today) => [...today, i]);
+                } else {
+                  setPast((past) => [...past, i]);
+                }
+              }
+              return null;
+            });
+          } else {
+            Notify.error(response.statusInfo.errorMessage);
+          }
+        },
+        (error) => {
+          error.statusInfo
+            ? Notify.error(error.statusInfo.errorMessage)
+            : Notify.error(error.message);
+        }
+      );
+
+      FormService.getAllApplications(dataForConsent).then(
+        (response) => {
+          if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+            response.responseData.map((i: any, j: number) => {
+              if (
+                i.inspection.status ===
+                  LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED &&
+                !i.inspection.leadInspector.includes(
+                  userDetails && userDetails.id
                 )
               ) {
-                setScheduledToday((today) => [...today, i]);
-              } else {
-                setPast((past) => [...past, i]);
+                if (
+                  moment(todayDate, "DD-MM-YYYY").isBefore(
+                    moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                  )
+                ) {
+                  setUpcomingForConsent((upcoming) => [...upcoming, i]);
+                } else if (
+                  moment(todayDate, "DD-MM-YYYY").isSame(
+                    moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                  )
+                ) {
+                  setScheduledTodayForConsent((today) => [...today, i]);
+                } else {
+                  setPastForConsent((past) => [...past, i]);
+                }
               }
               return null;
             });
@@ -120,13 +161,13 @@ export const InspectorHome = ({ data }: InspectorProps) => {
           <section className="pt-3">
             <HeadingOne heading="Your activity" />
             <div className="row pt-2">
-              {InspectorMetrics.map((i, j) => {
+              {inspectorMetrics.map((i, j) => {
                 return (
                   <div
                     className="col-sm-12 col-md-4 col-lg-2 col-xl-2 col-xxl-2 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0 mt-xxl-0"
-                    key={i.id}
+                    key={j}
                   >
-                    <CardOne count={i.count} title={i.title} />
+                    <CardOne count={i.value} title={i.key} />
                   </div>
                 );
               })}
@@ -134,36 +175,72 @@ export const InspectorHome = ({ data }: InspectorProps) => {
           </section>
 
           {/* Section two */}
-          <section className="mt-5">
-            <HeadingOne heading="Scheduled today" />
-            <HeadingTwo heading="These are latest applications that is pending for your review/approval" />
-            <div className="row mt-3">
-              {scheduledToday.map((i, j) => {
-                return (
-                  <div
-                    className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0 mt-xxl-0"
-                    key={j}
-                  >
-                    <CardTwo
-                      title={i.title}
-                      name={i.updatedBy ? i.updatedBy : i.createdBy}
-                      time={`Scheduled on: ${
-                        i.inspection ? i.inspection.scheduledDate : ""
-                      }`}
-                      showStatus={false}
-                      status=""
-                      statusLabel=""
-                      showBtn={true}
-                      type="button"
-                      btnText="View application"
-                      isLink={true}
-                      link={`/inspector/${i.formId}/${i.applicationId}`}
-                    />
-                  </div>
-                );
-              })}
-            </div>
-          </section>
+          {scheduledTodayForConsent.length > 0 && (
+            <section className="mt-5">
+              <HeadingOne heading="Needs consent" />
+              <HeadingTwo heading="These are the applications that you were part of. Kindky go through the inspection report and give your consent." />
+              <div className="row mt-3">
+                {scheduledTodayForConsent.map((i, j) => {
+                  return (
+                    <div
+                      className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0 mt-xxl-0"
+                      key={j}
+                    >
+                      <CardTwo
+                        title={i.title}
+                        name={i.updatedBy ? i.updatedBy : i.createdBy}
+                        time={`Inspected on: ${
+                          i.inspection ? i.inspection.scheduledDate : ""
+                        }`}
+                        showStatus={false}
+                        status=""
+                        statusLabel=""
+                        showBtn={true}
+                        type="button"
+                        btnText="View application"
+                        isLink={true}
+                        link={`/assisting-inspector/${i.formId}/${i.applicationId}`}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
+
+          {/* Section three */}
+          {scheduledToday.length > 0 && (
+            <section className="mt-5">
+              <HeadingOne heading="Scheduled today" />
+              <HeadingTwo heading="These are latest applications that is pending for your review/approval" />
+              <div className="row mt-3">
+                {scheduledToday.map((i, j) => {
+                  return (
+                    <div
+                      className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0 mt-xxl-0"
+                      key={j}
+                    >
+                      <CardTwo
+                        title={i.title}
+                        name={i.updatedBy ? i.updatedBy : i.createdBy}
+                        time={`Scheduled on: ${
+                          i.inspection ? i.inspection.scheduledDate : ""
+                        }`}
+                        showStatus={false}
+                        status=""
+                        statusLabel=""
+                        showBtn={true}
+                        type="button"
+                        btnText="View application"
+                        isLink={true}
+                        link={`/inspector/${i.formId}/${i.applicationId}`}
+                      />
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+          )}
         </div>
       </div>
     </Fragment>
