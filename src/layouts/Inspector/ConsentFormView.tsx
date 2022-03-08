@@ -649,7 +649,7 @@ export const ConsentFormView = ({
                     {consentMessage.date && (
                       <div className="pb-2">
                         <HeadingThree
-                          title={`You gave your concent on ${consentMessage.date}`}
+                          title={`You gave your consent on ${consentMessage.date}`}
                         />
                       </div>
                     )}
