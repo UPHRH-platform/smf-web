@@ -123,6 +123,35 @@ export const AllApplicationsInspectorTab = ({
               </div>
             );
           }
+
+          if (
+            i.inspection &&
+            i.inspection.status === LANG.FORM_STATUS.INSPECTION_COMPLETED &&
+            i.inspection.leadInspector.includes(userDetails && userDetails.id)
+          ) {
+            return (
+              <div
+                className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mb-4"
+                key={j}
+              >
+                <CardTwo
+                  title={i.title}
+                  name={i.updatedBy ? i.updatedBy : i.createdBy}
+                  time={`Scheduled on: ${
+                    i.inspection ? i.inspection.scheduledDate : ""
+                  }`}
+                  showStatus={false}
+                  status=""
+                  statusLabel=""
+                  showBtn={true}
+                  type="button"
+                  btnText="View application"
+                  isLink={true}
+                  link={`/assisting-inspector/${i.formId}/${i.applicationId}`}
+                />
+              </div>
+            );
+          }
           return null;
         })}
     </div>
