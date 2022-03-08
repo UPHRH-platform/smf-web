@@ -146,9 +146,23 @@ export const ViewConsentApplications = ({
 
           {applicationData.inspection &&
             (applicationData.inspection.status ===
-              LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED || applicationData.inspection.status ===
-              LANG.FORM_STATUS.INSPECTION_COMPLETED) &&
+              LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED ||
+              applicationData.inspection.status ===
+                LANG.FORM_STATUS.INSPECTION_COMPLETED) &&
             applicationData.inspection.assistingInspector.includes(
+              userDetails.id
+            ) && (
+              <ConsentFormView
+                formData={formData}
+                applicationData={applicationData}
+                showConsentBtns={true}
+              />
+            )}
+
+          {applicationData.inspection &&
+            applicationData.inspection.status ===
+              LANG.FORM_STATUS.INSPECTION_COMPLETED &&
+            applicationData.inspection.leadInspector.includes(
               userDetails.id
             ) && (
               <ConsentFormView
