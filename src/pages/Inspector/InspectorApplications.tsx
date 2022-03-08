@@ -66,6 +66,10 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
     if (selectedTab.length) {
       setSelectedTab("Scheduled today");
     }
+
+  
+    let user: any = userDetails.length && JSON.parse(userDetails);
+    setUserDetails(user);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -81,14 +85,10 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
   }, [selectedTab, scheduledToday]);
 
   useEffect(() => {
-    let user: any = JSON.parse(userDetails);
-    setUserDetails(user);
-  }, []);
-
-  useEffect(() => {
-    if (userDetails.id) {
+    if (userDetails && userDetails.id) {
       getSelectedTabData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetails]);
 
   const getSelectedTabData = () => {
@@ -103,7 +103,7 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
             // setCurrentData(response.responseData);
             response.responseData.map((i: any, j: number) => {
               if (
-                i.status === LANG.FORM_STATUS.SENT_FOR_INSPECTION &&
+                i.inspection.status === LANG.FORM_STATUS.SENT_FOR_INSPECTION &&
                 i.inspection.leadInspector.includes(
                   userDetails && userDetails.id
                 )
@@ -124,6 +124,27 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
                   setPast((past) => [...past, i]);
                 }
               }
+
+              if (
+                (i.inspection.status ===
+                  LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED ||
+                  i.inspection.status ===
+                    LANG.FORM_STATUS.INSPECTION_COMPLETED) &&
+                i.inspection.leadInspector.includes(
+                  userDetails && userDetails.id
+                )
+              ) {
+                setPast((past) => [...past, i]);
+              }
+
+              if (
+                i.inspection.status === LANG.FORM_STATUS.INSPECTION_COMPLETED &&
+                i.inspection.assistingInspector.includes(
+                  userDetails && userDetails.id
+                )
+              ) {
+                setPast((past) => [...past, i]);
+              }
               return null;
             });
           } else {
@@ -138,6 +159,8 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
       );
     }
   };
+
+
 
   const filterData = (status: any) => {
     switch (status) {

@@ -34,6 +34,7 @@ export const InspectorHome = ({ data }: InspectorProps) => {
   useEffect(() => {
     let user: any = JSON.parse(userDetails);
     setUserDetails(user);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -41,6 +42,7 @@ export const InspectorHome = ({ data }: InspectorProps) => {
       getAllApplications();
       getDashboardData();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetails]);
 
   const getDashboardData = () => {
@@ -80,7 +82,8 @@ export const InspectorHome = ({ data }: InspectorProps) => {
               if (
                 i.inspection.leadInspector.includes(
                   userDetails && userDetails.id
-                )
+                ) &&
+                i.inspection.status === LANG.FORM_STATUS.SENT_FOR_INSPECTION
               ) {
                 if (
                   moment(todayDate, "DD-MM-YYYY").isBefore(
@@ -220,21 +223,45 @@ export const InspectorHome = ({ data }: InspectorProps) => {
                       className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0 mt-xxl-0"
                       key={j}
                     >
-                      <CardTwo
-                        title={i.title}
-                        name={i.updatedBy ? i.updatedBy : i.createdBy}
-                        time={`Scheduled on: ${
-                          i.inspection ? i.inspection.scheduledDate : ""
-                        }`}
-                        showStatus={false}
-                        status=""
-                        statusLabel=""
-                        showBtn={true}
-                        type="button"
-                        btnText="View application"
-                        isLink={true}
-                        link={`/inspector/${i.formId}/${i.applicationId}`}
-                      />
+                      {i.inspection &&
+                        i.inspection.status ===
+                          LANG.FORM_STATUS.SENT_FOR_INSPECTION && (
+                          <CardTwo
+                            title={i.title}
+                            name={i.updatedBy ? i.updatedBy : i.createdBy}
+                            time={`Scheduled on: ${
+                              i.inspection ? i.inspection.scheduledDate : ""
+                            }`}
+                            showStatus={false}
+                            status=""
+                            statusLabel=""
+                            showBtn={true}
+                            type="button"
+                            btnText="View application"
+                            isLink={true}
+                            link={`/inspector/${i.formId}/${i.applicationId}`}
+                          />
+                        )}
+
+                      {i.inspection &&
+                        i.inspection.status ===
+                          LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED && (
+                          <CardTwo
+                            title={i.title}
+                            name={i.updatedBy ? i.updatedBy : i.createdBy}
+                            time={`Scheduled on: ${
+                              i.inspection ? i.inspection.scheduledDate : ""
+                            }`}
+                            showStatus={false}
+                            status=""
+                            statusLabel=""
+                            showBtn={true}
+                            type="button"
+                            btnText="View application"
+                            isLink={true}
+                            link={`/assisting-inspector/${i.formId}/${i.applicationId}`}
+                          />
+                        )}
                     </div>
                   );
                 })}

@@ -31,6 +31,9 @@ export const ViewConsentApplications = ({
     { title: "HOME", url: "/dashboard", icon: "" },
     { title: "ALL APPLICATIONS", url: "/all-applications", icon: "" },
   ]);
+  const [userDetails, setUserDetails] = useState<any>(
+    localStorage.getItem("user")
+  );
 
   const [selectedMenuData, setSelectedDataMenu] = useRecoilState(
     selectedSideMenuDataAtom
@@ -58,15 +61,23 @@ export const ViewConsentApplications = ({
     //   setSelectedDataMenu(ApplicationDetails[0].menuList[0]);
     // }
 
-    if (history.location && history.location.pathname) {
-      let tempFormId = history.location.pathname.split("/")[2];
-      let tempAppId = history.location.pathname.split("/")[3];
-
-      getApplicationDetails(tempFormId, tempAppId);
-    }
+    let user: any = userDetails && JSON.parse(userDetails);
+    setUserDetails(user);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (userDetails && userDetails.id) {
+      if (history.location && history.location.pathname) {
+        let tempFormId = history.location.pathname.split("/")[2];
+        let tempAppId = history.location.pathname.split("/")[3];
+
+        getApplicationDetails(tempFormId, tempAppId);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userDetails]);
 
   const getApplicationDetails = (formId: any, applicationId: any) => {
     FormService.find(formId).then(
@@ -120,15 +131,45 @@ export const ViewConsentApplications = ({
                 showConsentBtns={true}
               />
             )}
-             {applicationData.inspection &&
+          {applicationData.inspection &&
             applicationData.inspection.status ===
-              LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED && (
+              LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED &&
+            !applicationData.inspection.assistingInspector.includes(
+              userDetails.id
+            ) && (
               <ConsentFormView
                 formData={formData}
                 applicationData={applicationData}
                 showConsentBtns={false}
               />
             )}
+
+          {applicationData.inspection &&
+            (applicationData.inspection.status ===
+              LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED || applicationData.inspection.status ===
+              LANG.FORM_STATUS.INSPECTION_COMPLETED) &&
+            applicationData.inspection.assistingInspector.includes(
+              userDetails.id
+            ) && (
+              <ConsentFormView
+                formData={formData}
+                applicationData={applicationData}
+                showConsentBtns={true}
+              />
+            )}
+
+          {/* {applicationData.inspection &&
+            applicationData.inspection.status ===
+              LANG.FORM_STATUS.INSPECTION_COMPLETED &&
+            applicationData.inspection.assistingInspector.includes(
+              userDetails.id
+            ) && (
+              <ConsentFormView
+                formData={formData}
+                applicationData={applicationData}
+                showConsentBtns={true}
+              />
+            )} */}
         </div>
       </div>
     </Fragment>

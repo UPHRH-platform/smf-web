@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /*eslint-disable no-self-assign*/
-import { useEffect, useState } from "react";
-import { CardThree } from "../../components/cards";
+import { useDebugValue, useEffect, useState } from "react";
+import { CardFive, CardThree } from "../../components/cards";
 import {
   InspectCheckOne,
   Radio,
@@ -9,24 +9,14 @@ import {
   TextAreaField,
   TextField,
 } from "../../components/form-elements";
-import { HeadingOne, HeadingFour } from "../../components/headings";
 import {
-  InspectionScheduleModal,
-  ModalOne,
-  ModalTwo,
-} from "../../components/modal";
+  HeadingOne,
+  HeadingFour,
+  HeadingFive,
+} from "../../components/headings";
+import { InspectionScheduleModal, ModalTwo } from "../../components/modal";
 import { StatusBarLarge } from "../../components/status-bar";
-import { useRecoilValue } from "recoil";
-import { sideMenuData as selectedSideMenuDataAtom } from "../../states/atoms";
-import {
-  BtnOne,
-  BtnTwo,
-  BtnThree,
-  BtnFive,
-  BtnSix,
-  BtnFour,
-} from "../../components/buttons";
-import btnStylesTwo from "../../components/buttons/BtnTwo.module.css";
+import { BtnSix } from "../../components/buttons";
 import { CheckBoxField } from "../../components/form-elements";
 import { BooleanField } from "../../components/form-elements";
 import { FileUploadView } from "../../components/form-elements";
@@ -45,6 +35,7 @@ import stylesTwo from "../../components/modal/InspectionScheduleModal.module.css
 import { ReviewService } from "../../services";
 import Notify from "../../helpers/notify";
 import Helper from "../../helpers/auth";
+import { HeadingThree } from "../../components/headings/HeadingThree";
 
 /**
  * ConsentFormViewProps component renders
@@ -61,7 +52,7 @@ interface ConsentFormViewProps {
 export const ConsentFormView = ({
   applicationData,
   formData,
-  showConsentBtns
+  showConsentBtns,
 }: ConsentFormViewProps) => {
   const [selectedMenuData, setSelectedDataMenu] = useState<any[]>([]);
   const [statusLog, setStatusLog] = useState<any[]>([]);
@@ -73,6 +64,11 @@ export const ConsentFormView = ({
   let history = useHistory();
 
   const [processedData, setProcessedData] = useState<any[]>([]);
+  const [userDetails, setUserDetails] = useState<any>(
+    localStorage.getItem("user")
+  );
+  const [consentApplication, setConsentApplication] = useState();
+  const [consentMessage, setConsentMessage] = useState<any>({});
 
   const updateMenuSelection = (e: any, value: string) => {
     e.preventDefault();
@@ -270,7 +266,11 @@ export const ConsentFormView = ({
       }
 
       getApplicationStatusLog(applicationData.applicationId);
+      getConsentStatus();
     }
+
+    let user: any = userDetails.length > 0 && JSON.parse(userDetails);
+    setUserDetails(user);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applicationData]);
@@ -290,6 +290,7 @@ export const ConsentFormView = ({
         return null;
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMenuLabel, processedData]);
 
   useEffect(() => {
@@ -326,6 +327,38 @@ export const ConsentFormView = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reviewerNote]);
 
+  const getConsentStatus = () => {
+    let user = userDetails.length > 0 && JSON.parse(userDetails);
+    if (
+      user.id &&
+      applicationData.inspection.assistingInspector.includes(user.id)
+    ) {
+      applicationData.inspection.assignedTo.map((i: any, j: number) => {
+        if (
+          i.id === user.id &&
+          i.status === LANG.FORM_STATUS.INSPECTION_COMPLETED
+        ) {
+          setConsentApplication(i.consentApplication);
+          setConsentMessage({ comments: i.comments, date: i.consentDate });
+        }
+        return null;
+      });
+    }
+
+    if (user.id && applicationData.inspection.leadInspector.includes(user.id)) {
+      applicationData.inspection.assignedTo.map((i: any, j: number) => {
+        if (
+          i.id === user.id &&
+          i.status === LANG.FORM_STATUS.INSPECTION_COMPLETED
+        ) {
+          setConsentApplication(i.leadInspector);
+          setConsentMessage({ comments: i.comments, date: i.consentDate });
+        }
+        return null;
+      });
+    }
+  };
+
   const getApplicationStatusLog = (id: any) => {
     ReviewService.getStatusLog(id).then(
       (response) => {
@@ -354,7 +387,6 @@ export const ConsentFormView = ({
         agree: true,
         comments: comments,
       };
-      console.log(req);
       ReviewService.consentApplication(req).then(
         (response) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
@@ -375,7 +407,6 @@ export const ConsentFormView = ({
         agree: false,
         comments: comments,
       };
-      console.log(req);
       ReviewService.consentApplication(req).then(
         (response) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
@@ -408,18 +439,21 @@ export const ConsentFormView = ({
                 <div className="col-sm-12 col-md-3 col-lg-3 col-xl-3 col-xxl-3 pt-3"></div>
                 <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mt-3">
                   <div className="d-flex justify-content-end align-items-center">
-                    {/* {applicationData.status === LANG.FORM_STATUS.NEW && (
+                    {showConsentBtns &&
+                      applicationData.inspection &&
+                      applicationData.inspection.status ===
+                        LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED && (
                         <>
                           <div className="mr-3">
-                            <BtnFive
-                              label="Return to institute"
+                            <BtnSix
+                              label="I disagree"
                               showIcon={true}
-                              iconValue={`arrow_back`}
+                              iconValue={`close`}
                               isLink={false}
                               link=""
                               btnType="button"
                               isModal={true}
-                              modalId="returnModal"
+                              modalId="disagreeModal"
                               disabled={
                                 applicationData.status ===
                                 LANG.FORM_STATUS.RETURNED
@@ -430,64 +464,83 @@ export const ConsentFormView = ({
                           </div>
                           <div className="mr-3">
                             <BtnSix
-                              label="Send for inspection"
+                              label="I consent"
                               showIcon={true}
-                              iconValue={`arrow_forward`}
+                              iconValue={`check`}
                               isLink={false}
                               link=""
                               btnType="button"
-                              floatBottom={false}
                               isModal={true}
-                              modalId="sendToInspection"
+                              modalId="consentModal"
                               disabled={
                                 applicationData.status ===
-                                LANG.FORM_STATUS.SENT_FOR_INSPECTION
+                                LANG.FORM_STATUS.RETURNED
                                   ? true
                                   : false
                               }
                             />
                           </div>
                         </>
-                      )} */}
-                    {showConsentBtns && applicationData.inspection && applicationData.inspection.status ===
-                        LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED && (
-                    <>
-                      <div className="mr-3">
-                        <BtnSix
-                          label="I disagree"
-                          showIcon={true}
-                          iconValue={`close`}
-                          isLink={false}
-                          link=""
-                          btnType="button"
-                          isModal={true}
-                          modalId="disagreeModal"
-                          disabled={
-                            applicationData.status === LANG.FORM_STATUS.RETURNED
-                              ? true
-                              : false
-                          }
-                        />
-                      </div>
-                      <div className="mr-3">
-                        <BtnSix
-                          label="I consent"
-                          showIcon={true}
-                          iconValue={`check`}
-                          isLink={false}
-                          link=""
-                          btnType="button"
-                          isModal={true}
-                          modalId="consentModal"
-                          disabled={
-                            applicationData.status === LANG.FORM_STATUS.RETURNED
-                              ? true
-                              : false
-                          }
-                        />
-                      </div>
-                    </>
-                    )}
+                      )}
+
+                    {consentApplication !== undefined &&
+                      applicationData.inspection &&
+                      (applicationData.inspection.status ===
+                        LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                        applicationData.inspection.status ===
+                          LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED) &&
+                      consentApplication === false && (
+                        <div className="">
+                          <BtnSix
+                            label="I disagree"
+                            showIcon={true}
+                            iconValue={`close`}
+                            isLink={false}
+                            link=""
+                            btnType="button"
+                            isModal={true}
+                            modalId="disagreeModal"
+                            disabled={
+                              applicationData.inspection.status ===
+                                LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                              applicationData.inspection.status ===
+                                LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED
+                                ? true
+                                : false
+                            }
+                          />
+                        </div>
+                      )}
+
+                    {consentApplication !== undefined &&
+                      applicationData.inspection &&
+                      (applicationData.inspection.status ===
+                        LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                        applicationData.inspection.status ===
+                          LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED) &&
+                      consentApplication === true && (
+                        <div className="">
+                          <BtnSix
+                            label="I consent"
+                            showIcon={true}
+                            iconValue={`check`}
+                            isLink={false}
+                            link=""
+                            btnType="button"
+                            isModal={true}
+                            modalId="consentModal"
+                            disabled={
+                              applicationData.inspection.status ===
+                                LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                              applicationData.inspection.status ===
+                                LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED
+                                ? true
+                                : false
+                            }
+                          />
+                        </div>
+                      )}
+
                     {/* <div className="">
                         <BtnFour
                           label="View status log"
@@ -591,6 +644,23 @@ export const ConsentFormView = ({
 
               {/* Form view */}
               <div className="col-sm-12 col-md-9 col-lg-9 col-xl-9 col-xxl-9 p-0 m-0 mt-3 mb-4">
+                {consentMessage && (
+                  <>
+                    {consentMessage.date && (
+                      <div className="pb-2">
+                        <HeadingThree
+                          title={`You gave your concent on ${consentMessage.date}`}
+                        />
+                      </div>
+                    )}
+
+                    {consentMessage.comments && (
+                      <div className="mb-3">
+                        <CardFive content={consentMessage.comments} />
+                      </div>
+                    )}
+                  </>
+                )}
                 {applicationData.status && (
                   <StatusBarLarge
                     isChange={true}
@@ -617,8 +687,10 @@ export const ConsentFormView = ({
                   />
                 )}
 
-                {applicationData.status ===
-                  LANG.FORM_STATUS.SENT_FOR_INSPECTION &&
+                {(applicationData.status ===
+                  LANG.FORM_STATUS.SENT_FOR_INSPECTION ||
+                  applicationData.inspection.status ===
+                    LANG.FORM_STATUS.INSPECTION_COMPLETED) &&
                   applicationData.inspectorSummaryDataObject && (
                     <div className="mt-3">
                       <CardThree
