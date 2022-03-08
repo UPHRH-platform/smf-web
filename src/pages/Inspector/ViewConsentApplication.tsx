@@ -7,27 +7,33 @@ import {
   sideMenuData as selectedSideMenuDataAtom,
   sideMenuLabel as sideMenuLabelAtom,
 } from "../../states/atoms";
-import { ConsentFormView, FormView } from "../../layouts";
+import { ConsentFormView } from "../../layouts";
 import { FormService } from "./../../services/form.service";
 import { APP, LANG } from "./../../constants";
 import Notify from "./../../helpers/notify";
 
 /**
- * ViewApplications component renders
+ * ViewConsentApplications component renders
  * application detail page layout and its UI components
+ * for assisting inspector rol
  */
 
-interface ViewApplicationsProps {
+interface ViewConsentApplicationsProps {
   data?: any;
 }
 
-export const ViewApplications = ({ data }: ViewApplicationsProps) => {
+export const ViewConsentApplications = ({
+  data,
+}: ViewConsentApplicationsProps) => {
   const [formData, setFormData] = useState({});
   const [applicationData, setApplicationData] = useState<any>({});
   const [breadcrumbData, setBreadcrumbData] = useState<any>([
     { title: "HOME", url: "/dashboard", icon: "" },
     { title: "ALL APPLICATIONS", url: "/all-applications", icon: "" },
   ]);
+  const [userDetails, setUserDetails] = useState<any>(
+    localStorage.getItem("user")
+  );
 
   const [selectedMenuData, setSelectedDataMenu] = useRecoilState(
     selectedSideMenuDataAtom
@@ -55,15 +61,23 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
     //   setSelectedDataMenu(ApplicationDetails[0].menuList[0]);
     // }
 
-    if (history.location && history.location.pathname) {
-      let tempFormId = history.location.pathname.split("/")[2];
-      let tempAppId = history.location.pathname.split("/")[3];
-
-      getApplicationDetails(tempFormId, tempAppId);
-    }
+    let user: any = userDetails && JSON.parse(userDetails);
+    setUserDetails(user);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (userDetails && userDetails.id) {
+      if (history.location && history.location.pathname) {
+        let tempFormId = history.location.pathname.split("/")[2];
+        let tempAppId = history.location.pathname.split("/")[3];
+
+        getApplicationDetails(tempFormId, tempAppId);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userDetails]);
 
   const getApplicationDetails = (formId: any, applicationId: any) => {
     FormService.find(formId).then(
@@ -107,8 +121,55 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
     <Fragment>
       <Header history={history} breadCrumb={breadcrumbData} />
       <div className="container-fluid">
-        <div className="container dashboard-inner-container mt-4">
-          <FormView formData={formData} applicationData={applicationData} />
+        <div className="container dashboard-inner-container">
+          {applicationData.inspection &&
+            applicationData.inspection.status ===
+              LANG.FORM_STATUS.SENT_FOR_INSPECTION && (
+              <ConsentFormView
+                formData={formData}
+                applicationData={applicationData}
+                showConsentBtns={true}
+              />
+            )}
+          {applicationData.inspection &&
+            applicationData.inspection.status ===
+              LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED &&
+            !applicationData.inspection.assistingInspector.includes(
+              userDetails.id
+            ) && (
+              <ConsentFormView
+                formData={formData}
+                applicationData={applicationData}
+                showConsentBtns={false}
+              />
+            )}
+
+          {applicationData.inspection &&
+            (applicationData.inspection.status ===
+              LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED || applicationData.inspection.status ===
+              LANG.FORM_STATUS.INSPECTION_COMPLETED) &&
+            applicationData.inspection.assistingInspector.includes(
+              userDetails.id
+            ) && (
+              <ConsentFormView
+                formData={formData}
+                applicationData={applicationData}
+                showConsentBtns={true}
+              />
+            )}
+
+          {/* {applicationData.inspection &&
+            applicationData.inspection.status ===
+              LANG.FORM_STATUS.INSPECTION_COMPLETED &&
+            applicationData.inspection.assistingInspector.includes(
+              userDetails.id
+            ) && (
+              <ConsentFormView
+                formData={formData}
+                applicationData={applicationData}
+                showConsentBtns={true}
+              />
+            )} */}
         </div>
       </div>
     </Fragment>

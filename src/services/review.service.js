@@ -10,7 +10,8 @@ export const ReviewService = {
   getStatusLog,
   submitInspectionDetails,
   approveApplication,
-  rejectApplication
+  rejectApplication,
+  consentApplication,
 };
 
 function returnApplication(payload) {
@@ -94,6 +95,18 @@ function rejectApplication(payload) {
   };
   return fetch(
     APIS.BASE_URL + APIS.REGULATOR.REJECT_APPLICATION,
+    requestOptions
+  ).then(handleResponse);
+}
+
+function consentApplication(payload) {
+  const requestOptions = {
+    method: APP.REQUEST.POST,
+    body: JSON.stringify(payload),
+    headers: authHeader(),
+  };
+  return fetch(
+    APIS.BASE_URL + APIS.INSPECTOR.CONSENT_APPLICATION,
     requestOptions
   ).then(handleResponse);
 }
