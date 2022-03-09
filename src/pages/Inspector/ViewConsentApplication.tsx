@@ -43,24 +43,7 @@ export const ViewConsentApplications = ({
 
   let history = useHistory();
 
-  // const updateMenuSelection = (e: any, id: any) => {
-  //   e.preventDefault();
-
-  //   ApplicationDetails[0].menuList.map((k, l) => {
-  //     if (k.id === id) {
-  //       setSelectedMenuLabel(k.label);
-  //       setSelectedDataMenu(k);
-  //     }
-  //     return null;
-  //   });
-  // };
-
   useEffect(() => {
-    // if (ApplicationDetails[0].menuList) {
-    //   setSelectedMenuLabel(ApplicationDetails[0].menuList[0].label);
-    //   setSelectedDataMenu(ApplicationDetails[0].menuList[0]);
-    // }
-
     let user: any = userDetails && JSON.parse(userDetails);
     setUserDetails(user);
 
@@ -112,10 +95,6 @@ export const ViewConsentApplications = ({
       }
     );
   };
-
-  // useEffect(() => {
-  //     console.log(selectedMenu)
-  // }, [selectedMenu])
 
   return (
     <Fragment>
@@ -171,19 +150,6 @@ export const ViewConsentApplications = ({
                 showConsentBtns={true}
               />
             )}
-
-          {/* {applicationData.inspection &&
-            applicationData.inspection.status ===
-              LANG.FORM_STATUS.INSPECTION_COMPLETED &&
-            applicationData.inspection.assistingInspector.includes(
-              userDetails.id
-            ) && (
-              <ConsentFormView
-                formData={formData}
-                applicationData={applicationData}
-                showConsentBtns={true}
-              />
-            )} */}
         </div>
       </div>
     </Fragment>

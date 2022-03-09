@@ -11,10 +11,7 @@ import {
 } from "../../components/form-elements";
 import { HeadingOne, HeadingFour } from "../../components/headings";
 import { ModalTwo } from "../../components/modal";
-import { StatusBarLarge } from "../../components/status-bar";
-import { useRecoilValue } from "recoil";
-import { sideMenuData as selectedSideMenuDataAtom } from "../../states/atoms";
-import { BtnOne, BtnTwo, BtnThree } from "../../components/buttons";
+import { BtnTwo, BtnThree } from "../../components/buttons";
 import btnStylesTwo from "../../components/buttons/BtnTwo.module.css";
 import { CheckBoxField } from "../../components/form-elements";
 import { BooleanField } from "../../components/form-elements";
@@ -161,77 +158,66 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
       });
 
       if (arrThree.length !== 0) {
-      tempArray.map((i: any, n: number) => {
-        arrThree.map((m: any, l: number) => {
-          if (m.sideMenu === i.sideMenu) {
-            m.fields.map((k: any, y: number) => {
-              if (!applicationData.inspectorDataObject) {
-                return tempFormArray.push({
-                  id: parseInt(k.id),
-                  parent: parseInt(k.id.split("")[0]),
-                  sideMenu: m.sideMenu,
-                  label: k.label,
-                  value: i.fields[k.label],
-                  defaultValues: k.values,
-                  fieldType: k.fieldType,
-                  isCorrect: "",
-                  inspectionValue: "",
-                  comments: "",
-                });
-              } else {
-                return tempFormArray.push({
-                  id: parseInt(k.id),
-                  parent: parseInt(k.id.split("")[0]),
-                  sideMenu: m.sideMenu,
-                  label: k.label,
-                  value: i.fields[k.label],
-                  defaultValues: k.values,
-                  fieldType: k.fieldType,
-                  isCorrect:
-                    tempArrayTwo[n].fields[k.label]["value"] === "correct"
-                      ? true
-                      : false,
-                  inspectionValue:
-                    tempArrayTwo[n].fields[k.label]["inspectionValue"],
-                  comments: tempArrayTwo[n].fields[k.label]["comments"],
-                });
-              }
-            });
-          }
+        tempArray.map((i: any, n: number) => {
+          arrThree.map((m: any, l: number) => {
+            if (m.sideMenu === i.sideMenu) {
+              m.fields.map((k: any, y: number) => {
+                if (!applicationData.inspectorDataObject) {
+                  return tempFormArray.push({
+                    id: parseInt(k.id),
+                    parent: parseInt(k.id.split("")[0]),
+                    sideMenu: m.sideMenu,
+                    label: k.label,
+                    value: i.fields[k.label],
+                    defaultValues: k.values,
+                    fieldType: k.fieldType,
+                    isCorrect: "",
+                    inspectionValue: "",
+                    comments: "",
+                  });
+                } else {
+                  return tempFormArray.push({
+                    id: parseInt(k.id),
+                    parent: parseInt(k.id.split("")[0]),
+                    sideMenu: m.sideMenu,
+                    label: k.label,
+                    value: i.fields[k.label],
+                    defaultValues: k.values,
+                    fieldType: k.fieldType,
+                    isCorrect:
+                      tempArrayTwo[n].fields[k.label]["value"] === "correct"
+                        ? true
+                        : false,
+                    inspectionValue:
+                      tempArrayTwo[n].fields[k.label]["inspectionValue"],
+                    comments: tempArrayTwo[n].fields[k.label]["comments"],
+                  });
+                }
+              });
+            }
+            return null;
+          });
           return null;
         });
-        return null;
-      });
-    } else {
-      tempArray.map((i: any, n: number) => {
-        arrOne.map((m: any, l: number) => {
-          return tempFormArray.push({
-            id: l,
-            parent: l,
-            sideMenu: i.sideMenu,
-            label: m.name,
-            value: i.fields[m.name],
-            defaultValues: m.values,
-            fieldType: m.fieldType,
-            isCorrect: "",
-            inspectionValue: "",
-            comments: "",
+      } else {
+        tempArray.map((i: any, n: number) => {
+          arrOne.map((m: any, l: number) => {
+            return tempFormArray.push({
+              id: l,
+              parent: l,
+              sideMenu: i.sideMenu,
+              label: m.name,
+              value: i.fields[m.name],
+              defaultValues: m.values,
+              fieldType: m.fieldType,
+              isCorrect: "",
+              inspectionValue: "",
+              comments: "",
+            });
           });
+          return null;
         });
-        return null;
-      });
-    }
-
-      // tempArray.map((y: any, f: number) => {
-      //   y.fields = [];
-      //   tempFormArray.map((g: any, d: number) => {
-      //     if (g.sideMenu === y.sideMenu) {
-      //       y.fields.push(g);
-      //     }
-      //     return null;
-      //   });
-      //   return null;
-      // });
+      }
 
       if (arrThree.length !== 0) {
         arrThree.map((y: any, f: number) => {
@@ -257,7 +243,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
         });
       }
 
-      // console.log(tempArray)
       if (arrThree.length > 0) {
         setSelectedMenuLabel(arrThree[0].sideMenu);
         setProcessedData(arrThree);
@@ -265,13 +250,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
         setSelectedMenuLabel(tempArray[0].sideMenu);
         setProcessedData(tempArray);
       }
-
-      // setSelectedMenuLabel(arrThree[0].sideMenu);
-
-      // console.log(tempArray)
-
-      // setProcessedData(tempArray);
-      // setProcessedData(arrThree);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -213,7 +213,6 @@ export const ConsentFormView = ({
           return null;
         });
       } else {
-        // console.log(arrOne);
         tempArray.map((i: any, n: number) => {
           arrOne.map((m: any, l: number) => {
             return tempFormArray.push({
@@ -540,18 +539,6 @@ export const ConsentFormView = ({
                           />
                         </div>
                       )}
-
-                    {/* <div className="">
-                        <BtnFour
-                          label="View status log"
-                          btnType="button"
-                          isLink={false}
-                          link=""
-                          isModal={true}
-                          floatBottom={false}
-                          modalId="statusLog"
-                        />
-                      </div> */}
                   </div>
                 </div>
                 <ModalTwo
@@ -609,12 +596,6 @@ export const ConsentFormView = ({
                     }
                   />
                 )}
-                {/* <ModalOne
-                    id="statusLog"
-                    ariaLabel="statusLogLabel"
-                    heading="Status log"
-                    list={statusLog}
-                  /> */}
               </div>
             </div>
           </div>

@@ -67,7 +67,6 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
       setSelectedTab("Scheduled today");
     }
 
-  
     let user: any = userDetails.length && JSON.parse(userDetails);
     setUserDetails(user);
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -100,7 +99,6 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
       FormService.getAllApplications(data).then(
         (response) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-            // setCurrentData(response.responseData);
             response.responseData.map((i: any, j: number) => {
               if (
                 i.inspection.status === LANG.FORM_STATUS.SENT_FOR_INSPECTION &&
@@ -159,8 +157,6 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
       );
     }
   };
-
-
 
   const filterData = (status: any) => {
     switch (status) {
