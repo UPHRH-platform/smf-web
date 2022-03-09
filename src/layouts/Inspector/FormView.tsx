@@ -806,7 +806,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       isReadOnly={true}
                                       label={k.label || ""}
                                       option={k.defaultValues}
-                                      value={k.value || ""}
+                                      placeholder={k.value || ""}
                                     />
                                   </div>
                                   <div className="mt-3">
