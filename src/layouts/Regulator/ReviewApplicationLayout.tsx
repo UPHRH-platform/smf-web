@@ -30,6 +30,8 @@ import { useHistory } from "react-router-dom";
 import { APP, LANG } from "../../constants";
 import Notify from "../../helpers/notify";
 import Helper from "../../helpers/auth";
+import styles from "../../components/status-bar/StatusBarLarge.module.css";
+import stylesTwo from "../../components/modal/InspectionScheduleModal.module.css";
 
 /**
  * ReviewApplicationLayout component renders
@@ -157,81 +159,99 @@ export const ReviewApplicationLayout = ({
         });
       });
 
-      tempArray.map((i: any, n: number) => {
-        arrThree.map((m: any, l: number) => {
-          if (m.sideMenu === i.sideMenu) {
-            m.fields.map((k: any, y: number) => {
-              if (!applicationData.inspectorDataObject) {
-                return tempFormArray.push({
-                  id: parseInt(k.id),
-                  parent: parseInt(k.id.split("")[0]),
-                  sideMenu: m.sideMenu,
-                  label: k.label,
-                  value: i.fields[k.label],
-                  defaultValues: k.defaultValues,
-                  fieldType: k.fieldType,
-                  isCorrect: "",
-                  inspectionValue: "",
-                  comments: "",
-                });
-              } else {
-                return tempFormArray.push({
-                  id: parseInt(k.id),
-                  parent: parseInt(k.id.split("")[0]),
-                  sideMenu: m.sideMenu,
-                  label: k.label,
-                  value: i.fields[k.label],
-                  defaultValues: k.defaultValues,
-                  fieldType: k.fieldType,
-                  isCorrect:
-                    tempArrayTwo[n].fields[k.label]["value"] === "correct"
-                      ? true
-                      : false,
-                  inspectionValue:
-                    tempArrayTwo[n].fields[k.label]["inspectionValue"],
-                  comments: tempArrayTwo[n].fields[k.label]["comments"],
-                });
-              }
+      if (arrThree.length !== 0) {
+        tempArray.map((i: any, n: number) => {
+          arrThree.map((m: any, l: number) => {
+            if (m.sideMenu === i.sideMenu) {
+              m.fields.map((k: any, y: number) => {
+                if (!applicationData.inspectorDataObject) {
+                  return tempFormArray.push({
+                    id: parseInt(k.id),
+                    parent: parseInt(k.id.split("")[0]),
+                    sideMenu: m.sideMenu,
+                    label: k.label,
+                    value: i.fields[k.label],
+                    defaultValues: k.values,
+                    fieldType: k.fieldType,
+                    isCorrect: "",
+                    inspectionValue: "",
+                    comments: "",
+                  });
+                } else {
+                  return tempFormArray.push({
+                    id: parseInt(k.id),
+                    parent: parseInt(k.id.split("")[0]),
+                    sideMenu: m.sideMenu,
+                    label: k.label,
+                    value: i.fields[k.label],
+                    defaultValues: k.values,
+                    fieldType: k.fieldType,
+                    isCorrect:
+                      tempArrayTwo[n].fields[k.label]["value"] === "correct"
+                        ? true
+                        : false,
+                    inspectionValue:
+                      tempArrayTwo[n].fields[k.label]["inspectionValue"],
+                    comments: tempArrayTwo[n].fields[k.label]["comments"],
+                  });
+                }
+              });
+            }
+            return null;
+          });
+          return null;
+        });
+      } else {
+        tempArray.map((i: any, n: number) => {
+          arrOne.map((m: any, l: number) => {
+            return tempFormArray.push({
+              id: l,
+              parent: l,
+              sideMenu: i.sideMenu,
+              label: m.name,
+              value: i.fields[m.name],
+              defaultValues: m.values,
+              fieldType: m.fieldType,
+              isCorrect: "",
+              inspectionValue: "",
+              comments: "",
             });
-          }
+          });
           return null;
         });
-        return null;
-      });
+      }
 
-      // tempArray.map((y: any, f: number) => {
-      //   y.fields = [];
-      //   tempFormArray.map((g: any, d: number) => {
-      //     if (g.sideMenu === y.sideMenu) {
-      //       y.fields.push(g);
-      //     }
-      //     return null;
-      //   });
-      //   return null;
-      // });
-
-      // setSelectedMenuLabel(tempArray[0].sideMenu);
-
-      // setProcessedData(tempArray);
-
-      arrThree.map((y: any, f: number) => {
-        y.fields = [];
-        tempFormArray.map((g: any, d: number) => {
-          if (g.sideMenu === y.sideMenu) {
-            y.fields.push(g);
-          }
+      if (arrThree.length !== 0) {
+        arrThree.map((y: any, f: number) => {
+          y.fields = [];
+          tempFormArray.map((g: any, d: number) => {
+            if (g.sideMenu === y.sideMenu) {
+              y.fields.push(g);
+            }
+            return null;
+          });
           return null;
         });
-        return null;
-      });
+      } else {
+        tempArray.map((y: any, f: number) => {
+          y.fields = [];
+          tempFormArray.map((g: any, d: number) => {
+            if (g.sideMenu === y.sideMenu) {
+              y.fields.push(g);
+            }
+            return null;
+          });
+          return null;
+        });
+      }
 
-      setSelectedMenuLabel(arrThree[0].sideMenu);
-
-      // console.log(tempArray)
-      // console.log(arrThree)
-
-      // setProcessedData(tempArray);
-      setProcessedData(arrThree)
+      if (arrThree.length > 0) {
+        setSelectedMenuLabel(arrThree[0].sideMenu);
+        setProcessedData(arrThree);
+      } else {
+        setSelectedMenuLabel(tempArray[0].sideMenu);
+        setProcessedData(tempArray);
+      }
 
       getApplicationStatusLog(applicationData.applicationId);
     }
@@ -570,18 +590,169 @@ export const ReviewApplicationLayout = ({
                         ? applicationData.notes
                         : ""
                     }
-                    inspectorSummary={
-                      applicationData.status ===
-                      LANG.FORM_STATUS.INSPECTION_COMPLETED
-                        ? applicationData.inspectorSummaryDataObject &&
-                          applicationData.inspectorSummaryDataObject[
-                            "Inspection Summary"
-                          ]["Enter the summary of this inspection"]
-                        : ""
-                    }
+                    showInspectionDetails={true}
                   />
                 )}
-                {selectedMenuData &&
+
+                {applicationData.status ===
+                  LANG.FORM_STATUS.INSPECTION_COMPLETED &&
+                  applicationData.inspectorSummaryDataObject && (
+                    <div className="mt-3">
+                      <CardThree
+                        children={
+                          <div className="p-4">
+                            <div className="">
+                              <TextAreaField
+                                isReadOnly={true}
+                                label="Inspection summary"
+                                showLabel={true}
+                                defaultValue={
+                                  applicationData.inspectorSummaryDataObject[
+                                    "Inspection Summary"
+                                  ]["Enter the summary of this inspection"]
+                                }
+                              />
+                            </div>
+                            <div className="pt-2">
+                              <label
+                                className={`${styles.status_bar_custom_heading}`}
+                              >
+                                Lead inspector
+                              </label>
+                              <div className="pt-3">
+                                {applicationData &&
+                                  applicationData.inspection &&
+                                  applicationData.inspection.assignedTo.map(
+                                    (k: any, l: number) => {
+                                      if (k.leadInspector) {
+                                        return (
+                                          <div
+                                            className={`${stylesTwo.inspector_name_list} mb-2`}
+                                            key={l}
+                                          >
+                                            <div className="row ps-3 pe-3">
+                                              <div className="d-flex flex-row">
+                                                <div
+                                                  className={`${stylesTwo.inspector_name_square}`}
+                                                >
+                                                  {k.firstName[0] +
+                                                    k.lastName[0]}
+                                                </div>
+                                                <p className="ps-2">
+                                                  {k.firstName}
+                                                </p>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        );
+                                      }
+                                      return null;
+                                    }
+                                  )}
+                              </div>
+                            </div>
+                            <div className="pt-2">
+                              <label
+                                className={`${styles.status_bar_custom_heading}`}
+                              >
+                                Assisting inspector
+                              </label>
+                              <div className="pt-3">
+                                {applicationData &&
+                                  applicationData.inspection &&
+                                  applicationData.inspection.assignedTo.map(
+                                    (k: any, l: number) => {
+                                      if (!k.leadInspector) {
+                                        return (
+                                          <>
+                                            <div
+                                              className={`${stylesTwo.inspector_name_list} mb-2`}
+                                              key={l}
+                                            >
+                                              <div className="row ps-3 pe-3">
+                                                <div className="d-flex flex-row col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                                  <div
+                                                    className={`${stylesTwo.inspector_name_square}`}
+                                                  >
+                                                    {k.firstName[0] +
+                                                      k.lastName[0]}
+                                                  </div>
+                                                  <p className="ps-2">
+                                                    {k.firstName}
+                                                  </p>
+                                                </div>
+
+                                                <div className="d-flex flex-row col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                                  <div className="col-12 m-0 p-0">
+                                                    <p
+                                                      className={`${stylesTwo.consent_message_status} float-end`}
+                                                    >
+                                                      {k.consentApplication
+                                                        ? "I consent"
+                                                        : "I disagree"}
+                                                      <span
+                                                        className={`${stylesTwo.consent_message_symbol} material-icons ps-2`}
+                                                      >
+                                                        {k.consentApplication
+                                                          ? "done"
+                                                          : "close"}
+                                                      </span>
+                                                    </p>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                              {k.comments && (
+                                                <>
+                                                  <hr className="p-0 m-0"></hr>
+                                                  <div className="px-4">
+                                                    <p className="pb-2">
+                                                      {k.comments}
+                                                    </p>
+                                                  </div>
+                                                </>
+                                              )}
+                                            </div>
+                                          </>
+                                        );
+                                      }
+                                      return null;
+                                    }
+                                  )}
+                              </div>
+                            </div>
+                          </div>
+                        }
+                      />
+                    </div>
+                  )}
+
+                {(applicationData.status === LANG.FORM_STATUS.APPROVED ||
+                  applicationData.status === LANG.FORM_STATUS.REJECTED) && (
+                  <div className="mt-3">
+                    <div className="mt-3 mb-3">
+                      <CardThree
+                        children={
+                          <div className="p-4">
+                            <div className="">
+                              <TextAreaField
+                                isReadOnly={true}
+                                label="Comments from reviewer"
+                                showLabel={true}
+                                defaultValue={
+                                  applicationData.comments
+                                    ? applicationData.comments[0].value
+                                    : ""
+                                }
+                              />
+                            </div>
+                          </div>
+                        }
+                      />
+                    </div>
+                  </div>
+                )}
+
+                {selectedMenuData.length > 0 &&
                   selectedMenuData.map((k: any, l: number) => {
                     switch (k.fieldType) {
                       case "text":
@@ -780,7 +951,7 @@ export const ReviewApplicationLayout = ({
                                       isReadOnly={true}
                                       label={k.label || ""}
                                       option={k.defaultValues}
-                                      value={k.value || ""}
+                                      placeholder={k.value || ""}
                                     />
                                   </div>
                                   {(applicationData.status ===

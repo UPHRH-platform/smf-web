@@ -17,7 +17,7 @@ class Checkbox extends Component {
   handleChange = (event) => {};
 
   getCheckedStatus = (option) => {
-    console.log("option :: ", option);
+    // console.log("option :: ", option);
     setTimeout(() => {
       return document.getElementById(option).checked;
     }, 500);

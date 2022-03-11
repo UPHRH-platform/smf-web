@@ -17,16 +17,16 @@
 }
 
 .name_list_close {
-    color: var(--black-60);
-    cursor: pointer;
-    font-size: 1rem;
-    vertical-align: -0.4rem;
+  color: var(--black-60);
+  cursor: pointer;
+  font-size: 1rem;
+  vertical-align: -0.4rem;
 }
 
 .inspector_name_list {
   border-radius: 4px;
   background-color: var(--white-90);
-  padding-top: 0.60rem;
+  padding-top: 0.6rem;
 }
 
 .inspector_name_list p {
@@ -50,4 +50,18 @@
   height: 2rem;
   padding: 0.5rem;
   text-align: center;
+}
+
+.consent_message_status {
+  color: var(--black-60) !important;
+  font-family: "Lato-Bold" !important;
+  font-size: 0.875rem !important;
+  letter-spacing: 0.5px !important;
+  line-height: 1.429 !important;
+}
+
+.consent_message_symbol {
+  color: var(--black-60) !important;
+  font-size: 1.45rem !important;
+  vertical-align: -0.41rem;
 }

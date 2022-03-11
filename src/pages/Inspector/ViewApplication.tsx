@@ -11,11 +11,11 @@ import { FormView } from "../../layouts";
 import { FormService } from "./../../services/form.service";
 import { APP } from "./../../constants";
 import Notify from "./../../helpers/notify";
+
 /**
  * ViewApplications component renders
  * application detail page layout and its UI components
  */
-
 
 interface ViewApplicationsProps {
   data?: any;
@@ -23,7 +23,7 @@ interface ViewApplicationsProps {
 
 export const ViewApplications = ({ data }: ViewApplicationsProps) => {
   const [formData, setFormData] = useState({});
-  const [applicationData, setApplicationData] = useState({});
+  const [applicationData, setApplicationData] = useState<any>({});
   const [breadcrumbData, setBreadcrumbData] = useState<any>([
     { title: "HOME", url: "/dashboard", icon: "" },
     { title: "ALL APPLICATIONS", url: "/all-applications", icon: "" },
@@ -37,24 +37,7 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
 
   let history = useHistory();
 
-  // const updateMenuSelection = (e: any, id: any) => {
-  //   e.preventDefault();
-
-  //   ApplicationDetails[0].menuList.map((k, l) => {
-  //     if (k.id === id) {
-  //       setSelectedMenuLabel(k.label);
-  //       setSelectedDataMenu(k);
-  //     }
-  //     return null;
-  //   });
-  // };
-
   useEffect(() => {
-    // if (ApplicationDetails[0].menuList) {
-    //   setSelectedMenuLabel(ApplicationDetails[0].menuList[0].label);
-    //   setSelectedDataMenu(ApplicationDetails[0].menuList[0]);
-    // }
-
     if (history.location && history.location.pathname) {
       let tempFormId = history.location.pathname.split("/")[2];
       let tempAppId = history.location.pathname.split("/")[3];
@@ -98,10 +81,6 @@ export const ViewApplications = ({ data }: ViewApplicationsProps) => {
       }
     );
   };
-
-  // useEffect(() => {
-  //     console.log(selectedMenu)
-  // }, [selectedMenu])
 
   return (
     <Fragment>

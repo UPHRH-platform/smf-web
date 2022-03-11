@@ -21,7 +21,7 @@ interface StatusBarLargeProps {
   isChange: boolean;
   comments?: any;
   approvedNote?: string;
-  inspectorSummary?: string;
+  showInspectionDetails: boolean;
 }
 
 export const StatusBarLarge = ({
@@ -36,7 +36,7 @@ export const StatusBarLarge = ({
   comments,
   isChange,
   approvedNote,
-  inspectorSummary,
+  showInspectionDetails,
 }: StatusBarLargeProps) => {
   // Function to format the status label
   const formatLabel = (labelStatus: string) => {
@@ -152,108 +152,115 @@ export const StatusBarLarge = ({
             <b>{`${inspectionData.scheduledDate}`}</b>. Keep all the physical
             documents ready for the inspection.
           </p>
-          <hr className="m-2 mx-3" />
-          <div className="pt-1 ps-4 pe-4 pb-4">
-            <div className="row">
-              <div className="col-sm-12 col-md-10 col-lg-10">
-                <HeadingFour heading="Inspection scheduled with" />
-              </div>
-              {isChange && (
-                <div className="col-sm-12 col-md-2 col-lg-2">
-                  <div className="float-end">
-                    <label
-                      className={`${styles.edit_status}`}
-                      data-toggle="modal"
-                      data-target={`#sendToInspectionEdit`}
-                    >
-                      <span
-                        className={`${styles.edit_status_icon} material-icons pe-2`}
-                      >
-                        edit
-                      </span>
-                      Change
-                    </label>
+          {showInspectionDetails && (
+            <>
+              <hr className="m-2 mx-3" />
+              <div className="pt-1 ps-4 pe-4 pb-4">
+                <div className="row">
+                  <div className="col-sm-12 col-md-10 col-lg-10">
+                    <HeadingFour heading="Inspection scheduled with" />
+                  </div>
+                  {isChange && (
+                    <div className="col-sm-12 col-md-2 col-lg-2">
+                      <div className="float-end">
+                        <label
+                          className={`${styles.edit_status}`}
+                          data-toggle="modal"
+                          data-target={`#sendToInspectionEdit`}
+                        >
+                          <span
+                            className={`${styles.edit_status_icon} material-icons pe-2`}
+                          >
+                            edit
+                          </span>
+                          Change
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                </div>
+                <div className="pt-2">
+                  <label className={`${styles.status_bar_custom_heading}`}>
+                    Lead inspector
+                  </label>
+                  <div className="pt-3">
+                    {inspectionData &&
+                      inspectionData.assignedTo.map((k: any, l: number) => {
+                        if (k.leadInspector) {
+                          return (
+                            <div
+                              className={`${stylesTwo.inspector_name_list} mb-2`}
+                              key={l}
+                            >
+                              <div className="row pt-2 ps-3 pe-3">
+                                <div className="d-flex flex-row">
+                                  <div
+                                    className={`${stylesTwo.inspector_name_square}`}
+                                  >
+                                    {k.firstName[0] + k.lastName[0]}
+                                  </div>
+                                  <p className="ps-2">{k.firstName}</p>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        }
+                        return null;
+                      })}
                   </div>
                 </div>
-              )}
-            </div>
-            <div className="pt-2">
-              <label className={`${styles.status_bar_custom_heading}`}>
-                Lead inspector
-              </label>
-              <div className="pt-3">
-                {inspectionData &&
-                  inspectionData.assignedTo.map((k: any, l: number) => {
-                    if (k.leadInspector) {
-                      return (
-                        <div
-                          className={`${stylesTwo.inspector_name_list} mb-2`}
-                          key={l}
-                        >
-                          <div className="row pt-2 ps-3 pe-3">
-                            <div className="d-flex flex-row">
-                              <div
-                                className={`${stylesTwo.inspector_name_square}`}
-                              >
-                                {k.firstName[0] + k.lastName[0]}
+                <div className="pt-2">
+                  <label className={`${styles.status_bar_custom_heading}`}>
+                    Assisting inspector
+                  </label>
+                  <div className="pt-3">
+                    {inspectionData &&
+                      inspectionData.assignedTo.map((k: any, l: number) => {
+                        if (!k.leadInspector) {
+                          return (
+                            <div
+                              className={`${stylesTwo.inspector_name_list} mb-2`}
+                              key={l}
+                            >
+                              <div className="row pt-2 ps-3 pe-3">
+                                <div className="d-flex flex-row">
+                                  <div
+                                    className={`${stylesTwo.inspector_name_square}`}
+                                  >
+                                    {k.firstName[0] + k.lastName[0]}
+                                  </div>
+                                  <p className="ps-2">{k.firstName}</p>
+                                </div>
                               </div>
-                              <p className="ps-2">{k.firstName}</p>
                             </div>
-                          </div>
-                        </div>
-                      );
-                    }
-                    return null;
-                  })}
+                          );
+                        }
+                        return null;
+                      })}
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="pt-2">
-              <label className={`${styles.status_bar_custom_heading}`}>
-                Assisting inspector
-              </label>
-              <div className="pt-3">
-                {inspectionData &&
-                  inspectionData.assignedTo.map((k: any, l: number) => {
-                    if (!k.leadInspector) {
-                      return (
-                        <div
-                          className={`${stylesTwo.inspector_name_list} mb-2`}
-                          key={l}
-                        >
-                          <div className="row pt-2 ps-3 pe-3">
-                            <div className="d-flex flex-row">
-                              <div
-                                className={`${stylesTwo.inspector_name_square}`}
-                              >
-                                {k.firstName[0] + k.lastName[0]}
-                              </div>
-                              <p className="ps-2">{k.firstName}</p>
-                            </div>
-                          </div>
-                        </div>
-                      );
-                    }
-                    return null;
-                  })}
-              </div>
-            </div>
-          </div>
+            </>
+          )}
         </>
       )}
 
-      {approvedNote && (
-        <div className="ps-4 pe-4 mt-1">
-          <HeadingFour heading="Notes from final reviewer" />
-          <p className="p-0 mt-2">{approvedNote}</p>
-        </div>
-      )}
+      {/* {approvedNote && (
+        <>
+          <hr className="m-2 mx-3" />
+          <div className="ps-4 pe-4 mt-1">
+            <HeadingFour heading="Comments from reviewer" />
+            <p className="p-0 mt-2">{approvedNote}</p>
+          </div>
+        </>
+      )} */}
 
-      {inspectorSummary && (
+      {/* {inspectorSummary && (
         <div className="ps-4 pe-4 mt-1">
           <HeadingFour heading="Inspection summary" />
           <p className="p-0 mt-2">{inspectorSummary}</p>
         </div>
-      )}
+      )} */}
     </div>
   );
 };

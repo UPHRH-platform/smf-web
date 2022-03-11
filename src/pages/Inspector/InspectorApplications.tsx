@@ -33,6 +33,9 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
   const [currentData, setCurrentData] = useRecoilState(selectedTabDataAtom);
   const [tabData, setTabData] = useState<any[]>([]);
   const [selectedTab, setSelectedTab] = useRecoilState(selectedTabAtom);
+  const [userDetails, setUserDetails] = useState<any>(
+    localStorage.getItem("user")
+  );
 
   let history = useHistory();
 
@@ -60,11 +63,12 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
 
     setTabData(tempTabData);
 
-    getSelectedTabData();
-
     if (selectedTab.length) {
       setSelectedTab("Scheduled today");
     }
+
+    let user: any = userDetails.length && JSON.parse(userDetails);
+    setUserDetails(user);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -79,6 +83,13 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedTab, scheduledToday]);
 
+  useEffect(() => {
+    if (userDetails && userDetails.id) {
+      getSelectedTabData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userDetails]);
+
   const getSelectedTabData = () => {
     let todayDate = moment().format("DD-MM-YYYY");
     if (Helper.getUserRole() === APP.ROLE.INSPECTOR) {
@@ -88,22 +99,67 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
       FormService.getAllApplications(data).then(
         (response) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-            // setCurrentData(response.responseData);
             response.responseData.map((i: any, j: number) => {
               if (
-                moment(todayDate, "DD-MM-YYYY").isBefore(
-                  moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                i.inspection.status === LANG.FORM_STATUS.SENT_FOR_INSPECTION &&
+                i.inspection.leadInspector.includes(
+                  userDetails && userDetails.id
                 )
               ) {
-                setUpcoming((upcoming) => [...upcoming, i]);
-              } else if (
-                moment(todayDate, "DD-MM-YYYY").isSame(
-                  moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                if (
+                  moment(todayDate, "DD-MM-YYYY").isBefore(
+                    moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                  )
+                ) {
+                  setUpcoming((upcoming) => [...upcoming, i]);
+                } else if (
+                  moment(todayDate, "DD-MM-YYYY").isSame(
+                    moment(i.inspection.scheduledDate, "DD-MM-YYYY")
+                  )
+                ) {
+                  setScheduledToday((today) => [...today, i]);
+                } else {
+                  setPast((past) => [...past, i]);
+                }
+              }
+
+              if (
+                (i.inspection.status ===
+                  LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED ||
+                  i.inspection.status ===
+                    LANG.FORM_STATUS.INSPECTION_COMPLETED) &&
+                i.inspection.leadInspector.includes(
+                  userDetails && userDetails.id
                 )
               ) {
-                setScheduledToday((today) => [...today, i]);
-              } else {
                 setPast((past) => [...past, i]);
+              }
+
+              if (
+                i.inspection.status === LANG.FORM_STATUS.INSPECTION_COMPLETED &&
+                i.inspection.assistingInspector.includes(
+                  userDetails && userDetails.id
+                )
+              ) {
+                setPast((past) => [...past, i]);
+              }
+
+              if (
+                i.inspection.status ===
+                  LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED &&
+                i.inspection.assistingInspector.includes(
+                  userDetails && userDetails.id
+                )
+              ) {
+                i.inspection.assignedTo.map((m: any, n: number) => {
+                  if (m.id === userDetails.id) {
+                    if (m.status === LANG.FORM_STATUS.INSPECTION_COMPLETED) {
+                      setPast((past) => [...past, i]);
+                    }
+                    return null;
+                  }
+                  return null;
+                });
               }
               return null;
             });
