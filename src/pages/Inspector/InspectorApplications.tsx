@@ -143,6 +143,24 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
               ) {
                 setPast((past) => [...past, i]);
               }
+
+              if (
+                i.inspection.status ===
+                  LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED &&
+                i.inspection.assistingInspector.includes(
+                  userDetails && userDetails.id
+                )
+              ) {
+                i.inspection.assignedTo.map((m: any, n: number) => {
+                  if (m.id === userDetails.id) {
+                    if (m.status === LANG.FORM_STATUS.INSPECTION_COMPLETED) {
+                      setPast((past) => [...past, i]);
+                    }
+                    return null;
+                  }
+                  return null;
+                });
+              }
               return null;
             });
           } else {

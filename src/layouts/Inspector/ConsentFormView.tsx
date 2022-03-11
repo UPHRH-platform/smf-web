@@ -745,7 +745,7 @@ export const ConsentFormView = ({
                                             key={l}
                                           >
                                             <div className="row ps-3 pe-3">
-                                              <div className="d-flex flex-row">
+                                              <div className="d-flex flex-row col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
                                                 <div
                                                   className={`${stylesTwo.inspector_name_square}`}
                                                 >
@@ -756,7 +756,38 @@ export const ConsentFormView = ({
                                                   {k.firstName}
                                                 </p>
                                               </div>
+                                              {k.status && (
+                                                <div className="d-flex flex-row col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                                  <div className="col-12 m-0 p-0">
+                                                    <p
+                                                      className={`${stylesTwo.consent_message_status} float-end`}
+                                                    >
+                                                      {k.consentApplication
+                                                        ? "I consent"
+                                                        : "I disagree"}
+                                                      <span
+                                                        className={`${stylesTwo.consent_message_symbol} material-icons ps-2`}
+                                                      >
+                                                        {k.consentApplication
+                                                          ? "done"
+                                                          : "close"}
+                                                      </span>
+                                                    </p>
+                                                  </div>
+                                                </div>
+                                              )}
                                             </div>
+
+                                            {k.comments && (
+                                              <>
+                                                <hr className="p-0 m-0"></hr>
+                                                <div className="px-4">
+                                                  <p className="pb-2">
+                                                    {k.comments}
+                                                  </p>
+                                                </div>
+                                              </>
+                                            )}
                                           </div>
                                         );
                                       }

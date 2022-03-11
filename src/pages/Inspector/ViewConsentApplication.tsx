@@ -131,11 +131,26 @@ export const ViewConsentApplications = ({
             applicationData.inspection.assistingInspector.includes(
               userDetails.id
             ) && (
-              <ConsentFormView
-                formData={formData}
-                applicationData={applicationData}
-                showConsentBtns={true}
-              />
+              <>
+                <ConsentFormView
+                  formData={formData}
+                  applicationData={applicationData}
+                  showConsentBtns={applicationData.inspection.assignedTo.find(
+                    (u: any, j: number) => {
+                      if (u.id === userDetails.id) {
+                        if (!u.status) {
+                          //  console.log(true)
+                          return true;
+                        } else {
+                          //  console.log(false)
+                          return false;
+                        }
+                      }
+                      return null;
+                    }
+                  )}
+                />
+              </>
             )}
 
           {applicationData.inspection &&
