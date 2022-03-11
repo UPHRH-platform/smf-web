@@ -41,63 +41,6 @@ interface IApplicationCount {
   value: number;
 }
 
-// const ReviewerMetrics = [
-//   {
-//     id: 0,
-//     count: 2,
-//     title: "Total pending",
-//   },
-//   {
-//     id: 1,
-//     count: 1,
-//     title: "Received today",
-//   },
-//   {
-//     id: 2,
-//     count: 1,
-//     title: "In progress",
-//   },
-//   {
-//     id: 3,
-//     count: 0,
-//     title: "Reviewed today",
-//   },
-//   {
-//     id: 4,
-//     count: 32,
-//     title: "Reviewed in total",
-//   },
-// ];
-
-// const ReviewerPendingApplications = [
-//   {
-//     id: "PA001",
-//     title: "Paramedical degree",
-//     name: "Name of college",
-//     time: "Scheduled on: dd/mm/yyyy",
-//     showStatus: true,
-//     status: "New",
-//     showBtn: true,
-//     type: "button",
-//     btnText: "View application",
-//     isLink: false,
-//     link: "",
-//   },
-//   {
-//     id: "PA002",
-//     title: "ANM",
-//     name: "Name of college",
-//     time: "Scheduled on: dd/mm/yyyy",
-//     showStatus: true,
-//     status: "Under inspection",
-//     showBtn: true,
-//     type: "button",
-//     btnText: "View application",
-//     isLink: false,
-//     link: "",
-//   },
-// ];
-
 interface ReviewerProps {
   data?: any;
 }
@@ -111,12 +54,7 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
   >([]);
   useEffect(() => {
     const myApplicationsReq = {
-      searchObjects: [
-        // {
-        //     "key" : "status",
-        //     "values" : "Pending"
-        // }
-      ],
+      searchObjects: [],
     };
     FormService.getAllApplications(myApplicationsReq).then(
       (response2) => {
@@ -126,7 +64,6 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
               ? response2.responseData.splice(0, 8)
               : response2.responseData
           );
-          // console.log(response2.responseData);
         } else {
           Notify.error(response2.statusInfo.errorMessage);
         }
@@ -141,7 +78,6 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
       (response2: any) => {
         if (response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
           setApplicationsMetrics(response2.responseData.keyValues);
-          // console.log(response2.responseData);
         } else {
           Notify.error(response2.statusInfo.errorMessage);
         }

@@ -213,7 +213,6 @@ export const ConsentFormView = ({
           return null;
         });
       } else {
-        // console.log(arrOne);
         tempArray.map((i: any, n: number) => {
           arrOne.map((m: any, l: number) => {
             return tempFormArray.push({
@@ -540,18 +539,6 @@ export const ConsentFormView = ({
                           />
                         </div>
                       )}
-
-                    {/* <div className="">
-                        <BtnFour
-                          label="View status log"
-                          btnType="button"
-                          isLink={false}
-                          link=""
-                          isModal={true}
-                          floatBottom={false}
-                          modalId="statusLog"
-                        />
-                      </div> */}
                   </div>
                 </div>
                 <ModalTwo
@@ -609,12 +596,6 @@ export const ConsentFormView = ({
                     }
                   />
                 )}
-                {/* <ModalOne
-                    id="statusLog"
-                    ariaLabel="statusLogLabel"
-                    heading="Status log"
-                    list={statusLog}
-                  /> */}
               </div>
             </div>
           </div>
@@ -764,7 +745,7 @@ export const ConsentFormView = ({
                                             key={l}
                                           >
                                             <div className="row ps-3 pe-3">
-                                              <div className="d-flex flex-row">
+                                              <div className="d-flex flex-row col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
                                                 <div
                                                   className={`${stylesTwo.inspector_name_square}`}
                                                 >
@@ -775,7 +756,38 @@ export const ConsentFormView = ({
                                                   {k.firstName}
                                                 </p>
                                               </div>
+                                              {k.status && (
+                                                <div className="d-flex flex-row col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                                  <div className="col-12 m-0 p-0">
+                                                    <p
+                                                      className={`${stylesTwo.consent_message_status} float-end`}
+                                                    >
+                                                      {k.consentApplication
+                                                        ? "I consent"
+                                                        : "I disagree"}
+                                                      <span
+                                                        className={`${stylesTwo.consent_message_symbol} material-icons ps-2`}
+                                                      >
+                                                        {k.consentApplication
+                                                          ? "done"
+                                                          : "close"}
+                                                      </span>
+                                                    </p>
+                                                  </div>
+                                                </div>
+                                              )}
                                             </div>
+
+                                            {k.comments && (
+                                              <>
+                                                <hr className="p-0 m-0"></hr>
+                                                <div className="px-4">
+                                                  <p className="pb-2">
+                                                    {k.comments}
+                                                  </p>
+                                                </div>
+                                              </>
+                                            )}
                                           </div>
                                         );
                                       }

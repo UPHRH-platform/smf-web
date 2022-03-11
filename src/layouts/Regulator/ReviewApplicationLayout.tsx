@@ -202,7 +202,6 @@ export const ReviewApplicationLayout = ({
           return null;
         });
       } else {
-        // console.log(arrOne);
         tempArray.map((i: any, n: number) => {
           arrOne.map((m: any, l: number) => {
             return tempFormArray.push({
@@ -221,23 +220,6 @@ export const ReviewApplicationLayout = ({
           return null;
         });
       }
-
-      // console.log(tempFormArray)
-
-      // tempArray.map((y: any, f: number) => {
-      //   y.fields = [];
-      //   tempFormArray.map((g: any, d: number) => {
-      //     if (g.sideMenu === y.sideMenu) {
-      //       y.fields.push(g);
-      //     }
-      //     return null;
-      //   });
-      //   return null;
-      // });
-
-      // setSelectedMenuLabel(tempArray[0].sideMenu);
-
-      // setProcessedData(tempArray);
 
       if (arrThree.length !== 0) {
         arrThree.map((y: any, f: number) => {
@@ -270,11 +252,6 @@ export const ReviewApplicationLayout = ({
         setSelectedMenuLabel(tempArray[0].sideMenu);
         setProcessedData(tempArray);
       }
-
-      // console.log(tempArray)
-      // console.log(arrThree)
-
-      // setProcessedData(tempArray);
 
       getApplicationStatusLog(applicationData.applicationId);
     }
@@ -693,7 +670,7 @@ export const ReviewApplicationLayout = ({
                                               key={l}
                                             >
                                               <div className="row ps-3 pe-3">
-                                                <div className="d-flex flex-row">
+                                                <div className="d-flex flex-row col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
                                                   <div
                                                     className={`${stylesTwo.inspector_name_square}`}
                                                   >
@@ -704,21 +681,37 @@ export const ReviewApplicationLayout = ({
                                                     {k.firstName}
                                                   </p>
                                                 </div>
-                                              </div>
-                                            </div>
-                                            {/* <div className="px-4">
-                                              {k.comments && (
-                                                <div className="">
-                                                  <TextField
-                                                    showLabel={true}
-                                                    label="Comments"
-                                                    type="text"
-                                                    defaultValue={k.comments}
-                                                    isReadOnly={true}
-                                                  />
+
+                                                <div className="d-flex flex-row col-sm-12 col-md-6 col-lg-6 col-xl-6 col-xxl-6">
+                                                  <div className="col-12 m-0 p-0">
+                                                    <p
+                                                      className={`${stylesTwo.consent_message_status} float-end`}
+                                                    >
+                                                      {k.consentApplication
+                                                        ? "I consent"
+                                                        : "I disagree"}
+                                                      <span
+                                                        className={`${stylesTwo.consent_message_symbol} material-icons ps-2`}
+                                                      >
+                                                        {k.consentApplication
+                                                          ? "done"
+                                                          : "close"}
+                                                      </span>
+                                                    </p>
+                                                  </div>
                                                 </div>
+                                              </div>
+                                              {k.comments && (
+                                                <>
+                                                  <hr className="p-0 m-0"></hr>
+                                                  <div className="px-4">
+                                                    <p className="pb-2">
+                                                      {k.comments}
+                                                    </p>
+                                                  </div>
+                                                </>
                                               )}
-                                            </div> */}
+                                            </div>
                                           </>
                                         );
                                       }
