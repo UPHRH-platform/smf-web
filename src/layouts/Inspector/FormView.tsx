@@ -169,7 +169,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                     sideMenu: m.sideMenu,
                     label: k.label,
                     value: i.fields[k.label],
-                    defaultValues: k.values,
+                    defaultValues: k.defaultValues,
                     fieldType: k.fieldType,
                     isCorrect: "",
                     inspectionValue: "",
@@ -182,7 +182,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                     sideMenu: m.sideMenu,
                     label: k.label,
                     value: i.fields[k.label],
-                    defaultValues: k.values,
+                    defaultValues: k.defaultValues,
                     fieldType: k.fieldType,
                     isCorrect:
                       tempArrayTwo[n].fields[k.label]["value"] === "correct"
@@ -208,7 +208,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
               sideMenu: i.sideMenu,
               label: m.name,
               value: i.fields[m.name],
-              defaultValues: m.values,
+              defaultValues: m.defaultValues,
               fieldType: m.fieldType,
               isCorrect: "",
               inspectionValue: "",
