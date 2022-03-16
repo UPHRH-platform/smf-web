@@ -162,6 +162,7 @@ export const ReviewApplicationLayout = ({
       if (arrThree.length !== 0) {
         tempArray.map((i: any, n: number) => {
           arrThree.map((m: any, l: number) => {
+           
             if (m.sideMenu === i.sideMenu) {
               m.fields.map((k: any, y: number) => {
                 if (!applicationData.inspectorDataObject) {
@@ -171,7 +172,7 @@ export const ReviewApplicationLayout = ({
                     sideMenu: m.sideMenu,
                     label: k.label,
                     value: i.fields[k.label],
-                    defaultValues: k.values,
+                    defaultValues: k.defaultValues,
                     fieldType: k.fieldType,
                     isCorrect: "",
                     inspectionValue: "",
@@ -184,7 +185,7 @@ export const ReviewApplicationLayout = ({
                     sideMenu: m.sideMenu,
                     label: k.label,
                     value: i.fields[k.label],
-                    defaultValues: k.values,
+                    defaultValues: k.defaultValues,
                     fieldType: k.fieldType,
                     isCorrect:
                       tempArrayTwo[n].fields[k.label]["value"] === "correct"
@@ -210,7 +211,7 @@ export const ReviewApplicationLayout = ({
               sideMenu: i.sideMenu,
               label: m.name,
               value: i.fields[m.name],
-              defaultValues: m.values,
+              defaultValues: m.defaultValues,
               fieldType: m.fieldType,
               isCorrect: "",
               inspectionValue: "",

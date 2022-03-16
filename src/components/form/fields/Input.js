@@ -54,10 +54,11 @@ class Input extends Component {
               </span>
             )}
           </label>
+          
           <input
             type={
               this.props.field.fieldType ===
-              LANG.FIELD_TYPES.numeric.toLowerCase()
+              LANG.FIELD_TYPES.numeric
                 ? "number"
                 : this.state.fieldType
             }
