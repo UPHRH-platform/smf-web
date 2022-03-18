@@ -1015,7 +1015,7 @@ export const ConsentFormView = ({
                                       isReadOnly={true}
                                       label={k.label || ""}
                                       option={k.defaultValues}
-                                      placeholder={k.value || ""}
+                                      defaultValue={k.value || ""}
                                     />
                                   </div>
 

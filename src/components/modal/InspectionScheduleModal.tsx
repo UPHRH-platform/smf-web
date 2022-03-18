@@ -40,14 +40,26 @@ export const InspectionScheduleModal = ({
 }: InspectionScheduleModalProps) => {
   const [date, setDate] = useState("");
   const [inspectorsList, setInspectorsList] = useState<any[]>([]);
+  const [curatedInspectorsListOne, setCuratedInspectorsListOne] = useState<
+    any[]
+  >([]);
+  const [curatedInspectorsListTwo, setCuratedInspectorsListTwo] = useState<
+    any[]
+  >([]);
   const [leadInspectors, setLeadInspectors] = useState<any[]>([]);
   const [curatedLeadInspectors, setCuratedLeadInspectors] = useState<any[]>([]);
   const [curatedAssitingInspectors, setCuratedAssitingInspectors] = useState<
     any[]
   >([]);
   const [currentLeadIns, setCurrentLeadIns] = useState("");
+  // const [currentLeadInsName, setCurrentLeadInsName] = useState(
+  //   "Select from the list"
+  // );
   const [assitingInspectors, setAssitingInspectors] = useState<any[]>([]);
   const [currentAssitingIns, setCurrentAssitingIns] = useState("");
+  // const [currentAssitingInsName, setCurrentAssitingInsName] = useState(
+  //   "Select from the list"
+  // );
   const [disableSubmit, setDisableSubmit] = useState(true);
 
   let history = useHistory();
@@ -61,7 +73,7 @@ export const InspectionScheduleModal = ({
           response.responseData.map((i: any, j: number) => {
             return tempArray.push({
               value: i.id,
-              key: i.firstName,
+              key: i.firstName + " " + i.lastName,
               logo: i.firstName[0] + i.lastName[0],
             });
           });
@@ -87,13 +99,13 @@ export const InspectionScheduleModal = ({
       inspectionData.assignedTo.map((i: any, j: number) => {
         if (i.leadInspector) {
           return (curatedObject = {
-            key: i.firstName,
+            key: i.firstName + " " + i.lastName,
             value: i.id,
             logo: i.firstName[0] + i.lastName[0],
           });
         } else {
           return curatedArray.push({
-            key: i.firstName,
+            key: i.firstName + " " + i.lastName,
             value: i.id,
             logo: i.firstName[0] + i.lastName[0],
           });
@@ -147,6 +159,21 @@ export const InspectionScheduleModal = ({
 
       setLeadInspectors(removeDup);
 
+      let tempInsArray = [...inspectorsList];
+
+      tempInsArray.map((k, l) => {
+        if (k.value === parseInt(currentLeadIns)) {
+          let index = tempInsArray.indexOf(k);
+          if (index > -1) {
+            tempInsArray.splice(index, 1);
+          }
+          return null;
+        }
+        return null;
+      });
+
+      setCuratedInspectorsListTwo(tempInsArray);
+
       setCuratedLeadInspectors([curatedArray]);
     }
   };
@@ -166,6 +193,21 @@ export const InspectionScheduleModal = ({
     }
 
     setLeadInspectors(tempArrayTwo);
+
+    let tempInsArray = [...inspectorsList];
+
+    tempInsArray.map((k, l) => {
+      if (k.value === parseInt(currentLeadIns)) {
+        let index = tempInsArray.indexOf(k);
+        if (index > -1) {
+          tempInsArray.splice(index, 1);
+        }
+        return null;
+      }
+      return null;
+    });
+
+    setCuratedInspectorsListTwo(tempInsArray);
 
     setCuratedLeadInspectors(tempArray);
   };
@@ -197,6 +239,24 @@ export const InspectionScheduleModal = ({
 
       setAssitingInspectors(removeDup);
 
+      let tempInsArray = [...inspectorsList];
+
+      curatedArray.map((m: any, n: number) => {
+        tempInsArray.map((k, l) => {
+          let index = tempInsArray.indexOf(k);
+          if (k.value === m.value) {
+            if (index > -1) {
+              tempInsArray.splice(index, 1);
+            }
+            return null;
+          }
+          return null;
+        });
+        return null;
+      });
+
+      setCuratedInspectorsListOne(tempInsArray);
+
       setCuratedAssitingInspectors(curatedArray);
     }
   };
@@ -216,6 +276,24 @@ export const InspectionScheduleModal = ({
     }
 
     setAssitingInspectors(tempArrayTwo);
+
+    let tempInsArray = [...inspectorsList];
+
+    tempArray.map((m: any, n: number) => {
+      tempInsArray.map((k, l) => {
+        let index = tempInsArray.indexOf(k);
+        if (k.value === m.value) {
+          if (index > -1) {
+            tempInsArray.splice(index, 1);
+          }
+          return null;
+        }
+        return null;
+      });
+      return null;
+    });
+
+    setCuratedInspectorsListOne(tempInsArray);
 
     setCuratedAssitingInspectors(tempArray);
   };
@@ -260,6 +338,24 @@ export const InspectionScheduleModal = ({
       }
     );
   };
+
+  // const getName = (value: any, type: string) => {
+  //   if (type === "assistingInspector") {
+  //     inspectorsList.map((k, l) => {
+  //       if (k.value === parseInt(value)) {
+  //         setCurrentAssitingInsName(k.key);
+  //       }
+  //     });
+  //   }
+
+  //   if (type === "leadInspector") {
+  //     inspectorsList.map((k, l) => {
+  //       if (k.value === parseInt(value)) {
+  //         setCurrentLeadInsName(k.key);
+  //       }
+  //     });
+  //   }
+  // };
 
   useEffect(() => {
     if (curatedAssitingInspectors.length === 0) {
@@ -308,25 +404,44 @@ export const InspectionScheduleModal = ({
                   </div>
                   <div className="row">
                     <div className="col-9">
+                     
                       <SelectField
                         showLabel={false}
-                        option={inspectorsList}
+                        option={
+                          curatedInspectorsListOne.length > 0
+                            ? curatedInspectorsListOne
+                            : inspectorsList
+                        }
                         selectId="leadInspector"
                         selectName="leadInspector"
                         placeholder="Select from the list"
+                        value={
+                          currentLeadIns.length ? currentLeadIns : "Select from the list"
+                        }
                         changeHandler={(e) => {
                           setCurrentLeadIns(e.target.value);
+                          // getName(e.target.value, "leadInspector");
                         }}
                       />
                     </div>
                     <div className="col-2">
-                      <BtnOne
-                        label="Add"
-                        btnType="button"
-                        isLink={false}
-                        link=""
-                        clickHandler={(e) => addLeadInspectors(e)}
-                      />
+                      {currentLeadIns !== "" ? (
+                        <BtnOne
+                          label="Add"
+                          btnType="button"
+                          isLink={false}
+                          link=""
+                          clickHandler={(e) => addLeadInspectors(e)}
+                        />
+                      ) : (
+                        <button
+                          type="button"
+                          className={`${btnStyle.btn_one_disabled}`}
+                          disabled={true}
+                        >
+                          Add
+                        </button>
+                      )}
                     </div>
                   </div>
                   <div className="pt-2">
@@ -369,25 +484,44 @@ export const InspectionScheduleModal = ({
                   </div>
                   <div className="row">
                     <div className="col-sm-12 col-md-9 col-lg-9">
+                      
                       <SelectField
                         showLabel={false}
-                        option={inspectorsList}
+                        option={
+                          curatedInspectorsListTwo.length > 0
+                            ? curatedInspectorsListTwo
+                            : inspectorsList
+                        }
                         selectId="assistingInspectors"
                         selectName="assistingInspectors"
                         placeholder="Select from the list"
+                        value={
+                         currentAssitingIns.length ? currentAssitingIns : "Select from the list"
+                        }
                         changeHandler={(e) => {
                           setCurrentAssitingIns(e.target.value);
+                          // getName(e.target.value, "assistingInspector");
                         }}
                       />
                     </div>
                     <div className="col-sm-12 col-md-2 col-lg-2">
-                      <BtnOne
-                        label="Add"
-                        btnType="button"
-                        isLink={false}
-                        link=""
-                        clickHandler={(e) => addAssitingInspectors(e)}
-                      />
+                      {currentAssitingIns !== "" ? (
+                        <BtnOne
+                          label="Add"
+                          btnType="button"
+                          isLink={false}
+                          link=""
+                          clickHandler={(e) => addAssitingInspectors(e)}
+                        />
+                      ) : (
+                        <button
+                          type="button"
+                          className={`${btnStyle.btn_one_disabled}`}
+                          disabled={true}
+                        >
+                          Add
+                        </button>
+                      )}
                     </div>
                     <div className="pt-2">
                       {curatedAssitingInspectors &&
@@ -464,6 +598,9 @@ export const InspectionScheduleModal = ({
                 type="button"
                 className={`${btnStyle.btn_one} me-2`}
                 data-dismiss="modal"
+                onClick={(e) => {
+                  e.preventDefault();
+                }}
               >
                 Cancel
               </button>
