@@ -36,7 +36,7 @@ class ListForms extends Component {
           : Notify.error(error.message);
       }
     );
-  }
+  };
 
   getFormShortCode = (name) => {
     let shortCode;
@@ -57,10 +57,10 @@ class ListForms extends Component {
     formData.id = form.id;
     formData.version = form.version;
     formData.title = form.title;
-    if(isPublish) {
-      formData.status = LANG.FORM_STATUS.PUBLISH
+    if (isPublish) {
+      formData.status = LANG.FORM_STATUS.PUBLISH;
     } else {
-      formData.status = LANG.FORM_STATUS.UNPUBLISH
+      formData.status = LANG.FORM_STATUS.UNPUBLISH;
     }
     FormService.add(formData).then(
       (response) => {
@@ -80,7 +80,7 @@ class ListForms extends Component {
           : Notify.error(error.message);
       }
     );
-  }
+  };
 
   searchForms = (event) => {
     var input, filter, formContainer, formItems, a, i, txtValue;
@@ -115,14 +115,14 @@ class ListForms extends Component {
                 <input
                   type="text"
                   className="form-control"
-                  id="search-roles"
+                  id="searchRoles"
                   placeholder="Search for an application"
                   autoComplete="off"
                   onKeyUp={(event) => this.searchForms(event)}
                 />
               </div>
             </form>
-            
+
             {/* <div className="col-md-8">
                     <Link to="/forms/add" className="pull-right">
                       <button className="btn btn-default smf-btn-default-inverse">
@@ -132,7 +132,14 @@ class ListForms extends Component {
                   </div> */}
           </div>
           <div className="col-sm-12 col-md-8 text-right">
-              <BtnTwo btnType="button" label="Create new" isLink={true} link={`/forms/add`} floatBottom={false} isModal={false} />
+            <BtnTwo
+              btnType="button"
+              label="Create new form"
+              isLink={true}
+              link={`/forms/add`}
+              floatBottom={false}
+              isModal={false}
+            />
           </div>
         </div>
         <div className="row pt2">
@@ -158,15 +165,24 @@ class ListForms extends Component {
                       {form.status.toLowerCase()}
                     </td>
                     <td className="">
-                      {
-                        form.status === LANG.FORM_STATUS.PUBLISH && 
+                      {form.status === LANG.FORM_STATUS.PUBLISH && (
                         // <button type="button" className="btn btn-link td-preview">Unpublish</button>
-                        <span className="d-inline-block td-preview cursor-pointer" onClick={(e) => this.submit(form, false)}>Unpublish</span>
-                      }
-                      {
-                        (form.status === LANG.FORM_STATUS.NEW || form.status === LANG.FORM_STATUS.UNPUBLISH) && 
-                        <span className="d-inline-block td-preview cursor-pointer" onClick={(e) => this.submit(form, true)}>publish</span>
-                      }
+                        <span
+                          className="d-inline-block td-preview cursor-pointer"
+                          onClick={(e) => this.submit(form, false)}
+                        >
+                          Unpublish
+                        </span>
+                      )}
+                      {(form.status === LANG.FORM_STATUS.NEW ||
+                        form.status === LANG.FORM_STATUS.UNPUBLISH) && (
+                        <span
+                          className="d-inline-block td-preview cursor-pointer"
+                          onClick={(e) => this.submit(form, true)}
+                        >
+                          publish
+                        </span>
+                      )}
                       {/* {
                         form.status === LANG.FORM_STATUS.DRAFT && 
                         <span className="font-weight-bold black-60">Draft</span>
@@ -177,14 +193,12 @@ class ListForms extends Component {
                       <Link to={`/forms/${form.id}`}>Preview</Link>
                     </td>
                     <td className="td-preview">
-                      {
-                        form.status === LANG.FORM_STATUS.DRAFT && 
+                      {form.status === LANG.FORM_STATUS.DRAFT && (
                         <Link to={`/forms/${form.id}/edit`}>Edit</Link>
-                      }
-                      {
-                        form.status !== LANG.FORM_STATUS.DRAFT && 
+                      )}
+                      {form.status !== LANG.FORM_STATUS.DRAFT && (
                         <span className="font-weight-bold black-16">Edit</span>
-                      }
+                      )}
                     </td>
                   </tr>
                 ))}

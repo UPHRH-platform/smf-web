@@ -15,8 +15,9 @@ interface SelectFieldProps {
   selectId: string;
   changeHandler?: (event: any) => void;
   isReadOnly?: boolean;
-  value?: string;
-  isMultiple?: boolean
+  value?: any;
+  isMultiple?: boolean;
+  defaultValue?: any;
 }
 
 export const SelectField = ({
@@ -29,7 +30,8 @@ export const SelectField = ({
   selectId,
   isReadOnly,
   value,
-  isMultiple
+  isMultiple,
+  defaultValue,
 }: SelectFieldProps) => {
   return (
     <div className="">
@@ -39,36 +41,74 @@ export const SelectField = ({
           <br />
         </>
       )}
-      <select
-        name={selectName}
-        id={selectId}
-        className={`${styles.select_field_input}`}
-        value={value}
-        defaultValue={placeholder}
-        disabled={isReadOnly}
-        multiple={isMultiple}
-        onChange={changeHandler}
-      >
-        {placeholder && (
-          <option
-            disabled
-            className={`${styles.select_field_input_placeholder}`}
-          >
-            {placeholder}
-          </option>
-        )}
-
-        {option && option.map((i: any, j: any) => {
-          return (
+      {defaultValue !== undefined && (
+        <select
+          name={selectName}
+          id={selectId}
+          className={`${styles.select_field_input}`}
+          defaultValue={defaultValue}
+          placeholder={placeholder}
+          disabled={isReadOnly}
+          multiple={isMultiple}
+          onChange={changeHandler}
+        >
+          {placeholder && (
             <option
-              value={i.value}
-              key={j}
+              disabled
+              className={`${styles.select_field_input_placeholder}`}
             >
-              {i.key}
+              {placeholder}
             </option>
-          );
-        })}
-      </select>
+          )}
+
+          {option &&
+            option.map((i: any, j: any) => {
+              return (
+                <option
+                  value={i.value}
+                  key={j}
+                 
+                >
+                  {i.key}
+                </option>
+              );
+            })}
+        </select>
+      )}
+
+      {value !== undefined && (
+        <select
+          name={selectName}
+          id={selectId}
+          className={`${styles.select_field_input}`}
+          value={value}
+          placeholder={placeholder}
+          disabled={isReadOnly}
+          multiple={isMultiple}
+          onChange={changeHandler}
+        >
+          {placeholder && (
+            <option
+              disabled
+              className={`${styles.select_field_input_placeholder}`}
+            >
+              {placeholder}
+            </option>
+          )}
+
+          {option &&
+            option.map((i: any, j: any) => {
+              return (
+                <option
+                  value={i.value}
+                  key={j}
+                >
+                  {i.key}
+                </option>
+              );
+            })}
+        </select>
+      )}
     </div>
   );
 };

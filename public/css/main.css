@@ -2344,6 +2344,11 @@ div.tooltip {
   margin-right: 3em;
 }
 
+.invalid-input {
+  font-size: 0.875rem;
+  color: red;
+}
+
 /* Admin pannel css starts */
 
 .admin-pannel {

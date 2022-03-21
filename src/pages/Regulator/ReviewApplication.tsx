@@ -25,10 +25,11 @@ export const ReviewApplication = ({ data }: ReviewApplicationProps) => {
 
   let history = useHistory();
   useEffect(() => {
+   
     if (history.location && history.location.pathname) {
       let tempFormId = history.location.pathname.split("/")[2];
       let tempAppId = history.location.pathname.split("/")[3];
-  
+      
       getApplicationDetails(tempFormId, tempAppId);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

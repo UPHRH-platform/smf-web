@@ -162,7 +162,6 @@ export const ReviewApplicationLayout = ({
       if (arrThree.length !== 0) {
         tempArray.map((i: any, n: number) => {
           arrThree.map((m: any, l: number) => {
-           
             if (m.sideMenu === i.sideMenu) {
               m.fields.map((k: any, y: number) => {
                 if (!applicationData.inspectorDataObject) {
@@ -640,7 +639,7 @@ export const ReviewApplicationLayout = ({
                                                     k.lastName[0]}
                                                 </div>
                                                 <p className="ps-2">
-                                                  {k.firstName}
+                                                  {k.firstName + " " + k.lastName}
                                                 </p>
                                               </div>
                                             </div>
@@ -679,7 +678,7 @@ export const ReviewApplicationLayout = ({
                                                       k.lastName[0]}
                                                   </div>
                                                   <p className="ps-2">
-                                                    {k.firstName}
+                                                    {k.firstName + " " + k.lastName}
                                                   </p>
                                                 </div>
 
@@ -952,7 +951,7 @@ export const ReviewApplicationLayout = ({
                                       isReadOnly={true}
                                       label={k.label || ""}
                                       option={k.defaultValues}
-                                      placeholder={k.value || ""}
+                                      defaultValue={k.value || ""}
                                     />
                                   </div>
                                   {(applicationData.status ===
