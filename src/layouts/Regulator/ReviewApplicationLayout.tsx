@@ -639,7 +639,7 @@ export const ReviewApplicationLayout = ({
                                                     k.lastName[0]}
                                                 </div>
                                                 <p className="ps-2">
-                                                  {k.firstName}
+                                                  {k.firstName + " " + k.lastName}
                                                 </p>
                                               </div>
                                             </div>
@@ -678,7 +678,7 @@ export const ReviewApplicationLayout = ({
                                                       k.lastName[0]}
                                                   </div>
                                                   <p className="ps-2">
-                                                    {k.firstName}
+                                                    {k.firstName + " " + k.lastName}
                                                   </p>
                                                 </div>
 
