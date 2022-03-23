@@ -14,31 +14,31 @@ export const ReviewService = {
   consentApplication,
 };
 
-function returnApplication(payload) {
+async function returnApplication(payload) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify(payload),
     headers: authHeader(),
   };
-  return fetch(
+  return await fetch(
     APIS.BASE_URL + APIS.REGULATOR.RETURN_APPLICATION,
     requestOptions
   ).then(handleResponse);
 }
 
-function assignToInspection(payload) {
+async function assignToInspection(payload) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify(payload),
     headers: authHeader(),
   };
-  return fetch(
+  return await fetch(
     APIS.BASE_URL + APIS.REGULATOR.ASSIGN_TO_INSPECTION,
     requestOptions
   ).then(handleResponse);
 }
 
-function getAllInspectors() {
+async function getAllInspectors() {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify({
@@ -47,65 +47,65 @@ function getAllInspectors() {
     }),
     headers: authHeader(),
   };
-  return fetch(APIS.BASE_URL + APIS.USER.GET_ALL_USERS, requestOptions).then(
+  return await fetch(APIS.BASE_URL + APIS.USER.GET_ALL_USERS, requestOptions).then(
     handleResponse
   );
 }
 
-function getStatusLog(applicationId) {
+async function getStatusLog(applicationId) {
   const requestOptions = {
     method: APP.REQUEST.GET,
     headers: authHeader(),
   };
-  return fetch(
+  return await fetch(
     APIS.BASE_URL + APIS.REGULATOR.GET_STATUS_LOG + applicationId,
     requestOptions
   ).then(handleResponse);
 }
 
-function submitInspectionDetails(payload) {
+async function submitInspectionDetails(payload) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify(payload),
     headers: authHeader(),
   };
-  return fetch(
+  return await fetch(
     APIS.BASE_URL + APIS.INSPECTOR.SUBMIT_INSPECTION_DETAILS,
     requestOptions
   ).then(handleResponse);
 }
 
-function approveApplication(payload) {
+async function approveApplication(payload) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify(payload),
     headers: authHeader(),
   };
-  return fetch(
+  return await fetch(
     APIS.BASE_URL + APIS.REGULATOR.APPROVE_APPLICATION,
     requestOptions
   ).then(handleResponse);
 }
 
-function rejectApplication(payload) {
+async function rejectApplication(payload) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify(payload),
     headers: authHeader(),
   };
-  return fetch(
+  return await fetch(
     APIS.BASE_URL + APIS.REGULATOR.REJECT_APPLICATION,
     requestOptions
   ).then(handleResponse);
 }
 
-function consentApplication(payload) {
+async function consentApplication(payload) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify(payload),
     headers: authHeader(),
   };
-  return fetch(
+  return await fetch(
     APIS.BASE_URL + APIS.INSPECTOR.CONSENT_APPLICATION,
     requestOptions
   ).then(handleResponse);

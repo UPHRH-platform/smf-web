@@ -51,6 +51,18 @@ class Input extends Component {
     }
   };
 
+  componentDidUpdate() {
+    if (this.props.field.fieldType === LANG.FIELD_TYPES.numeric.toLowerCase()) {
+      setTimeout(() => {
+        let numericField = document.getElementById(
+          `field-${this.props.field.order}`
+        );
+
+        numericField.type = "number";
+      }, 250);
+    }
+  }
+
   render() {
     // console.log(this.props.field.fieldType);
     // strings.setLanguage(
@@ -76,7 +88,8 @@ class Input extends Component {
             LANG.FIELD_TYPES.email.toLowerCase() && (
             <input
               type={
-                this.props.field.fieldType === LANG.FIELD_TYPES.numeric
+                this.props.field.fieldType ===
+                LANG.FIELD_TYPES.numeric.toLowerCase()
                   ? "number"
                   : this.state.fieldType
               }

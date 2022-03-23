@@ -14,154 +14,155 @@ export const FormService = {
   getMyApplications,
   findApplication,
   uploadfile,
-  getApplicationsStatusCount
+  getApplicationsStatusCount,
 };
 
-function get() {
+async function get() {
   const requestOptions = {
     method: APP.REQUEST.GET,
     headers: authHeader(),
   };
-  return fetch(APIS.BASE_URL + APIS.FORM.GET, requestOptions).then(
+  return await fetch(APIS.BASE_URL + APIS.FORM.GET, requestOptions).then(
     handleResponse
   );
 }
 
-function find(formId) {
+async function find(formId) {
   const requestOptions = {
     method: APP.REQUEST.GET,
     headers: authHeader(),
   };
-  return fetch(APIS.BASE_URL + APIS.FORM.FIND + formId, requestOptions).then(
+  return await fetch(APIS.BASE_URL + APIS.FORM.FIND + formId, requestOptions).then(
     handleResponse
   );
 }
 
-function add(form) {
+async function add(form) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify(form),
     headers: authHeader(),
   };
-  return fetch(APIS.BASE_URL + APIS.FORM.ADD, requestOptions).then(
+  return await fetch(APIS.BASE_URL + APIS.FORM.ADD, requestOptions).then(
     handleResponse
   );
 }
 
-function update(form) {
+async function update(form) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify(form),
     headers: authHeader(),
   };
-  return fetch(APIS.BASE_URL + APIS.FORM.UPDATE, requestOptions).then(
+  return await fetch(APIS.BASE_URL + APIS.FORM.UPDATE, requestOptions).then(
     handleResponse
   );
 }
 
-function remove(form) {
+async function remove(form) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify(form),
     headers: authHeader(),
   };
-  return fetch(APIS.BASE_URL + APIS.FORM.DELETE, requestOptions).then(
+  return await fetch(APIS.BASE_URL + APIS.FORM.DELETE, requestOptions).then(
     handleResponse
   );
 }
 
-function submit(form) {
+async function submit(form) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: JSON.stringify(form),
     headers: authHeader(),
   };
-  return fetch(APIS.BASE_URL + APIS.FORM.SUBMIT, requestOptions).then(
+  return await fetch(APIS.BASE_URL + APIS.FORM.SUBMIT, requestOptions).then(
     handleResponse
   );
 }
 
-function getAllApplications(req) {
+async function getAllApplications(req) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     headers: authHeader(),
-    body: JSON.stringify(req)
+    body: JSON.stringify(req),
   };
-  return fetch(
+  return await fetch(
     APIS.BASE_URL + APIS.FORM.GET_ALL_APPLICATIONS,
     requestOptions
   ).then(handleResponse);
 }
 
-function getMyApplications(req) {
+async function getMyApplications(req) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     headers: authHeader(),
-    body: JSON.stringify(req)
+    body: JSON.stringify(req),
   };
-  return fetch(
+  return await fetch(
     APIS.BASE_URL + APIS.FORM.GET_ALL_APPLICATIONS + "?myApplication=true'",
     requestOptions
   ).then(handleResponse);
 }
 
-function getApplicationsStatusCount() {
+async function getApplicationsStatusCount() {
   const requestOptions = {
     method: APP.REQUEST.GET,
     headers: authHeader(),
   };
-  return fetch(
+  return await fetch(
     APIS.BASE_URL + APIS.FORM.GET__APPLICATIONS_STATUS_COUNT,
     requestOptions
   ).then(handleResponse);
 }
 
-function findApplication(applicationId) {
+async function findApplication(applicationId) {
   const requestOptions = {
     method: APP.REQUEST.GET,
     headers: authHeader(),
   };
-  return fetch(
+  return await fetch(
     APIS.BASE_URL + APIS.FORM.GET_APPLICATION_DETAILS + applicationId,
     requestOptions
   ).then(handleResponse);
 }
 
-function uploadfile(form) {
+async function uploadfile(form) {
   const requestOptions = {
     method: APP.REQUEST.POST,
     body: form,
     headers: {
-        ...authHeaderForUpload(),
-        // 'Accept': 'application/json',
-        // 'Content-Type': 'multipart/form-data'
+      ...authHeaderForUpload(),
+      // 'Accept': 'application/json',
+      // 'Content-Type': 'multipart/form-data'
     },
   };
-  return fetch(APIS.BASE_URL  + APIS.FORM.FILE_UPLOAD,
-    requestOptions,
-  ).then(handleResponse);
+  return await fetch(APIS.BASE_URL + APIS.FORM.FILE_UPLOAD, requestOptions).then(
+    handleResponse
+  );
 }
 
 function handleResponse(response) {
-  
   return response.text().then((text) => {
     const data = text && JSON.parse(text);
     if (!response.ok) {
       const error =
-        LANG.APIERROR || (data && data.statusInfo && data.statusInfo.errorMessage) || response.statusText;
+        LANG.APIERROR ||
+        (data && data.statusInfo && data.statusInfo.errorMessage) ||
+        response.statusText;
       return Promise.reject(new Error(error));
     }
-    if(data && data.statusInfo && data.statusInfo.statusCode) {
-      if(data.statusInfo.statusCode === 306) {
+    if (data && data.statusInfo && data.statusInfo.statusCode) {
+      if (data.statusInfo.statusCode === 306) {
         const error =
-        (data && data.statusInfo && data.statusInfo.errorMessage) || response.statusText;
-        UserService.logout()
-        Notify.error(error.message)
-        window.location.reload()
+          (data && data.statusInfo && data.statusInfo.errorMessage) ||
+          response.statusText;
+        UserService.logout();
+        Notify.error(error.message);
+        window.location.reload();
         return Promise.reject(new Error(error));
       }
     }
     return data;
   });
 }
-
