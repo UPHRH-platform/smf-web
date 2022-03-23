@@ -16,7 +16,7 @@ import {
   InspectionSummary,
   InspectionComplete,
   ViewConsentApplications,
-  Landing
+  Landing,
 } from "./pages";
 // import ReviewerApplications from "./pages/Reviewer/ReviewerApplications";
 import { Manage } from "./pages/Reviewer/manage";
@@ -54,7 +54,7 @@ const Router = (props) => (
         path="/inspector/:id/:applicationId"
         component={ViewApplications}
       />
-       <PrivateRoute
+      <PrivateRoute
         exact
         path="/assisting-inspector/:id/:applicationId"
         component={ViewConsentApplications}
