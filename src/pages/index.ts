@@ -6,3 +6,4 @@ export { ReviewApplication } from "./Regulator/ReviewApplication";
 export { InspectionSummary } from "./Inspector/InspectionSummary";
 export { InspectionComplete } from "./Inspector/InspectionComplete";
 export { ViewConsentApplications } from "./Inspector/ViewConsentApplication";
+export { Landing } from "./Dashboard/Landing";
