@@ -2306,6 +2306,7 @@ div.tooltip {
 }
 
 .react-confirm-alert-body h1 {
+  color: #000000;
   font-size: 1.4em !important;
 }
 

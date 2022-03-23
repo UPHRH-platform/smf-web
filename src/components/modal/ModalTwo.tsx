@@ -152,6 +152,7 @@ export const ModalTwo = ({
               </div>
             )}
           </div>
+          
           <div
             className={`${styles.custom_modal_footer} modal-footer p-0 m-0 pt-3 pb-3`}
           >
@@ -213,7 +214,7 @@ export const ModalTwo = ({
                   ) : (
                     <button
                       type="button"
-                      className={`${btnStyleTwo.btn_two}`}
+                      className={`${btnStyleTwo.btn_two_disabled}`}
                       disabled={true}
                     >
                       Submit

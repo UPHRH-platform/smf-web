@@ -610,6 +610,166 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                             />
                           </div>
                         );
+                      case "email":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <>
+                                  <div className="ps-4 pe-4 pt-3 col-4">
+                                    <TextField
+                                      showLabel={k.label ? true : false}
+                                      label={k.label || ""}
+                                      type="email"
+                                      isReadOnly={true}
+                                      value={k.value || ""}
+                                    />
+                                  </div>
+                                  <div className="mt-3">
+                                    <InspectCheckOne
+                                      label="Is the given information found correct?"
+                                      modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
+                                      clickHandler={(e) => {
+                                        setModalTextArea(k.comments);
+                                        setModalInspectionValue(
+                                          k.inspectionValue
+                                        );
+                                      }}
+                                      inspectionValue={k.inspectionValue}
+                                      children={
+                                        <div className="d-flex flex-row">
+                                          {k.isCorrect === "" ? (
+                                            <>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={false}
+                                                  label="Correct"
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "correct"
+                                                    );
+                                                  }}
+                                                />
+                                              </div>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={false}
+                                                  label="Incorrect"
+                                                  isModal={true}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
+                                                />
+                                              </div>
+                                            </>
+                                          ) : k.isCorrect === true ? (
+                                            <>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={true}
+                                                  label="Correct"
+                                                />
+                                              </div>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={false}
+                                                  label="Incorrect"
+                                                  isModal={true}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
+                                                />
+                                              </div>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={false}
+                                                  label="Correct"
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "correct"
+                                                    );
+                                                  }}
+                                                />
+                                              </div>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={true}
+                                                  label="Incorrect"
+                                                  isModal={true}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
+                                                />
+                                              </div>
+                                            </>
+                                          )}
+                                        </div>
+                                      }
+                                      showComments={
+                                        k.comments !== "" ? true : false
+                                      }
+                                      comments={k.comments}
+                                      modalId={
+                                        k.label
+                                          .replace(/\s/g, "")
+                                          .replace(/[^a-zA-Z ]/g, "") + k.id
+                                      }
+                                    />
+                                  </div>
+                                </>
+                              }
+                            />
+                          </div>
+                        );
                       case "date":
                         return (
                           <div className="mt-3" key={l}>

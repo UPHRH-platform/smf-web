@@ -62,7 +62,7 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
       FormService.getAllApplications(myApplicationsReq).then(
         (response2) => {
           if (response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
-            let data = response2.responseData.reverse();
+            let data = response2.responseData;
 
             let tempArray: any = [];
 
