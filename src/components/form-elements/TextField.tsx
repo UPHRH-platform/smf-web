@@ -1,5 +1,6 @@
 import { HeadingFour } from "../headings";
 import styles from "./TextField.module.css";
+import moment from "moment";
 
 /**
  * TextField component renders
@@ -35,6 +36,8 @@ export const TextField = ({
   defaultValue,
   isReadOnly,
 }: TextFieldProps) => {
+  let today = new Date();
+
   return (
     <div className={`${styles.text_field_input}`}>
       {showLabel && (
@@ -45,12 +48,32 @@ export const TextField = ({
       )}
 
       {isReadOnly ? (
+        type === "date" ? (
+          <input
+            type={type}
+            placeholder={placeholder}
+            value={value}
+            min={moment(today, "DD-MM-YYYY").format("YYYY-MM-DD")}
+            defaultValue={defaultValue}
+            readOnly
+          />
+        ) : (
+          <input
+            type={type}
+            placeholder={placeholder}
+            value={value}
+            defaultValue={defaultValue}
+            readOnly
+          />
+        )
+      ) : type === "date" ? (
         <input
           type={type}
           placeholder={placeholder}
           value={value}
+          min={moment(today, "DD-MM-YYYY").format("YYYY-MM-DD")}
           defaultValue={defaultValue}
-          readOnly
+          onChange={changeHandler}
         />
       ) : (
         <input

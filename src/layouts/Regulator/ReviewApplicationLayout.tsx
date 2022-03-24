@@ -492,7 +492,7 @@ export const ReviewApplicationLayout = ({
                 />
                 <ModalTwo
                   id="rejectModal"
-                  enableHandler={false}
+                  enableHandler={true}
                   enableSkip={false}
                   ariaLabel="rejectModalLabel"
                   showTextAreaLabel={false}
@@ -584,7 +584,7 @@ export const ReviewApplicationLayout = ({
                         : ""
                     }
                     comments={
-                      applicationData.comments ? applicationData.comments : ""
+                      applicationData.notes ? applicationData.notes : ""
                     }
                     approvedNote={
                       applicationData.status !== LANG.FORM_STATUS.RETURNED &&

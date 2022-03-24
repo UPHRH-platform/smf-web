@@ -152,16 +152,19 @@ export const ModalTwo = ({
               </div>
             )}
           </div>
-          
+
           <div
             className={`${styles.custom_modal_footer} modal-footer p-0 m-0 pt-3 pb-3`}
           >
             <div className="col-6 m-0">
-              {!enableHandler ? (
+              {!cancelHandler ? (
                 <button
                   type="button"
                   className={`${btnStyle.btn_one} me-2`}
                   data-dismiss="modal"
+                  onClick={() => {
+                    setNote("");
+                  }}
                 >
                   Cancel
                 </button>

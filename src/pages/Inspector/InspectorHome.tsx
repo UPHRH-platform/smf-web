@@ -39,8 +39,10 @@ export const InspectorHome = ({ data }: InspectorProps) => {
 
   useEffect(() => {
     if (userDetails.id) {
-      getAllApplications();
-      getDashboardData();
+      setTimeout(() => {
+        getAllApplications();
+        getDashboardData();
+      }, 850);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetails]);

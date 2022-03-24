@@ -5,6 +5,7 @@ import Notify from "../../helpers/notify";
 import { FormService } from "../../services/form.service";
 import { APP, LANG } from "../../constants";
 import { BtnOne } from "../../components/buttons";
+import { useHistory } from "react-router-dom";
 
 /**
  * Reviewer component renders
@@ -54,58 +55,65 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
   >([]);
   const [showPendingApplications, setShowPendingApplications] = useState(false);
 
+  let history = useHistory();
+
   useEffect(() => {
+    setTimeout(() => {
+      getPendingApplications();
+    }, 850);
+  }, [history]);
+
+  const getPendingApplications = () => {
     const myApplicationsReq = {
       searchObjects: [],
     };
-    setTimeout(() => {
-      FormService.getAllApplications(myApplicationsReq).then(
-        (response2) => {
-          if (response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
-            let data = response2.responseData;
 
-            let tempArray: any = [];
+    FormService.getAllApplications(myApplicationsReq).then(
+      (response2) => {
+        if (response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          let data = response2.responseData;
 
-            data.map((m: any, n: number) => {
-              if (
-                m.status === LANG.FORM_STATUS.NEW ||
-                m.status === LANG.FORM_STATUS.INSPECTION_COMPLETED
-              ) {
-                tempArray.push(m);
-                setShowPendingApplications(true);
-              }
-              return null;
-            });
+          let tempArray: any = [];
 
-            setPendingApplications(
-              tempArray.length > 8 ? tempArray.splice(0, 8) : tempArray
-            );
-          } else {
-            Notify.error(response2.statusInfo.errorMessage);
-          }
-        },
-        (error) => {
-          error.statusInfo
-            ? Notify.error(error.statusInfo.errorMessage)
-            : Notify.error(error.message);
+          data.map((m: any, n: number) => {
+            if (
+              m.status === LANG.FORM_STATUS.NEW ||
+              m.status === LANG.FORM_STATUS.INSPECTION_COMPLETED
+            ) {
+              tempArray.push(m);
+              setShowPendingApplications(true);
+            }
+            return null;
+          });
+
+          setPendingApplications(
+            tempArray.length > 8 ? tempArray.splice(0, 8) : tempArray
+          );
+        } else {
+          Notify.error(response2.statusInfo.errorMessage);
         }
-      );
-      FormService.getApplicationsStatusCount().then(
-        (response2: any) => {
-          if (response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
-            setApplicationsMetrics(response2.responseData.keyValues);
-          } else {
-            Notify.error(response2.statusInfo.errorMessage);
-          }
-        },
-        (error: any) => {
-          error.statusInfo
-            ? Notify.error(error.statusInfo.errorMessage)
-            : Notify.error(error.message);
+      },
+      (error) => {
+        error.statusInfo
+          ? Notify.error(error.statusInfo.errorMessage)
+          : Notify.error(error.message);
+      }
+    );
+    FormService.getApplicationsStatusCount().then(
+      (response2: any) => {
+        if (response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          setApplicationsMetrics(response2.responseData.keyValues);
+        } else {
+          Notify.error(response2.statusInfo.errorMessage);
         }
-      );
-    }, 800);
-  }, []);
+      },
+      (error: any) => {
+        error.statusInfo
+          ? Notify.error(error.statusInfo.errorMessage)
+          : Notify.error(error.message);
+      }
+    );
+  };
 
   // Function to format the status label
   const formatLabel = (labelStatus: string) => {
