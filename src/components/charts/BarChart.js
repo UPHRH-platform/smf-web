@@ -69,60 +69,14 @@ class BarChart extends React.Component {
     };
   }
 
-  /**
-   * Function to update the chart visualization
-   */
-  updateBarVisuals = (drillDownId) => {
-    // if (drillDownId !== "none" && drillDownId !== undefined) {
-    //   DashboardService.getData(drillDownId).then(
-    //     (response) => {
-    //       this.setState(
-    //         (prevState) => ({
-    //           ...prevState,
-    //           chartsGData: {
-    //             ...prevState.chartsGData,
-    //             [drillDownId]: response.responseData,
-    //           },
-    //         }),
-    //         () =>
-    //           this.setState({
-    //             isData: true,
-    //           })
-    //       );
-    //     },
-    //     (error) => {}
-    //   );
-    //   localStorage.removeItem("label");
-    // } else {
-    //   this.setState(
-    //     {
-    //       isData: false,
-    //     },
-    //     () => {
-    //       this.setState({
-    //         trigger: true,
-    //       });
-    //       this.props.pathName.history.push({
-    //         pathName: "/dashboards",
-    //         state: { trigger: this.state.trigger },
-    //       });
-    //       setTimeout(() => {
-    //         this.props.pathName.history.push({
-    //           pathName: "/dashboards",
-    //           state: { trigger: this.state.trigger },
-    //         });
-    //       }, 500);
-    //     }
-    //   );
-    // }
-  };
-
   manupulateData(chartData) {
     var barTempData = {
       labels: [],
       datasets: [],
     };
-    let colors = barPalette("cb-BasePalette2", chartData.length).map(function (hex) {
+    let colors = barPalette("cb-BasePalette2", chartData.length).map(function (
+      hex
+    ) {
       return "#" + hex;
     });
     chartData.forEach((d, i) => {
@@ -192,27 +146,6 @@ class BarChart extends React.Component {
       data = this.manupulateData(chartData);
     }
 
-    /*
-     * Function to get the chart label title
-     */
-    // const getBarLabelFilter = elems => {
-    //   if (localStorage.getItem("filterKey") && elems[0] !== undefined) {
-    //     let selectedLabel = {
-    //       labels: []
-    //     };
-    //     // console.log("Bar GetLabelFilter: "+elems[0]._view.label);
-    //     selectedLabel.labels.push(elems[0]._view.label);
-    //     localStorage.setItem("label", selectedLabel.labels);
-    //     this.updateBarVisuals(drillDownId);
-    //   } else {
-    //     // console.log("Out!");
-    //   }
-    // };
-
-    // const handleClick = (e) => {
-    //   console.log("Click handler: "+e);
-    // }
-
     if (data) {
       return (
         <div onContextMenu={this.contextMenu}>
@@ -226,9 +159,7 @@ class BarChart extends React.Component {
                 beforeInit: (chart, options) => {
                   chart.legend.afterFit = () => {
                     if (chart.legend.margins) {
-                      // chart.height += 50;
                       chart.legend.options.labels.padding = 20;
-                      // chart.legend.height += 20;
                     }
                   };
                 },

@@ -108,12 +108,9 @@ class PieChart extends React.Component {
         let selectedLabel = {
           labels: [],
         };
-        // let finalLabelArray = [];
-        // let tempArray = [];
         selectedLabel.labels.push(elems[0]._chart.data.labels[index]);
         localStorage.setItem("label", selectedLabel.labels);
         this.updatePieVisuals();
-        // console.log("PieChart GetLabelFilter: "+elems[0]._chart.data.labels[index]);
       } else {
         // console.log("Out!");
       }
@@ -130,9 +127,7 @@ class PieChart extends React.Component {
               beforeInit: (chart, options) => {
                 chart.legend.afterFit = () => {
                   if (chart.legend.margins) {
-                    // chart.height += 100;
                     chart.legend.options.labels.padding = 15;
-                    // chart.legend.height += 55;
                   }
                 };
               },

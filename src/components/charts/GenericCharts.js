@@ -3,8 +3,9 @@ import ChartType from "./ChartType";
 import "file-saver";
 import domtoimage from "dom-to-image";
 import Modal from "react-modal";
-import ExportChart from "../../helpers/exportChart"
+import ExportChart from "../../helpers/exportChart";
 import _ from "lodash";
+import "../../styles/chart.css";
 
 /**
  * GenericChart component to display the
@@ -103,12 +104,12 @@ class GenericCharts extends React.Component {
             className={`col-sm-12 col-md-${d.dimensions.width} col-lg-${d.dimensions.width} mt-2 mb-3`}
           >
             <div
-              className="chart-wrapper h-100 card-chart-2 chart-wrapper-padding-2"
+              className="chart-wrapper h-100 chart_card_one chart-wrapper-padding-2"
               id={d.name}
             >
               <div className="clearfix mb-3">
                 <div className="float-start">
-                  <h5 className="mt-2 chart-header-style-1">{d.name}</h5>
+                  <h5 className="pt-1 chart_title_one">{d.name}</h5>
                   {d.description && (
                     <label className="chart-desc-style-1">
                       {d.description}
@@ -302,8 +303,6 @@ class GenericCharts extends React.Component {
                   height="13"
                   id="dropdownMenuButton"
                   data-bs-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
                 ></img>
                 <div
                   className="dropdown-menu dropdown-menu-custom"

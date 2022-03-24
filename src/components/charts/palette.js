@@ -79,7 +79,7 @@
  *     WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
- 'use strict';
+//  'use strict';
 
  var palette = (function() {
  
@@ -88,9 +88,9 @@
      return proto.slice.apply(arr, proto.slice.call(arguments, 1));
    };
  
-   var extend = function(arr, arr2) {
-     return proto.push.apply(arr, arr2);
-   };
+  //  var extend = function(arr, arr2) {
+  //    return proto.push.apply(arr, arr2);
+  //  };
  
    var function_type = typeof function() {};
  
@@ -128,7 +128,7 @@
     */
    var palette = function(scheme, number, opt_index, varargs) {
      number |= 0;
-     if (number == 0) {
+     if (number === 0) {
        return [];
      }
  
@@ -298,7 +298,7 @@
          palettes_min = Math.min(palettes_min, len);
          palettes_max = Math.max(palettes_max, len);
          self.max = Math.max(self.max, len);
-         if (!opt_is_cbf && len != 1) {
+         if (!opt_is_cbf && len !== 1) {
            self.cbf_max = Math.min(self.cbf_max, len - 1);
          }
        }
@@ -719,7 +719,7 @@
    palette.rgbColor = function(r, g, b) {
      return [r, g, b].map(function(v) {
        v = Number(Math.round(clamp(v) * 255)).toString(16);
-       return v.length == 1 ? '0' + v : v;
+       return v.length === 1 ? '0' + v : v;
      }).join('');
    };
  
@@ -740,7 +740,7 @@
          v = 1.055 * Math.pow(v, 1 / 2.4) - 0.055;
        }
        v = Number(Math.round(v * 255)).toString(16);
-       return v.length == 1 ? '0' + v : v;
+       return v.length === 1 ? '0' + v : v;
      }).join('');
    };
  

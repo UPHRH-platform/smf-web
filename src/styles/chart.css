@@ -1,0 +1,17 @@
+@import url("./colors.css");
+@import url("../assets/fonts/fonts.css");
+
+.chart_title_one {
+  color: var(--black-87);
+  font-family: "Montserrat-SemiBold";
+  font-size: 1rem;
+  letter-spacing: 0.12px;
+  line-height: 1.5;
+}
+
+.chart_card_one {
+    background-color: var(--white-100);
+    border: 1px solid var(--black-08);
+    border-radius: 4px;
+    padding: 1.75rem;
+}

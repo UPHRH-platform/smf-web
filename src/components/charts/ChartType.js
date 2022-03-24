@@ -2,9 +2,12 @@ import React from "react";
 import LineChart from "./LineChart";
 import BarChart from "./BarChart";
 import PieChart from "./PieChart";
+import MixedData from "./MixedData";
+import MetricVisual from "./MetricVisual";
 import _ from "lodash";
 import { ChartService } from "../../services";
 import ExportChart from "../../helpers/exportChart";
+import moment from "moment";
 
 /**
  * Component to genearte the required charts
@@ -20,14 +23,38 @@ class ChartType extends React.Component {
   }
 
   componentDidMount() {
-    console.log("ChartType...")
     this.callAPI();
   }
 
   callAPI() {
     let code = _.chain(this.props).get("chartData").first().get("id").value();
 
-    ChartService.getChartData(code).then(
+    let startRange = moment().startOf("month");
+    let endRange = moment().endOf("month");
+    startRange = Number(startRange);
+    endRange = Number(endRange);
+    let thisMonth = { startDate: startRange, endDate: endRange };
+
+    let payload = {
+      RequestInfo: {
+        authToken: "null",
+      },
+      headers: {
+        tenantId: "null",
+      },
+      aggregationRequestDto: {
+        dashboardId: "home",
+        visualizationType: "METRIC",
+        visualizationCode: code,
+        queryType: "",
+        filters: {},
+        moduleLevel: "",
+        aggregationFactors: null,
+        requestDate: thisMonth,
+      },
+    };
+
+    ChartService.getChartData(payload).then(
       (response) => {
         this.setState((prevState) => ({
           ...prevState,
@@ -101,7 +128,6 @@ class ChartType extends React.Component {
               pathName={this.props.pathName.pathProps}
             />
           );
-
         case "LINE":
           return (
             <LineChart
@@ -126,6 +152,28 @@ class ChartType extends React.Component {
               pathName={this.props.pathName.pathProps}
               drillDownId={drillDownId}
               filter={filter}
+            />
+          );
+        case "LINE_BAR":
+          return (
+            <MixedData
+              chartData={data}
+              label={this.props.label}
+              unit={this.state.unit}
+              GFilterData={this.props.GFilterData}
+              dimensions={this.props.dimensions}
+              section={this.props.section}
+            />
+          );
+        case "METRICCOLLECTION":
+          return (
+            <MetricVisual
+              chartData={data}
+              label={this.props.label}
+              unit={this.state.unit}
+              GFilterData={this.props.GFilterData}
+              dimensions={this.props.dimensions}
+              section={this.props.section}
             />
           );
         default:

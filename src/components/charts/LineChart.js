@@ -1,8 +1,8 @@
 //Line Chart
 import React from "react";
 import { Line } from "react-chartjs-2";
-import NFormatterFun from "./NFormatterFun"
-import linePalette from "./palette"
+import NFormatterFun from "./NFormatterFun";
+import linePalette from "./palette";
 
 /**
  * LineChart component
@@ -75,12 +75,6 @@ class LineChart extends React.Component {
     };
   }
 
-  // callforNewData(elems) {
-  // 	console.log(elems[0]._datasetIndex + ', ' + elems[0]._index);
-  // 	// this.setState({ data: null })
-  //
-  // }
-
   /**
    * Function to update the chart visualization
    */
@@ -95,8 +89,6 @@ class LineChart extends React.Component {
   };
 
   manupulateData(chartData) {
-    // let temp, tempdata;
-    // temp = this.props.chartData;
     var tempdata = {
       labels: [],
       datasets: [],
@@ -150,7 +142,6 @@ class LineChart extends React.Component {
       if (localStorage.getItem("filterKey") && elems[0] !== undefined) {
         let index = elems[0]._datasetIndex;
         let selectedLabel = elems[0]._xScale.chart.data.datasets[index].label;
-        // console.log("LineChart GetLabelFilter: "+elems[0]._xScale.chart.data.datasets[index].label);
         localStorage.setItem("label", selectedLabel);
         this.updateLineVisuals();
       } else {
@@ -170,9 +161,7 @@ class LineChart extends React.Component {
               beforeInit: (chart, options) => {
                 chart.legend.afterFit = () => {
                   if (chart.legend.margins) {
-                    // chart.height += 50;
                     chart.legend.options.labels.padding = 20;
-                    // chart.legend.height += 20;
                   }
                 };
               },

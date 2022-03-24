@@ -1,6 +1,5 @@
 /*eslint-disable no-empty-pattern*/
 // @ts-nocheck
-import { useEffect, useState } from "react";
 import _ from "lodash";
 import PageLayout from "./PageLayout";
 import { useHistory } from "react-router-dom";
@@ -16,15 +15,8 @@ interface DashboardLayoutProps {
 }
 
 export const DashboardLayout = ({ dashboardConfig }: DashboardLayoutProps) => {
-  // console.log(dashboardConfig);
 
   let history = useHistory();
-
-  // console.log(history.location.pathname)
-
-  // useEffect(() => {
-  //   renderCharts();
-  // }, [dashboardConfig]);
 
   const renderCharts = () => {
     let dashboardConfigData: any = dashboardConfig;
