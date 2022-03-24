@@ -6,3 +6,4 @@ export { ReviewApplicationLayout } from "./Regulator/ReviewApplicationLayout";
 export { InspectionSummaryLayout } from "./Inspector/InspectionSummaryLayout";
 export { InspectionCompleteLayout } from "./Inspector/InspectionCompleteLayout";
 export { ConsentFormView } from "./Inspector/ConsentFormView";
+export { DashboardLayout } from "./Dashboard/DashboardLayout";

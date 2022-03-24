@@ -33,4 +33,9 @@ export const APIS = {
     GET_USER_BY_ID: "user/getUserById",
     GET_ALL_USERS: "user/v1/getAllUser",
   },
+  DASHBOARD: {
+    GET_DASHBOARD_CONFIG: "dashboard/getDashboardConfig/SMF/home",
+    GET_DASHBOARD_PROFILE: "dashboard/getDashboardsForProfile/SMF",
+    GET_CHART_DATA: "dashboard/getChartV2/SMF",
+  },
 };
