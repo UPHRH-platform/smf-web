@@ -219,7 +219,8 @@ class FormViewer extends Component {
     let inputs = document.getElementsByTagName("input");
     if (
       this.props.match.params.applicationId === null ||
-      this.props.match.params.applicationId === undefined
+      this.props.match.params.applicationId === undefined ||
+      this.state.applicationDetails.status === LANG.FORM_STATUS.RETURNED
     ) {
       for (let m = 0; m < inputs.length; m++) {
         for (var key of Object.keys(existingFields))
@@ -377,7 +378,8 @@ class FormViewer extends Component {
     let flag = true;
     if (
       (this.props.match.params.applicationId === null ||
-        this.props.match.params.applicationId === undefined) &&
+        this.props.match.params.applicationId === undefined ||
+        this.state.applicationDetails.status === LANG.FORM_STATUS.RETURNED) &&
       Helper.getUserRole() === APP.ROLE.INSTITUTION
     ) {
       for (let index = 0; index <= this.state.headingIndex; index++) {
@@ -414,7 +416,8 @@ class FormViewer extends Component {
     // console.log("saveFields...");
     if (
       this.props.match.params.applicationId === null ||
-      this.props.match.params.applicationId === undefined
+      this.props.match.params.applicationId === undefined ||
+      this.state.applicationDetails.status === LANG.FORM_STATUS.RETURNED
     ) {
       let obj = this.state.formFields,
         order = "";
@@ -427,6 +430,7 @@ class FormViewer extends Component {
         }),
         {}
       );
+
       for (let i = 0; i < this.state.formFieldGroups[index].length; i++) {
         order = this.state.formFieldGroups[index][i]["order"];
         obj["field_" + order] =
@@ -479,6 +483,7 @@ class FormViewer extends Component {
       temp;
     var savedFields = this.state.formFields;
     var fields = this.state.formDetails.fields;
+
     for (const key in savedFields) {
       temp = key.split("_");
       for (let j = 0; j < fields.length; j++) {
@@ -488,6 +493,7 @@ class FormViewer extends Component {
         }
       }
     }
+
     var fieldGroups = {};
     for (let i = 0; i < this.state.formHeadings.length; i++) {
       fieldGroups[this.state.formHeadings[i]] = {};
@@ -510,7 +516,7 @@ class FormViewer extends Component {
       }),
     };
     // formDetails = JSON.stringify(formDetails);
-    // console.log(formDetails)
+    // console.log(formDetails);
     FormService.submit(formDetails).then(
       (response) => {
         // console.log(response);
@@ -631,8 +637,8 @@ class FormViewer extends Component {
                                   : ""
                               }
                               comments={
-                                this.state.applicationDetails.comments
-                                  ? this.state.applicationDetails.comments
+                                this.state.applicationDetails.notes
+                                  ? this.state.applicationDetails.notes
                                   : ""
                               }
                               showInspectionDetails={true}

@@ -655,7 +655,7 @@ export const ConsentFormView = ({
                         : ""
                     }
                     comments={
-                      applicationData.comments ? applicationData.comments : ""
+                      applicationData.notes ? applicationData.notes : ""
                     }
                     approvedNote={
                       applicationData.status !== LANG.FORM_STATUS.RETURNED &&
