@@ -82,6 +82,7 @@ export const InspectorHome = ({ data }: InspectorProps) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
             response.responseData.map((i: any, j: number) => {
               if (
+                i.inspection &&
                 i.inspection.leadInspector.includes(
                   userDetails && userDetails.id
                 ) &&
@@ -121,6 +122,7 @@ export const InspectorHome = ({ data }: InspectorProps) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
             response.responseData.map((i: any, j: number) => {
               if (
+                i.inspection &&
                 i.inspection.status ===
                   LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED &&
                 !i.inspection.leadInspector.includes(
