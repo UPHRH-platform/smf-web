@@ -9,7 +9,7 @@ class PageLayout extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: null
+      data: null,
     };
   }
 

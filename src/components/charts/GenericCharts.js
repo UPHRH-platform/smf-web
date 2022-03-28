@@ -120,7 +120,7 @@ class GenericCharts extends React.Component {
                   <div className="d-flex">
                     <div
                       id="fullScreenBtn"
-                      className="material-icons cursor-style-one mt-2 black-60"
+                      className="material-icons custom_cursor mt-2 black-60"
                       onClick={() => {
                         this.getModalData(
                           d.name,
@@ -133,33 +133,34 @@ class GenericCharts extends React.Component {
                     >
                       fullscreen
                     </div>
-                    <div
-                      className="material-icons cursor-style-one mt-2 ms-2 black-60"
-                      id="dropdownMenuButton"
-                      data-bs-toggle="dropdown"
-                      aria-haspopup="true"
-                      aria-expanded="false"
-                    >
-                      more_vert
-                    </div>
-                    <div
-                      className="dropdown-menu dropdown-menu-custom"
-                      aria-labelledby="dropdownMenuButton"
-                    >
-                      <p
-                        className="dropdown-item cursor-style-one metricTextColor dropdown-text-style-1"
-                        onClick={() =>
-                          setTimeout(() => {
-                            domtoimage
-                              .toBlob(document.getElementById(d.name), {
-                                filter: this.filterImage,
-                              })
-                              .then((blob) => window.saveAs(blob, d.name));
-                          }, 250)
-                        }
+                    <div className="dropdown">
+                      <div
+                        className="material-icons custom_cursor mt-2 ms-2 black-60"
+                        id="dropdownMenuButton"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
                       >
-                        Download as PNG
-                      </p>
+                        more_vert
+                      </div>
+                      <div
+                        className="dropdown-menu dropdown-menu-custom p-0 m-0"
+                        aria-labelledby="dropdownMenuButton"
+                      >
+                        <p
+                          className="dropdown-item custom_cursor dropdown_text mt-3"
+                          onClick={() =>
+                            setTimeout(() => {
+                              domtoimage
+                                .toBlob(document.getElementById(d.name), {
+                                  filter: this.filterImage,
+                                })
+                                .then((blob) => window.saveAs(blob, d.name));
+                            }, 250)
+                          }
+                        >
+                          Download as PNG
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -183,7 +184,7 @@ class GenericCharts extends React.Component {
                       <div className="d-flex">
                         <div
                           id="downloadAsImage"
-                          className="cursor-style-one"
+                          className="custom_cursor "
                           onClick={() =>
                             domtoimage
                               .toBlob(document.getElementById("modalView"), {
@@ -218,7 +219,7 @@ class GenericCharts extends React.Component {
                           </span>
                         </div>
 
-                        <div className="cursor-style-one" id="downloadAsData">
+                        <div className="custom_cursor " id="downloadAsData">
                           <span
                             className="float-end me-3"
                             onClick={() =>
@@ -236,7 +237,7 @@ class GenericCharts extends React.Component {
                           </span>
                         </div>
                         <div
-                          className="cursor-style-one"
+                          className="custom_cursor "
                           onClick={this.closeModal}
                           id="exit"
                         >
@@ -295,7 +296,7 @@ class GenericCharts extends React.Component {
               <div className="row">
                 <h5 className="pb-5 pt-2 pl-3">{d.name}</h5>
                 <img
-                  className="cursor-style-one mt-3 downloadBtn downloadIcon ml-3"
+                  className="custom_cursor mt-3 downloadBtn downloadIcon ml-3"
                   src="data:image/png;base64,R0lGODlhFAAUAIAAAP///wAAACH5BAEAAAAALAAAAAAUABQAAAIRhI+py+0Po5y02ouz3rz7rxUAOw=="
                   title="Download as PNG"
                   alt="download chart"
@@ -310,7 +311,7 @@ class GenericCharts extends React.Component {
                   style={{ marginLeft: "-11.85em" }}
                 >
                   <p
-                    className="dropdown-item cursor-style-one metricTextColor"
+                    className="dropdown-item custom_cursor  metricTextColor"
                     onClick={() =>
                       setTimeout(() => {
                         domtoimage
