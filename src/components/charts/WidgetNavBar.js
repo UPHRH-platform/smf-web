@@ -59,8 +59,8 @@ class WidgetNavBar extends Component {
    * Function to get the chart data as per the dashboard selection
    */
   getChartData = (code) => {
-    let startRange = moment().startOf("month");
-    let endRange = moment().endOf("month");
+    let startRange = moment().startOf("year");
+    let endRange = moment().endOf("year");
     startRange = Number(startRange);
     endRange = Number(endRange);
     let thisMonth = { startDate: startRange, endDate: endRange };
