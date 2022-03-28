@@ -15,7 +15,8 @@ import {
   ReviewApplication,
   InspectionSummary,
   InspectionComplete,
-  ViewConsentApplications
+  ViewConsentApplications,
+  Landing,
 } from "./pages";
 // import ReviewerApplications from "./pages/Reviewer/ReviewerApplications";
 import { Manage } from "./pages/Reviewer/manage";
@@ -31,6 +32,7 @@ const Router = (props) => (
       <Route exact path="/" component={Login} />
       <Route path="/login" component={Login} />
       <PrivateRoute path="/dashboard" component={Dashboard} />
+      <PrivateRoute path="/analytics" component={Landing} />
       <PrivateRoute exact path="/forms" component={ListForms} />
       <PrivateRoute exact path="/forms/add" component={AddForm} />
       <PrivateRoute exact path="/forms/:id/edit" component={AddForm} />
@@ -52,7 +54,7 @@ const Router = (props) => (
         path="/inspector/:id/:applicationId"
         component={ViewApplications}
       />
-       <PrivateRoute
+      <PrivateRoute
         exact
         path="/assisting-inspector/:id/:applicationId"
         component={ViewConsentApplications}

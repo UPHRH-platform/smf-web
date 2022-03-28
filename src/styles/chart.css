@@ -1,0 +1,57 @@
+@import url("./colors.css");
+@import url("../assets/fonts/fonts.css");
+
+.chart_title_one {
+  color: var(--black-87);
+  font-family: "Montserrat-SemiBold";
+  font-size: 1rem;
+  letter-spacing: 0.12px;
+  line-height: 1.5;
+}
+
+.chart_card_one {
+  background-color: var(--white-100);
+  border: 1px solid var(--black-08);
+  border-radius: 4px;
+  padding: 1.75rem;
+}
+
+.widget_card_one {
+  background-color: var(--white-100);
+  border-radius: 4px;
+  border: 1px solid var(--black-08);
+  min-height: 5.563rem;
+}
+
+.widget_card_one label {
+  color: var(--black-87);
+  font-family: "Lato-Regular";
+  font-size: 0.875rem;
+  letter-spacing: 0.25px;
+  line-height: 1.5;
+}
+
+.widget_card_one h2 {
+  color: var(--black-87);
+  font-family: "Montserrat-SemiBold";
+  font-size: 1.25rem;
+  letter-spacing: 0.12px;
+  line-height: 1.4;
+}
+
+.custom_cursor {
+  cursor: pointer;
+}
+
+.dropdown_text {
+  font-family: "Lato-Regular";
+  font-size: 0.875rem;
+}
+
+.chart_card_description_one {
+  color: var(--black-60);
+  font-family:"Lato-Regular";
+  font-size: 0.875rem;
+  letter-spacing: 0.25;
+  line-height: 1.429;
+}

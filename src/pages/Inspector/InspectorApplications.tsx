@@ -151,6 +151,7 @@ export const InspectorApplications = ({ data }: InspectorApplicationsProps) => {
                   userDetails && userDetails.id
                 )
               ) {
+                // consol
                 i.inspection.assignedTo.map((m: any, n: number) => {
                   if (m.id === userDetails.id) {
                     // if (m.status === LANG.FORM_STATUS.INSPECTION_COMPLETED) {

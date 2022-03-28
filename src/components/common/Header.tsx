@@ -142,6 +142,14 @@ class Header extends Component<LoginProps, LoginState> {
                       }`}>ALL APPLICATIONS</Link>
                   </li>
                 )}
+                 {Helper.getUserRole() === APP.ROLE.REGULATOR && (
+                  <li className="mr-5">
+                    <Link to={"/analytics"} className={`${this.props.history.location.pathname.match("/analytics")
+                      ? "active"
+                      : ""
+                      }`}>DASHBOARD</Link>
+                  </li>
+                )}
               </ul>
               }
               {
