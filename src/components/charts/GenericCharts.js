@@ -107,62 +107,69 @@ class GenericCharts extends React.Component {
               className="chart-wrapper h-100 chart_card_one chart-wrapper-padding-2"
               id={d.name}
             >
-              <div className="clearfix mb-3">
-                <div className="float-start">
-                  <h5 className="pt-1 chart_title_one mb-0">{d.name}</h5>
+              <div className="mb-3">
+                <div className="">
+                  <div className="row">
+                    <div className="col-10 col-md-8 col-lg-10">
+                      <h5 className="pt-1 chart_title_one mb-0">{d.name}</h5>
+                    </div>
+                    <div className="col-2 col-md-4 col-lg-2">
+                      <div className="d-flex">
+                        <div
+                          id="fullScreenBtn"
+                          className="material-icons custom_cursor mt-2 black-60"
+                          onClick={() => {
+                            this.getModalData(
+                              d.name,
+                              d.description,
+                              d.charts,
+                              chartData.name,
+                              d.dimensions
+                            );
+                          }}
+                        >
+                          fullscreen
+                        </div>
+                        <div className="dropdown">
+                          <div
+                            className="material-icons custom_cursor mt-2 ms-2 black-60"
+                            id="dropdownMenuButton"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false"
+                          >
+                            more_vert
+                          </div>
+                          <div
+                            className="dropdown-menu dropdown-menu-custom p-0 m-0"
+                            aria-labelledby="dropdownMenuButton"
+                          >
+                            <p
+                              className="dropdown-item custom_cursor dropdown_text mt-3"
+                              onClick={() =>
+                                setTimeout(() => {
+                                  domtoimage
+                                    .toBlob(document.getElementById(d.name), {
+                                      filter: this.filterImage,
+                                    })
+                                    .then((blob) =>
+                                      window.saveAs(blob, d.name)
+                                    );
+                                }, 250)
+                              }
+                            >
+                              Download as PNG
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   {d.description && (
                     <label className="chart_card_description_one">
                       {d.description}
                     </label>
                   )}
-                </div>
-                <div className="float-end">
-                  <div className="d-flex">
-                    <div
-                      id="fullScreenBtn"
-                      className="material-icons custom_cursor mt-2 black-60"
-                      onClick={() => {
-                        this.getModalData(
-                          d.name,
-                          d.description,
-                          d.charts,
-                          chartData.name,
-                          d.dimensions
-                        );
-                      }}
-                    >
-                      fullscreen
-                    </div>
-                    <div className="dropdown">
-                      <div
-                        className="material-icons custom_cursor mt-2 ms-2 black-60"
-                        id="dropdownMenuButton"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                      >
-                        more_vert
-                      </div>
-                      <div
-                        className="dropdown-menu dropdown-menu-custom p-0 m-0"
-                        aria-labelledby="dropdownMenuButton"
-                      >
-                        <p
-                          className="dropdown-item custom_cursor dropdown_text mt-3"
-                          onClick={() =>
-                            setTimeout(() => {
-                              domtoimage
-                                .toBlob(document.getElementById(d.name), {
-                                  filter: this.filterImage,
-                                })
-                                .then((blob) => window.saveAs(blob, d.name));
-                            }, 250)
-                          }
-                        >
-                          Download as PNG
-                        </p>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </div>
 
