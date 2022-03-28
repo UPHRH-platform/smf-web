@@ -109,9 +109,9 @@ class GenericCharts extends React.Component {
             >
               <div className="clearfix mb-3">
                 <div className="float-start">
-                  <h5 className="pt-1 chart_title_one">{d.name}</h5>
+                  <h5 className="pt-1 chart_title_one mb-0">{d.name}</h5>
                   {d.description && (
-                    <label className="chart-desc-style-1">
+                    <label className="chart_card_description_one">
                       {d.description}
                     </label>
                   )}

@@ -291,8 +291,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
             setModalInspectionValue(m.inspectionValue);
             if (status === "correct") {
               m.isCorrect = true;
-              m.comments = m.comments;
-              m.inspectionValue = m.inspectionValue;
+              m.comments = "";
+              m.inspectionValue = "";
+              setModalTextArea("");
+              setModalInspectionValue("");
             } else if (status === "incorrect") {
               m.isCorrect = false;
               m.comments = m.comments;

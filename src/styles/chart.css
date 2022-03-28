@@ -47,3 +47,11 @@
   font-family: "Lato-Regular";
   font-size: 0.875rem;
 }
+
+.chart_card_description_one {
+  color: var(--black-60);
+  font-family:"Lato-Regular";
+  font-size: 0.875rem;
+  letter-spacing: 0.25;
+  line-height: 1.429;
+}
