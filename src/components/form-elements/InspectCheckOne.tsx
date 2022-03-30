@@ -22,11 +22,13 @@ interface InspectCheckOneProps {
   modalId?: string;
   modalTriggerLabel?: string;
   clickHandler?: (event: any) => void;
+  attachmentRemoveHandler?: (event: any) => void;
   inspectionValue?: any;
   disableEdit: boolean;
   showAttachment?: boolean;
   attachments?: any;
   id?: string;
+  showAttachmentRemover?: boolean;
 }
 
 export const InspectCheckOne = ({
@@ -37,11 +39,13 @@ export const InspectCheckOne = ({
   modalId,
   modalTriggerLabel,
   clickHandler,
+  attachmentRemoveHandler,
   inspectionValue,
   disableEdit,
   showAttachment,
   attachments,
   id,
+  showAttachmentRemover,
 }: InspectCheckOneProps) => {
   const [insValue, setInsValue] = useState("");
 
@@ -181,7 +185,10 @@ export const InspectCheckOne = ({
           <div className="row">
             {attachments.map((i: any, j: number) => {
               return (
-                <div className="mt-3 col-sm-12 col-md-3 col-lg-3" key={j}>
+                <div
+                  className={`${styles.preview_image} mt-3 col-sm-12 col-md-3 col-lg-3`}
+                  key={j}
+                >
                   <img
                     src={i}
                     alt={`Attachment ${j}`}
@@ -189,6 +196,14 @@ export const InspectCheckOne = ({
                     height="100"
                     width="177"
                   />
+                  {showAttachmentRemover && (
+                    <i
+                      className={`${styles.custom_close_btn} material-icons `}
+                      onClick={attachmentRemoveHandler}
+                    >
+                      close
+                    </i>
+                  )}
                 </div>
               );
             })}

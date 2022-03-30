@@ -422,6 +422,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
           [m.label]: {
             value: m.isCorrect ? "correct" : "incorrect",
             comments: m.comments,
+            attachments: m.attachments,
             inspectionValue: m.inspectionValue,
           },
           ...dataObject[i.sideMenu],
@@ -439,6 +440,27 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
     setDataObjectFormValue(dataObject);
   };
 
+  const removeAttachment = (e: any, id: any) => {
+    e.preventDefault();
+
+    let fileName = e.target.parentElement.children[0].currentSrc;
+
+    let tempArray = [...processedData];
+    tempArray.map((i, j) => {
+      i.fields &&
+        i.fields.map((m: any, n: number) => {
+          if (m.label === id) {
+            let index = m.attachments.indexOf(fileName);
+            if (index > -1) {
+              m.attachments.splice(index, 1);
+            }
+          }
+          return null;
+        });
+      return null;
+    });
+    setProcessedData(tempArray);
+  };
   return (
     <div className="">
       {applicationData && (
@@ -508,6 +530,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
                                       showAttachment={true}
                                       id={`attachment${k.label}`}
                                       attachments={k.attachments}
@@ -673,6 +699,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
                                       id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
@@ -836,6 +866,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
                                       id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
@@ -1001,6 +1035,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
                                       id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
@@ -1182,6 +1220,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
                                       id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
@@ -1344,6 +1386,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
                                       id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
@@ -1507,6 +1553,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
                                       id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
@@ -1673,6 +1723,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
                                       id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
@@ -1832,6 +1886,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
                                       id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
@@ -1995,6 +2053,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
                                       id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
@@ -2156,6 +2218,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
                                       id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={

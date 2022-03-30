@@ -77,9 +77,6 @@ export const InspectionSummaryLayout = ({
       inspectorSummaryDataObject,
     };
 
-    // console.log("Inspection completed...");
-    // console.log(payload);
-
     ReviewService.submitInspectionDetails(payload).then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {

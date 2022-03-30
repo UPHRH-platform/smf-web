@@ -141,6 +141,7 @@ export const ConsentFormView = ({
               isCorrect: "",
               inspectionValue: "",
               comments: "",
+              attachments: [],
             });
           }
           return null;
@@ -187,6 +188,7 @@ export const ConsentFormView = ({
                     isCorrect: "",
                     inspectionValue: "",
                     comments: "",
+                    attachments: k.attachments,
                   });
                 } else {
                   return tempFormArray.push({
@@ -204,6 +206,7 @@ export const ConsentFormView = ({
                     inspectionValue:
                       tempArrayTwo[n].fields[k.label]["inspectionValue"],
                     comments: tempArrayTwo[n].fields[k.label]["comments"],
+                    attachments: tempArrayTwo[n].fields[k.label]["attachments"],
                   });
                 }
               });
@@ -226,6 +229,7 @@ export const ConsentFormView = ({
               isCorrect: "",
               inspectionValue: "",
               comments: "",
+              attachments: m.attachments,
             });
           });
           return null;
@@ -852,10 +856,14 @@ export const ConsentFormView = ({
                                   </div>
 
                                   <div className="mt-3">
+                                   
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -941,6 +949,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1026,6 +1036,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1113,6 +1125,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1216,6 +1230,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1300,6 +1316,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1385,6 +1403,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1473,6 +1493,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1558,6 +1580,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1641,6 +1665,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1723,6 +1749,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
