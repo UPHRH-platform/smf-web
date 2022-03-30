@@ -39,3 +39,8 @@
     color: var(--black-60);
     vertical-align: middle;
 }
+
+.custom_material_icons_two {
+    color: var(--black-60);
+    vertical-align: sub;
+}

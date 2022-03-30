@@ -788,6 +788,7 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -879,6 +880,7 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -970,6 +972,7 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1063,6 +1066,7 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1172,6 +1176,7 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1262,6 +1267,7 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1353,6 +1359,7 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1447,6 +1454,7 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1538,6 +1546,7 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1627,6 +1636,7 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1716,6 +1726,7 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (

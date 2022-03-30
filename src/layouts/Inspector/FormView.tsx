@@ -23,6 +23,7 @@ import {
   modalTwoTextArea as modalTwoTextAreaAtom,
   modalTwoInspectionValue as modalTwoInspectionValueAtom,
   dataObjectInspectionForm as dataObjectInspectionFormAtom,
+  dataObjectFileUpload as dataObjectFileUploadAtom,
 } from "../../states/atoms";
 import { useHistory } from "react-router-dom";
 
@@ -53,7 +54,11 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
     dataObjectInspectionFormAtom
   );
 
+  const dataObjectAttachment = useRecoilState(dataObjectFileUploadAtom);
+
   let history = useHistory();
+
+  const [file, setFile] = useState({});
 
   const [processedData, setProcessedData] = useState<any[]>([]);
 
@@ -128,6 +133,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
               isCorrect: "",
               inspectionValue: "",
               comments: "",
+              attachments: [],
             });
           }
           return null;
@@ -174,6 +180,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                     isCorrect: "",
                     inspectionValue: "",
                     comments: "",
+                    attachments: [],
                   });
                 } else {
                   return tempFormArray.push({
@@ -191,6 +198,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                     inspectionValue:
                       tempArrayTwo[n].fields[k.label]["inspectionValue"],
                     comments: tempArrayTwo[n].fields[k.label]["comments"],
+                    attachments: [],
                   });
                 }
               });
@@ -213,6 +221,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
               isCorrect: "",
               inspectionValue: "",
               comments: "",
+              attachments: [],
             });
           });
           return null;
@@ -251,7 +260,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
         setProcessedData(tempArray);
       }
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applicationData]);
 
@@ -379,6 +387,28 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMenuLabel, processedData]);
 
+  useEffect(() => {
+    if (Object.keys(dataObjectAttachment[0]).length > 0) {
+      let label = Object.values(dataObjectAttachment[0])[0];
+      let file = Object.values(dataObjectAttachment[0])[1];
+
+      let tempArray = [...processedData];
+      tempArray.map((i, j) => {
+        i.fields &&
+          i.fields.map((m: any, n: number) => {
+            if (m.label === label) {
+              return m.attachments.push(file);
+            }
+            return null;
+          });
+        return null;
+      });
+      setProcessedData(tempArray);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataObjectAttachment[0]]);
+
   const processFormData = (e: any) => {
     e.preventDefault();
 
@@ -478,6 +508,9 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachment={true}
+                                      id={`attachment${k.label}`}
+                                      attachments={k.attachments}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -632,12 +665,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -792,12 +828,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -954,12 +993,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -1132,12 +1174,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -1291,12 +1336,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -1451,12 +1499,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -1614,12 +1665,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -1770,12 +1824,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -1916,7 +1973,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                             <CardThree
                               children={
                                 <>
-                                  <div className="ps-4 pe-4 pt-3 mb-4 col-7">
+                                  <div className="ps-4 pe-4 pt-3 mb-4 col-sm-12 col-md-7 col-lg-7">
                                     <FileUploadView
                                       showLabel={k.label ? true : false}
                                       label={k.label || ""}
@@ -1930,12 +1987,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -2088,12 +2148,15 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">

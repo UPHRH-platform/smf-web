@@ -40,10 +40,10 @@ export const FileUploadView = ({
                   <div
                     className={`${styles.file_upload_list} row p-0 m-0 p-1 m-2`}
                   >
-                    <div className="col-6">
+                    <div className="col-sm-12 col-md-12 col-lg-6">
                       <p className="float-start p-0 m-0">{i.split("/")[5]}</p>
                     </div>
-                    <div className="col-6">
+                    <div className="col-sm-12 col-md-12 col-lg-6">
                       <a className="float-end p-0 m-0" target="_blank" href={i} rel="noreferrer">
                         Preview on new tab
                       </a>

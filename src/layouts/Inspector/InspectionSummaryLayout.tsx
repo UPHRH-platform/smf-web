@@ -77,6 +77,9 @@ export const InspectionSummaryLayout = ({
       inspectorSummaryDataObject,
     };
 
+    // console.log("Inspection completed...");
+    // console.log(payload);
+
     ReviewService.submitInspectionDetails(payload).then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
@@ -183,7 +186,9 @@ export const InspectionSummaryLayout = ({
                             >
                               {k.firstName[0] + k.lastName[0]}
                             </div>
-                            <p className="ps-2 pt-2">{k.firstName + " " + k.lastName}</p>
+                            <p className="ps-2 pt-2">
+                              {k.firstName + " " + k.lastName}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -217,7 +222,9 @@ export const InspectionSummaryLayout = ({
                             >
                               {k.firstName[0] + k.lastName[0]}
                             </div>
-                            <p className="ps-2 pt-2">{k.firstName + " " + k.lastName}</p>
+                            <p className="ps-2 pt-2">
+                              {k.firstName + " " + k.lastName}
+                            </p>
                           </div>
                         </div>
                       </div>
