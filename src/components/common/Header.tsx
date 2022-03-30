@@ -17,18 +17,34 @@ interface LoginProps {
 
 interface LoginState {
   userName: any;
+  userInfo: any;
 }
 class Header extends Component<LoginProps, LoginState> {
   constructor(props: any) {
     super(props);
     this.state = {
       userName: Auth.get("username"),
+      userInfo: {},
     };
     this.logout = this.logout.bind(this);
   }
 
+  componentDidMount() {
+    let userDetails: any = localStorage.getItem("user");
+
+    let userObj = {
+      firstName: JSON.parse(userDetails).firstName,
+      lastName: JSON.parse(userDetails).lastName,
+    };
+
+    this.setState({
+      userInfo: userObj,
+    });
+  }
+
   getUserInitials(userName: string) {
     // console.log('userName: ', userName)
+
     if (userName) {
       const userNameArr = userName.split(".").slice(0, 2);
       return userNameArr
@@ -59,31 +75,45 @@ class Header extends Component<LoginProps, LoginState> {
                 />
               </div>
               <div className="col-6 pt-3">
-                <div className="dropdown">
-                  <div
-                    className="float-right user-name-avatar"
-                    role="button"
-                    id="dropdownMenuLinkThree"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <span>
-                      {this.getUserInitials(
-                        (this.state.userName && this.state.userName) || "G"
-                      )}
-                    </span>
-                  </div>
-                  <div
-                    className="dropdown-menu profileDropdown mr-5 cursorStyleOne"
-                    aria-labelledby="dropdownMenuLinkThree"
-                  >
-                    <p
-                      className="dropdown-item dateFilterTextColor"
-                      onClick={this.logout}
+                <div className="">
+                  <div className="dropdown">
+                    <div
+                      className="float-right user-name-avatar"
+                      role="button"
+                      id="dropdownMenuLinkThree"
+                      data-toggle="dropdown"
+                      aria-haspopup="true"
+                      aria-expanded="false"
                     >
-                      Logout
-                    </p>
+                      <span>
+                        {this.getUserInitials(
+                          (this.state.userName && this.state.userName) || "G"
+                        )}
+                      </span>
+                    </div>
+                    <ul
+                      className="dropdown-menu cursorStyleOne custom-dropdown-1 dropdown-menu-right"
+                      aria-labelledby="dropdownMenuLinkThree"
+                    >
+                      <label className="username-1 px-4 pb-0 mb-0">
+                        {Object.keys(this.state.userInfo)
+                          ? this.state.userInfo.firstName +
+                            " " +
+                            this.state.userInfo.lastName
+                          : ""}
+                      </label>
+                      <br />
+                      <label className="email-1 px-4 ">
+                        {this.state.userName && this.state.userName}
+                      </label>
+                      <br />
+                      <label
+                        className="dropdown-item px-4 cursorStyleOne"
+                        onClick={this.logout}
+                      >
+                        Logout
+                      </label>
+                    </ul>
                   </div>
                 </div>
               </div>
