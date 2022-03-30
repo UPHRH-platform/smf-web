@@ -1706,7 +1706,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       isReadOnly={true}
                                       label={k.label || ""}
                                       option={k.defaultValues}
-                                      value={k.value.split(",") || ""}
+                                      value={k.value ? k.value.split(",") : ""}
                                       isMultiple={true}
                                     />
                                   </div>
@@ -1869,7 +1869,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <CheckBoxField
                                       label={k.label || ""}
                                       showLabel={false}
-                                      value={k.value.split(",") || ""}
+                                      value={k.value ? k.value.split(",") : ""}
                                       defaultValues={k.defaultValues}
                                     />
                                   </div>
@@ -2035,9 +2035,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <FileUploadView
                                       showLabel={k.label ? true : false}
                                       label={k.label || ""}
-                                      value={
-                                        (k.value && k.value.split(",")) || ""
-                                      }
+                                      value={k.value ? k.value.split(",") : ""}
                                     />
                                   </div>
                                   <div className="">
@@ -2202,6 +2200,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <BooleanField
                                       showLabel={k.label ? true : false}
                                       label={k.label || ""}
+                                      value={k.value}
                                       isReadOnly={true}
                                     />
                                   </div>

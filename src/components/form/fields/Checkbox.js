@@ -42,6 +42,7 @@ class Checkbox extends Component {
               </span>
             )}
           </label>
+
           {this.props.field.values.map((option, key) => (
             <div className="custom-form-check form-check" key={key}>
               <label

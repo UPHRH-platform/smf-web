@@ -16,6 +16,10 @@
   font-size: 0.875rem;
   letter-spacing: 0.25px;
   line-height: 1.429;
+  width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .file_upload_list a {
