@@ -259,7 +259,19 @@ class FormViewer extends Component {
     // console.log(this.state.formFields);
     for (var key of Object.keys(fields)) {
       var element = document.getElementsByName(key);
+
       if (element.length > 0) {
+        if (element[0].type === "boolean" || element[0].type === "text") {
+          var len = element.length;
+          let values = fields[key].split(",");
+          for (var j = 0; j < len; j++) {
+            // console.log(values.includes("booleanTrue"));
+            if (values.includes("booleanTrue")) {
+              element[j].parentNode.classList.add("selected");
+              element[j].checked = true;
+            }
+          }
+        }
         if (element[0].type === "checkbox" || element[0].type === "radio") {
           var len = element.length;
           let values = fields[key].split(",");
@@ -423,6 +435,7 @@ class FormViewer extends Component {
         order = "";
       var form = document.getElementById("application-form");
       const formData = new FormData(form);
+
       const data = Array.from(formData.entries()).reduce(
         (memo, pair) => ({
           ...memo,
@@ -435,6 +448,24 @@ class FormViewer extends Component {
         order = this.state.formFieldGroups[index][i]["order"];
         obj["field_" + order] =
           data["field_" + order] !== undefined ? data["field_" + order] : "";
+
+        var booleans = document.getElementsByClassName(
+          "field_" + order + "_boolean"
+        );
+
+        if (booleans.length) {
+          if (booleans[0].type === "checkbox") {
+            var len = booleans.length;
+            let temp = [];
+            for (var j = 0; j < len; j++) {
+              if (booleans[j].parentElement.classList.contains("selected")) {
+                temp.push((booleans[j].value = "booleanTrue"));
+              }
+            }
+            obj["field_" + order] = temp.join();
+          }
+        }
+
         var checkboxes = document.getElementsByClassName(
           "field_" + order + "_checkbox"
         );
@@ -469,6 +500,7 @@ class FormViewer extends Component {
           obj["field_" + order] = files[0].getAttribute("path");
         }
       }
+
       this.setState({
         formFields: obj,
       });
@@ -499,9 +531,11 @@ class FormViewer extends Component {
       fieldGroups[this.state.formHeadings[i]] = {};
       for (let j = 0; j < this.state.formFieldGroups[i].length; j++) {
         // console.log(this.state.formFieldGroups[i][j].name);
-        fieldGroups[this.state.formHeadings[i]][
-          this.state.formFieldGroups[i][j].name
-        ] = fieldsData[this.state.formFieldGroups[i][j].name];
+        if (fieldsData[this.state.formFieldGroups[i][j].name] !== "") {
+          fieldGroups[this.state.formHeadings[i]][
+            this.state.formFieldGroups[i][j].name
+          ] = fieldsData[this.state.formFieldGroups[i][j].name];
+        }
       }
     }
     // console.log(fieldGroups);
@@ -515,8 +549,10 @@ class FormViewer extends Component {
         applicationId: this.props.match.params.applicationId,
       }),
     };
+
     // formDetails = JSON.stringify(formDetails);
-    // console.log(formDetails);
+    // console.log(JSON.parse(formDetails));
+
     FormService.submit(formDetails).then(
       (response) => {
         // console.log(response);
