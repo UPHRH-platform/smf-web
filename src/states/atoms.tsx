@@ -38,3 +38,9 @@ export const dataObjectInspectionForm = atom({
   key: "dataObjectInspectionForm",
   default: "",
 });
+
+export const dataObjectFileUpload = atom({
+  key: "dataObjectFileUpload",
+  default: {},
+});
+

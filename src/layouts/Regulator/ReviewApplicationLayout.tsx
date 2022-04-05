@@ -130,6 +130,7 @@ export const ReviewApplicationLayout = ({
               isCorrect: "",
               inspectionValue: "",
               comments: "",
+              attachments: [],
             });
           }
           return null;
@@ -171,11 +172,12 @@ export const ReviewApplicationLayout = ({
                     sideMenu: m.sideMenu,
                     label: k.label,
                     value: i.fields[k.label],
-                    defaultValues: k.values,
+                    defaultValues: k.defaultValues,
                     fieldType: k.fieldType,
                     isCorrect: "",
                     inspectionValue: "",
                     comments: "",
+                    attachments: [],
                   });
                 } else {
                   return tempFormArray.push({
@@ -184,7 +186,7 @@ export const ReviewApplicationLayout = ({
                     sideMenu: m.sideMenu,
                     label: k.label,
                     value: i.fields[k.label],
-                    defaultValues: k.values,
+                    defaultValues: k.defaultValues,
                     fieldType: k.fieldType,
                     isCorrect:
                       tempArrayTwo[n].fields[k.label]["value"] === "correct"
@@ -193,6 +195,7 @@ export const ReviewApplicationLayout = ({
                     inspectionValue:
                       tempArrayTwo[n].fields[k.label]["inspectionValue"],
                     comments: tempArrayTwo[n].fields[k.label]["comments"],
+                    attachments: tempArrayTwo[n].fields[k.label]["attachments"],
                   });
                 }
               });
@@ -210,11 +213,12 @@ export const ReviewApplicationLayout = ({
               sideMenu: i.sideMenu,
               label: m.name,
               value: i.fields[m.name],
-              defaultValues: m.values,
+              defaultValues: m.defaultValues,
               fieldType: m.fieldType,
               isCorrect: "",
               inspectionValue: "",
               comments: "",
+              attachments: [],
             });
           });
           return null;
@@ -276,40 +280,6 @@ export const ReviewApplicationLayout = ({
     }
   }, [selectedMenuLabel, processedData]);
 
-  useEffect(() => {
-    if (reviewerNote[0] !== "") {
-      let payload = {};
-
-      if (reviewerNote[0] === "Empty!") {
-        payload = {
-          applicationId: applicationData.applicationId,
-        };
-      } else {
-        payload = {
-          applicationId: applicationData.applicationId,
-          notes: reviewerNote[0],
-        };
-      }
-
-      ReviewService.returnApplication(payload).then(
-        (response) => {
-          if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-            Notify.success("Application returned to institute");
-          } else {
-            Notify.error(response.statusInfo.errorMessage);
-          }
-        },
-        (error) => {
-          error.statusInfo
-            ? Notify.error(error.statusInfo.errorMessage)
-            : Notify.error(error.message);
-        }
-      );
-      history.push(APP.ROUTES.DASHBOARD);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [reviewerNote]);
-
   const getApplicationStatusLog = (id: any) => {
     ReviewService.getStatusLog(id).then(
       (response) => {
@@ -365,6 +335,40 @@ export const ReviewApplicationLayout = ({
             : Notify.error(error.message);
         }
       );
+    }
+  };
+
+  const returnApplication = (e: any) => {
+    e.preventDefault();
+
+    let textAreaElement = document.getElementById("returnModal");
+    let comments = textAreaElement?.querySelector("textarea")?.value;
+
+    if (comments !== "" && comments && comments?.length > 5) {
+      let payload = {};
+
+      payload = {
+        applicationId: applicationData.applicationId,
+        notes: comments,
+      };
+
+      ReviewService.returnApplication(payload).then(
+        (response) => {
+          if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+            Notify.success("Application returned to institute");
+          } else {
+            Notify.error(response.statusInfo.errorMessage);
+          }
+        },
+        (error) => {
+          error.statusInfo
+            ? Notify.error(error.statusInfo.errorMessage)
+            : Notify.error(error.message);
+        }
+      );
+      history.push(APP.ROUTES.DASHBOARD);
+    } else {
+      Notify.error("Kindly enter proper review comments!");
     }
   };
 
@@ -480,18 +484,21 @@ export const ReviewApplicationLayout = ({
                 </div>
                 <ModalTwo
                   id="returnModal"
-                  enableHandler={false}
+                  enableHandler={true}
                   enableSkip={false}
                   ariaLabel="returnModalLabel"
                   showTextAreaLabel={false}
                   heading="Add note"
                   textAreaPlaceholder="Write here"
+                  submitHandler={(e: any) => {
+                    returnApplication(e);
+                  }}
                 />
                 <ModalTwo
                   id="rejectModal"
                   enableHandler={true}
                   enableSkip={false}
-                  ariaLabel="returnModalLabel"
+                  ariaLabel="rejectModalLabel"
                   showTextAreaLabel={false}
                   heading="Add note"
                   textAreaPlaceholder="Write here"
@@ -503,7 +510,7 @@ export const ReviewApplicationLayout = ({
                   id="approveModal"
                   enableHandler={true}
                   enableSkip={false}
-                  ariaLabel="returnModalLabel"
+                  ariaLabel="approveModalLabel"
                   showTextAreaLabel={false}
                   heading="Add note"
                   textAreaPlaceholder="Write here"
@@ -581,7 +588,7 @@ export const ReviewApplicationLayout = ({
                         : ""
                     }
                     comments={
-                      applicationData.comments ? applicationData.comments : ""
+                      applicationData.notes ? applicationData.notes : ""
                     }
                     approvedNote={
                       applicationData.status !== LANG.FORM_STATUS.RETURNED &&
@@ -639,7 +646,9 @@ export const ReviewApplicationLayout = ({
                                                     k.lastName[0]}
                                                 </div>
                                                 <p className="ps-2">
-                                                  {k.firstName}
+                                                  {k.firstName +
+                                                    " " +
+                                                    k.lastName}
                                                 </p>
                                               </div>
                                             </div>
@@ -678,7 +687,9 @@ export const ReviewApplicationLayout = ({
                                                       k.lastName[0]}
                                                   </div>
                                                   <p className="ps-2">
-                                                    {k.firstName}
+                                                    {k.firstName +
+                                                      " " +
+                                                      k.lastName}
                                                   </p>
                                                 </div>
 
@@ -781,6 +792,101 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
+                                        attachments={k.attachments}
+                                        children={
+                                          <div className="d-flex flex-row">
+                                            {k.isCorrect === "" ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : k.isCorrect === true ? (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            ) : (
+                                              <>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={false}
+                                                    label="Correct"
+                                                  />
+                                                </div>
+                                                <div className="me-3">
+                                                  <Radio
+                                                    isSelected={true}
+                                                    label="Incorrect"
+                                                    isModal={false}
+                                                  />
+                                                </div>
+                                              </>
+                                            )}
+                                          </div>
+                                        }
+                                        showComments={
+                                          k.comments !== "" ? true : false
+                                        }
+                                        comments={k.comments}
+                                      />
+                                    </div>
+                                  )}
+                                </>
+                              }
+                            />
+                          </div>
+                        );
+                      case "email":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <>
+                                  <div className="ps-4 pe-4 pt-3 col-4">
+                                    <TextField
+                                      showLabel={k.label ? true : false}
+                                      label={k.label || ""}
+                                      type="email"
+                                      isReadOnly={true}
+                                      value={k.value || ""}
+                                    />
+                                  </div>
+                                  {(applicationData.status ===
+                                    LANG.FORM_STATUS.INSPECTION_COMPLETED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.APPROVED ||
+                                    applicationData.status ===
+                                      LANG.FORM_STATUS.REJECTED) && (
+                                    <div className="mt-3">
+                                      <InspectCheckOne
+                                        label="Is the given information found correct?"
+                                        inspectionValue={k.inspectionValue}
+                                        disableEdit={true}
+                                        showAttachment={false}
+                                        attachments={k.attachments}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -872,6 +978,8 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
+                                        attachments={k.attachments}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -951,7 +1059,7 @@ export const ReviewApplicationLayout = ({
                                       isReadOnly={true}
                                       label={k.label || ""}
                                       option={k.defaultValues}
-                                      placeholder={k.value || ""}
+                                      defaultValue={k.value || ""}
                                     />
                                   </div>
                                   {(applicationData.status ===
@@ -965,6 +1073,8 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
+                                        attachments={k.attachments}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1074,6 +1184,8 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
+                                        attachments={k.attachments}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1164,6 +1276,8 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
+                                        attachments={k.attachments}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1255,6 +1369,8 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
+                                        attachments={k.attachments}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1334,7 +1450,7 @@ export const ReviewApplicationLayout = ({
                                       isReadOnly={true}
                                       label={k.label || ""}
                                       option={k.defaultValues}
-                                      value={k.value.split(",") || ""}
+                                      value={k.value ? k.value.split(",") : ""}
                                       isMultiple={true}
                                     />
                                   </div>
@@ -1349,6 +1465,8 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
+                                        attachments={k.attachments}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1425,7 +1543,7 @@ export const ReviewApplicationLayout = ({
                                     <CheckBoxField
                                       label={k.label || ""}
                                       showLabel={false}
-                                      value={k.value.split(",") || ""}
+                                      value={k.value ? k.value.split(",") : ""}
                                       defaultValues={k.defaultValues}
                                     />
                                   </div>
@@ -1440,6 +1558,8 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
+                                        attachments={k.attachments}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1515,7 +1635,7 @@ export const ReviewApplicationLayout = ({
                                     <FileUploadView
                                       showLabel={k.label ? true : false}
                                       label={k.label || ""}
-                                      value={k.value.split(",") || ""}
+                                      value={k.value ? k.value.split(",") : ""}
                                     />
                                   </div>
                                   {(applicationData.status ===
@@ -1529,6 +1649,8 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
+                                        attachments={k.attachments}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (
@@ -1604,6 +1726,7 @@ export const ReviewApplicationLayout = ({
                                     <BooleanField
                                       showLabel={k.label ? true : false}
                                       label={k.label || ""}
+                                      value={k.value}
                                       isReadOnly={true}
                                     />
                                   </div>
@@ -1618,6 +1741,8 @@ export const ReviewApplicationLayout = ({
                                         label="Is the given information found correct?"
                                         inspectionValue={k.inspectionValue}
                                         disableEdit={true}
+                                        showAttachment={false}
+                                        attachments={k.attachments}
                                         children={
                                           <div className="d-flex flex-row">
                                             {k.isCorrect === "" ? (

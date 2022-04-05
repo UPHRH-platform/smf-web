@@ -5,6 +5,7 @@ import Notify from "../../helpers/notify";
 import { FormService } from "../../services/form.service";
 import { APP, LANG } from "../../constants";
 import { BtnOne } from "../../components/buttons";
+import { useHistory } from "react-router-dom";
 
 /**
  * Reviewer component renders
@@ -52,17 +53,41 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
   const [applicationsMetrics, setApplicationsMetrics] = useState<
     IApplicationCount[]
   >([]);
+  const [showPendingApplications, setShowPendingApplications] = useState(false);
+
+  let history = useHistory();
+
   useEffect(() => {
+    setTimeout(() => {
+      getPendingApplications();
+    }, 850);
+  }, [history]);
+
+  const getPendingApplications = () => {
     const myApplicationsReq = {
       searchObjects: [],
     };
+
     FormService.getAllApplications(myApplicationsReq).then(
       (response2) => {
         if (response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          let data = response2.responseData;
+
+          let tempArray: any = [];
+
+          data.map((m: any, n: number) => {
+            if (
+              m.status === LANG.FORM_STATUS.NEW ||
+              m.status === LANG.FORM_STATUS.INSPECTION_COMPLETED
+            ) {
+              tempArray.push(m);
+              setShowPendingApplications(true);
+            }
+            return null;
+          });
+
           setPendingApplications(
-            response2.responseData.length > 8
-              ? response2.responseData.splice(0, 8)
-              : response2.responseData
+            tempArray.length > 8 ? tempArray.splice(0, 8) : tempArray
           );
         } else {
           Notify.error(response2.statusInfo.errorMessage);
@@ -88,7 +113,7 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
           : Notify.error(error.message);
       }
     );
-  }, []);
+  };
 
   // Function to format the status label
   const formatLabel = (labelStatus: string) => {
@@ -132,52 +157,59 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
           </section>
 
           {/* Section two */}
-          <section className="mt-5">
-            <div className="row">
-              <div className="col-md-10 col-sm-12 col-12 ">
-                <HeadingOne heading="Pending applications" />
-                <HeadingTwo heading="These are latest applications that is pending for your review/approval" />
+          {showPendingApplications && (
+            <section className="mt-5">
+              <div className="row">
+                <div className="col-md-10 col-sm-12 col-12 ">
+                  <HeadingOne heading="Pending applications" />
+                  <HeadingTwo heading="These are latest applications that is pending for your review/approval" />
+                </div>
+                <div className="col-md-2 col-sm-12 col-12 text-right">
+                  <BtnOne
+                    btnType="button"
+                    label="SEE ALL"
+                    isLink={true}
+                    link={`reviewer/all-applications`}
+                    floatBottom={false}
+                    isModal={false}
+                  />
+                </div>
               </div>
-              <div className="col-md-2 col-sm-12 col-12 text-right">
-                <BtnOne
-                  btnType="button"
-                  label="SEE ALL"
-                  isLink={true}
-                  link={`reviewer/all-applications`}
-                  floatBottom={false}
-                  isModal={false}
-                />
+              <div className="row mt-3">
+                {pendingApplications.map((i, j) => {
+                  if (
+                    i.status === LANG.FORM_STATUS.NEW ||
+                    i.status === LANG.FORM_STATUS.INSPECTION_COMPLETED
+                  ) {
+                    return (
+                      <div
+                        className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mb-3"
+                        key={i.applicationId}
+                      >
+                        <CardTwo
+                          title={i.title}
+                          name={i.createdBy}
+                          time={`Created on: ${i.createdDate}`}
+                          showStatus={true}
+                          status={i.status}
+                          statusLabel={i.status}
+                          showBtn={true}
+                          type="button"
+                          btnText="View application"
+                          isLink={true}
+                          link={
+                            "/regulator/" + i.formId + "/" + i.applicationId
+                          }
+                        />
+                      </div>
+                    );
+                  } else {
+                    return null;
+                  }
+                })}
               </div>
-            </div>
-            <div className="row mt-3">
-              {pendingApplications.map((i, j) => {
-                if (i.status === LANG.FORM_STATUS.NEW) {
-                  return (
-                    <div
-                      className="col-sm-12 col-md-4 col-lg-3 col-xl-3 col-xxl-3 mb-3"
-                      key={i.applicationId}
-                    >
-                      <CardTwo
-                        title={i.title}
-                        name={i.createdBy}
-                        time={`Created on: ${i.createdDate}`}
-                        showStatus={true}
-                        status={i.status}
-                        statusLabel={i.status}
-                        showBtn={true}
-                        type="button"
-                        btnText="View application"
-                        isLink={true}
-                        link={"/regulator/" + i.formId + "/" + i.applicationId}
-                      />
-                    </div>
-                  );
-                } else {
-                  return null;
-                }
-              })}
-            </div>
-          </section>
+            </section>
+          )}
         </div>
       </div>
     </Fragment>

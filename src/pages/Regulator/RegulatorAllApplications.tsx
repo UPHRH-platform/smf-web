@@ -40,12 +40,12 @@ export const RegulatorAllApplications = ({
                 ariaLabelled: "new-tab",
                 children: <AllApplicationsTab />,
             },
-            {
-                id: "underReview",
-                label: "Under review",
-                ariaLabelled: "under-review-tab",
-                children: <AllApplicationsTab />,
-            },
+            // {
+            //     id: "underReview",
+            //     label: "Under review",
+            //     ariaLabelled: "under-review-tab",
+            //     children: <AllApplicationsTab />,
+            // },
             {
                 id: "returned",
                 label: "Returned",
@@ -135,9 +135,9 @@ export const RegulatorAllApplications = ({
                                             tempStatus = e.target.innerHTML;
                                             break;
 
-                                        case "Under review":
-                                            tempStatus = "underreview";
-                                            break;
+                                        // case "Under review":
+                                        //     tempStatus = "underreview";
+                                        //     break;
 
                                         case "Returned":
                                             tempStatus = "returned";

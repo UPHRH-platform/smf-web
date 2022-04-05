@@ -124,7 +124,7 @@ export const Users = ({ data }: userProps) => {
         <div className="col-sm-12 col-md-8 text-right">
           <BtnTwo
             btnType="button"
-            label="Add new"
+            label="Add new user"
             isLink={true}
             link={`/create-user`}
             floatBottom={false}

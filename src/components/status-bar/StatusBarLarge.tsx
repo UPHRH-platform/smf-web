@@ -119,14 +119,15 @@ export const StatusBarLarge = ({
           <div className="pt-1 pb-4 mx-3">
             <div className="row">
               <div className="col-12">
-                {comments &&
+                <p className={`${styles.review_comment} p-2 `}>{comments}</p>
+                {/* {comments &&
                   comments.map((c: any, i: any) => {
                     return (
                       <p key={i} className={`${styles.review_comment} p-2 `}>
                         {c.value}
                       </p>
                     );
-                  })}
+                  })} */}
               </div>
             </div>
           </div>
@@ -199,7 +200,9 @@ export const StatusBarLarge = ({
                                   >
                                     {k.firstName[0] + k.lastName[0]}
                                   </div>
-                                  <p className="ps-2">{k.firstName}</p>
+                                  <p className="ps-2">
+                                    {k.firstName + " " + k.lastName}
+                                  </p>
                                 </div>
                               </div>
                             </div>
@@ -229,7 +232,9 @@ export const StatusBarLarge = ({
                                   >
                                     {k.firstName[0] + k.lastName[0]}
                                   </div>
-                                  <p className="ps-2">{k.firstName}</p>
+                                  <p className="ps-2">
+                                    {k.firstName + " " + k.lastName}
+                                  </p>
                                 </div>
                               </div>
                             </div>

@@ -16,6 +16,30 @@ class Toggle extends Component {
 
   handleChange = (event) => {};
 
+  componentDidMount() {
+    if (this.props.field.fieldType === LANG.FIELD_TYPES.boolean.toLowerCase()) {
+      setTimeout(() => {
+        let booleanField = document.getElementById(
+          `field-${this.props.field.order}`
+        );
+
+        booleanField.type = "checkbox";
+      }, 250);
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.field.fieldType === LANG.FIELD_TYPES.boolean.toLowerCase()) {
+      setTimeout(() => {
+        let booleanField = document.getElementById(
+          `field-${this.props.field.order}`
+        );
+
+        booleanField.type = "checkbox";
+      }, 250);
+    }
+  }
+
   render() {
     // strings.setLanguage(
     //   localStorage.getItem("language") || this.state.language
@@ -36,11 +60,17 @@ class Toggle extends Component {
             )}
           </label>
           <br />
+
           <label className="switch">
             <input
               type="checkbox"
               id={"field-" + this.props.field.order}
               name={"field_" + this.props.field.order}
+              className={
+                "mr-2 field_" +
+                this.props.field.order +
+                "_boolean"
+              }
             />
             <span className="slider round"></span>
           </label>

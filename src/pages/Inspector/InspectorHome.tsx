@@ -39,8 +39,10 @@ export const InspectorHome = ({ data }: InspectorProps) => {
 
   useEffect(() => {
     if (userDetails.id) {
-      getAllApplications();
-      getDashboardData();
+      setTimeout(() => {
+        getAllApplications();
+        getDashboardData();
+      }, 850);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userDetails]);
@@ -80,6 +82,7 @@ export const InspectorHome = ({ data }: InspectorProps) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
             response.responseData.map((i: any, j: number) => {
               if (
+                i.inspection &&
                 i.inspection.leadInspector.includes(
                   userDetails && userDetails.id
                 ) &&
@@ -119,6 +122,7 @@ export const InspectorHome = ({ data }: InspectorProps) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
             response.responseData.map((i: any, j: number) => {
               if (
+                i.inspection &&
                 i.inspection.status ===
                   LANG.FORM_STATUS.LEAD_INSPECTION_COMPLETED &&
                 !i.inspection.leadInspector.includes(

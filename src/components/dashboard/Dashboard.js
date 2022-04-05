@@ -21,6 +21,8 @@ class Dashboard extends Component {
       forms: [],
       myApplications: [],
     };
+
+    this.getInstituteApplications = this.getInstituteApplications.bind();
   }
 
   formatDate(dateParam) {
@@ -35,6 +37,12 @@ class Dashboard extends Component {
   }
 
   componentDidMount() {
+    setTimeout(() => {
+      this.getInstituteApplications();
+    }, 500);
+  }
+
+  getInstituteApplications = () => {
     if (Helper.getUserRole() === APP.ROLE.INSTITUTION) {
       FormService.get().then(
         (response) => {
@@ -58,17 +66,15 @@ class Dashboard extends Component {
       );
       // my applications section
       const myApplicationsReq = {
-        "searchObjects": [
-
-        ]
-      }
+        searchObjects: [],
+      };
       FormService.getAllApplications(myApplicationsReq).then(
         (response2) => {
           if (response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
             this.setState({
               myApplications:
-                response2.responseData.length > 6
-                  ? response2.responseData.splice(0, 6)
+                response2.responseData.length > 8
+                  ? response2.responseData.splice(0, 8)
                   : response2.responseData,
             });
             // console.log(response2.responseData);
@@ -83,7 +89,7 @@ class Dashboard extends Component {
         }
       );
     }
-  }
+  };
 
   render() {
     return (
@@ -135,10 +141,7 @@ class Dashboard extends Component {
                           btnText="View application"
                           isLink={true}
                           link={
-                            "/applications/" +
-                            i.formId
-                            + "/" +
-                            i.applicationId
+                            "/applications/" + i.formId + "/" + i.applicationId
                           }
                         />
                       </div>
@@ -159,7 +162,9 @@ class Dashboard extends Component {
                   <div className="col-md-2 col-sm-12 col-12 pt-5">
                     <button
                       className="btn btn-default smf-btn-default float-right mr-0"
-                      onClick={(e) => this.props.history.push("/available-forms")}
+                      onClick={(e) =>
+                        this.props.history.push("/available-forms")
+                      }
                     >
                       SEE ALL
                     </button>

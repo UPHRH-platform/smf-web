@@ -31,8 +31,15 @@ export const BooleanField = ({
           <br />
         </>
       )}
+
       <label className="switch">
-        <input type="checkbox" id={"field-" + label} name={"field_" + label} disabled={isReadOnly}/>
+        <input
+          type="checkbox"
+          id={"field-" + label}
+          name={"field_" + label}
+          disabled={isReadOnly}
+          checked={value === "booleanTrue" ? true : false}
+        />
         <span className="slider round"></span>
       </label>
     </div>

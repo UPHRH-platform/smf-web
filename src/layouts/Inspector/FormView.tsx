@@ -23,6 +23,7 @@ import {
   modalTwoTextArea as modalTwoTextAreaAtom,
   modalTwoInspectionValue as modalTwoInspectionValueAtom,
   dataObjectInspectionForm as dataObjectInspectionFormAtom,
+  dataObjectFileUpload as dataObjectFileUploadAtom,
 } from "../../states/atoms";
 import { useHistory } from "react-router-dom";
 
@@ -53,7 +54,11 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
     dataObjectInspectionFormAtom
   );
 
+  const dataObjectAttachment = useRecoilState(dataObjectFileUploadAtom);
+
   let history = useHistory();
+
+  const [file, setFile] = useState({});
 
   const [processedData, setProcessedData] = useState<any[]>([]);
 
@@ -128,6 +133,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
               isCorrect: "",
               inspectionValue: "",
               comments: "",
+              attachments: [],
             });
           }
           return null;
@@ -169,11 +175,12 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                     sideMenu: m.sideMenu,
                     label: k.label,
                     value: i.fields[k.label],
-                    defaultValues: k.values,
+                    defaultValues: k.defaultValues,
                     fieldType: k.fieldType,
                     isCorrect: "",
                     inspectionValue: "",
                     comments: "",
+                    attachments: [],
                   });
                 } else {
                   return tempFormArray.push({
@@ -182,7 +189,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                     sideMenu: m.sideMenu,
                     label: k.label,
                     value: i.fields[k.label],
-                    defaultValues: k.values,
+                    defaultValues: k.defaultValues,
                     fieldType: k.fieldType,
                     isCorrect:
                       tempArrayTwo[n].fields[k.label]["value"] === "correct"
@@ -191,6 +198,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                     inspectionValue:
                       tempArrayTwo[n].fields[k.label]["inspectionValue"],
                     comments: tempArrayTwo[n].fields[k.label]["comments"],
+                    attachments: [],
                   });
                 }
               });
@@ -208,11 +216,12 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
               sideMenu: i.sideMenu,
               label: m.name,
               value: i.fields[m.name],
-              defaultValues: m.values,
+              defaultValues: m.defaultValues,
               fieldType: m.fieldType,
               isCorrect: "",
               inspectionValue: "",
               comments: "",
+              attachments: [],
             });
           });
           return null;
@@ -251,7 +260,6 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
         setProcessedData(tempArray);
       }
     }
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [applicationData]);
 
@@ -291,8 +299,10 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
             setModalInspectionValue(m.inspectionValue);
             if (status === "correct") {
               m.isCorrect = true;
-              m.comments = m.comments;
-              m.inspectionValue = m.inspectionValue;
+              m.comments = "";
+              m.inspectionValue = "";
+              setModalTextArea("");
+              setModalInspectionValue("");
             } else if (status === "incorrect") {
               m.isCorrect = false;
               m.comments = m.comments;
@@ -377,6 +387,28 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedMenuLabel, processedData]);
 
+  useEffect(() => {
+    if (Object.keys(dataObjectAttachment[0]).length > 0) {
+      let label = Object.values(dataObjectAttachment[0])[0];
+      let file = Object.values(dataObjectAttachment[0])[1];
+
+      let tempArray = [...processedData];
+      tempArray.map((i, j) => {
+        i.fields &&
+          i.fields.map((m: any, n: number) => {
+            if (m.label === label) {
+              return m.attachments.push(file);
+            }
+            return null;
+          });
+        return null;
+      });
+      setProcessedData(tempArray);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataObjectAttachment[0]]);
+
   const processFormData = (e: any) => {
     e.preventDefault();
 
@@ -390,6 +422,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
           [m.label]: {
             value: m.isCorrect ? "correct" : "incorrect",
             comments: m.comments,
+            attachments: m.attachments,
             inspectionValue: m.inspectionValue,
           },
           ...dataObject[i.sideMenu],
@@ -407,6 +440,27 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
     setDataObjectFormValue(dataObject);
   };
 
+  const removeAttachment = (e: any, id: any) => {
+    e.preventDefault();
+
+    let fileName = e.target.parentElement.children[0].currentSrc;
+
+    let tempArray = [...processedData];
+    tempArray.map((i, j) => {
+      i.fields &&
+        i.fields.map((m: any, n: number) => {
+          if (m.label === id) {
+            let index = m.attachments.indexOf(fileName);
+            if (index > -1) {
+              m.attachments.splice(index, 1);
+            }
+          }
+          return null;
+        });
+      return null;
+    });
+    setProcessedData(tempArray);
+  };
   return (
     <div className="">
       {applicationData && (
@@ -476,6 +530,180 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
+                                      showAttachment={true}
+                                      id={`attachment${k.label}`}
+                                      attachments={k.attachments}
+                                      inspectionValue={k.inspectionValue}
+                                      children={
+                                        <div className="d-flex flex-row">
+                                          {k.isCorrect === "" ? (
+                                            <>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={false}
+                                                  label="Correct"
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "correct"
+                                                    );
+                                                  }}
+                                                />
+                                              </div>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={false}
+                                                  label="Incorrect"
+                                                  isModal={true}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
+                                                />
+                                              </div>
+                                            </>
+                                          ) : k.isCorrect === true ? (
+                                            <>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={true}
+                                                  label="Correct"
+                                                />
+                                              </div>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={false}
+                                                  label="Incorrect"
+                                                  isModal={true}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
+                                                />
+                                              </div>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={false}
+                                                  label="Correct"
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "correct"
+                                                    );
+                                                  }}
+                                                />
+                                              </div>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={true}
+                                                  label="Incorrect"
+                                                  isModal={true}
+                                                  modalId={
+                                                    k.label
+                                                      .replace(/\s/g, "")
+                                                      .replace(
+                                                        /[^a-zA-Z ]/g,
+                                                        ""
+                                                      ) + k.id
+                                                  }
+                                                  clickHandler={(e) => {
+                                                    onCheckCorrectness(
+                                                      e,
+                                                      selectedMenuLabel,
+                                                      k.label,
+                                                      "incorrect"
+                                                    );
+                                                  }}
+                                                />
+                                              </div>
+                                            </>
+                                          )}
+                                        </div>
+                                      }
+                                      showComments={
+                                        k.comments !== "" ? true : false
+                                      }
+                                      comments={k.comments}
+                                      modalId={
+                                        k.label
+                                          .replace(/\s/g, "")
+                                          .replace(/[^a-zA-Z ]/g, "") + k.id
+                                      }
+                                    />
+                                  </div>
+                                </>
+                              }
+                            />
+                          </div>
+                        );
+                      case "email":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <>
+                                  <div className="ps-4 pe-4 pt-3 col-4">
+                                    <TextField
+                                      showLabel={k.label ? true : false}
+                                      label={k.label || ""}
+                                      type="email"
+                                      isReadOnly={true}
+                                      value={k.value || ""}
+                                    />
+                                  </div>
+                                  <div className="mt-3">
+                                    <InspectCheckOne
+                                      label="Is the given information found correct?"
+                                      modalTriggerLabel={"Edit"}
+                                      disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
+                                      clickHandler={(e) => {
+                                        setModalTextArea(k.comments);
+                                        setModalInspectionValue(
+                                          k.inspectionValue
+                                        );
+                                      }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -630,12 +858,19 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -784,7 +1019,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       isReadOnly={true}
                                       label={k.label || ""}
                                       option={k.defaultValues}
-                                      placeholder={k.value || ""}
+                                      defaultValue={k.value || ""}
                                     />
                                   </div>
                                   <div className="mt-3">
@@ -792,12 +1027,19 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -970,12 +1212,19 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -1129,12 +1378,19 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -1289,12 +1545,19 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -1443,7 +1706,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       isReadOnly={true}
                                       label={k.label || ""}
                                       option={k.defaultValues}
-                                      value={k.value.split(",") || ""}
+                                      value={k.value ? k.value.split(",") : ""}
                                       isMultiple={true}
                                     />
                                   </div>
@@ -1452,12 +1715,19 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -1599,7 +1869,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <CheckBoxField
                                       label={k.label || ""}
                                       showLabel={false}
-                                      value={k.value.split(",") || ""}
+                                      value={k.value ? k.value.split(",") : ""}
                                       defaultValues={k.defaultValues}
                                     />
                                   </div>
@@ -1608,12 +1878,19 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -1754,13 +2031,11 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                             <CardThree
                               children={
                                 <>
-                                  <div className="ps-4 pe-4 pt-3 mb-4 col-7">
+                                  <div className="ps-4 pe-4 pt-3 mb-4 col-sm-12 col-md-7 col-lg-7">
                                     <FileUploadView
                                       showLabel={k.label ? true : false}
                                       label={k.label || ""}
-                                      value={
-                                        (k.value && k.value.split(",")) || ""
-                                      }
+                                      value={k.value ? k.value.split(",") : ""}
                                     />
                                   </div>
                                   <div className="">
@@ -1768,12 +2043,19 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">
@@ -1918,6 +2200,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                     <BooleanField
                                       showLabel={k.label ? true : false}
                                       label={k.label || ""}
+                                      value={k.value}
                                       isReadOnly={true}
                                     />
                                   </div>
@@ -1926,12 +2209,19 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                                       label="Is the given information found correct?"
                                       modalTriggerLabel={"Edit"}
                                       disableEdit={false}
+                                      showAttachment={true}
+                                      attachments={k.attachments}
                                       clickHandler={(e) => {
                                         setModalTextArea(k.comments);
                                         setModalInspectionValue(
                                           k.inspectionValue
                                         );
                                       }}
+                                      showAttachmentRemover={true}
+                                      attachmentRemoveHandler={(e) =>
+                                        removeAttachment(e, k.label)
+                                      }
+                                      id={`attachment${k.label}`}
                                       inspectionValue={k.inspectionValue}
                                       children={
                                         <div className="d-flex flex-row">

@@ -141,6 +141,7 @@ export const ConsentFormView = ({
               isCorrect: "",
               inspectionValue: "",
               comments: "",
+              attachments: [],
             });
           }
           return null;
@@ -182,11 +183,12 @@ export const ConsentFormView = ({
                     sideMenu: m.sideMenu,
                     label: k.label,
                     value: i.fields[k.label],
-                    defaultValues: k.values,
+                    defaultValues: k.defaultValues,
                     fieldType: k.fieldType,
                     isCorrect: "",
                     inspectionValue: "",
                     comments: "",
+                    attachments: k.attachments,
                   });
                 } else {
                   return tempFormArray.push({
@@ -195,7 +197,7 @@ export const ConsentFormView = ({
                     sideMenu: m.sideMenu,
                     label: k.label,
                     value: i.fields[k.label],
-                    defaultValues: k.values,
+                    defaultValues: k.defaultValues,
                     fieldType: k.fieldType,
                     isCorrect:
                       tempArrayTwo[n].fields[k.label]["value"] === "correct"
@@ -204,6 +206,7 @@ export const ConsentFormView = ({
                     inspectionValue:
                       tempArrayTwo[n].fields[k.label]["inspectionValue"],
                     comments: tempArrayTwo[n].fields[k.label]["comments"],
+                    attachments: tempArrayTwo[n].fields[k.label]["attachments"],
                   });
                 }
               });
@@ -221,11 +224,12 @@ export const ConsentFormView = ({
               sideMenu: i.sideMenu,
               label: m.name,
               value: i.fields[m.name],
-              defaultValues: m.values,
+              defaultValues: m.defaultValues,
               fieldType: m.fieldType,
               isCorrect: "",
               inspectionValue: "",
               comments: "",
+              attachments: m.attachments,
             });
           });
           return null;
@@ -655,7 +659,7 @@ export const ConsentFormView = ({
                         : ""
                     }
                     comments={
-                      applicationData.comments ? applicationData.comments : ""
+                      applicationData.notes ? applicationData.notes : ""
                     }
                     approvedNote={
                       applicationData.status !== LANG.FORM_STATUS.RETURNED &&
@@ -715,7 +719,9 @@ export const ConsentFormView = ({
                                                     k.lastName[0]}
                                                 </div>
                                                 <p className="ps-2">
-                                                  {k.firstName}
+                                                  {k.firstName +
+                                                    " " +
+                                                    k.lastName}
                                                 </p>
                                               </div>
                                             </div>
@@ -753,7 +759,9 @@ export const ConsentFormView = ({
                                                     k.lastName[0]}
                                                 </div>
                                                 <p className="ps-2">
-                                                  {k.firstName}
+                                                  {k.firstName +
+                                                    " " +
+                                                    k.lastName}
                                                 </p>
                                               </div>
                                               {k.status && (
@@ -848,10 +856,101 @@ export const ConsentFormView = ({
                                   </div>
 
                                   <div className="mt-3">
+                                   
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      
+                                      attachments={k.attachments}
+                                      children={
+                                        <div className="d-flex flex-row">
+                                          {k.isCorrect === "" ? (
+                                            <>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={false}
+                                                  label="Correct"
+                                                />
+                                              </div>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={false}
+                                                  label="Incorrect"
+                                                  isModal={false}
+                                                />
+                                              </div>
+                                            </>
+                                          ) : k.isCorrect === true ? (
+                                            <>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={true}
+                                                  label="Correct"
+                                                />
+                                              </div>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={false}
+                                                  label="Incorrect"
+                                                  isModal={false}
+                                                />
+                                              </div>
+                                            </>
+                                          ) : (
+                                            <>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={false}
+                                                  label="Correct"
+                                                />
+                                              </div>
+                                              <div className="me-3">
+                                                <Radio
+                                                  isSelected={true}
+                                                  label="Incorrect"
+                                                  isModal={false}
+                                                />
+                                              </div>
+                                            </>
+                                          )}
+                                        </div>
+                                      }
+                                      showComments={
+                                        k.comments !== "" ? true : false
+                                      }
+                                      comments={k.comments}
+                                    />
+                                  </div>
+                                </>
+                              }
+                            />
+                          </div>
+                        );
+                      case "email":
+                        return (
+                          <div className="mt-3" key={l}>
+                            <CardThree
+                              children={
+                                <>
+                                  <div className="ps-4 pe-4 pt-3 col-4">
+                                    <TextField
+                                      showLabel={k.label ? true : false}
+                                      label={k.label || ""}
+                                      type="email"
+                                      isReadOnly={true}
+                                      value={k.value || ""}
+                                    />
+                                  </div>
+
+                                  <div className="mt-3">
+                                    <InspectCheckOne
+                                      label="Is the given information found correct?"
+                                      inspectionValue={k.inspectionValue}
+                                      disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -937,6 +1036,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1015,7 +1116,7 @@ export const ConsentFormView = ({
                                       isReadOnly={true}
                                       label={k.label || ""}
                                       option={k.defaultValues}
-                                      placeholder={k.value || ""}
+                                      defaultValue={k.value || ""}
                                     />
                                   </div>
 
@@ -1024,6 +1125,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1127,6 +1230,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1211,6 +1316,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1296,6 +1403,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1374,7 +1483,7 @@ export const ConsentFormView = ({
                                       isReadOnly={true}
                                       label={k.label || ""}
                                       option={k.defaultValues}
-                                      value={k.value.split(",") || ""}
+                                      value={k.value ? k.value.split(",") : ""}
                                       isMultiple={true}
                                     />
                                   </div>
@@ -1384,6 +1493,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1459,7 +1570,7 @@ export const ConsentFormView = ({
                                     <CheckBoxField
                                       label={k.label || ""}
                                       showLabel={false}
-                                      value={k.value.split(",") || ""}
+                                      value={k.value ? k.value.split(",") : ""}
                                       defaultValues={k.defaultValues}
                                     />
                                   </div>
@@ -1469,6 +1580,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1543,7 +1656,7 @@ export const ConsentFormView = ({
                                     <FileUploadView
                                       showLabel={k.label ? true : false}
                                       label={k.label || ""}
-                                      value={k.value.split(",") || ""}
+                                      value={k.value ? k.value.split(",") : ""}
                                     />
                                   </div>
 
@@ -1552,6 +1665,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (
@@ -1626,6 +1741,7 @@ export const ConsentFormView = ({
                                     <BooleanField
                                       showLabel={k.label ? true : false}
                                       label={k.label || ""}
+                                      value={k.value}
                                       isReadOnly={true}
                                     />
                                   </div>
@@ -1634,6 +1750,8 @@ export const ConsentFormView = ({
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
+                                      showAttachment={false}
+                                      attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">
                                           {k.isCorrect === "" ? (

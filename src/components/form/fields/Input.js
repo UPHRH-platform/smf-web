@@ -12,7 +12,9 @@ class Input extends Component {
     this.state = {
       fieldType: "",
       language: "en",
+      isInvalid: false,
     };
+    this.validateEmailInput = this.validateEmailInput.bind(this);
   }
 
   componentDidMount() {
@@ -31,6 +33,33 @@ class Input extends Component {
       document.getElementById(
         "field-" + this.props.field.order
       ).required = true;
+    }
+  }
+
+  validateEmailInput = (e) => {
+    let inputData = e.target.value;
+    //eslint-disable-next-line
+    let allowedFormat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if (inputData.match(allowedFormat)) {
+      this.setState({
+        isInvalid: false,
+      });
+    } else {
+      this.setState({
+        isInvalid: true,
+      });
+    }
+  };
+
+  componentDidUpdate() {
+    if (this.props.field.fieldType === LANG.FIELD_TYPES.numeric.toLowerCase()) {
+      setTimeout(() => {
+        let numericField = document.getElementById(
+          `field-${this.props.field.order}`
+        );
+
+        numericField.type = "number";
+      }, 250);
     }
   }
 
@@ -54,19 +83,41 @@ class Input extends Component {
               </span>
             )}
           </label>
-          <input
-            type={
-              this.props.field.fieldType ===
-              LANG.FIELD_TYPES.numeric.toLowerCase()
-                ? "number"
-                : this.state.fieldType
-            }
-            id={"field-" + this.props.field.order}
-            name={"field_" + this.props.field.order}
-            className="form-control"
-            placeholder="Type here"
-            autoComplete="off"
-          />
+
+          {this.props.field.fieldType !==
+            LANG.FIELD_TYPES.email.toLowerCase() && (
+            <input
+              type={
+                this.props.field.fieldType ===
+                LANG.FIELD_TYPES.numeric.toLowerCase()
+                  ? "number"
+                  : this.state.fieldType
+              }
+              id={"field-" + this.props.field.order}
+              name={"field_" + this.props.field.order}
+              className="form-control"
+              placeholder="Type here"
+              autoComplete="off"
+            />
+          )}
+
+          {this.props.field.fieldType ===
+            LANG.FIELD_TYPES.email.toLowerCase() && (
+            <div className="">
+              <input
+                type="email"
+                id={"field-" + this.props.field.order}
+                name={"field_" + this.props.field.order}
+                className="form-control"
+                placeholder="Type here"
+                autoComplete="off"
+                onChange={this.validateEmailInput}
+              />
+              {this.state.isInvalid && (
+                <p className="invalid-input">Invalid email!</p>
+              )}
+            </div>
+          )}
         </div>
       </div>
     );
