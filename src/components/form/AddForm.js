@@ -38,7 +38,7 @@ class AddForm extends Component {
         description: "",
         fields: [],
       },
-      breadcrumbData : []
+      breadcrumbData: [],
     };
   }
 
@@ -54,11 +54,11 @@ class AddForm extends Component {
     })();
     this.setState({
       breadcrumbData: [
-        { title: 'HOME', url: '/dashboard', icon: '' },
-        { title: 'MANANGE', url: '/manage', icon: '' },
-        { title: 'APPLICATION FORM', url: '', icon: '' },
-      ]
-    })
+        { title: "HOME", url: "/dashboard", icon: "" },
+        { title: "MANANGE", url: "/manage", icon: "" },
+        { title: "APPLICATION FORM", url: "", icon: "" },
+      ],
+    });
     if (this.props.match.params.id) {
       let addFormItem = document.getElementById("active");
       if (addFormItem) {
@@ -72,9 +72,9 @@ class AddForm extends Component {
               formTitle: response.responseData.title,
               breadcrumbData: [
                 ...this.state.breadcrumbData,
-                { title: response.responseData.title || '', url: '', icon: '' },
-                { title: 'Edit form', url: '', icon: '' },
-              ]
+                { title: response.responseData.title || "", url: "", icon: "" },
+                { title: "Edit form", url: "", icon: "" },
+              ],
             });
             document.getElementById("id").value = response.responseData.id;
             document.getElementById("version").value =
@@ -104,12 +104,12 @@ class AddForm extends Component {
     } else {
       this.setState({
         breadcrumbData: [
-          { title: 'HOME', url: '/dashboard', icon: '' },
-          { title: 'MANANGE', url: '/manage', icon: '' },
-          { title: 'APPLICATION FORM', url: '', icon: '' },
-          { title: 'CREATE FORM', url: '', icon: '' },
-        ]
-      })
+          { title: "HOME", url: "/dashboard", icon: "" },
+          { title: "MANANGE", url: "/manage", icon: "" },
+          { title: "APPLICATION FORM", url: "", icon: "" },
+          { title: "CREATE FORM", url: "", icon: "" },
+        ],
+      });
       //   this.props.eraseFormDetails();
     }
   }
@@ -124,6 +124,15 @@ class AddForm extends Component {
       },
     }));
     let formName = document.getElementById("form-name");
+    if (
+      document
+        .querySelector("#title")
+        .classList.contains("input-highlight-error-1")
+    ) {
+      document
+        .querySelector("#title")
+        .classList.remove("input-highlight-error-1");
+    }
     if (event.target.name === "title" && formName) {
       formName.innerHTML = event.target.value;
     }
@@ -174,10 +183,16 @@ class AddForm extends Component {
     formData.version = this.state.formDetails.version;
     formData.title = this.state.formDetails.title;
     formData.description = this.state.formDetails.description;
-    if(isDraft) {
-      formData.status = LANG.FORM_STATUS.DRAFT
+    let allowSubmission = false;
+
+    if (document.querySelector("#title").value === "") {
+      document.querySelector("#title").classList.add("input-highlight-error-1");
+    }
+
+    if (isDraft) {
+      formData.status = LANG.FORM_STATUS.DRAFT;
     } else {
-      formData.status = LANG.FORM_STATUS.PUBLISH
+      formData.status = LANG.FORM_STATUS.PUBLISH;
     }
     formData.fields = [];
     let cards = document.getElementsByClassName("card");
@@ -188,6 +203,13 @@ class AddForm extends Component {
       field.name = cards[i].querySelector(".fieldName").value;
       field.fieldType = cards[i].querySelector(".fieldType").value;
       field.values = [];
+
+      if (field.name === "") {
+        cards[i]
+          .querySelector(".fieldName")
+          .classList.add("input-highlight-error-1");
+      }
+
       if (
         field.fieldType !== LANG.HEADING ||
         field.fieldType !== LANG.SEPARATOR
@@ -223,29 +245,51 @@ class AddForm extends Component {
         let heading = {};
         heading.heading = cards[i].querySelector(".heading").value;
         heading.subHeading = cards[i].querySelector(".subHeading").value;
+
+        if (heading.heading === "") {
+          cards[i]
+            .querySelector(".heading")
+            .classList.add("input-highlight-error-1");
+          allowSubmission = false;
+        } else {
+          if (
+            cards[i]
+              .querySelector(".heading")
+              .classList.contains("input-highlight-error-1")
+          ) {
+            cards[i]
+              .querySelector(".heading")
+              .classList.remove("input-highlight-error-1");
+          }
+          allowSubmission = true;
+        }
         field.values.push(heading);
       }
       formData.fields.push(field);
     }
-    FormService.add(formData).then(
-      (response) => {
-        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          Notify.success(response.statusInfo.statusMessage);
-          //   this.props.updateParent(response.responseData.id);
-          setTimeout(() => {
-            this.props.history.push("/manage?tab=1");
-          }, 500);
-        } else {
-          Notify.error(response.statusInfo.errorMessage);
+
+    if (allowSubmission) {
+      FormService.add(formData).then(
+        (response) => {
+          if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+            Notify.success(response.statusInfo.statusMessage);
+            //   this.props.updateParent(response.responseData.id);
+            setTimeout(() => {
+              this.props.history.push("/manage?tab=1");
+            }, 500);
+          } else {
+            Notify.error(response.statusInfo.errorMessage);
+          }
+        },
+        (error) => {
+          error.statusInfo
+            ? Notify.error(error.statusInfo.errorMessage)
+            : Notify.error(error.message);
         }
-      },
-      (error) => {
-        error.statusInfo
-          ? Notify.error(error.statusInfo.errorMessage)
-          : Notify.error(error.message);
-      }
-    );
-    // console.log(formData);
+      );
+    } else {
+      Notify.error("Kindly fill all the fields");
+    }
   };
 
   render() {
@@ -254,7 +298,10 @@ class AddForm extends Component {
     );
     return (
       <Fragment>
-        <Header history={this.props.history} breadCrumb={this.state.breadcrumbData}/>
+        <Header
+          history={this.props.history}
+          breadCrumb={this.state.breadcrumbData}
+        />
         <div className="container-fluid main-container h-100 heightMin">
           <div className="container dashboard-inner-container">
             <div className="row tabText">
@@ -262,36 +309,39 @@ class AddForm extends Component {
                 <div className="row">
                   <div className="col-12 mt-5">
                     <div className="d-flex pull-right">
-                          <div className="mr-3">
-                            <BtnOne
-                              label="Cancel"
-                              btnType="button"
-                              isLink={false}
-                              link=""
-                              clickHandler={(e) => this.props.history.push("/manage?tab=1")}
-                            />
-                          </div>
-                          { this.state.formDetails.status !== LANG.FORM_STATUS.NEW && 
-                          <div className="mr-3">
-                            <BtnOne
-                              label="Save as draft"
-                              btnType="button"
-                              isLink={false}
-                              link=""
-                              clickHandler={(e) => this.submit(true)}
-                            />
-                          </div>
+                      <div className="mr-3">
+                        <BtnOne
+                          label="Cancel"
+                          btnType="button"
+                          isLink={false}
+                          link=""
+                          clickHandler={(e) =>
+                            this.props.history.push("/manage?tab=1")
                           }
-                          <div className="mr-0">
-                            <BtnTwo
-                              label="Submit"
-                              btnType="button"
-                              isLink={false}
-                              link=""
-                              clickHandler={(e) => this.submit(false)}
-                            />
-                          </div>
+                        />
+                      </div>
+                      {this.state.formDetails.status !==
+                        LANG.FORM_STATUS.NEW && (
+                        <div className="mr-3">
+                          <BtnOne
+                            label="Save as draft"
+                            btnType="button"
+                            isLink={false}
+                            link=""
+                            clickHandler={(e) => this.submit(true)}
+                          />
                         </div>
+                      )}
+                      <div className="mr-0">
+                        <BtnTwo
+                          label="Submit"
+                          btnType="button"
+                          isLink={false}
+                          link=""
+                          clickHandler={(e) => this.submit(false)}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className="row">
