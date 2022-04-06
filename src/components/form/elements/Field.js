@@ -43,6 +43,10 @@ class Field extends Component {
   }
 
   handleChange = (event) => {
+    if (event.target.classList.contains("input-highlight-error-1")) {
+      event.target.classList.remove("input-highlight-error-1")
+    }
+
     if (event.target.className === "custom-select fieldType input-bg-2") {
       var value =
         event.currentTarget.options[event.currentTarget.selectedIndex].text;
@@ -111,7 +115,7 @@ class Field extends Component {
                 </select>
               </div>
             </div>
-            <div className="col-md-3" style={{display: "none"}}>
+            <div className="col-md-3" style={{ display: "none" }}>
               <div className="form-group">
                 <label htmlFor="fieldType">Width</label>
                 <select

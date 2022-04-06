@@ -2756,6 +2756,10 @@ h6 {
   color: var(--white-70);
 }
 
+.input-highlight-error-1 {
+  border-color: red !important;
+}
+
 /* .dropdown-toggle::after {
   margin-left: 1em !important;
 } */
