@@ -200,13 +200,23 @@ export const ConsentFormView = ({
                     defaultValues: k.defaultValues,
                     fieldType: k.fieldType,
                     isCorrect:
+                      tempArrayTwo &&
+                      tempArrayTwo[n].fields.length &&
                       tempArrayTwo[n].fields[k.label]["value"] === "correct"
                         ? true
                         : false,
                     inspectionValue:
+                      tempArrayTwo &&
+                      tempArrayTwo[n].fields.length &&
                       tempArrayTwo[n].fields[k.label]["inspectionValue"],
-                    comments: tempArrayTwo[n].fields[k.label]["comments"],
-                    attachments: tempArrayTwo[n].fields[k.label]["attachments"],
+                    comments:
+                      tempArrayTwo &&
+                      tempArrayTwo[n].fields.length &&
+                      tempArrayTwo[n].fields[k.label]["comments"],
+                    attachments:
+                      tempArrayTwo &&
+                      tempArrayTwo[n].fields.length &&
+                      tempArrayTwo[n].fields[k.label]["attachments"],
                   });
                 }
               });
@@ -856,13 +866,11 @@ export const ConsentFormView = ({
                                   </div>
 
                                   <div className="mt-3">
-                                   
                                     <InspectCheckOne
                                       label="Is the given information found correct?"
                                       inspectionValue={k.inspectionValue}
                                       disableEdit={true}
                                       showAttachment={false}
-                                      
                                       attachments={k.attachments}
                                       children={
                                         <div className="d-flex flex-row">

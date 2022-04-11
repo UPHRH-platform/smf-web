@@ -192,12 +192,19 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                     defaultValues: k.defaultValues,
                     fieldType: k.fieldType,
                     isCorrect:
+                      tempArrayTwo &&
+                      tempArrayTwo[n].fields.length &&
                       tempArrayTwo[n].fields[k.label]["value"] === "correct"
                         ? true
                         : false,
                     inspectionValue:
+                      tempArrayTwo &&
+                      tempArrayTwo[n].fields.length &&
                       tempArrayTwo[n].fields[k.label]["inspectionValue"],
-                    comments: tempArrayTwo[n].fields[k.label]["comments"],
+                    comments:
+                      tempArrayTwo &&
+                      tempArrayTwo[n].fields.length &&
+                      tempArrayTwo[n].fields[k.label]["comments"],
                     attachments: [],
                   });
                 }

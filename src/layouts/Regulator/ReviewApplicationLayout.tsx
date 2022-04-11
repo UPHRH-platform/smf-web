@@ -189,13 +189,23 @@ export const ReviewApplicationLayout = ({
                     defaultValues: k.defaultValues,
                     fieldType: k.fieldType,
                     isCorrect:
+                      tempArrayTwo &&
+                      tempArrayTwo[n].fields.length &&
                       tempArrayTwo[n].fields[k.label]["value"] === "correct"
                         ? true
                         : false,
                     inspectionValue:
+                      tempArrayTwo &&
+                      tempArrayTwo[n].fields.length &&
                       tempArrayTwo[n].fields[k.label]["inspectionValue"],
-                    comments: tempArrayTwo[n].fields[k.label]["comments"],
-                    attachments: tempArrayTwo[n].fields[k.label]["attachments"],
+                    comments:
+                      tempArrayTwo &&
+                      tempArrayTwo[n].fields.length &&
+                      tempArrayTwo[n].fields[k.label]["comments"],
+                    attachments:
+                      tempArrayTwo &&
+                      tempArrayTwo[n].fields.length &&
+                      tempArrayTwo[n].fields[k.label]["attachments"],
                   });
                 }
               });
