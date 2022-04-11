@@ -55,15 +55,39 @@ class WidgetNavBar extends Component {
     );
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.history.location.state &&
+      prevProps.history.location.state.trigger
+    ) {
+      
+      this.getWidgets();
+    }
+  }
+
   /**
    * Function to get the chart data as per the dashboard selection
    */
   getChartData = (code) => {
-    let startRange = moment().startOf("year");
-    let endRange = moment().endOf("year");
-    startRange = Number(startRange);
-    endRange = Number(endRange);
-    let thisMonth = { startDate: startRange, endDate: endRange };
+
+    let selectedRange, startRange, endRange;
+    
+
+    if (
+      localStorage.getItem("startDate") &&
+      localStorage.getItem("endDate")
+    ) {
+      startRange = moment(localStorage.getItem("startDate")).valueOf();
+      endRange = moment(localStorage.getItem("endDate")).valueOf();
+    } else {
+      startRange = moment().startOf("year");
+      endRange = moment().endOf("year");
+      startRange = Number(startRange);
+      endRange = Number(endRange);
+    }
+
+    selectedRange = { startDate: startRange, endDate: endRange };
+
 
     let payload = {
       RequestInfo: {
@@ -80,7 +104,7 @@ class WidgetNavBar extends Component {
         filters: {},
         moduleLevel: "",
         aggregationFactors: null,
-        requestDate: thisMonth,
+        requestDate: selectedRange,
       },
     };
 
@@ -144,21 +168,23 @@ class WidgetNavBar extends Component {
   /**
    * Function to update the chart visualization
    */
-  updateVisuals = () => {
-    this.setState({
-      trigger: true,
-    });
-    this.props.pathName.history.push({
-      pathName: "/dashboards",
-      state: { trigger: this.state.trigger },
-    });
-    setTimeout(() => {
-      this.props.pathName.history.push({
-        pathName: "/dashboards",
-        state: { trigger: this.state.trigger },
-      });
-    }, 500);
-  };
+  // updateVisuals = () => {
+  //   this.setState({
+  //     trigger: true,
+  //   }, () => {
+  //     this.props.history.push({
+  //       pathName: "/analytics",
+  //       state: { trigger: this.state.trigger },
+  //     });
+  //   });
+   
+  //   setTimeout(() => {
+  //     this.props.history.push({
+  //       pathName: "/analytics",
+  //       state: { trigger: false },
+  //     });
+  //   }, 500);
+  // };
 
   render() {
     return (
@@ -169,7 +195,7 @@ class WidgetNavBar extends Component {
               ? "mt-4"
               : "mt-0"
           }`}
-          id="widgets"
+          
         >
           {this.state.widgetData.map((data, index) => (
             <div
@@ -177,7 +203,7 @@ class WidgetNavBar extends Component {
               key={data.headerName}
             >
               {(data.headerName || data.headerValue) && (
-                <div className={`me-2 pt-3 widget-box-${index + 1}`}>
+                <div className={`me-2 pt-3`}>
                   <h2 className="mt-3">
                     {!data.isDecimal ? (
                       <p>{Math.round(data.headerValue)}</p>

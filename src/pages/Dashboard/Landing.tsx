@@ -7,6 +7,7 @@ import { DashboardLayout } from "../../layouts";
 import { ChartService } from "../../services";
 import { APP } from "../../constants";
 import Notify from "../../helpers/notify";
+import DateFilter from "../../components/charts/DateFilter";
 
 /**
  * Landing component renders
@@ -21,9 +22,7 @@ export const Landing = ({ data }: LandingProps) => {
   let history = useHistory();
 
   const [dashboardConfigData, setDashboardConfigData] = useState<any[]>([]);
-  const [trigger, setTrigger] = useState(false);
-  const [toggle, setToggle] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
+
 
   useEffect(() => {
     getDashboardConfigurations();
@@ -32,7 +31,7 @@ export const Landing = ({ data }: LandingProps) => {
   const getDashboardConfigurations = () => {
     ChartService.getDashboardConfig().then((response) => {
       if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-        setDashboardConfigData(response.responseData)
+        setDashboardConfigData(response.responseData);
       } else {
         Notify.error(response.statusInfo.errorMessage);
       }
@@ -47,11 +46,17 @@ export const Landing = ({ data }: LandingProps) => {
           {/* Section one */}
           <section className="pt-3">
             <HeadingOne heading="Insights so far" />
+            <div className="float-end">
+              <DateFilter
+                pathName={history.location.pathname}
+                history={history}
+              />
+            </div>
           </section>
 
           {/* Dashboards */}
           <section className="">
-            <DashboardLayout dashboardConfig={dashboardConfigData}/>
+            <DashboardLayout dashboardConfig={dashboardConfigData} />
           </section>
         </div>
       </div>

@@ -78,15 +78,15 @@ class LineChart extends React.Component {
   /**
    * Function to update the chart visualization
    */
-  updateLineVisuals = () => {
-    this.setState({
-      trigger: true,
-    });
-    this.props.pathName.history.push({
-      pathName: "/dashboards",
-      state: { trigger: this.state.trigger },
-    });
-  };
+  // updateLineVisuals = () => {
+  //   this.setState({
+  //     trigger: true,
+  //   });
+  //   this.props.pathName.history.push({
+  //     pathName: "/dashboards",
+  //     state: { trigger: this.state.trigger },
+  //   });
+  // };
 
   manupulateData(chartData) {
     var tempdata = {
