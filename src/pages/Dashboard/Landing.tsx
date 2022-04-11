@@ -23,7 +23,6 @@ export const Landing = ({ data }: LandingProps) => {
 
   const [dashboardConfigData, setDashboardConfigData] = useState<any[]>([]);
 
-
   useEffect(() => {
     getDashboardConfigurations();
   }, []);
@@ -44,13 +43,19 @@ export const Landing = ({ data }: LandingProps) => {
       <div className="container-fluid">
         <div className="container dashboard-inner-container mt-4">
           {/* Section one */}
-          <section className="pt-3">
-            <HeadingOne heading="Insights so far" />
-            <div className="float-end">
-              <DateFilter
-                pathName={history.location.pathname}
-                history={history}
-              />
+          <section className="row pt-3">
+            <div className="col-sm-12 col-md-6 col-lg-6">
+              <div className="float-start pt-3">
+                <HeadingOne heading="Insights so far" />
+              </div>
+            </div>
+            <div className="col-sm-12 col-md-6 col-lg-6">
+              <div className="float-end">
+                <DateFilter
+                  pathName={history.location.pathname}
+                  history={history}
+                />
+              </div>
             </div>
           </section>
 

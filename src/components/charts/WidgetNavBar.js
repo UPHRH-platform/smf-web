@@ -60,7 +60,6 @@ class WidgetNavBar extends Component {
       prevProps.history.location.state &&
       prevProps.history.location.state.trigger
     ) {
-      
       this.getWidgets();
     }
   }
@@ -69,14 +68,9 @@ class WidgetNavBar extends Component {
    * Function to get the chart data as per the dashboard selection
    */
   getChartData = (code) => {
-
     let selectedRange, startRange, endRange;
-    
 
-    if (
-      localStorage.getItem("startDate") &&
-      localStorage.getItem("endDate")
-    ) {
+    if (localStorage.getItem("startDate") && localStorage.getItem("endDate")) {
       startRange = moment(localStorage.getItem("startDate")).valueOf();
       endRange = moment(localStorage.getItem("endDate")).valueOf();
     } else {
@@ -87,7 +81,6 @@ class WidgetNavBar extends Component {
     }
 
     selectedRange = { startDate: startRange, endDate: endRange };
-
 
     let payload = {
       RequestInfo: {
@@ -165,27 +158,6 @@ class WidgetNavBar extends Component {
     );
   };
 
-  /**
-   * Function to update the chart visualization
-   */
-  // updateVisuals = () => {
-  //   this.setState({
-  //     trigger: true,
-  //   }, () => {
-  //     this.props.history.push({
-  //       pathName: "/analytics",
-  //       state: { trigger: this.state.trigger },
-  //     });
-  //   });
-   
-  //   setTimeout(() => {
-  //     this.props.history.push({
-  //       pathName: "/analytics",
-  //       state: { trigger: false },
-  //     });
-  //   }, 500);
-  // };
-
   render() {
     return (
       <div className="mt-4">
@@ -195,11 +167,14 @@ class WidgetNavBar extends Component {
               ? "mt-4"
               : "mt-0"
           }`}
-          
         >
           {this.state.widgetData.map((data, index) => (
             <div
-              className="col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-2 pb-3 pb-xs-3 pb-sm-3 pb-md-3 pb-lg-0 pb-xl-0 widget_card_one px-4"
+              className={`${
+                index > 0
+                  ? "col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-2 pb-3 pb-xs-3 pb-sm-3 pb-md-3 pb-lg-0 pb-xl-0 widget_card_one px-4 ms-0 ms-sm-0 ms-md-3 ms-lg-3 mt-3 mt-sm-3 mt-md-0 mt-lg-0"
+                  : "col-xs-12 col-sm-12 col-md-4 col-lg-4 col-xl-2 pb-3 pb-xs-3 pb-sm-3 pb-md-3 pb-lg-0 pb-xl-0 widget_card_one px-4"
+              }`}
               key={data.headerName}
             >
               {(data.headerName || data.headerValue) && (
