@@ -36,6 +36,7 @@ export const DashboardLayout = ({ dashboardConfig }: DashboardLayoutProps) => {
               chartRowData={k}
               row={k.row}
               pathName={history.location.pathname}
+              history={history}
             />
           );
         })}

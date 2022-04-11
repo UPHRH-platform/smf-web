@@ -43,21 +43,21 @@ class PieChart extends React.Component {
   /**
    * Function to update the chart visualization
    */
-  updatePieVisuals = () => {
-    this.setState({
-      trigger: true,
-    });
-    this.props.pathName.history.push({
-      pathName: "/dashboards",
-      state: { trigger: this.state.trigger },
-    });
-    setTimeout(() => {
-      this.props.pathName.history.push({
-        pathName: "/dashboards",
-        state: { trigger: this.state.trigger },
-      });
-    }, 500);
-  };
+  // updatePieVisuals = () => {
+  //   this.setState({
+  //     trigger: true,
+  //   });
+  //   this.props.pathName.history.push({
+  //     pathName: "/dashboards",
+  //     state: { trigger: this.state.trigger },
+  //   });
+  //   setTimeout(() => {
+  //     this.props.pathName.history.push({
+  //       pathName: "/dashboards",
+  //       state: { trigger: this.state.trigger },
+  //     });
+  //   }, 500);
+  // };
 
   getData(chartData) {
     var pieChartTempData = {
