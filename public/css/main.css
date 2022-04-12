@@ -2935,7 +2935,7 @@ button.active {
 } */
 
 .react-confirm-alert-body {
-  color: var(--white-90) !important;
+  color: var(--main-black60) !important;
   background: var(--input-background) !important;
   border-radius: unset !important;
 }
