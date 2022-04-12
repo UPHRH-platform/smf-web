@@ -146,10 +146,17 @@ class AddForm extends Component {
   };
 
   removeElement = (index) => {
-    // console.log(this.state.formElements)
+    // console.log(this.state.formElements);
+
     confirmAlert({
-      title: LANG.CONFIRM_TO_REMOVE,
-      message: LANG.ARE_YOU_SURE_YOU_WANT_TO_DO_THIS,
+      title:
+        this.state.formElements[index] === "heading"
+          ? LANG.HEADING_REMOVAL_WARNING
+          : LANG.CONFIRM_TO_REMOVE,
+      message:
+        this.state.formElements[index] === "heading"
+          ? LANG.CONFIRM_TO_REMOVE_2
+          : LANG.ARE_YOU_SURE_YOU_WANT_TO_DO_THIS,
       buttons: [
         {
           label: LANG.REMOVE,
