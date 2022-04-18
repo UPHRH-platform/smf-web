@@ -8,7 +8,6 @@ import _ from "lodash";
 import { ChartService } from "../../services";
 import ExportChart from "../../helpers/exportChart";
 import moment from "moment";
-
 /**
  * Component to genearte the required charts
  * as per the response from the API
@@ -26,14 +25,31 @@ class ChartType extends React.Component {
     this.callAPI();
   }
 
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.history.location.state &&
+      prevProps.history.location.state.trigger
+    ) {
+      this.callAPI();
+    }
+  }
+
   callAPI() {
     let code = _.chain(this.props).get("chartData").first().get("id").value();
 
-    let startRange = moment().startOf("year");
-    let endRange = moment().endOf("year");
-    startRange = Number(startRange);
-    endRange = Number(endRange);
-    let thisMonth = { startDate: startRange, endDate: endRange };
+    let selectedRange, startRange, endRange;
+
+    if (localStorage.getItem("startDate") && localStorage.getItem("endDate")) {
+      startRange = moment(localStorage.getItem("startDate")).valueOf();
+      endRange = moment(localStorage.getItem("endDate")).valueOf();
+    } else {
+      startRange = moment().startOf("year");
+      endRange = moment().endOf("year");
+      startRange = Number(startRange);
+      endRange = Number(endRange);
+    }
+
+    selectedRange = { startDate: startRange, endDate: endRange };
 
     let payload = {
       RequestInfo: {
@@ -50,7 +66,7 @@ class ChartType extends React.Component {
         filters: {},
         moduleLevel: "",
         aggregationFactors: null,
-        requestDate: thisMonth,
+        requestDate: selectedRange,
       },
     };
 

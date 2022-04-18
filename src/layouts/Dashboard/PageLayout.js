@@ -24,6 +24,7 @@ class PageLayout extends Component {
             row={row}
             chartData={vizData}
             pathProps={this.props.pathName}
+            history={this.props.history}
           />
         ))}
       </div>

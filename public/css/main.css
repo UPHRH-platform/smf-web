@@ -2756,6 +2756,10 @@ h6 {
   color: var(--white-70);
 }
 
+.input-highlight-error-1 {
+  border-color: red !important;
+}
+
 /* .dropdown-toggle::after {
   margin-left: 1em !important;
 } */
@@ -2931,7 +2935,7 @@ button.active {
 } */
 
 .react-confirm-alert-body {
-  color: var(--white-90) !important;
+  color: var(--main-black60) !important;
   background: var(--input-background) !important;
   border-radius: unset !important;
 }

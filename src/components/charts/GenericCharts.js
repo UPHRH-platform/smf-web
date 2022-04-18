@@ -274,6 +274,7 @@ class GenericCharts extends React.Component {
                     section={this.state.modalData.chartDataName}
                     pathName={this.props}
                     dimensions={this.state.modalData.dimensions}
+                    history={this.props.history}
                   />
                 </div>
               </Modal>
@@ -286,6 +287,7 @@ class GenericCharts extends React.Component {
                 section={chartData.name}
                 pathName={this.props}
                 dimensions={d.dimensions}
+                history={this.props.history}
               />
             </div>
           </div>
@@ -338,6 +340,7 @@ class GenericCharts extends React.Component {
                 chartData={d.charts}
                 label={d.name}
                 section={chartData.name}
+                history={this.props.history}
               />
             </div>
           </div>

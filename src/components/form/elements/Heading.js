@@ -22,6 +22,15 @@ class Heading extends Component {
 
   handleChange = (event) => {
     let field = event.target.name.replace("[]", "");
+    if (
+      document
+        .querySelector("[name='heading[]']")
+        .classList.contains("input-highlight-error-1")
+    ) {
+      document
+        .querySelector("[name='heading[]']")
+        .classList.remove("input-highlight-error-1");
+    }
     this.setState({
       [field]: event.target.value,
     });
@@ -54,6 +63,7 @@ class Heading extends Component {
                   placeholder="Type here"
                   onChange={this.handleChange}
                   value={this.state.heading || ""}
+                  required
                 />
               </div>
             </div>
