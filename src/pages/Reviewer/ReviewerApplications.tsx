@@ -45,6 +45,8 @@ const FORM_STATUS = [
     "Approved"
 ];
 
+const userRole = Helper.getUserRole();
+
 class ReviewerApplications extends Component<ReviewerApplicationsProps, ReviewerApplicationsState> {
     constructor(props: any) {
         super(props);
@@ -58,7 +60,7 @@ class ReviewerApplications extends Component<ReviewerApplicationsProps, Reviewer
     }
 
     componentDidMount() {
-        if (Helper.getUserRole() === APP.ROLE.REGULATOR) {
+        if (userRole === APP.ROLE.REGULATOR || userRole === APP.ROLE.SUPER_ADMIN) {
             let data = {
                 "searchObjects": [
                 ]
@@ -123,7 +125,7 @@ class ReviewerApplications extends Component<ReviewerApplicationsProps, Reviewer
             <Fragment>
                 <Header history={this.props.history} />
 
-                {Helper.getUserRole() === APP.ROLE.REGULATOR && (
+                {(userRole === APP.ROLE.REGULATOR || userRole === APP.ROLE.SUPER_ADMIN) && (
                     <Fragment>
                         <div className="container-fluid">
                             <div className="container dashboard-inner-container">

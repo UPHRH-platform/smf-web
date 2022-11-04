@@ -60,6 +60,7 @@ export const ConsentFormView = ({
     useRecoilState(sideMenuLabelAtom);
 
   const reviewerNote = useRecoilState(modalTwoTextAreaAtom);
+  const userRole = Helper.getUserRole();
 
   let history = useHistory();
 
@@ -596,7 +597,7 @@ export const ConsentFormView = ({
                   applicationId={applicationData.applicationId}
                 />
 
-                {Helper.getUserRole() === APP.ROLE.REGULATOR && (
+                {(userRole === APP.ROLE.REGULATOR || userRole === APP.ROLE.SUPER_ADMIN) && (
                   <InspectionScheduleModal
                     id="sendToInspectionEdit"
                     showTextAreaLabel={false}
@@ -707,7 +708,7 @@ export const ConsentFormView = ({
                               <label
                                 className={`${styles.status_bar_custom_heading}`}
                               >
-                                Lead inspector
+                                Lead assessor
                               </label>
                               <div className="pt-3">
                                 {applicationData &&
@@ -747,7 +748,7 @@ export const ConsentFormView = ({
                               <label
                                 className={`${styles.status_bar_custom_heading}`}
                               >
-                                Assisting inspector
+                                Assisting assessor
                               </label>
                               <div className="pt-3">
                                 {applicationData &&

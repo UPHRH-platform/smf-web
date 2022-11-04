@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { BtnTwo } from "../../components/buttons";
 import { APP } from "../../constants";
 import Notify from "../../helpers/notify";
+import Util from "../../helpers/util";
 import { UserService } from "../../services/user.service";
 
 interface userProps {
@@ -155,7 +156,7 @@ export const Users = ({ data }: userProps) => {
                     {user.roles.map((role, i) => {
                       return (
                         <span key={i}>
-                          <span>{role.name}</span>
+                          <span>{Util.getRoleLabel(role.name)}</span>
                           {i !== user.roles.length - 1 && <span>,</span>}
                         </span>
                       );

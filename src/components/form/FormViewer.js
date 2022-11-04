@@ -22,7 +22,7 @@ import { CardThree } from "../cards";
 import { TextAreaField } from "../form-elements";
 // import { BtnTwo } from "../buttons";
 // const $ = window.$;
-
+const userRole = Helper.getUserRole();
 class FormViewer extends Component {
   constructor(props) {
     super(props);
@@ -61,7 +61,7 @@ class FormViewer extends Component {
       this.props.match.params.applicationId !== null &&
       this.props.match.params.applicationId !== undefined
     ) {
-      if (Helper.getUserRole() === APP.ROLE.INSTITUTION) {
+      if (userRole === APP.ROLE.INSTITUTION) {
         this.setState({
           breadCrumbData: [
             { title: "HOME", url: "/dashboard", icon: "" },
@@ -69,7 +69,7 @@ class FormViewer extends Component {
           ],
         });
       }
-      if (Helper.getUserRole() === APP.ROLE.REGULATOR) {
+      if (userRole === APP.ROLE.REGULATOR || userRole === APP.ROLE.SUPER_ADMIN) {
         this.setState({
           breadCrumbData: [
             { title: "HOME", url: "/dashboard", icon: "" },
@@ -81,7 +81,7 @@ class FormViewer extends Component {
         this.populateForm(this.props.match.params.applicationId);
       }, 50);
     } else {
-      if (Helper.getUserRole() === APP.ROLE.INSTITUTION) {
+      if (userRole === APP.ROLE.INSTITUTION) {
         this.setState({
           breadCrumbData: [
             { title: "HOME", url: "/dashboard", icon: "" },
@@ -89,7 +89,7 @@ class FormViewer extends Component {
           ],
         });
       }
-      if (Helper.getUserRole() === APP.ROLE.REGULATOR) {
+      if (userRole === APP.ROLE.REGULATOR || userRole === APP.ROLE.SUPER_ADMIN) {
         this.setState({
           breadCrumbData: [
             { title: "HOME", url: "/dashboard", icon: "" },
@@ -327,7 +327,7 @@ class FormViewer extends Component {
       this.props.match.params.applicationId !== undefined
     ) {
       // if regulator disable form
-      if (Helper.getUserRole() === APP.ROLE.REGULATOR) {
+      if (userRole === APP.ROLE.REGULATOR || userRole === APP.ROLE.SUPER_ADMIN) {
         setTimeout(() => {
           this.disableFormElements();
         }, 300);
@@ -335,7 +335,7 @@ class FormViewer extends Component {
       // if institute,
       // if status: Draft - enable form edit & show 'save as draft'
       if (
-        Helper.getUserRole() === APP.ROLE.INSTITUTION &&
+        userRole === APP.ROLE.INSTITUTION &&
         (this.state.applicationDetails.status === LANG.FORM_STATUS.DRAFT ||
           this.state.applicationDetails.status === LANG.FORM_STATUS.RETURNED)
       ) {
@@ -350,7 +350,7 @@ class FormViewer extends Component {
       // if institute,
       // if status: not Draft - disable form edit & hide 'save as draft'
       if (
-        Helper.getUserRole() === APP.ROLE.INSTITUTION &&
+        userRole === APP.ROLE.INSTITUTION &&
         this.state.applicationDetails.status !== LANG.FORM_STATUS.DRAFT &&
         this.state.applicationDetails.status !== LANG.FORM_STATUS.RETURNED
       ) {
@@ -392,7 +392,7 @@ class FormViewer extends Component {
       (this.props.match.params.applicationId === null ||
         this.props.match.params.applicationId === undefined ||
         this.state.applicationDetails.status === LANG.FORM_STATUS.RETURNED) &&
-      Helper.getUserRole() === APP.ROLE.INSTITUTION
+      userRole === APP.ROLE.INSTITUTION
     ) {
       for (let index = 0; index <= this.state.headingIndex; index++) {
         if (!flag) break;
@@ -868,7 +868,7 @@ class FormViewer extends Component {
                             //   this.props.match.params.applicationId !== null &&
                             //   this.props.match.params.applicationId !== undefined
                             // ) &&
-                            Helper.getUserRole() === APP.ROLE.INSTITUTION &&
+                            userRole === APP.ROLE.INSTITUTION &&
                               this.state.showSaveAsDraft && (
                                 <button
                                   className="btn btn-outline smf-btn-default mb-3"
@@ -888,7 +888,7 @@ class FormViewer extends Component {
                             //   this.props.match.params.applicationId !== null &&
                             //   this.props.match.params.applicationId !== undefined
                             // ) &&
-                            Helper.getUserRole() === APP.ROLE.INSTITUTION &&
+                            userRole === APP.ROLE.INSTITUTION &&
                               this.state.showSaveAsDraft &&
                               this.state.headingIndex ===
                                 this.state.formHeadings.length - 1 && (

@@ -29,6 +29,7 @@ export const RegulatorAllApplications = ({
     const [currentData, setCurrentData] = useRecoilState(selectedTabDataAtom);
     const [tabData, setTabData] = useState<any[]>([]);
     const [selectedTab, setSelectedTab] = useRecoilState(selectedTabAtom);
+    const userRole = Helper.getUserRole();
 
     let history = useHistory();
 
@@ -96,7 +97,7 @@ export const RegulatorAllApplications = ({
     }, [currentData]);
 
     const getSelectedTabData = () => {
-        if (Helper.getUserRole() === APP.ROLE.REGULATOR) {
+        if (userRole === APP.ROLE.REGULATOR || userRole === APP.ROLE.SUPER_ADMIN) {
             let data = {
                 searchObjects: [],
             };

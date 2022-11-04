@@ -12,6 +12,13 @@ export const APP = {
     INSTITUTION: "Institution",
     REGULATOR: "Regulator", // reviewer
     INSPECTOR: "Inspector",
+    SUPER_ADMIN: "Super Admin",
+  },
+  ROLE_LABEL: { //Update ROLE object with correct label once Inspector and assistant inspector is changes to Medical and Non-Medical assessor and assistant inspector role is removed
+    INSTITUTION: "Institute",
+    REGULATOR: "Admin", // reviewer
+    INSPECTOR: "Assessor",
+    SUPER_ADMIN: "Super Admin",
   },
   ROUTES: {
     DASHBOARD: "/dashboard",

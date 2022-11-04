@@ -163,7 +163,7 @@ export const InspectionSummaryLayout = ({
         {/* Inspectors list */}
         <div className="pt-2">
           <label className={`${stylesThree.status_bar_custom_heading}`}>
-            Lead inspector
+            Lead assessor
           </label>
           <div className="pt-3">
             {data &&
@@ -199,7 +199,7 @@ export const InspectionSummaryLayout = ({
         </div>
         <div className="pt-2">
           <label className={`${stylesThree.status_bar_custom_heading}`}>
-            Assisting inspector
+            Assisting assessor
           </label>
           <div className="pt-3">
             {data &&

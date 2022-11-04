@@ -7,6 +7,7 @@ import Header from "../../components/common/Header"
 import { HeadingOne } from "../../components/headings"
 import { APP } from "../../constants";
 import Notify from "../../helpers/notify";
+import Util from "../../helpers/util";
 import { UserService } from "../../services/user.service";
 
 interface userProps {
@@ -117,8 +118,9 @@ export const CreateUser = ({ data }: userProps) => {
             (response2) => {
                 if (response2.statusInfo && response2.statusInfo.statusCode === APP.CODE.SUCCESS) {
                     if (isEdit) {
-                        let rolesUpdated:any = []
+                        let rolesUpdated:any = [];
                         userEdit && userEdit.roles.map((role: any, index: number) => {
+
                             rolesUpdated = response2.responseData.map((r: IRole, i: number) => {
                                 if (r.id === role.id) {
                                     return { ...r, isChecked: true }
@@ -293,7 +295,7 @@ export const CreateUser = ({ data }: userProps) => {
                                                         }
                                                         checked={role.isChecked ? true : false} onChange={e => onAddingRole(e, key)}
                                                     />
-                                                    {" " + role.name}
+                                                    {" " + Util.getRoleLabel(role.name)}
                                                 </label>
                                             </div>
                                         ))}

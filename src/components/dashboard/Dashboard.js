@@ -12,7 +12,7 @@ import { CardTwo } from "../cards";
 /**
  * Dashboard component
  */
-
+const userRole = Helper.getUserRole();
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -43,7 +43,7 @@ class Dashboard extends Component {
   }
 
   getInstituteApplications = () => {
-    if (Helper.getUserRole() === APP.ROLE.INSTITUTION) {
+    if (userRole === APP.ROLE.INSTITUTION) {
       FormService.get().then(
         (response) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
@@ -92,10 +92,11 @@ class Dashboard extends Component {
   };
 
   render() {
+
     return (
       <Fragment>
         <Header history={this.props.history} />
-        {Helper.getUserRole() === APP.ROLE.INSTITUTION && (
+        {userRole === APP.ROLE.INSTITUTION && (
           <Fragment>
             <div className="container-fluid main-container">
               <div className="container dashboard-inner-container pt-3 pb-3">
@@ -198,7 +199,7 @@ class Dashboard extends Component {
             </div>
           </Fragment>
         )}
-        {/* {Helper.getUserRole() === APP.ROLE.REGULATOR && (
+        {/* {(userRole === APP.ROLE.REGULATOR || userRole === APP.ROLE.SUPER_ADMIN) && (
           <Fragment>
             <div className="container-fluid">
               <div className="container dashboard-inner-container">
@@ -294,9 +295,9 @@ class Dashboard extends Component {
         )} */}
 
         {/* Inspector portal */}
-        {Helper.getUserRole() === APP.ROLE.INSPECTOR && <InspectorHome />}
+        {userRole === APP.ROLE.INSPECTOR && <InspectorHome />}
         {/* Inspector portal */}
-        {Helper.getUserRole() === APP.ROLE.REGULATOR && <ReviewerHome />}
+        {(userRole === APP.ROLE.REGULATOR || userRole === APP.ROLE.SUPER_ADMIN) && <ReviewerHome />}
       </Fragment>
     );
   }

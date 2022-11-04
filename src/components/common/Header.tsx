@@ -19,6 +19,7 @@ interface LoginState {
   userName: any;
   userInfo: any;
 }
+const userRole = Helper.getUserRole();
 class Header extends Component<LoginProps, LoginState> {
   constructor(props: any) {
     super(props);
@@ -140,7 +141,7 @@ class Header extends Component<LoginProps, LoginState> {
                       HOME
                     </Link>
                   </li>
-                  {Helper.getUserRole() === APP.ROLE.INSTITUTION && (
+                  {userRole === APP.ROLE.INSTITUTION && (
                     <li className="mr-3 mr-sm-2 mr-md-5 mr-lg-5">
                       <Link
                         to={"/applications"}
@@ -156,7 +157,7 @@ class Header extends Component<LoginProps, LoginState> {
                       </Link>
                     </li>
                   )}
-                  {Helper.getUserRole() === APP.ROLE.INSTITUTION && (
+                  {userRole === APP.ROLE.INSTITUTION && (
                     <li className="mr-3 mr-sm-2 mr-md-5 mr-lg-5">
                       <Link
                         to={"/available-forms"}
@@ -172,7 +173,7 @@ class Header extends Component<LoginProps, LoginState> {
                       </Link>
                     </li>
                   )}
-                  {Helper.getUserRole() === APP.ROLE.REGULATOR && (
+                  {(userRole === APP.ROLE.REGULATOR || userRole === APP.ROLE.SUPER_ADMIN) && (
                     <>
                       <li className="mr-3 mr-sm-2 mr-md-5 mr-lg-5">
                         <Link
@@ -205,7 +206,7 @@ class Header extends Component<LoginProps, LoginState> {
                       </li>
                     </>
                   )}
-                  {Helper.getUserRole() === APP.ROLE.INSPECTOR && (
+                  {userRole === APP.ROLE.INSPECTOR && (
                     <li className="mr-3 mr-sm-2 mr-md-5 mr-lg-5">
                       <Link
                         to={"/all-applications"}
@@ -221,7 +222,7 @@ class Header extends Component<LoginProps, LoginState> {
                       </Link>
                     </li>
                   )}
-                  {Helper.getUserRole() === APP.ROLE.REGULATOR && (
+                  {(userRole === APP.ROLE.REGULATOR || userRole === APP.ROLE.SUPER_ADMIN) && (
                     <li className="">
                       <Link
                         to={"/analytics"}
