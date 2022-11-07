@@ -12,7 +12,6 @@ import { CardTwo } from "../cards";
 /**
  * Dashboard component
  */
-const userRole = Helper.getUserRole();
 class Dashboard extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +20,7 @@ class Dashboard extends Component {
       forms: [],
       myApplications: [],
     };
-
+    this.userRole = Helper.getUserRole();
     this.getInstituteApplications = this.getInstituteApplications.bind();
   }
 
@@ -43,7 +42,7 @@ class Dashboard extends Component {
   }
 
   getInstituteApplications = () => {
-    if (userRole === APP.ROLE.INSTITUTION) {
+    if (this.userRole === APP.ROLE.INSTITUTION) {
       FormService.get().then(
         (response) => {
           if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
@@ -96,7 +95,7 @@ class Dashboard extends Component {
     return (
       <Fragment>
         <Header history={this.props.history} />
-        {userRole === APP.ROLE.INSTITUTION && (
+        {this.userRole === APP.ROLE.INSTITUTION && (
           <Fragment>
             <div className="container-fluid main-container">
               <div className="container dashboard-inner-container pt-3 pb-3">
@@ -199,7 +198,7 @@ class Dashboard extends Component {
             </div>
           </Fragment>
         )}
-        {/* {(userRole === APP.ROLE.REGULATOR || userRole === APP.ROLE.SUPER_ADMIN) && (
+        {/* {(this.userRole === APP.ROLE.REGULATOR || this.userRole === APP.ROLE.SUPER_ADMIN) && (
           <Fragment>
             <div className="container-fluid">
               <div className="container dashboard-inner-container">
@@ -295,9 +294,9 @@ class Dashboard extends Component {
         )} */}
 
         {/* Inspector portal */}
-        {userRole === APP.ROLE.INSPECTOR && <InspectorHome />}
+        {this.userRole === APP.ROLE.INSPECTOR && <InspectorHome />}
         {/* Inspector portal */}
-        {(userRole === APP.ROLE.REGULATOR || userRole === APP.ROLE.SUPER_ADMIN) && <ReviewerHome />}
+        {(this.userRole === APP.ROLE.REGULATOR || this.userRole === APP.ROLE.SUPER_ADMIN) && <ReviewerHome />}
       </Fragment>
     );
   }
