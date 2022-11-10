@@ -18,17 +18,17 @@ export const formatLabel = (labelStatus: string) => {
     let lowerLabel = labelStatus.toLowerCase();
     lowerLabel = lowerLabel.charAt(0).toUpperCase() + lowerLabel.slice(1);
     switch (lowerLabel) {
-      case "Underreview":
-        lowerLabel = "Under review";
+      case `${LANG.METRIC_LABEL_KEY.UNDER_REVIEW}`:
+        lowerLabel = `${LANG.FORM_STATUS_TEXT.UNDER_REVIEW}`;
         return lowerLabel;
-      case "Sentforins":
+      case `${LANG.METRIC_LABEL_KEY.SENT_FOR_INS}`:
         lowerLabel = `${LANG.FORM_STATUS_TEXT.SENT_FOR_INSPECTION}`;
         return lowerLabel;
-      case "Inscompleted":
+      case `${LANG.METRIC_LABEL_KEY.INS_COMPLETED}`:
         lowerLabel = `${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`;
         return lowerLabel;
-      case "Inspector total pending":
-        lowerLabel = `${LANG.INSPECTOR_TOTAL_PENDING}`;
+      case `${LANG.METRIC_LABEL_KEY.INSPECTOR_TOTAL_PENDING}`:
+        lowerLabel = `${LANG.FORM_STATUS_TEXT.INSPECTOR_TOTAL_PENDING}`;
         return lowerLabel; 
       default:
         return lowerLabel;

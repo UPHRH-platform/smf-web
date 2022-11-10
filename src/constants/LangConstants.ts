@@ -57,7 +57,14 @@ export const LANG = {
   FORM_STATUS_TEXT: {
     SENT_FOR_INSPECTION:"Sent for assessment",
     INSPECTION_COMPLETED: "Assessment completed",
+    INSPECTOR_TOTAL_PENDING:"Assessment total pending",
+    UNDER_REVIEW:"Under review"
   },
   SEND_FOR_INSPECTION:"Send for assessment",
-  INSPECTOR_TOTAL_PENDING:"Assessment total pending"
+  METRIC_LABEL_KEY: {
+    UNDER_REVIEW:"Underreview",
+    SENT_FOR_INS:"Sentforins",
+    INS_COMPLETED:"Inscompleted",
+    INSPECTOR_TOTAL_PENDING:"Inspector total pending"
+  }
 };
