@@ -125,10 +125,10 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
         lowerLabel = "Under review";
         return lowerLabel;
       case "Sentforins":
-        lowerLabel = "Sent for inspection";
+        lowerLabel = `${LANG.FORM_STATUS_TEXT.SENT_FOR_INSPECTION}`;
         return lowerLabel;
       case "Inscompleted":
-        lowerLabel = "Inspection completed";
+        lowerLabel = `${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`;
         return lowerLabel;
       default:
         return lowerLabel;

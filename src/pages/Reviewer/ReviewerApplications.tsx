@@ -2,7 +2,7 @@ import { Component, Fragment } from "react";
 import Header from "./../../components/common/Header";
 import { Link } from "react-router-dom";
 import { FormService } from "./../../services/form.service";
-import { APP } from "./../../constants";
+import { APP, LANG } from "./../../constants";
 import Notify from "./../../helpers/notify";
 import Helper from "./../../helpers/auth";
 import { ViewApplications } from "..";
@@ -40,8 +40,8 @@ const FORM_STATUS = [
     "New",
     "Under review",
     "Returned",
-    "Sent for inspection",
-    "Inspection completed",
+    `${LANG.FORM_STATUS_TEXT.SENT_FOR_INSPECTION}`,
+    `${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`,
     "Approved"
 ];
 class ReviewerApplications extends Component<ReviewerApplicationsProps, ReviewerApplicationsState> {
