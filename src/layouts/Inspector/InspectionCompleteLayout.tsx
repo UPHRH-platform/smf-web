@@ -25,7 +25,7 @@ export const InspectionCompleteLayout = ({
                 </div>
             </div>
             <div className="">
-                <HeadingOne heading={`${LANG.FORM_STATUS_TEXT.inspectionCompleted}`} />
+                <HeadingOne heading={`${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`} />
             </div>
             <div className="mt-4">
                 <BtnTwo label="View pending applications" showIcon={false} isLink={true} isModal={false} btnType="button" link="/all-applications" />

@@ -55,13 +55,13 @@ export const RegulatorAllApplications = ({
             },
             {
                 id: "sentForInspection",
-                label: `${LANG.FORM_STATUS_TEXT.sentForInspection}`,
+                label: `${LANG.FORM_STATUS_TEXT.SENT_FOR_INSPECTION}`,
                 ariaLabelled: "sent-for-inpection-tab",
                 children: <AllApplicationsTab />,
             },
             {
                 id: "inspectionCompleted",
-                label: `${LANG.FORM_STATUS_TEXT.inspectionCompleted}`,
+                label: `${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`,
                 ariaLabelled: "inspection-completed-tab",
                 children: <AllApplicationsTab />,
             },
@@ -144,11 +144,11 @@ export const RegulatorAllApplications = ({
                                             tempStatus = "returned";
                                             break;
 
-                                        case `${LANG.FORM_STATUS_TEXT.sentForInspection}`:
+                                        case `${LANG.FORM_STATUS_TEXT.SENT_FOR_INSPECTION}`:
                                             tempStatus = "sentforins";
                                             break;
 
-                                        case `${LANG.FORM_STATUS_TEXT.inspectionCompleted}`:
+                                        case `${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`:
                                             tempStatus = "inscompleted";
                                             break;
 

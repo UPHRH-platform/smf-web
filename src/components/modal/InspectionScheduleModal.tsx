@@ -322,7 +322,7 @@ export const InspectionScheduleModal = ({
     ReviewService.assignToInspection(payload).then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          Notify.success(`${LANG.FORM_STATUS_TEXT.sentForInspection}.`);
+          Notify.success(`${LANG.FORM_STATUS_TEXT.SENT_FOR_INSPECTION}.`);
           history.push(APP.ROUTES.DASHBOARD);
           setCuratedAssitingInspectors([]);
           setCuratedLeadInspectors([]);

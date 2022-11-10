@@ -20,7 +20,7 @@ export const ModalOne = ({ heading, list, id, ariaLabel }: ModalOneProps) => {
     let formatedStatus = "";
     switch (status) {
       case LANG.FORM_STATUS.INSPECTION_COMPLETED:
-        formatedStatus = `${LANG.FORM_STATUS_TEXT.inspectionCompleted}`;
+        formatedStatus = `${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`;
         break;
       case LANG.FORM_STATUS.RETURNED:
         formatedStatus = "Returned";
@@ -47,7 +47,7 @@ export const ModalOne = ({ heading, list, id, ariaLabel }: ModalOneProps) => {
         formatedStatus = "Unpublished";
         break;
       case LANG.FORM_STATUS.SENT_FOR_INSPECTION:
-        formatedStatus = `${LANG.FORM_STATUS_TEXT.sentForInspection}`;
+        formatedStatus = `${LANG.FORM_STATUS_TEXT.SENT_FOR_INSPECTION}`;
         break;
       default:
         formatedStatus = "";

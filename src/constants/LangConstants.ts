@@ -55,7 +55,8 @@ export const LANG = {
   HEADING_REMOVAL_WARNING: "Are you sure deleting the header?",
   CONFIRM_TO_REMOVE_2: "This action will move the question section to the general header category.",
   FORM_STATUS_TEXT: {
-    sentForInspection:"Sent for assessment",
-    inspectionCompleted: "Assessment completed"
-  }
+    SENT_FOR_INSPECTION:"Sent for assessment",
+    INSPECTION_COMPLETED: "Assessment completed",
+  },
+  SEND_FOR_INSPECTION:"Send for assessment"
 };

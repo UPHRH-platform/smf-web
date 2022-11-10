@@ -2498,7 +2498,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                           />
                         ) : enableInspectioComplete ? (
                           <BtnTwo
-                            label={`${LANG.FORM_STATUS_TEXT.inspectionCompleted}`}
+                            label={`${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`}
                             btnType="button"
                             isLink={true}
                             link={`/inspection-summary/${formData.id}/${applicationData.applicationId}`}
@@ -2514,7 +2514,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                             className={`${btnStylesTwo.btn_two_disabled}`}
                             disabled={true}
                           >
-                            {`${LANG.FORM_STATUS_TEXT.inspectionCompleted}`}
+                            {`${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`}
                           </button>
                         )}
                       </div>

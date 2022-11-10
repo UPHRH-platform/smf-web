@@ -72,14 +72,14 @@ export const StatusBarLarge = ({
         <div
           className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3 ${styles.status_bar_large_amber}`}
         >
-          <label>{`Status: ${LANG.FORM_STATUS_TEXT.sentForInspection}`}</label>
+          <label>{`Status: ${LANG.FORM_STATUS_TEXT.SENT_FOR_INSPECTION}`}</label>
         </div>
       )}
       {status === LANG.FORM_STATUS.INSPECTION_COMPLETED && (
         <div
           className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3 ${styles.status_bar_large_green}`}
         >
-          <label>{`Status: ${LANG.FORM_STATUS_TEXT.inspectionCompleted}`}</label>
+          <label>{`Status: ${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`}</label>
         </div>
       )}
       {status === LANG.FORM_STATUS.APPROVED && (
@@ -134,7 +134,7 @@ export const StatusBarLarge = ({
         </>
       )}
       {label && label === LANG.FORM_STATUS.INSPECTION_COMPLETED && (
-        <p className="text-center pt-3">{`${LANG.FORM_STATUS_TEXT.inspectionCompleted}`}!</p>
+        <p className="text-center pt-3">{`${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`}!</p>
       )}
       {label && label === LANG.FORM_STATUS.APPROVED && (
         <p className="text-center pt-3">

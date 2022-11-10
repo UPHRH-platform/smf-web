@@ -40,8 +40,8 @@ const FORM_STATUS = [
     "New",
     "Under review",
     "Returned",
-    `${LANG.FORM_STATUS_TEXT.sentForInspection}`,
-    `${LANG.FORM_STATUS_TEXT.inspectionCompleted}`,
+    `${LANG.FORM_STATUS_TEXT.SENT_FOR_INSPECTION}`,
+    `${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`,
     "Approved"
 ];
 class ReviewerApplications extends Component<ReviewerApplicationsProps, ReviewerApplicationsState> {
