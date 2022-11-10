@@ -1,4 +1,4 @@
-import { APP } from "../constants";
+import { APP, LANG } from "../constants";
 
 const getRoleLabel = (roleName: string) => {
 
@@ -13,5 +13,25 @@ const getRoleLabel = (roleName: string) => {
             return APP.ROLE_LABEL.SUPER_ADMIN;
     }
 }
-
-export default { getRoleLabel };
+// Function to format the status label
+export const formatLabel = (labelStatus: string) => {
+    let lowerLabel = labelStatus.toLowerCase();
+    lowerLabel = lowerLabel.charAt(0).toUpperCase() + lowerLabel.slice(1);
+    switch (lowerLabel) {
+      case "Underreview":
+        lowerLabel = "Under review";
+        return lowerLabel;
+      case "Sentforins":
+        lowerLabel = `${LANG.FORM_STATUS_TEXT.SENT_FOR_INSPECTION}`;
+        return lowerLabel;
+      case "Inscompleted":
+        lowerLabel = `${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`;
+        return lowerLabel;
+      case "Inspector total pending":
+        lowerLabel = `${LANG.INSPECTOR_TOTAL_PENDING}`;
+        return lowerLabel; 
+      default:
+        return lowerLabel;
+    }
+  }
+export default { getRoleLabel, formatLabel };

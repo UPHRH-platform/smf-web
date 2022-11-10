@@ -58,5 +58,6 @@ export const LANG = {
     SENT_FOR_INSPECTION:"Sent for assessment",
     INSPECTION_COMPLETED: "Assessment completed",
   },
-  SEND_FOR_INSPECTION:"Send for assessment"
+  SEND_FOR_INSPECTION:"Send for assessment",
+  INSPECTOR_TOTAL_PENDING:"Assessment total pending"
 };

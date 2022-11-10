@@ -6,6 +6,7 @@ import { FormService } from "../../services/form.service";
 import { APP, LANG } from "../../constants";
 import { BtnOne } from "../../components/buttons";
 import { useHistory } from "react-router-dom";
+import { formatLabel } from "../../helpers/util";
 
 /**
  * Reviewer component renders
@@ -116,24 +117,26 @@ export const ReviewerHome = ({ data }: ReviewerProps) => {
   };
 
   // Function to format the status label
-  const formatLabel = (labelStatus: string) => {
-    let lowerLabel = labelStatus.toLowerCase();
-    lowerLabel = lowerLabel.charAt(0).toUpperCase() + lowerLabel.slice(1);
-
-    switch (lowerLabel) {
-      case "Underreview":
-        lowerLabel = "Under review";
-        return lowerLabel;
-      case "Sentforins":
-        lowerLabel = `${LANG.FORM_STATUS_TEXT.SENT_FOR_INSPECTION}`;
-        return lowerLabel;
-      case "Inscompleted":
-        lowerLabel = `${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`;
-        return lowerLabel;
-      default:
-        return lowerLabel;
-    }
-  };
+  // const formatLabel = (labelStatus: string) => {
+  //   let lowerLabel = labelStatus.toLowerCase();
+  //   lowerLabel = lowerLabel.charAt(0).toUpperCase() + lowerLabel.slice(1);
+  //   switch (lowerLabel) {
+  //     case "Underreview":
+  //       lowerLabel = "Under review";
+  //       return lowerLabel;
+  //     case "Sentforins":
+  //       lowerLabel = `${LANG.FORM_STATUS_TEXT.SENT_FOR_INSPECTION}`;
+  //       return lowerLabel;
+  //     case "Inscompleted":
+  //       lowerLabel = `${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`;
+  //       return lowerLabel;
+  //     case "Inspector total pending":
+  //       lowerLabel = `${LANG.INSPECTOR_TOTAL_PENDING}`;
+  //       return lowerLabel; 
+  //     default:
+  //       return lowerLabel;
+  //   }
+  // };
 
   return (
     <Fragment>

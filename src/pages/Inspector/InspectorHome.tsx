@@ -7,6 +7,7 @@ import { FormService } from "./../../services/form.service";
 import { APP, LANG } from "./../../constants";
 import Notify from "./../../helpers/notify";
 import moment from "moment";
+import { formatLabel } from "../../helpers/util";
 
 /**
  * Inspector component renders
@@ -174,7 +175,7 @@ export const InspectorHome = ({ data }: InspectorProps) => {
                     className="col-sm-12 col-md-4 col-lg-2 col-xl-2 col-xxl-2 mt-2 mt-sm-2 mt-md-2 mt-lg-0 mt-xl-0 mt-xxl-0"
                     key={j}
                   >
-                    <CardOne count={i.value} title={i.key} />
+                    <CardOne count={i.value} title={formatLabel(i.key)} />
                   </div>
                 );
               })}
