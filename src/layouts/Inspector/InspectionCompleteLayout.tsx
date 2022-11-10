@@ -1,5 +1,6 @@
 import { BtnTwo } from "../../components/buttons";
 import { HeadingOne } from "../../components/headings";
+import { LANG } from "../../constants";
 import styles from "./InspectionCompleteLayout.module.css";
 
 /**
@@ -24,7 +25,7 @@ export const InspectionCompleteLayout = ({
                 </div>
             </div>
             <div className="">
-                <HeadingOne heading="Inspection completed" />
+                <HeadingOne heading={`${LANG.FORM_STATUS_TEXT.inspectionCompleted}`} />
             </div>
             <div className="mt-4">
                 <BtnTwo label="View pending applications" showIcon={false} isLink={true} isModal={false} btnType="button" link="/all-applications" />

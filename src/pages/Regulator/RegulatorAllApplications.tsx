@@ -11,7 +11,7 @@ import {
 } from "../../states/atoms";
 import Helper from "./../../helpers/auth";
 import { FormService } from "./../../services/form.service";
-import { APP } from "./../../constants";
+import { APP, LANG } from "./../../constants";
 import Notify from "./../../helpers/notify";
 
 /**
@@ -55,13 +55,13 @@ export const RegulatorAllApplications = ({
             },
             {
                 id: "sentForInspection",
-                label: "Sent for inspection",
+                label: `${LANG.FORM_STATUS_TEXT.sentForInspection}`,
                 ariaLabelled: "sent-for-inpection-tab",
                 children: <AllApplicationsTab />,
             },
             {
                 id: "inspectionCompleted",
-                label: "Inspection completed",
+                label: `${LANG.FORM_STATUS_TEXT.inspectionCompleted}`,
                 ariaLabelled: "inspection-completed-tab",
                 children: <AllApplicationsTab />,
             },
@@ -144,11 +144,11 @@ export const RegulatorAllApplications = ({
                                             tempStatus = "returned";
                                             break;
 
-                                        case "Sent for inspection":
+                                        case `${LANG.FORM_STATUS_TEXT.sentForInspection}`:
                                             tempStatus = "sentforins";
                                             break;
 
-                                        case "Inspection completed":
+                                        case `${LANG.FORM_STATUS_TEXT.inspectionCompleted}`:
                                             tempStatus = "inscompleted";
                                             break;
 

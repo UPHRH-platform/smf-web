@@ -7,7 +7,7 @@ import { SelectField, TextField } from "../form-elements";
 import { BtnOne } from "../buttons";
 import { HeadingFive } from "../headings";
 import moment from "moment";
-import { APP } from "../../constants";
+import { APP, LANG } from "../../constants";
 import { ReviewService } from "../../services";
 import Notify from "../../helpers/notify";
 import { useHistory } from "react-router-dom";
@@ -322,7 +322,7 @@ export const InspectionScheduleModal = ({
     ReviewService.assignToInspection(payload).then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          Notify.success("Sent for inspection.");
+          Notify.success(`${LANG.FORM_STATUS_TEXT.sentForInspection}.`);
           history.push(APP.ROUTES.DASHBOARD);
           setCuratedAssitingInspectors([]);
           setCuratedLeadInspectors([]);
