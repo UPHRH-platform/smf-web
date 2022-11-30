@@ -5,7 +5,7 @@ import btnStyle from "../buttons/BtnOne.module.css";
 import btnStyleTwo from "../buttons/BtnTwo.module.css";
 import { SelectField, TextField } from "../form-elements";
 import { BtnOne } from "../buttons";
-import { HeadingFive } from "../headings";
+import { HeadingFive, HeadingSteps } from "../headings";
 import moment from "moment";
 import { APP, LANG } from "../../constants";
 import { ReviewService } from "../../services";
@@ -63,6 +63,15 @@ export const InspectionScheduleModal = ({
   const [disableSubmit, setDisableSubmit] = useState(true);
 
   let history = useHistory();
+  let stepsData = [{
+    label:'Schedule the inspection',
+    count: 1,
+    active: true
+  },{
+    label:'Schedule the inspection',
+    count: 2,
+    active: false
+  }]
 
   useEffect(() => {
     ReviewService.getAllInspectors().then(
@@ -384,12 +393,13 @@ export const InspectionScheduleModal = ({
       <div className="modal-dialog modal-lg">
         <div className={`${styles.custom_model_content} modal-content`}>
           <div className={`${styles.custom_modal_footer} modal-header`}>
-            <h5
+            {/* <h5
               className={`${styles.custom_modal_title} modal-title`}
               id="staticBackdropLabel"
             >
               {heading}
-            </h5>
+            </h5> */}
+            <HeadingSteps stepsData={stepsData}></HeadingSteps>
           </div>
 
           {/* Body */}

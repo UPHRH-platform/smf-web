@@ -1,0 +1,56 @@
+@import url("../../styles/colors.css");
+@import url("../../assets/fonts/fonts.css");
+:root {
+  --circle-size: clamp(1.5rem, 5vw, 3rem);
+  --spacing: clamp(0.25rem, 2vw, 0.5rem);
+}
+
+.heading_five {
+  color: var(--black-87);
+  font-family: "Lato-Bold";
+  font-size: 0.875rem;
+  letter-spacing: 0.25px;
+  line-height: 1.429;
+  padding-top: 0.3rem;
+}
+
+.heading_prefix_circle {
+  background-color: var(--white-90);
+  border-radius: 50%;
+  color: var(--blue-primary);
+  font-family: "Montserrat-SemiBold";
+  font-size: 1rem;
+  text-align: center;
+  padding-top: 0.20rem;
+  letter-spacing: 0.12px;
+  line-height: 1.5;
+  height: 1.875rem;
+  width: 1.875rem;
+  border: 1px solid var(--blue-primary);
+}
+
+.stepper {
+    --size: 3rem;
+    --spacing: -0.5rem;
+}
+
+.stepper__item {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    text-align: center;
+}
+.active_step {
+    background-color:var(--blue-primary);
+    color: #ffffff;
+}
+.stepper__item:not(:last-child):after {
+      content: "";
+      position: relative;
+      top: calc(var(--circle-size) / 3);
+      width: calc(100% - var(--circle-size) - calc(var(--spacing) * 2));
+      left: calc(48% + calc(var(--circle-size) / 2 + var(--spacing)));
+      height: 2px;
+      background-color: #e0e0e0;
+      order: -1;
+}
