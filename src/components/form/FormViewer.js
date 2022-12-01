@@ -79,7 +79,7 @@ class FormViewer extends Component {
       }
       setTimeout(() => {
         this.populateForm(this.props.match.params.applicationId);
-      }, 50);
+      }, 1000);
     } else {
       if (this.userRole === APP.ROLE.INSTITUTION) {
         this.setState({
@@ -427,8 +427,8 @@ class FormViewer extends Component {
   saveFields = (index) => {
     // console.log("saveFields...");
     if (
-      this.props.match.params.applicationId === null ||
-      this.props.match.params.applicationId === undefined ||
+      !this.props.match.params.applicationId ||
+      this.props.match.params.applicationId ||
       this.state.applicationDetails.status === LANG.FORM_STATUS.RETURNED
     ) {
       let obj = this.state.formFields,
@@ -525,7 +525,6 @@ class FormViewer extends Component {
         }
       }
     }
-
     var fieldGroups = {};
     for (let i = 0; i < this.state.formHeadings.length; i++) {
       fieldGroups[this.state.formHeadings[i]] = {};
