@@ -18,6 +18,7 @@ interface TextAreaFieldProps {
   defaultValue?: string;
   isReadOnly?: boolean;
   isRequired?: boolean;
+  maxLength?: any;
 }
 
 export const TextAreaField = ({
@@ -31,6 +32,7 @@ export const TextAreaField = ({
   isReadOnly,
   isRequired,
   defaultValue,
+  maxLength
 }: TextAreaFieldProps) => {
   const [characterCount, setCharacterCount] = useState(0);
 
@@ -57,7 +59,7 @@ export const TextAreaField = ({
           onKeyUp={(e) => {
             updateCharacterCount(e);
           }}
-          maxLength={200}
+          maxLength={maxLength?maxLength:200}
           value={value}
           defaultValue={defaultValue}
           readOnly={isReadOnly ? true : false}
