@@ -648,6 +648,7 @@ class FormViewer extends Component {
                                   ? this.state.applicationDetails.notes
                                   : ""
                               }
+                              userRole={this.userRole}
                               inspectorSummary={
                                 this.state.applicationDetails.status ===
                                 LANG.FORM_STATUS.INSPECTION_COMPLETED

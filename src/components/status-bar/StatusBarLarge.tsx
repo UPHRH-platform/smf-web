@@ -1,6 +1,6 @@
 import styles from "./StatusBarLarge.module.css";
 import stylesTwo from "../modal/InspectionScheduleModal.module.css";
-import { LANG } from "../../constants";
+import { APP, LANG } from "../../constants";
 import moment from "moment";
 import { HeadingFour } from "../headings";
 
@@ -22,6 +22,7 @@ interface StatusBarLargeProps {
   comments?: any;
   approvedNote?: string;
   showInspectionDetails: boolean;
+  userRole?:any;
 }
 
 export const StatusBarLarge = ({
@@ -37,6 +38,7 @@ export const StatusBarLarge = ({
   isChange,
   approvedNote,
   showInspectionDetails,
+  userRole
 }: StatusBarLargeProps) => {
   // Function to format the status label
   const formatLabel = (labelStatus: string) => {
@@ -149,8 +151,8 @@ export const StatusBarLarge = ({
       {label && label === LANG.FORM_STATUS.SENT_FOR_INSPECTION && (
         <>
           <p className="text-center pt-3">
-            Inspection is scheduled on{" "}
-            <b>{`${inspectionData.scheduledDate}`}</b>. Keep all the physical
+            Inspection is scheduled 
+            <b>{userRole !== APP.ROLE.INSTITUTION && ` on ${inspectionData.scheduledDate}`}</b>. Keep all the physical
             documents ready for the inspection.
           </p>
           {showInspectionDetails && (
