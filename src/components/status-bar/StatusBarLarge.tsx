@@ -152,7 +152,7 @@ export const StatusBarLarge = ({
         <>
           <p className="text-center pt-3">
             Inspection is scheduled 
-            <b>{userRole !== APP.ROLE.INSTITUTION && `on ${inspectionData.scheduledDate}`}</b>. Keep all the physical
+            <b>{userRole !== APP.ROLE.INSTITUTION && ` on ${inspectionData.scheduledDate}`}</b>. Keep all the physical
             documents ready for the inspection.
           </p>
           {showInspectionDetails && (
