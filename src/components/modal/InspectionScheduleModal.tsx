@@ -400,7 +400,7 @@ export const InspectionScheduleModal = ({
               <div className="col-sm-12 col-md-12 col-lg-6">
                 <div className={`${stylesTwo.text_area_one} p-3`}>
                   <div className="mb-3">
-                    <HeadingFive heading="Add lead assessor" count={1} />
+                    <HeadingFive heading="First Lead assessor" count={1} />
                   </div>
                   <div className="row">
                     <div className="col-9">
@@ -480,7 +480,7 @@ export const InspectionScheduleModal = ({
 
                 <div className={`${stylesTwo.text_area_one} p-3 mt-3`}>
                   <div className="mb-3">
-                    <HeadingFive heading="Add assisting assessor" count={2} />
+                    <HeadingFive heading="Second Lead assessor" count={2} />
                   </div>
                   <div className="row">
                     <div className="col-sm-12 col-md-9 col-lg-9">
