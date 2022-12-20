@@ -383,12 +383,12 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
       });
 
       if (tempArray.includes("")) {
-        setEnableInspectionComplete(false);
+        setEnableInspectionComplete(true);
       } else {
         if (formData.inspectionFields) {
           setEnableInspectionComplete(true);
         } else {
-          setEnableInspectionComplete(false);
+          setEnableInspectionComplete(true);
         }
       }
     }
