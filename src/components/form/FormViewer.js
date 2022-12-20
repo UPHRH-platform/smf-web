@@ -20,6 +20,7 @@ import Helper from "../../helpers/auth";
 import { StatusBarLarge } from "../status-bar";
 import { CardThree } from "../cards";
 import { TextAreaField } from "../form-elements";
+import Auth from "../../helpers/auth";
 // import { BtnTwo } from "../buttons";
 // const $ = window.$;
 class FormViewer extends Component {
@@ -548,6 +549,11 @@ class FormViewer extends Component {
         applicationId: this.props.match.params.applicationId,
       }),
     };
+
+    const instituteCourses = Auth.get('instituteCourses');
+    if(instituteCourses.length > 0) {
+      formDetails['districtName'] = instituteCourses[0].districtName;
+    }
 
     // formDetails = JSON.stringify(formDetails);
     // console.log(JSON.parse(formDetails));
