@@ -4,9 +4,11 @@ import { Fragment, useEffect, useState } from "react";
 // import { useHistory } from "react-router"
 import { Link } from "react-router-dom";
 import { BtnTwo } from "../../components/buttons";
+import {ConfirmModal } from "../../components/modal";
 import { APP } from "../../constants";
 import Notify from "../../helpers/notify";
 import Util from "../../helpers/util";
+import Helper from "../../helpers/auth";
 import { UserService } from "../../services/user.service";
 
 interface userProps {
@@ -64,6 +66,10 @@ export const Users = ({ data }: userProps) => {
   // let history = useHistory();
   let [users, setUsers] = useState<Iuser[]>([]);
   let [filteredUsers, setFilteredUsers] = useState<Iuser[]>([]);
+  const isSuperAdmin = Helper.isSuperAdmin();
+  let [showConfirmModal, setShowConfirmModal] = useState<boolean>(false);
+  let [userToDelete, setUserToDelete] = useState<Iuser>();
+
 
   const handleSearch = (event: any) => {
     let value = event.target.value.toLowerCase();
@@ -83,7 +89,28 @@ export const Users = ({ data }: userProps) => {
     setFilteredUsers(result);
   };
 
-  useEffect(() => {
+  const deleteUser = () => {
+    UserService.deleteUser(userToDelete?.id).then(
+      (response) => {
+          if (response.statusInfo && response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+              console.log(response.responseData);
+              Notify.success('User deleted successfully!');
+              getAllUsers();
+          } else {
+              Notify.error(response.statusInfo.errorMessage);
+          }
+          setShowConfirmModal(false);
+      },
+      (error) => {
+          error.statusInfo
+              ? Notify.error(error.statusInfo.errorMessage)
+              : Notify.error(error.message);
+          setShowConfirmModal(false);
+      }
+    );
+  }
+
+  const getAllUsers = () => {
     // get users
     UserService.getAllUsers().then(
       (response2) => {
@@ -103,6 +130,10 @@ export const Users = ({ data }: userProps) => {
           : Notify.error(error.message);
       }
     );
+  }
+
+  useEffect(() => {
+    getAllUsers();
      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -171,6 +202,16 @@ export const Users = ({ data }: userProps) => {
                     >
                       Edit
                     </Link>
+                    {isSuperAdmin && (
+                     <span 
+                      className="ml-3 text-danger  pointer"  
+                      onClick={
+                        () => {
+                          setUserToDelete(user);
+                          setShowConfirmModal(true);
+                        }
+                      }>Delete</span>
+                    )}
                   </td>
                 </tr>
               ))}
@@ -178,6 +219,16 @@ export const Users = ({ data }: userProps) => {
           </table>
         </div>
       </div>
+      {showConfirmModal && (
+        <ConfirmModal
+          title="Delete User"
+          onConfirm={deleteUser}
+          onCancel={() => {
+            setUserToDelete(undefined);
+            setShowConfirmModal(false)}
+          }
+        > Do you want to delete {userToDelete?.firstName} ?</ConfirmModal>
+      )}
     </Fragment>
   );
 };

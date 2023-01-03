@@ -10,6 +10,7 @@ export const UserService = {
   createOrUpdateUser,
   getUserByID,
   getAllUsers,
+  deleteUser,
 };
 
 function login(username, otp) {
@@ -60,6 +61,17 @@ function createOrUpdateUser(user) {
     body: JSON.stringify(user)
   };
   return fetch(APIS.BASE_URL + APIS.USER.CREATE_OR_UPDATE_USER, requestOptions).then(
+    handleResponse
+  );
+}
+
+function deleteUser(userId) {
+  const requestOptions = {
+    method: APP.REQUEST.POST,
+    headers: authHeader(),
+    body: JSON.stringify({id: userId})
+  };
+  return fetch(APIS.BASE_URL + APIS.USER.DELETE_USER, requestOptions).then(
     handleResponse
   );
 }
