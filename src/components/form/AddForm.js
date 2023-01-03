@@ -16,6 +16,7 @@ import Header from "./../common/Header";
 import Sortable from "sortablejs";
 import { BtnTwo } from "../buttons/BtnTwo";
 import { BtnOne } from "../buttons/BtnOne";
+import {ConfirmModal } from "../../components/modal";
 
 let strings = new LocalizedStrings(translations);
 
@@ -27,6 +28,7 @@ class AddForm extends Component {
     this.resetElements = this.resetElements.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.submit = this.submit.bind(this);
+    this.saveFormDetails = this.saveFormDetails.bind(this);
     this.state = {
       language: "en",
       formElements: [],
@@ -39,6 +41,7 @@ class AddForm extends Component {
         fields: [],
       },
       breadcrumbData: [],
+      showDuplicateConfirmModal: false,
     };
   }
 
@@ -276,30 +279,46 @@ class AddForm extends Component {
     }
 
     if (allowSubmission) {
-      FormService.add(formData).then(
-        (response) => {
-          if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-            Notify.success(response.statusInfo.statusMessage);
-            //   this.props.updateParent(response.responseData.id);
-            setTimeout(() => {
-              this.props.history.push("/manage?tab=1");
-            }, 500);
-          } else {
-            Notify.error(response.statusInfo.errorMessage);
-          }
-        },
-        (error) => {
-          error.statusInfo
-            ? Notify.error(error.statusInfo.errorMessage)
-            : Notify.error(error.message);
-        }
-      );
+      this.saveFormDetails(formData,false);
     } else {
       Notify.error("Kindly fill all the fields");
     }
   };
 
+  saveFormDetails = (formData, isDuplicate) => {
+    FormService.add(formData).then(
+      (response) => {
+        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          if(isDuplicate) {
+            Notify.success("Duplicate form is added successfully");
+            this.setState({showDuplicateConfirmModal: false});
+          }else {
+            Notify.success(response.statusInfo.statusMessage);
+          }
+          
+          //   this.props.updateParent(response.responseData.id);
+          setTimeout(() => {
+            this.props.history.push("/manage?tab=1");
+          }, 500);
+        } else {
+          Notify.error(response.statusInfo.errorMessage);
+        }
+      },
+      (error) => {
+        error.statusInfo
+          ? Notify.error(error.statusInfo.errorMessage)
+          : Notify.error(error.message);
+      }
+    );
+  }
+
+  duplicateForm= () => {
+    let formData = {...this.state.formDetails, id: "", title: 'Copy of '+ this.state.formDetails.title};
+    this.saveFormDetails(formData, true);
+  }
+
   render() {
+    const { formDetails,  showDuplicateConfirmModal } = this.state;
     strings.setLanguage(
       localStorage.getItem("language") || this.state.language
     );
@@ -336,6 +355,18 @@ class AddForm extends Component {
                             isLink={false}
                             link=""
                             clickHandler={(e) => this.submit(true)}
+                          />
+                        </div>
+                      )}
+                      {this.state.formDetails.status ===
+                        LANG.FORM_STATUS.DRAFT && (
+                        <div className="mr-3">
+                            <BtnOne
+                            label="Duplicate"
+                            btnType="button"
+                            isLink={false}
+                            link=""
+                            clickHandler={(e) =>  this.setState({ showDuplicateConfirmModal: true})}
                           />
                         </div>
                       )}
@@ -514,6 +545,15 @@ class AddForm extends Component {
             </div>
           </div>
         </div>
+        {showDuplicateConfirmModal && (
+          <ConfirmModal
+            title="Duplicate Form"
+            onConfirm={this.duplicateForm}
+            onCancel={() => {
+              this.setState({showDuplicateConfirmModal: false});
+            }}
+          > Do you want to delete {formDetails?.title} ?</ConfirmModal>
+        )}
       </Fragment>
     );
   }

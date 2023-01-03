@@ -14,6 +14,7 @@ class ListForms extends Component {
       forms: [],
       isAdmin: Helper.isAdmin(),
       formToDelete: {},
+      showConfirmModal: false,
     };
     this.getFormShortCode = this.getFormShortCode.bind(this);
   }
