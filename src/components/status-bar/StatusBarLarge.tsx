@@ -1,6 +1,6 @@
 import styles from "./StatusBarLarge.module.css";
 import stylesTwo from "../modal/InspectionScheduleModal.module.css";
-import { LANG } from "../../constants";
+import { APP, LANG } from "../../constants";
 import moment from "moment";
 import { HeadingFour } from "../headings";
 
@@ -22,6 +22,7 @@ interface StatusBarLargeProps {
   comments?: any;
   approvedNote?: string;
   showInspectionDetails: boolean;
+  userRole?:any;
 }
 
 export const StatusBarLarge = ({
@@ -37,6 +38,7 @@ export const StatusBarLarge = ({
   isChange,
   approvedNote,
   showInspectionDetails,
+  userRole
 }: StatusBarLargeProps) => {
   // Function to format the status label
   const formatLabel = (labelStatus: string) => {
@@ -72,14 +74,14 @@ export const StatusBarLarge = ({
         <div
           className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3 ${styles.status_bar_large_amber}`}
         >
-          <label>{`Status: Sent for inspection`}</label>
+          <label>{`Status: ${LANG.FORM_STATUS_TEXT.SENT_FOR_INSPECTION}`}</label>
         </div>
       )}
       {status === LANG.FORM_STATUS.INSPECTION_COMPLETED && (
         <div
           className={`${styles.status_bar_large_indicator} text-center mx-3 mt-3 ${styles.status_bar_large_green}`}
         >
-          <label>{`Status: Inspection completed`}</label>
+          <label>{`Status: ${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`}</label>
         </div>
       )}
       {status === LANG.FORM_STATUS.APPROVED && (
@@ -134,7 +136,7 @@ export const StatusBarLarge = ({
         </>
       )}
       {label && label === LANG.FORM_STATUS.INSPECTION_COMPLETED && (
-        <p className="text-center pt-3">Inspection completed!</p>
+        <p className="text-center pt-3">{`${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`}!</p>
       )}
       {label && label === LANG.FORM_STATUS.APPROVED && (
         <p className="text-center pt-3">
@@ -149,8 +151,8 @@ export const StatusBarLarge = ({
       {label && label === LANG.FORM_STATUS.SENT_FOR_INSPECTION && (
         <>
           <p className="text-center pt-3">
-            Inspection is scheduled on{" "}
-            <b>{`${inspectionData.scheduledDate}`}</b>. Keep all the physical
+            Inspection is scheduled 
+            <b>{userRole !== APP.ROLE.INSTITUTION && ` on ${inspectionData.scheduledDate}`}</b>. Keep all the physical
             documents ready for the inspection.
           </p>
           {showInspectionDetails && (

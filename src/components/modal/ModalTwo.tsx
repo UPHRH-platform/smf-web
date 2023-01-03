@@ -136,6 +136,7 @@ export const ModalTwo = ({
               rows={6}
               label={textAreaLabel}
               value={note}
+              maxLength={true}
               changeHandler={(e) => setNote(e.target.value)}
             />
 

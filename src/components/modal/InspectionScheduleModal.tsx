@@ -7,7 +7,7 @@ import { SelectField, TextField } from "../form-elements";
 import { BtnOne } from "../buttons";
 import { HeadingFive } from "../headings";
 import moment from "moment";
-import { APP } from "../../constants";
+import { APP, LANG } from "../../constants";
 import { ReviewService } from "../../services";
 import Notify from "../../helpers/notify";
 import { useHistory } from "react-router-dom";
@@ -322,7 +322,7 @@ export const InspectionScheduleModal = ({
     ReviewService.assignToInspection(payload).then(
       (response) => {
         if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          Notify.success("Sent for inspection.");
+          Notify.success(`${LANG.FORM_STATUS_TEXT.SENT_FOR_INSPECTION}.`);
           history.push(APP.ROUTES.DASHBOARD);
           setCuratedAssitingInspectors([]);
           setCuratedLeadInspectors([]);
@@ -400,7 +400,7 @@ export const InspectionScheduleModal = ({
               <div className="col-sm-12 col-md-12 col-lg-6">
                 <div className={`${stylesTwo.text_area_one} p-3`}>
                   <div className="mb-3">
-                    <HeadingFive heading="Add lead assessor" count={1} />
+                    <HeadingFive heading="First Lead assessor" count={1} />
                   </div>
                   <div className="row">
                     <div className="col-9">
@@ -480,7 +480,7 @@ export const InspectionScheduleModal = ({
 
                 <div className={`${stylesTwo.text_area_one} p-3 mt-3`}>
                   <div className="mb-3">
-                    <HeadingFive heading="Add assisting assessor" count={2} />
+                    <HeadingFive heading="Second Lead assessor" count={2} />
                   </div>
                   <div className="row">
                     <div className="col-sm-12 col-md-9 col-lg-9">

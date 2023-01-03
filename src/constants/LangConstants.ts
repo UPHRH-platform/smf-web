@@ -54,4 +54,17 @@ export const LANG = {
   CONFIRM_TO_REMOVE: "Confirm to remove",
   HEADING_REMOVAL_WARNING: "Are you sure deleting the header?",
   CONFIRM_TO_REMOVE_2: "This action will move the question section to the general header category.",
+  FORM_STATUS_TEXT: {
+    SENT_FOR_INSPECTION:"Sent for assessment",
+    INSPECTION_COMPLETED: "Assessment completed",
+    INSPECTOR_TOTAL_PENDING:"Assessment total pending",
+    UNDER_REVIEW:"Under review"
+  },
+  SEND_FOR_INSPECTION:"Send for assessment",
+  METRIC_LABEL_KEY: {
+    UNDER_REVIEW:"Underreview",
+    SENT_FOR_INS:"Sentforins",
+    INS_COMPLETED:"Inscompleted",
+    INSPECTOR_TOTAL_PENDING:"Inspector total pending"
+  }
 };

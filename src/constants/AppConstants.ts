@@ -27,6 +27,7 @@ export const APP = {
     'image/jpg', 
     'image/jpeg', 
     'image/png', 
-    'application/pdf'
+    'application/pdf',
+    '.xlsx',
   ]
 };

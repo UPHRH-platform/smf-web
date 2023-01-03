@@ -20,6 +20,7 @@ import Helper from "../../helpers/auth";
 import { StatusBarLarge } from "../status-bar";
 import { CardThree } from "../cards";
 import { TextAreaField } from "../form-elements";
+import Auth from "../../helpers/auth";
 // import { BtnTwo } from "../buttons";
 // const $ = window.$;
 class FormViewer extends Component {
@@ -79,7 +80,7 @@ class FormViewer extends Component {
       }
       setTimeout(() => {
         this.populateForm(this.props.match.params.applicationId);
-      }, 50);
+      }, 1000);
     } else {
       if (this.userRole === APP.ROLE.INSTITUTION) {
         this.setState({
@@ -427,8 +428,8 @@ class FormViewer extends Component {
   saveFields = (index) => {
     // console.log("saveFields...");
     if (
-      this.props.match.params.applicationId === null ||
-      this.props.match.params.applicationId === undefined ||
+      !this.props.match.params.applicationId ||
+      this.props.match.params.applicationId ||
       this.state.applicationDetails.status === LANG.FORM_STATUS.RETURNED
     ) {
       let obj = this.state.formFields,
@@ -525,7 +526,6 @@ class FormViewer extends Component {
         }
       }
     }
-
     var fieldGroups = {};
     for (let i = 0; i < this.state.formHeadings.length; i++) {
       fieldGroups[this.state.formHeadings[i]] = {};
@@ -549,6 +549,11 @@ class FormViewer extends Component {
         applicationId: this.props.match.params.applicationId,
       }),
     };
+
+    const instituteCourses = Auth.get('instituteCourses');
+    if(instituteCourses.length > 0) {
+      formDetails['districtName'] = instituteCourses[0].districtName;
+    }
 
     // formDetails = JSON.stringify(formDetails);
     // console.log(JSON.parse(formDetails));
@@ -649,6 +654,7 @@ class FormViewer extends Component {
                                   ? this.state.applicationDetails.notes
                                   : ""
                               }
+                              userRole={this.userRole}
                               inspectorSummary={
                                 this.state.applicationDetails.status ===
                                 LANG.FORM_STATUS.INSPECTION_COMPLETED

@@ -420,7 +420,7 @@ export const ReviewApplicationLayout = ({
                         </div>
                         <div className="mr-3">
                           <BtnSix
-                            label="Send for inspection"
+                            label={`${LANG.SEND_FOR_INSPECTION}`}
                             showIcon={true}
                             iconValue={`arrow_forward`}
                             isLink={false}

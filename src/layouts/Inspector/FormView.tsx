@@ -26,6 +26,7 @@ import {
   dataObjectFileUpload as dataObjectFileUploadAtom,
 } from "../../states/atoms";
 import { useHistory } from "react-router-dom";
+import { LANG } from "../../constants";
 
 /**
  * FormView component renders
@@ -382,12 +383,12 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
       });
 
       if (tempArray.includes("")) {
-        setEnableInspectionComplete(false);
+        setEnableInspectionComplete(true);
       } else {
         if (formData.inspectionFields) {
           setEnableInspectionComplete(true);
         } else {
-          setEnableInspectionComplete(false);
+          setEnableInspectionComplete(true);
         }
       }
     }
@@ -2497,7 +2498,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                           />
                         ) : enableInspectioComplete ? (
                           <BtnTwo
-                            label="Inspection completed"
+                            label={`${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`}
                             btnType="button"
                             isLink={true}
                             link={`/inspection-summary/${formData.id}/${applicationData.applicationId}`}
@@ -2513,7 +2514,7 @@ export const FormView = ({ applicationData, formData }: FormViewProps) => {
                             className={`${btnStylesTwo.btn_two_disabled}`}
                             disabled={true}
                           >
-                            Inspection completed
+                            {`${LANG.FORM_STATUS_TEXT.INSPECTION_COMPLETED}`}
                           </button>
                         )}
                       </div>
