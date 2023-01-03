@@ -90,12 +90,27 @@ export const Users = ({ data }: userProps) => {
   };
 
   const deleteUser = () => {
-    console.log(userToDelete);
-    //Make api call to soft delete user
-    setShowConfirmModal(false);
+    UserService.deleteUser(userToDelete?.id).then(
+      (response) => {
+          if (response.statusInfo && response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+              console.log(response.responseData);
+              Notify.success('User deleted successfully!');
+              getAllUsers();
+          } else {
+              Notify.error(response.statusInfo.errorMessage);
+          }
+          setShowConfirmModal(false);
+      },
+      (error) => {
+          error.statusInfo
+              ? Notify.error(error.statusInfo.errorMessage)
+              : Notify.error(error.message);
+          setShowConfirmModal(false);
+      }
+    );
   }
 
-  useEffect(() => {
+  const getAllUsers = () => {
     // get users
     UserService.getAllUsers().then(
       (response2) => {
@@ -115,6 +130,10 @@ export const Users = ({ data }: userProps) => {
           : Notify.error(error.message);
       }
     );
+  }
+
+  useEffect(() => {
+    getAllUsers();
      // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

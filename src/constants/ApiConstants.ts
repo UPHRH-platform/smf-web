@@ -32,6 +32,7 @@ export const APIS = {
     CREATE_OR_UPDATE_USER: "user/createOrUpdate",
     GET_USER_BY_ID: "user/getUserById",
     GET_ALL_USERS: "user/v1/getAllUser",
+    DELETE_USER: "user/admin/deleteUser"
   },
   DASHBOARD: {
     GET_DASHBOARD_CONFIG: "dashboard/getDashboardConfig/SMF/home",
