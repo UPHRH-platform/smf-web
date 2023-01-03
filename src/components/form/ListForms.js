@@ -4,12 +4,16 @@ import { FormService } from "../../services/form.service";
 import { APP, LANG } from "../../constants";
 import Notify from "../../helpers/notify";
 import { BtnTwo } from "../buttons";
+import {ConfirmModal } from "../../components/modal";
+import Helper from "../../helpers/auth";
 
 class ListForms extends Component {
   constructor(props) {
     super(props);
     this.state = {
       forms: [],
+      isAdmin: Helper.isAdmin(),
+      formToDelete: {},
     };
     this.getFormShortCode = this.getFormShortCode.bind(this);
   }
@@ -105,7 +109,30 @@ class ListForms extends Component {
   //   history: PropTypes.object.isRequired,
   // };
 
+  deleteForm = () => {
+    this.setState({showConfirmModal:  false});
+    // FormService.deleteForm(formToDelete?.id).then(
+    //   (response) => {
+    //       if (response.statusInfo && response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+    //           console.log(response.responseData);
+    //           Notify.success('Form deleted successfully!');
+    //           getAllForms();
+    //       } else {
+    //           Notify.error(response.statusInfo.errorMessage);
+    //       }
+    //       this.setState({showConfirmModal:  false});
+    //   },
+    //   (error) => {
+    //       error.statusInfo
+    //           ? Notify.error(error.statusInfo.errorMessage)
+    //           : Notify.error(error.message);
+    //       this.setState({showConfirmModal:  false});
+    //   }
+    // );
+  }
+
   render() {
+    const { isAdmin, showConfirmModal, formToDelete } = this.state;
     return (
       <Fragment>
         <div className="row pt-2">
@@ -194,7 +221,18 @@ class ListForms extends Component {
                     </td>
                     <td className="td-preview">
                       {form.status === LANG.FORM_STATUS.DRAFT && (
+                        <>
                         <Link to={`/forms/${form.id}/edit`}>Edit</Link>
+                        {isAdmin && (
+                          <span 
+                           className="ml-3 text-danger  pointer"  
+                           onClick={
+                             () => {
+                               this.setState({formToDelete: form, showConfirmModal:true})
+                             }
+                           }>Delete</span>
+                         )}
+                         </>
                       )}
                       {form.status !== LANG.FORM_STATUS.DRAFT && (
                         <span className="font-weight-bold black-16">Edit</span>
@@ -206,6 +244,15 @@ class ListForms extends Component {
             </table>
           </div>
         </div>
+        {showConfirmModal && (
+          <ConfirmModal
+            title="Delete Form"
+            onConfirm={this.deleteForm}
+            onCancel={() => {
+              this.setState({showConfirmModal: false, formToDelete: {}});
+            }}
+          > Do you want to delete {formToDelete?.title} ?</ConfirmModal>
+        )}
       </Fragment>
     );
   }
