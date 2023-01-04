@@ -95,7 +95,7 @@ class ListForms extends Component {
 
   deleteForm = () => {
     const formData = {...this.state.formToDelete, status: LANG.FORM_STATUS.DELETED}
-    saveFormDetails(formData, true);
+    this.saveFormDetails(formData, true);
   }
 
 
