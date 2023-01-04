@@ -68,7 +68,7 @@ function createOrUpdateUser(user) {
 function deleteUser(userId) {
   const requestOptions = {
     method: APP.REQUEST.POST,
-    headers: authHeader(),
+    headers: authHeaderWithBearer(),
     body: JSON.stringify({id: userId})
   };
   return fetch(APIS.BASE_URL + APIS.USER.DELETE_USER, requestOptions).then(
