@@ -67,24 +67,7 @@ class ListForms extends Component {
     } else {
       formData.status = LANG.FORM_STATUS.UNPUBLISH;
     }
-    FormService.add(formData).then(
-      (response) => {
-        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          Notify.success(response.statusInfo.statusMessage);
-          //   this.props.updateParent(response.responseData.id);
-          setTimeout(() => {
-            this.getAllForms();
-          }, 500);
-        } else {
-          Notify.error(response.statusInfo.errorMessage);
-        }
-      },
-      (error) => {
-        error.statusInfo
-          ? Notify.error(error.statusInfo.errorMessage)
-          : Notify.error(error.message);
-      }
-    );
+    this.saveFormDetails(formData, false);
   };
 
   searchForms = (event) => {
@@ -111,25 +94,35 @@ class ListForms extends Component {
   // };
 
   deleteForm = () => {
-    this.setState({showConfirmModal:  false});
-    // FormService.deleteForm(formToDelete?.id).then(
-    //   (response) => {
-    //       if (response.statusInfo && response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-    //           console.log(response.responseData);
-    //           Notify.success('Form deleted successfully!');
-    //           getAllForms();
-    //       } else {
-    //           Notify.error(response.statusInfo.errorMessage);
-    //       }
-    //       this.setState({showConfirmModal:  false});
-    //   },
-    //   (error) => {
-    //       error.statusInfo
-    //           ? Notify.error(error.statusInfo.errorMessage)
-    //           : Notify.error(error.message);
-    //       this.setState({showConfirmModal:  false});
-    //   }
-    // );
+    const formData = {...this.state.formToDelete, status: LANG.FORM_STATUS.DELETED}
+    saveFormDetails(formData, true);
+  }
+
+
+  saveFormDetails = (formData, isDelete) => {
+    FormService.add(formData).then(
+      (response) => {
+        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          if(isDelete) {
+            this.setState({showConfirmModal:  false});
+            Notify.success("Form deleted successfully")
+          }else {
+            Notify.success(response.statusInfo.statusMessage);
+          }
+          //   this.props.updateParent(response.responseData.id);
+          setTimeout(() => {
+            this.getAllForms();
+          }, 500);
+        } else {
+          Notify.error(response.statusInfo.errorMessage);
+        }
+      },
+      (error) => {
+        error.statusInfo
+          ? Notify.error(error.statusInfo.errorMessage)
+          : Notify.error(error.message);
+      }
+    );
   }
 
   render() {
