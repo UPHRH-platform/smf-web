@@ -4,12 +4,17 @@ import { FormService } from "../../services/form.service";
 import { APP, LANG } from "../../constants";
 import Notify from "../../helpers/notify";
 import { BtnTwo } from "../buttons";
+import {ConfirmModal } from "../../components/modal";
+import Helper from "../../helpers/auth";
 
 class ListForms extends Component {
   constructor(props) {
     super(props);
     this.state = {
       forms: [],
+      isAdmin: Helper.isAdmin(),
+      formToDelete: {},
+      showConfirmModal: false,
     };
     this.getFormShortCode = this.getFormShortCode.bind(this);
   }
@@ -62,24 +67,7 @@ class ListForms extends Component {
     } else {
       formData.status = LANG.FORM_STATUS.UNPUBLISH;
     }
-    FormService.add(formData).then(
-      (response) => {
-        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
-          Notify.success(response.statusInfo.statusMessage);
-          //   this.props.updateParent(response.responseData.id);
-          setTimeout(() => {
-            this.getAllForms();
-          }, 500);
-        } else {
-          Notify.error(response.statusInfo.errorMessage);
-        }
-      },
-      (error) => {
-        error.statusInfo
-          ? Notify.error(error.statusInfo.errorMessage)
-          : Notify.error(error.message);
-      }
-    );
+    this.saveFormDetails(formData, false);
   };
 
   searchForms = (event) => {
@@ -105,7 +93,40 @@ class ListForms extends Component {
   //   history: PropTypes.object.isRequired,
   // };
 
+  deleteForm = () => {
+    const formData = {...this.state.formToDelete, status: LANG.FORM_STATUS.DELETED}
+    this.saveFormDetails(formData, true);
+  }
+
+
+  saveFormDetails = (formData, isDelete) => {
+    FormService.add(formData).then(
+      (response) => {
+        if (response.statusInfo.statusCode === APP.CODE.SUCCESS) {
+          if(isDelete) {
+            this.setState({showConfirmModal:  false});
+            Notify.success("Form deleted successfully")
+          }else {
+            Notify.success(response.statusInfo.statusMessage);
+          }
+          //   this.props.updateParent(response.responseData.id);
+          setTimeout(() => {
+            this.getAllForms();
+          }, 500);
+        } else {
+          Notify.error(response.statusInfo.errorMessage);
+        }
+      },
+      (error) => {
+        error.statusInfo
+          ? Notify.error(error.statusInfo.errorMessage)
+          : Notify.error(error.message);
+      }
+    );
+  }
+
   render() {
+    const { isAdmin, showConfirmModal, formToDelete } = this.state;
     return (
       <Fragment>
         <div className="row pt-2">
@@ -194,7 +215,18 @@ class ListForms extends Component {
                     </td>
                     <td className="td-preview">
                       {form.status === LANG.FORM_STATUS.DRAFT && (
+                        <>
                         <Link to={`/forms/${form.id}/edit`}>Edit</Link>
+                        {isAdmin && (
+                          <span 
+                           className="ml-3 text-danger  pointer"  
+                           onClick={
+                             () => {
+                               this.setState({formToDelete: form, showConfirmModal:true})
+                             }
+                           }>Delete</span>
+                         )}
+                         </>
                       )}
                       {form.status !== LANG.FORM_STATUS.DRAFT && (
                         <span className="font-weight-bold black-16">Edit</span>
@@ -206,6 +238,15 @@ class ListForms extends Component {
             </table>
           </div>
         </div>
+        {showConfirmModal && (
+          <ConfirmModal
+            title="Delete Form"
+            onConfirm={this.deleteForm}
+            onCancel={() => {
+              this.setState({showConfirmModal: false, formToDelete: {}});
+            }}
+          > Do you want to delete {formToDelete?.title} ?</ConfirmModal>
+        )}
       </Fragment>
     );
   }

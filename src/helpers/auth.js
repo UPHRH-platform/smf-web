@@ -31,6 +31,15 @@ const Auth = {
     } else {
       return false;
     }
+  },
+
+  isAdmin() {
+    const userRole = this.getUserRole();
+    if(userRole === APP.ROLE.SUPER_ADMIN || userRole === APP.ROLE.REGULATOR) {
+      return true;
+    } else {
+      return false;
+    }
   }
 };
 
