@@ -427,6 +427,7 @@ class FormViewer extends Component {
 
   saveFields = (index) => {
     // console.log("saveFields...");
+    if(this.state.applicationDetails.status === LANG.FORM_STATUS.NEW || this.state.applicationDetails.status ===LANG.FORM_STATUS.DRAFT || this.state.applicationDetails.status ===LANG.FORM_STATUS.RETURNED){
     if (
       !this.props.match.params.applicationId ||
       this.props.match.params.applicationId ||
@@ -502,9 +503,10 @@ class FormViewer extends Component {
         }
       }
 
-      this.setState({
-        formFields: obj,
-      });
+        this.setState({
+          formFields: obj,
+        });
+      }
     }
     // console.log(obj);
     // files={this.state.formFields["field_3"].split(",")}
